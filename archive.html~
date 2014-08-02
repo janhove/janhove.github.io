@@ -1,7 +1,7 @@
 ---
 layout: page
-title : Blog archive
-header : Blog archive
+title : Archive
+header : Post Archive
 group: navigation
 ---
 {% include JB/setup %}
