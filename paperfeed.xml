@@ -1,28 +1,41 @@
 ---
 layout: nil
-title : Atom Feed
+title : Jan Vanhove - new publications
 ---
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>{{ site.title }}</title>
- <link href="{{ site.production_url }}/{{ site.atom_path }}" rel="self"/>
- <link href="{{ site.production_url }}"/>
+ <title>Jan Vanhove homepage</title>
+ <link href="http://janhove.github.io/paperfeed.xml" rel="self"/>
+ <link href="http://janhove.github.io"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>{{ site.production_url }}</id>
+ <id>http://janhove.github.io</id>
  <author>
-   <name>{{ site.author.name }}</name>
-   <email>{{ site.author.email }}</email>
+   <name>Jan Vanhove</name>
+   <email>jan.vanhove@unifr.ch</email>
  </author>
 
- {% for post in site.posts %}
  <entry>
-   <title>{{ post.title }}</title>
-   <link href="{{ site.production_url }}{{ post.url }}"/>
-   <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>{{ site.production_url }}{{ post.id }}</id>
-   <content type="html">{{ post.content | xml_escape }}</content>
+   <title>New article - Factoren bij het herkennen van cognaten in
+onbekende talen: algemeen of taalspecifiek?</title>
+   <link href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Cog4Talen/FactorenCognaatherkenning.pdf"/>
+   <updated>2014-08-02T22:30:+01:00</updated>
+   <id>paper_2014_taalentongval</id>
+   <content type="html">The correct recognition of cognate relationships is a precondition for receptive
+multilingualism within language families. Several item- and participant-related
+factors have been identified that affect the probability with which readers
+and listeners correctly recognise and translate cognates in an unknown but
+genealogically related foreign language. Most of the relevant findings, however, are based on tasks featuring cognates in only one unknown language,
+leaving open the possibility that these factors play a (somewhat) different
+role depending on the specific stimulus language. To address this issue, 98
+German-speaking participants were asked to translate 181 written cognates
+from four Germanic languages (Danish, Dutch, Frisian and Swedish). The effects
+of stimulus similarity to known (L1, L2, ..., Ln) cognates, cognate frequency
+and the participants’ foreign language skills on translation accuracy were
+assessed and found not to vary substantially between stimulus languages. This
+indicates that the validity of studies on cognate recognition extends beyond
+the language from which the stimuli were sampled. Secondary findings are
+discussed as well.</content>
  </entry>
- {% endfor %}
  
 </feed>
