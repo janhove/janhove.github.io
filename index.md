@@ -40,7 +40,31 @@ Here's a sample "posts list".
 
 ## To-Do
 
-{% for post in site.posts limit:15 %}
+
+<div class="row">
+  {% for post in site.posts limit:1 %}
+  <div class="span4">
+    <a href="{{ BASE_PATH }}{{ post.url }}"><h2>{{ post.title }}</h2></a>
+	<hr />
+	<p>{% if post.thumbnail %}
+	<img src="{{ post.thumbnail }}" style="height: 280px" align="center" />
+	{% else %}
+	<img src="/images/nothumbnail.jpg"
+  style="height: 280px" align="center" />
+	{% endif %}</p>
+	<p>&nbsp;</p>
+	<p>
+	{{ post.content | strip_html | truncatewords:20 }}
+	</p>
+	<p>
+	<a class="btn" href="{{ BASE_PATH }}{{ post.url }}">Read more...</a>
+	</p>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% for post in site.posts limit:15 offset:1 %}
 <hr />
 <div class="row">
   <div class="span2">
