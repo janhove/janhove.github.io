@@ -42,7 +42,7 @@ Here's a sample "posts list".
 
 
 <div class="row">
-  {% for post in site.posts limit:1 %}
+  {% for post in site.posts limit:3 %}
   <div class="span4">
     <a href="{{ BASE_PATH }}{{ post.url }}"><h2>{{ post.title }}</h2></a>
 	<hr />
@@ -64,7 +64,7 @@ Here's a sample "posts list".
 </div>
 
 
-{% for post in site.posts limit:15 offset:1 %}
+{% for post in site.posts limit:15 offset:3 %}
 <hr />
 <div class="row">
   <div class="span2">
