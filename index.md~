@@ -38,7 +38,7 @@ Here's a sample "posts list".
   {% endfor %}
 </ul>
 
-## To-Do
+## Latest blog posts
 
 
 <div class="row">
@@ -64,7 +64,7 @@ Here's a sample "posts list".
 </div>
 
 
-{% for post in site.posts limit:15 offset:1 %}
+{% for post in site.posts limit:10 offset:3 %}
 <hr />
 <div class="row">
   <div class="span2">

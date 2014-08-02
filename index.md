@@ -8,20 +8,6 @@ tagline: Supporting tagline
 Read [Jekyll Quick Start](http://jekyllbootstrap.com/usage/jekyll-quick-start.html)
 
 Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllbootstrap.com)
-
-## Update Author Attributes
-
-In `_config.yml` remember to specify your own data:
-    
-    title : My Blog =)
-    
-    author :
-      name : Name Lastname
-      email : blah@email.test
-      github : username
-      twitter : username
-
-The theme should reference these variables whenever needed.
     
 ## Sample Posts
 
@@ -38,7 +24,7 @@ Here's a sample "posts list".
   {% endfor %}
 </ul>
 
-## To-Do
+## Latest blog posts
 
 
 <div class="row">
@@ -64,7 +50,7 @@ Here's a sample "posts list".
 </div>
 
 
-{% for post in site.posts limit:15 offset:3 %}
+{% for post in site.posts limit:10 offset:3 %}
 <hr />
 <div class="row">
   <div class="span2">
