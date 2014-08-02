@@ -12,7 +12,7 @@ I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism a
    <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
 </div>
 
-## Education
+<!-- ## Education
 
 2010-2014: Ph.D., Multilingualism research, University of Fribourg (Switzerland)  
 2008-2010: M.A., European linguistics, University of Freiburg (Germany)  
@@ -22,7 +22,7 @@ I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism a
 
 2014-...: Senior lecturer, Department of Multilingualism, University of Fribourg (Switzerland)  
 2010-2014: Doctoral student, project [Multilingualism through the lifespan](http://lettres.unifr.ch/fr/langues-litteratures/plurilinguisme-et-didactique-des-langues-etrangeres/research/sinergia.html), Department of Multilingualism, University of Fribourg (Switzerland)  
-2010: Research assistant, project [Mutual intelligibility of closely related languages](http://www.let.rug.nl/gooskens/project/), Department of Scandinavian Studies, University of Groningen (Netherlands)
+2010: Research assistant, project [Mutual intelligibility of closely related languages](http://www.let.rug.nl/gooskens/project/), Department of Scandinavian Studies, University of Groningen (Netherlands) -->
 
 ## Contact
 
