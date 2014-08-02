@@ -22,12 +22,10 @@ I'm an 'Oberassistent' (senior lecturer) at the Department of Multilingualism at
 
 ## Contact
 
-				<address>
-				<a href="http://www.unifr.ch/">University of Fribourg</a><br>
-				<a href="http://www.unifr.ch/pluriling/">Multilingualism and Foreign Language Teaching</a><br>
-				Rue de Rome 1<br>
-				CH-1700 Fribourg<br>
-				Switzerland<br>
-				<br>
-				<a href="mailto:jan.vanhove@unifr.ch">jan.vanhove@unifr.ch</a><br>
-				Phone: +41 26 300 7141</address>
+University of Fribourg  
+Multilingualism and Foreign Language Teaching 
+Rue de Rome 1  
+CH-1700 Fribourg  
+Switzerland  
+
+jan.vanhove@unifr.ch
