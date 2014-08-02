@@ -7,9 +7,9 @@ title : Jan Vanhove - new publications
  
  <title>Jan Vanhove homepage</title>
  <link href="http://janhove.github.io/paperfeed.xml" rel="self"/>
- <link href="http://janhove.github.io"/>
+ <link href="http://janhove.github.io/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://janhove.github.io</id>
+ <id>http://janhove.github.io/</id>
  <author>
    <name>Jan Vanhove</name>
    <email>jan.vanhove@unifr.ch</email>
@@ -19,8 +19,8 @@ title : Jan Vanhove - new publications
    <title>New article - Factoren bij het herkennen van cognaten in
 onbekende talen: algemeen of taalspecifiek?</title>
    <link href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Cog4Talen/FactorenCognaatherkenning.pdf"/>
-   <updated>2014-08-02T22:30:+01:00</updated>
-   <id>paper_2014_taalentongval</id>
+   <updated>2014-08-02T22:30:00+01:00</updated>
+   <id>http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Cog4Talen/FactorenCognaatherkenning.pdf</id>
    <content type="html">The correct recognition of cognate relationships is a precondition for receptive
 multilingualism within language families. Several item- and participant-related
 factors have been identified that affect the probability with which readers
