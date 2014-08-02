@@ -6,7 +6,7 @@ group: navigation
 ---
 {% include JB/setup %}
 
-I'm an 'Oberassistent' (senior lecturer) at the Department of Multilingualism at the University of Fribourg in Switzerland.
+I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism at the University of Fribourg in Switzerland.
 
 ## Education
 
