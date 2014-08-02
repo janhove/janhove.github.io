@@ -8,8 +8,8 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Multilingualism research
-tagline: Design and analysis in multilingualism research 
+title : Jekyll Bootstrap
+tagline: Site Tagline
 author :
   name : Jan Vanhove
   email : jan.vanhove@unifr.ch
