@@ -70,7 +70,6 @@ JB :
   # Some JB helpers refer to these paths; change them here if needed.
   #
 
-  about_path: /about.html
   archive_path: /archive.html
   categories_path : /categories.html
   tags_path : /tags.html
@@ -129,4 +128,10 @@ JB :
   # and include your custom code. Your custom file must be defined at:
   #   ./_includes/custom/[HELPER]
   # where [HELPER] is the name of the helper you are overriding.
+  
+  pages_list:       
+  About: '/about'
+  Archive: '/archive'
+  Feed: '/atom.xml'
+
   
