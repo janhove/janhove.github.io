@@ -8,6 +8,10 @@ group: navigation
 
 I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism at the University of Fribourg in Switzerland.
 
+<div style="float: right">
+   ![Photo](/figs/foto.JPG "Photo")
+</div>
+
 ## Education
 
 2010-2014: Ph.D., Multilingualism research, University of Fribourg (Switzerland)  

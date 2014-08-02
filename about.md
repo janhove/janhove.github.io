@@ -9,7 +9,7 @@ group: navigation
 I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism at the University of Fribourg in Switzerland.
 
 <div style="float: right">
-   ![Photo](/figs/foto.JPG "Photo")
+   <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
 </div>
 
 ## Education
