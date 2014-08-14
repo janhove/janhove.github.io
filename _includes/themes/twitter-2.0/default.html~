@@ -43,9 +43,11 @@
           <a class="brand" href="{{ HOME_PATH }}">{{ site.title }}</a>
           <div class="nav-collapse">
             <ul class="nav">
-              {% assign pages_list = site.pages %}
-              {% assign group = 'navigation' %}
-              {% include JB/pages_list %}
+              <li><a href="/about.html">About</a></li>        
+        <li><a href="/publications.html">Publications</a></li>
+        <li><a href="/archive.html">Blog archive</a></li>
+        <li><a href="/categories.html">Blog categories</a></li>
+        <li><a href="/tags.html">Blog tags</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -59,7 +61,7 @@
       </div>
 
       <footer>
-        <p>&copy; {{ site.author.name }} 2012
+        <p>&copy; {{ site.author.name }} 2014
           with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
           and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
         </p>

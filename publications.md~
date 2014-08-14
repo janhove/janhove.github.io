@@ -2,10 +2,11 @@
 layout: page
 title: "Publications"
 description: ""
-tagline: ""
 group: navigation
 ---
 {% include JB/setup %}
+
+<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
 ## Accepted
 				

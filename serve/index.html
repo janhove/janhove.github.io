@@ -3,195 +3,112 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>Hello World!</title>
+    <title>Homepage</title>
     
-    <meta name="author" content="Name Lastname">
-
-    <!-- Enable responsive viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Bootstrap styles -->
-    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional theme -->
-    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Sticky Footer -->
-    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
-    
-    <!-- Custom styles -->
-    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <meta name="author" content="Jan Vanhove">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <!-- Update these with your own images
-      <link rel="shortcut icon" href="images/favicon.ico">
-      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-    -->
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter-2.0/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css" media="screen">
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="/assets/themes/twitter-2.0/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter-2.0/css/syntax.css" rel="stylesheet" type="text/css">
+    <link href="/assets/themes/twitter-2.0/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
 
-    <!-- atom & rss feed -->
-    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
-    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
-
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
   </head>
 
   <body>
-    <div id="wrap">
-      <nav class="navbar navbar-default" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Jekyll Bootstrap</a>
+          </a>
+          <a class="brand" href="/">Jan Vanhove</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="/about.html">About</a></li>        
+        <li><a href="/publications.html">Publications</a></li>
+        <li><a href="/archive.html">Blog archive</a></li>
+        <li><a href="/categories.html">Blog categories</a></li>
+        <li><a href="/tags.html">Blog tags</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
+    </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
-          <ul class="nav navbar-nav">
-            
-            
-            
+    <div class="container">
 
-
-  
-    
-      
-      	
-      	<li><a href="/pages.html">Pages</a></li>
-      	
-      
-    
-  
-    
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/categories.html">Categories</a></li>
-      	
-      
-    
-  
-    
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/archive.html">Archive</a></li>
-      	
-      
-    
-  
-    
-      
-    
-  
-    
-      
-    
-  
-    
-      
-      	
-      	<li><a href="/tags.html">Tags</a></li>
-      	
-      
-    
-  
-
-
-
-          </ul>
-          <form class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-        </div><!-- /.navbar-collapse -->
-      </nav>
-
-      <div class="container">
+      <div class="content">
         
 <div class="page-header">
-  <h1>Hello World!  <small>Supporting tagline</small></h1>
+  <h1>Homepage</h1>
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
-    <p>Read <a href='http://jekyllbootstrap.com/usage/jekyll-quick-start.html'>Jekyll Quick Start</a></p>
-
-<p>Complete usage and documentation available at: <a href='http://jekyllbootstrap.com'>Jekyll Bootstrap</a></p>
-
-<h2 id='update_author_attributes'>Update Author Attributes</h2>
-
-<p>In <code>_config.yml</code> remember to specify your own data:</p>
-
-<pre><code>title : My Blog =)
-
-author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username</code></pre>
-
-<p>The theme should reference these variables whenever needed.</p>
-
-<h2 id='sample_posts'>Sample Posts</h2>
-
-<p>This blog contains sample posts which help stage pages and blog data. When you don&#8217;t need the samples anymore just delete the <code>_posts/core-samples</code> folder.</p>
-
-<pre><code>$ rm -rf _posts/core-samples</code></pre>
-
-<p>Here&#8217;s a sample &#8220;posts list&#8221;.</p>
-<ul class='posts'>
+  <div class="span12">
+    <p>I teach and do research at the Department of Multilingualism at the University of Fribourg. Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.</p>
+<div style='float: right'>
+   <img alt='Photo' src='/figs/foto.JPG' title='Photo' />
+</div><p><a href='blogfeed.xml'><img alt='Feed' src='/figs/feed.png' />&nbsp;Subscribe to new blog posts.</a></p><p><a href='paperfeed.xml'><img alt='Feed' src='/figs/feed.png' />&nbsp;Subscribe to new academic publications.</a></p>
+<h2 id='latest_blog_posts'>Latest blog posts</h2>
+<div class='row'>
   
-    <li><span>29 Dec 2011</span> &raquo; <a href='/lessons/2011/12/29/jekyll-introduction'>Jekyll Introduction</a></li>
-  
-</ul>
-<h2 id='todo'>To-Do</h2>
+  <div class='span4'>
+    <a href='/self-taught statistics/2014/08/14/pretest-posttest-ancova'><h3>Analysing pretest/posttest data</h3></a>
+	<hr />
+	<p>
+	<img align='center' src='/figs/thumbnails/2014-08-14-pretest-posttest-ancova.png' style='height: 280px' />
+	</p>
+	<p>&nbsp;</p>
 
-<p>This theme is still unfinished. If you&#8217;d like to be added as a contributor, <a href='http://github.com/plusjade/jekyll-bootstrap'>please fork</a>! We need to clean up the themes, make theme usage guides with theme-specific markup examples.</p>
+	<p>Assigning participants randomly to the control and experimental programmes and testing them before and after the programme is the gold standard for determining the efficacy of pedagogical interventions. But the analyses reported in research articles are often needlessly complicated and may be suboptimal in terms of statistical power.</p>
+
+	 
+	<p>
+	<a class='btn' href='/self-taught statistics/2014/08/14/pretest-posttest-ancova'>Read more...</a>
+	</p>
+  </div>
+  
+</div>
   </div>
 </div>
 
 
       </div>
 
-    </div>
-
-    <div id="footer">
-      <div class="container">
-        <p>&copy; 2014 Name Lastname
+      <footer>
+        <p>&copy; Jan Vanhove 2014
           with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
           and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
         </p>
-      </div>
-    </div id="footer">
+      </footer>
 
+    </div> <!-- /container -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/assets/themes/twitter-2.0/js/jquery.min.js"><\/script>')</script>
+    <script src="/assets/themes/twitter-2.0/js/bootstrap.min.js"></script>
     
-
-
-    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
 

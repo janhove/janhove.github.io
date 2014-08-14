@@ -6,6 +6,8 @@ group: navigation
 ---
 {% include JB/setup %}
 
+<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
+
 ## Accepted
 				
 Jan Vanhove and Raphael Berthele. Forthcoming.  
@@ -19,7 +21,7 @@ Accepted for publication in _International Review of Applied Linguistics in Lang
 Data and R code to follow.
 
 				
-## Published
+## 2014
 				
 Jan Vanhove and Raphael Berthele. 2014.  
 [Factoren bij het herkennen van cognaten in onbekende talen: algemeen of taalspecifiek?](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Cog4Talen/FactorenCognaatherkenning.pdf)  
@@ -35,6 +37,8 @@ Jan Vanhove. 2014.
 [Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing](http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf).  
 Ph.D. thesis. University of Fribourg.  
 Data and R code available from [figshare](http://dx.doi.org/10.6084/m9.figshare.795286).
+
+## 2013
 
 Jan Vanhove. 2013.  
 [The critical period hypothesis in second language acquisition: A statistical critique and a reanalysis](http://dx.doi.org/10.1371/journal.pone.0069172).  

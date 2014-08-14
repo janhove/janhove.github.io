@@ -9,6 +9,8 @@ pygments: true
 # so be sure to set them if your theme uses them.
 #
 title : Jan Vanhove
+description: WEBSITE DESCRIPTION
+url: http://janhove.github.io
 author :
   name : Jan Vanhove
   email : jan.vanhove@unifr.ch

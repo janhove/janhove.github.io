@@ -1,10 +1,12 @@
 ---
 layout: page
-title: Categories
+title: Blog categories
 header: Blog posts by category
 group: navigation
 ---
 {% include JB/setup %}
+
+<p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>Subscribe to new blog posts.</a></p>
 
 <ul class="tag_box inline">
   {% assign categories_list = site.categories %}

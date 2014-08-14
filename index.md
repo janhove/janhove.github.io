@@ -1,21 +1,25 @@
 ---
 layout: page
-title: Hello World!
-tagline: Supporting tagline
+title: Homepage
 ---
 {% include JB/setup %}
 
-Read [Jekyll Quick Start](http://jekyllbootstrap.com/usage/jekyll-quick-start.html)
+I teach and do research at the Department of Multilingualism at the University of Fribourg.
+Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
 
-Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllbootstrap.com)
+<div style="float: right">
+   <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
+</div>
+
+<p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new blog posts.</a></p>
+<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
 ## Latest blog posts
-
 
 <div class="row">
   {% for post in site.posts limit:3 %}
   <div class="span4">
-    <a href="{{ BASE_PATH }}{{ post.url }}"><h2>{{ post.title }}</h2></a>
+    <a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a>
 	<hr />
 	<p>{% if post.thumbnail %}
 	<img src="{{ post.thumbnail }}" style="height: 280px" align="center" />
@@ -24,9 +28,9 @@ Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllb
   style="height: 280px" align="center" />
 	{% endif %}</p>
 	<p>&nbsp;</p>
-	<p>
-	{{ post.content | strip_html | truncatewords:20 }}
-	</p>
+
+	{{ post.content | split:'<!--more-->' | first }}
+	 
 	<p>
 	<a class="btn" href="{{ BASE_PATH }}{{ post.url }}">Read more...</a>
 	</p>
@@ -47,8 +51,7 @@ Complete usage and documentation available at: [Jekyll Bootstrap](http://jekyllb
   </div>
   <div class="span10">
     <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
-	<p>{{ post.content | strip_html | truncatewords: 150 }}
-	</p>
+{{ post.content | split:'<!--more-->' | first }}
   </div>
 </div>
 {% endfor %}

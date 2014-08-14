@@ -1,10 +1,12 @@
 ---
 layout: page
-title : Archive
-header : Post Archive
+title : Blog archive
+header : Blog archive
 group: navigation
 ---
 {% include JB/setup %}
+
+<p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new blog posts.</a></p>
 
 {% assign posts_collate = site.posts %}
 {% include JB/posts_collate %}

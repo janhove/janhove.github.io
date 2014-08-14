@@ -1,11 +1,15 @@
 
-http://username.github.io/pages.html
-http://username.github.io/sitemap.txt
-http://username.github.io/categories.html
-http://username.github.io/atom.xml
-http://username.github.io/archive.html
-http://username.github.io/rss.xml
-http://username.github.io/index.html
-http://username.github.io/tags.html
+http://janhove.github.io/pages.html
+http://janhove.github.io/about.html
+http://janhove.github.io/publications.html
+http://janhove.github.io/blogfeed.xml
+http://janhove.github.io/sitemap.txt
+http://janhove.github.io/paperfeed.xml
+http://janhove.github.io/categories.html
+http://janhove.github.io/atom.xml
+http://janhove.github.io/archive.html
+http://janhove.github.io/rss.xml
+http://janhove.github.io/index.html
+http://janhove.github.io/tags.html
 
-http://username.github.io/lessons/2011/12/29/jekyll-introduction
+http://janhove.github.io/self-taught statistics/2014/08/14/pretest-posttest-ancova
