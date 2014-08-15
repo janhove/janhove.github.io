@@ -4,12 +4,14 @@ title: Homepage
 ---
 {% include JB/setup %}
 
-I teach and do research at the Department of Multilingualism at the University of Fribourg.
-Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
-
 <div style="float: right">
    <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
 </div>
+
+I teach and do research at the Department of Multilingualism at the University of Fribourg.
+Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
+
+
 
 <p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new blog posts.</a></p>
 <p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
