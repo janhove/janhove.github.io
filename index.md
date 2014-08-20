@@ -4,9 +4,9 @@ title: Homepage
 ---
 {% include JB/setup %}
 
-<div style="float: right">
+<!-- <div style="float: right">
    <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
-</div>
+</div> -->
 
 I teach and do research at the Department of Multilingualism at the University of Fribourg.
 Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
