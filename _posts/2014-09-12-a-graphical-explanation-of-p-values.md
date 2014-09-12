@@ -55,10 +55,10 @@ To establish whether men and women differ 'significantly' from one another, we'd
 but an alternative approach is discussed by [Wickham and colleagues](http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=5613434).
 
 The **basic idea** is as follows.
-If there is a systematic relationship between two variables (e.g. a difference in group averages), then we ought to be able to the _real_ dataset from _fake_ datasets that were randomly generated without an underlying systematic relationship.
+If there is a systematic relationship between two variables (e.g. a difference in group averages), then we ought to be able to tell the _real_ dataset from _fake_ datasets that were randomly generated without an underlying systematic relationship.
 To generate fake but 'realistic' datasets, we can permute the real data, i.e., randomly switch the datapoints between the groups.
 Then, we organise a line-up (like in the movies!) with the real dataset hidden among several fake datasets.
-If we can distinguish the real dataset from the fake ones, we have some evidence that their is some degree of system in the real data that is not present in the fake data.
+If we can distinguish the real dataset from the fake ones, we have some evidence that there is some degree of system in the real data that is not present in the fake data.
 
 This procedure is implemented in the `nullabor` package for R, which relies on the `ggplot2` package.
 Make sure you have these two packages installed on your machine (`install.packages()`).

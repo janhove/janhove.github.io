@@ -55,7 +55,7 @@ To establish whether men and women differ 'significantly' from one another, we'd
 but an alternative approach is discussed by [Wickham and colleagues](http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=5613434).
 
 The **basic idea** is as follows.
-If there is a systematic relationship between two variables (e.g. a difference in group averages), then we ought to be able to the _real_ dataset from _fake_ datasets that were randomly generated without an underlying systematic relationship.
+If there is a systematic relationship between two variables (e.g. a difference in group averages), then we ought to be able to tell the _real_ dataset from _fake_ datasets that were randomly generated without an underlying systematic relationship.
 To generate fake but 'realistic' datasets, we can permute the real data, i.e., randomly switch the datapoints between the groups.
 Then, we organise a line-up (like in the movies!) with the real dataset hidden among several fake datasets.
 If we can distinguish the real dataset from the fake ones, we have some evidence that their is some degree of system in the real data that is not present in the fake data.
@@ -170,7 +170,7 @@ q
 
 ![center](/figs/2014-09-12-a-graphical-explanation-of-p-values/unnamed-chunk-6.png) 
 
-You might be able to spot the real dataset, but I had to peek at the right answer to know it was Panel 17.
+You might be able to spot the real dataset, but I had to peek at the right answer to know it was Panel 16.
 In this case, I wasn't able to beat the odds since the real data look too similar to the fake data, suggesting that 'no systematic pattern' is a more parsimonious relationship.
 
 Compare this to the following plot, which shows the participants' reading scores in function of their English skills.
