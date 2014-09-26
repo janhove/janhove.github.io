@@ -20,7 +20,7 @@ Self-taught in statistics, I blog about statistical issues and research design i
 
 <div class="row">
   {% for post in site.posts limit:3 %}
-  <div class="span4">
+   <div class="span4">
     <a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a>
 	<hr />
 	<p>{% if post.thumbnail %}

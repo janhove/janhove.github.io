@@ -8,6 +8,24 @@ group: navigation
 
 <p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
+## Submitted manuscripts and working papers
+
+Jan Vanhove. 2014.  
+Analyzing randomized controlled interventions: Three notes for applied linguists.  
+Working paper.
+
+Jan Vanhove and Raphael Berthele. 2014.  
+Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
+Working paper.
+
+Jan Vanhove. 2014.  
+The early learning of interlingual correspondence rules in receptive multilingualism.  
+Submitted for publication.
+
+David Birdsong and Jan Vanhove. 2014.  
+Age of second language acquisition: Critical periods and social concerns.  
+Submitted for publication.
+
 ## Accepted
 				
 Jan Vanhove and Raphael Berthele. Forthcoming.  
