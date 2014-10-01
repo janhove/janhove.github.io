@@ -145,7 +145,6 @@ Usually, we'd compute a correlation test or fit a regression model to get a _p_-
 
 The following plot shows the relationship between a measure of intelligence ('Raven') and the participants' performance on a reading task.
 The real dataset is again hidden among 19 fake datasets that were generated without an underlying pattern.
-The blue trend lines try to capture the tendency in each panel.
 Can you spot the real dataset?
 
 
