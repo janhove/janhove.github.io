@@ -12,11 +12,11 @@ group: navigation
 
 Jan Vanhove. 2014.  
 Analyzing randomized controlled interventions: Three notes for applied linguists.  
-Working paper.
+Submitted for publication.
 
 Jan Vanhove and Raphael Berthele. 2014.  
 Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
-Working paper.
+Submitted for publication.
 
 Jan Vanhove. 2014.  
 The early learning of interlingual correspondence rules in receptive multilingualism.  
