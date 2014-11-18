@@ -19,8 +19,8 @@ Self-taught in statistics, I blog about statistical issues and research design i
 ## Latest blog posts
 
 <div class="row">
-  {% for post in site.posts limit:1 %}
-   <div class="span12">
+  {% for post in site.posts limit:3 %}
+   <div class="span4">
     <a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a>
 	<hr />
 	<p>{% if post.thumbnail %}
@@ -28,8 +28,8 @@ Self-taught in statistics, I blog about statistical issues and research design i
 	{% else %}
 	<img src="/images/nothumbnail.jpg"
   style="height: 280px" align="center" />
-	{% endif %}<!-- </p>
-	<p>&nbsp;</p> -->
+	{% endif %}</p>
+	<p>&nbsp;</p>
 
 	{{ post.content | split:'<!--more-->' | first }}
 	 
@@ -41,7 +41,7 @@ Self-taught in statistics, I blog about statistical issues and research design i
 </div>
 
 
-{% for post in site.posts limit:10 offset:1 %}
+{% for post in site.posts limit:10 offset:3 %}
 <hr />
 <div class="row">
   <div class="span2">

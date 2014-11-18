@@ -26,8 +26,7 @@ Self-taught in statistics, I blog about statistical issues and research design i
 	<p>{% if post.thumbnail %}
 	<img src="{{ post.thumbnail }}" style="height: 280px" align="center" />
 	{% else %}
-	<img src="/images/nothumbnail.jpg"
-  style="height: 280px" align="center" />
+	
 	{% endif %}</p>
 	<p>&nbsp;</p>
 
