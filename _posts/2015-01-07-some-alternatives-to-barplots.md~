@@ -1,6 +1,12 @@
-```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(error = TRUE, fig.width = 9)
-```
+---
+layout: post
+title: "Some alternatives to bar plots"
+thumbnail: /figs/thumbnails/2015-01-07-some-alternatives-to-bar-plots.png
+category: [graphics]
+tags: [statistics, graphics]
+---
+
+
 
 Bar plots. They often deliver the main result of empirical studies, be it at conferences or in journal articles, by proudly showing that the mean score, reaction time etc. in one group is a notch higher than in the other.
 But the information that bar plots convey is limited and sometimes downright misleading.
@@ -19,70 +25,7 @@ The bar plot on the left shows the mean percentage of correctly translated criti
 The plot in the middle additionally shows the upper limits of the means' 95% confidence intervals; this type of plot is often referred to as a _dynamite plot_.
 The one on the right, finally, shows both the upper and lower limits of the 95% CIs.
 
-```{r, echo = FALSE, eval = TRUE, results = 'hide', message = FALSE, warning = FALSE, fig.height = 6}
-# Load packages
-library("plyr")          # to reformat data; use 'install.packages("plyr")' if not available
-library("ggplot2")       # for plotting
-library("gridExtra")     # for creating side-by-side plots in ggplot2
-
-# Read in data
-dat <- read.csv("http://janhove.github.io/datasets/correspondencerules.csv")
-
-# Rename levels
-levels(dat$LearningCondition) <- c("<ij> participants", "<oe> participants")
-
-
-# Divide data into training and test part
-dat_post <- droplevels(subset(dat, Block!="Training"))
-
-# Restrict analysis to critical items (i.e. oe and ij cognates)
-dat_post_critical <- droplevels(subset(dat_post, Category %in% c("oe cognate", "ij cognate")))
-
-# Figure 1
-# Step 1: summarise percentages per category per subject in a slightly different way
-perSubjectCorrect <- ddply(dat_post_critical, 
-                           .(Subject, Category, LearningCondition), 
-                           summarise,
-                           Correct = 100*table(Correct)[["yes"]] / sum(table(Correct)),
-                           CorrectVowel = 100*table(CorrectVowel)[["yes"]] / sum(table(CorrectVowel)))
-levels(perSubjectCorrect$Category) <- c("<ij> cognates", "<oe> cognates")
-levels(perSubjectCorrect$LearningCondition) <- c("<ij>", "<oe>")
-
-perSubjectCorrectOe <- droplevels(subset(perSubjectCorrect, Category == "<oe> cognates"))
-
-# Step 2: draw plot
-
-gp <- ggplot(perSubjectCorrectOe,
-             aes(x = LearningCondition,
-                 y = Correct)) +
-  guides(fill = FALSE, colour = FALSE) +
-      theme(axis.text.x = element_text(size = 12),
-        axis.title.x = element_text(size = 13),
-        axis.text.y = element_text(size = 12),
-        axis.title.y = element_text(size = 13),
-        strip.text.x = element_text(size = 16)) +
-  ylim(0, 100)
-
-gp1 <- gp + stat_summary(fun.y = mean, geom = "bar", position = "dodge", mapping = aes(fill = LearningCondition), color = "black", size = 1) +
-  guides(fill = FALSE, colour = FALSE) +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-# lowCI en HiCI
-lowCI <- function(x) {return(mean(x) + qt(0.025, length(x)) * sqrt(var(x)/length(x)))}
-hiCI <- function(x) {return(mean(x) + qt(0.975, length(x)) * sqrt(var(x)/length(x)))}
-
-gp2 <- gp + 
-  stat_summary(fun.y = mean, geom = "bar", position = "dodge", mapping = aes(fill = LearningCondition), color = "black", size = 0.8) +
-  stat_summary(fun.y = mean, fun.ymin = lowCI, fun.ymax = hiCI, geom="errorbar", position = "dodge", colour = "black", width = 0.3) +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-gp3 <- gp + 
-  stat_summary(fun.y = mean, geom = "bar", position = "dodge", mapping = aes(fill = LearningCondition), color = "black", size = 0.8) +
-  stat_summary(fun.y = mean, fun.ymin = mean, fun.ymax = hiCI, geom="errorbar", position = "dodge", colour = "black", width = 0.3) +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-grid.arrange(gp1, gp3, gp2, ncol = 3)
-```
+![center](/figs/2015-01-07-some-alternatives-to-barplots/unnamed-chunk-2-1.png) 
 
 
 
@@ -110,62 +53,20 @@ First, I draw [boxplots](http://en.wikipedia.org/wiki/Box_plot) (shown in the mi
 and then I plot the individual data points on top of them. (If you do this, make sure you [don't plot outliers twice](http://www.zijdeman.nl/files/r_examples/boxplot_example.html)!)
 At a single glance, readers get an accurate sense of where the individual data points lie as well as where the quartiles of the data are situated.
 
-```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, fig.height = 6}
-gp4 <- gp + geom_point(position = position_jitter(h = 0, w = 0.2), size = 1.5, aes(color = LearningCondition))  +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-
-gp5 <- gp + geom_boxplot(aes(color = LearningCondition))  +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-gp6 <- gp + geom_boxplot(outlier.shape = NA, aes(color = LearningCondition)) +
-  geom_point(position = position_jitter(h=0, w=0.2), size=1.5, aes(color = LearningCondition))  +
-  xlab("Learning condition") + ylab("Percentage correct translations")
-
-grid.arrange(gp4, gp5, gp6, ncol = 3)
-```
+![center](/figs/2015-01-07-some-alternatives-to-barplots/unnamed-chunk-3-1.png) 
 
 The reason why I prefer to plot the individual data points rather than the naked box plots that more readers will be familiar with is that, much like bar plots, box plots can be deceptive.
 As an example, consider the box plots below (data courtesy of my colleague Ladina). With median scores of about 45-50, first and third quartiles more or less symmetrically around the median, dito hinges and no outlying points, these box plots evoke symmetric, unimodal and well-behaved (if not quite normal) distributions.
 On the basis of this plot, we'd be inclined to move on to _t_-tests and the like for our inferences.
 
-```{r, echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE, fig.width = 4, fig.height = 4}
-ladina <- read.csv("http://janhove.github.io/datasets/ladina.csv")
-# Vpn-ID kreieren; Vpn1 bei Franz != Vpn1 bei Germ
-ladina$Vpn2 <- factor(paste(ladina$L1, ladina$ID, ""))
-ladina$Survey <- factor(ifelse(ladina$L1 == "French", "French survey", "German survey"))
-
-# Nur "unknown" und French
-ladina2 <- droplevels(subset(ladina, truthfulness=="notknown" & Survey == "French survey" & accent %in% c("French", "German")))
-
-levels(ladina2$accent) <- c("Condition 1", "Condition 2")
-
-lad1 <- ggplot(ladina2,
-             aes(x = accent,
-                 y = score,
-                 colour = accent)) +
-  guides(fill = FALSE, colour = FALSE) + geom_boxplot() +
-  xlab("Condition") + ylab("Score")
-
-lad1
-```
+![center](/figs/2015-01-07-some-alternatives-to-barplots/unnamed-chunk-4-1.png) 
 
 However, the idea that these data are symmetrically and unimodally distributed is utterly wrong.
 In fact, the box plots fail to convey the most striking aspect of these data, viz. that scores around 50% are entirely _atypical_!
 As the histograms shown below reveal, scores of 0 and 100 occur far more often than anything in-between,
 so that both the mean and the median are poor summaries of the patterns in the data.
 
-```{r, echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE, fig.width = 4, fig.height = 3}
-lad2 <- ggplot(ladina2,
-            aes(score)) +
-  geom_histogram(aes(fill = accent)) +
-  facet_wrap(~ accent, ncol=2) + # ersetze ncol = 1 durch ncol = 2 für nebeneinander
-  theme_bw() +
-  xlab("Score") +
-  ylab("Frequency") +
-  guides(fill = FALSE)
-lad2
-```
+![center](/figs/2015-01-07-some-alternatives-to-barplots/unnamed-chunk-5-1.png) 
 
 With nearly 3,000 observations, this data set is rather large, and plotting individual dots for each data point is probably inadvisable.
 However, we don't need to restrict ourselves to computing summary data and plotting those: here are some alternatives that stay true(r) to the original data.
@@ -181,38 +82,7 @@ As I find it counterintuitive that lower scores correspond to higher lines, the 
 From this graph, you can easily glean that the median (cumulative density of 0.50) is higher in Condition 2, and that this is in fact pretty much the case for all quantiles: the red line lies consistently under the apple-blue-see-green one.
 The spikes in the data now show themselves as flat (vertical) parts of the curves. 
 
-```{r, echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE, fig.width = 11, fig.height = 11}
-lad3 <- ggplot(ladina2,
-             aes(x = accent,
-                 y = score,
-                 colour = accent)) +
-  guides(fill = FALSE, colour = FALSE) + 
-  geom_violin(adjust = 0.3, trim = FALSE) +
-  geom_point(position = position_jitter(h = 0, w = 0.2), size = 1.5, aes(color = accent), alpha = 0.2) +
-  xlab("Condition") + ylab("Score") 
-
-lad4 <- ggplot(ladina2,
-            aes(score, ..density.., colour = accent)) +
-  geom_freqpoly(binwidth = 5, origin = -2.5) +
-  xlab("Score") +
-  ylab("Density") +
-  guides(fill = FALSE, colour = FALSE)
-
-lad5 <- ggplot(ladina2,
-             aes(x = score, colour = accent)) +
-  guides(fill = FALSE, colour = FALSE) + 
-  xlab("Score") + ylab("Cumulative density") +
-  stat_ecdf()
-
-lad6 <- ggplot(ladina2,
-             aes(x = score, colour = accent)) +
-  guides(fill = FALSE, colour = FALSE) + 
-  xlab("Score") + ylab("Cumulative density") +
-  stat_ecdf() +
-  coord_flip()
-
-grid.arrange(lad3, lad4, lad5, lad6, ncol = 2)
-```
+![center](/figs/2015-01-07-some-alternatives-to-barplots/unnamed-chunk-6-1.png) 
 
 These graphs probably aren't optimal, but they illustrate that it isn't necessary to stick to bar and box plots to visually report results.
 
@@ -220,7 +90,8 @@ These graphs probably aren't optimal, but they illustrate that it isn't necessar
 While tidy and familiar, bar plots reveal little information about the data we've worked hard to collect, and even the trusted box plot can conceal their most striking aspects. I don't think we should to stick to the default ways of graphically conveying our results. As a rule, plots that stay true to the original data -- ideally by plotting the raw data points -- are better plots.
 
 ### Code and links
-I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code here (open in RStudio).
+I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code [here](downloads/2015-01-07-some-alternatives-to-barplots.Rmd) (open in RStudio).
+
 Also, as R help pages go, the `ggplot2` [online documentation](http://docs.ggplot2.org/0.9.3.1/index.html) is unparallelled in terms of user-friendliness:
 * how to draw [boxplots](http://docs.ggplot2.org/0.9.3.1/geom_boxplot.html) and [violin plots](http://docs.ggplot2.org/0.9.3.1/geom_violin.html)
 * how to draw [frequency polygons](http://docs.ggplot2.org/0.9.3.1/geom_freqpoly.html)

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Some alternatives to bar plots"
+thumbnail: /figs/thumbnails/2015-01-07-some-alternatives-to-bar-plots.png
+category: [graphics]
+tags: [statistics, graphics]
+---
+
 ```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(error = TRUE, fig.width = 9)
 ```
