@@ -91,9 +91,10 @@ While tidy and familiar, bar plots reveal little information about the data we'v
 I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code [here](downloads/2015-01-07-some-alternatives-to-barplots.Rmd) (open in RStudio).
 
 Also, as R help pages go, the `ggplot2` [online documentation](http://docs.ggplot2.org/0.9.3.1/index.html) is unparallelled in terms of user-friendliness:
-* how to draw [boxplots](http://docs.ggplot2.org/0.9.3.1/geom_boxplot.html) and [violin plots](http://docs.ggplot2.org/0.9.3.1/geom_violin.html)
-* how to draw [frequency polygons](http://docs.ggplot2.org/0.9.3.1/geom_freqpoly.html)
-* or [empirical cumulative density functions](http://docs.ggplot2.org/current/stat_ecdf.html)
-* how to [flip](http://docs.ggplot2.org/0.9.3.1/coord_flip.html) the x- and y-axes
+
+* how to draw [boxplots](http://docs.ggplot2.org/0.9.3.1/geom_boxplot.html) and [violin plots](http://docs.ggplot2.org/0.9.3.1/geom_violin.html) 
+* how to draw [frequency polygons](http://docs.ggplot2.org/0.9.3.1/geom_freqpoly.html) 
+* or [empirical cumulative density functions](http://docs.ggplot2.org/current/stat_ecdf.html) 
+* how to [flip](http://docs.ggplot2.org/0.9.3.1/coord_flip.html) the x- and y-axes.
 
 Several other sites show you how to draw custom graphs, such as a [boxplot that also shows](http://docs.ggplot2.org/0.9.3.1/geom_jitter.html) [the individual data points](http://www.zijdeman.nl/files/r_examples/boxplot_example.html).
