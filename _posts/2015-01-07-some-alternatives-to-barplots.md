@@ -40,6 +40,7 @@ After all, mean percentages of roughly 30 and 40 can correspond to any of a well
 in principle, the bar plot on the left could correspond to a situation in which all participants have translated either 30 or 40% of the items correctly, to a situation in which 30 or 40% of the participants translated _all_ items correctly and 70 or 60% _none_ of them, and to pretty much anything in-between.
 Even the variants with the error bars can correspond to pretty much anything from normally distributed data centred around 30 and 40%, over distributions with a couple of outliers to multimodal patterns (e.g. many participants with no correct translations, several participants around 50% and a handful with perfect scores).
 The dynamite plot is particular is a perennial target of criticism for a [host of additional reasons](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/TatsukiKoyama/Poster3.pdf).
+(Fittingly, it's pretty difficult to get the `ggplot2` graphical package for R to draw dynamite plots.)
 
 ### Plot the raw data
 The bar plot's drawbacks can be avoided by adhering to one straightforward principle: **show the raw data**.
@@ -88,3 +89,13 @@ These graphs probably aren't optimal, but they illustrate that it isn't necessar
 ### Wrap-up
 While tidy and familiar, bar plots reveal little information about the data we've worked hard to collect, and even the trusted box plot can conceal their most striking aspects. I don't think we should to stick to the default ways of graphically conveying our results. As a rule, plots that stay true to the original data -- ideally by plotting the raw data points -- are better plots.
 
+### Code and links
+I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code [here](downloads/2015-01-07-some-alternatives-to-barplots.Rmd) (open in RStudio).
+
+Also, as R help pages go, the `ggplot2` [online documentation](http://docs.ggplot2.org/0.9.3.1/index.html) is unparallelled in terms of user-friendliness:
+* how to draw [boxplots](http://docs.ggplot2.org/0.9.3.1/geom_boxplot.html) and [violin plots](http://docs.ggplot2.org/0.9.3.1/geom_violin.html)
+* how to draw [frequency polygons](http://docs.ggplot2.org/0.9.3.1/geom_freqpoly.html)
+* or [empirical cumulative density functions](http://docs.ggplot2.org/current/stat_ecdf.html)
+* how to [flip](http://docs.ggplot2.org/0.9.3.1/coord_flip.html) the x- and y-axes
+
+Several other sites show you how to draw custom graphs, such as a [boxplot that also shows](http://docs.ggplot2.org/0.9.3.1/geom_jitter.html) [the individual data points](http://www.zijdeman.nl/files/r_examples/boxplot_example.html).
