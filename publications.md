@@ -14,12 +14,12 @@ Jan Vanhove and Raphael Berthele. 2015.
 Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
 Revision submitted for publication.
 
-Jan Vanhove. 2015.  
-[The early learning of interlingual correspondence rules in receptive multilingualism](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).  
-Revision submitted for publication.  
-Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
-
 ## Accepted
+
+Jan Vanhove. Forthcoming.  
+[The early learning of interlingual correspondence rules in receptive multilingualism](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).  
+Accepted for publication in _International Journal of Bilingualism_.  
+Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
 
 Jan Vanhove. Forthcoming.  
 [Analyzing randomized controlled interventions: Three notes for applied linguists](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_AnalyzingRandomizedInterventions.pdf).  

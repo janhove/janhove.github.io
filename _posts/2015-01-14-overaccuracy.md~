@@ -77,5 +77,5 @@ Even with 10,000 observations, the 95% confidence interval around this coefficie
 Thus, in terms of telling us something about the patterns in the population, the last 7 digits don't buy us _anything_. 
 If we additionally consider the coarseness of the measurements in social science research and in the humanities (e.g. questionnaire data), it's doubtful whether even the second digit contains any _meaningful_ information about the patterns in the _sample_.
 
-I don't have any clear-cut guidelines to offer, but asking yourself how many digits actually contribute meaningful information seems a good place to start.
+I don't have any clear-cut guidelines to offer, but asking yourself how many digits actually contribute meaningful information seems like a good place to start.
 There's nothing unscientific or sloppy about reporting '_r_ = 0.23' or even '_r_ = 0.2' if that better reflects the precision of the measurements and the uncertainty of the inferences.

@@ -1,6 +1,7 @@
 ---
 title: "Overaccuracy and false precision"
 layout: post
+thumbnail: /figs/thumbnails/blank.png
 tags: [statistics]
 category: [stats 101]
 ---

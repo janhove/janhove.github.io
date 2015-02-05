@@ -114,7 +114,7 @@ So when comparing a Pearson's _r_ of 0.5 with one of 0.2 and labelling the first
 
 A related point is that these yardsticks have become (or tend to become) gospel, much like the sacred 0.05 significance threshold.
 I hope I'm mistaken in this, 
-but my impression is that most researchers doing power analyses out there just plug in a 'medium' or 'large' Cohen's _d_ or Pearson's _r_ and jot down the minimum sample size required.
+but my impression is that most researchers doing power analyses out there just plug in a 'medium' or 'large' Cohen's _d_ or Pearson's _r_ and jot down the minimum sample size that the software suggests.
 Perhaps it's more useful to think about how sources of extraneous variance can be brought under control in order to increase power (tighter design, more accurate measures, including covariates), rather than assuming that whatever yardstick out there also applies to one's own study.
 
 ### Reason No. 4: Standardised effect sizes for more complex models?
