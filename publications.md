@@ -10,23 +10,24 @@ group: navigation
 
 ## Submitted manuscripts and working papers
 
-Jan Vanhove. 2014.  
-Analyzing randomized controlled interventions: Three notes for applied linguists.  
-Submitted for publication.
-
-Jan Vanhove and Raphael Berthele. 2014.  
+Jan Vanhove and Raphael Berthele. 2015.  
 Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
-Submitted for publication.
+Revision submitted for publication.
 
-Jan Vanhove. 2014.  
-The early learning of interlingual correspondence rules in receptive multilingualism.  
-Submitted for publication.
-
-David Birdsong and Jan Vanhove. 2014.  
-Age of second language acquisition: Critical periods and social concerns.  
-Submitted for publication.
+Jan Vanhove. 2015.  
+[The early learning of interlingual correspondence rules in receptive multilingualism](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).  
+Revision submitted for publication.  
+Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
 
 ## Accepted
+
+Jan Vanhove. Forthcoming.  
+[Analyzing randomized controlled interventions: Three notes for applied linguists](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_AnalyzingRandomizedInterventions.pdf).  
+Accepted for publication in _Studies in Second Language Learning and Teaching_.
+
+David Birdsong and Jan Vanhove. Forthcoming.  
+Age of second language acquisition: Critical periods and social concerns.  
+Accepted for publication in E. Nicoladis and S. Montanari (eds), _Lifespan perspectives on bilingualism_.
 				
 Jan Vanhove and Raphael Berthele. Forthcoming.  
 Item-related determinants of cognate guessing in multilinguals.  

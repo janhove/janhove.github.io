@@ -26,12 +26,10 @@ I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism a
 
 <h2>Contact</h2>
 
-<address>
 University of Fribourg  
 Multilingualism and Foreign Language Teaching 
 Rue de Rome 1  
 CH-1700 Fribourg  
 Switzerland
-</address>  
 
-jan.vanhove@unifr.ch
+[jan.vanhove@unifr.ch](mailto:jan.vanhove@unifr.ch)
