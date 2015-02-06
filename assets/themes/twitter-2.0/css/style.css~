@@ -4,8 +4,8 @@ html, body {
 }
 
 .span8 ul li {
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 14px; !important;
+  line-height: 18px; !important;
 }
 
 .container > footer p {
