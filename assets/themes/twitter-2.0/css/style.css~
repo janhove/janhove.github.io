@@ -8,6 +8,10 @@ html, body {
   line-height: 18px;
 }
 
+.span li {
+  margin-bottom: 50px;
+}
+
 .container > footer p {
   text-align: center; /* center align it with the container */
 }
