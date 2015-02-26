@@ -27,7 +27,7 @@ I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism a
 <h2>Contact</h2>
 
 University of Fribourg  
-Multilingualism and Foreign Language Teaching 
+Multilingualism and Foreign Language Teaching  
 Rue de Rome 1  
 CH-1700 Fribourg  
 Switzerland
