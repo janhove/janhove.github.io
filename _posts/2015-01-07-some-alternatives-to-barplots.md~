@@ -2,7 +2,7 @@
 layout: post
 title: "Some alternatives to bar plots"
 thumbnail: /figs/thumbnails/2015-01-07-some-alternatives-to-bar-plots.png
-category: [graphics]
+category: [Reporting]
 tags: [statistics, graphics]
 ---
 
@@ -88,7 +88,7 @@ These graphs probably aren't optimal, but they illustrate that it isn't necessar
 While tidy and familiar, bar plots reveal little information about the data we've worked hard to collect, and even the trusted box plot can conceal their most striking aspects. I don't think we should to stick to the default ways of graphically conveying our results. As a rule, plots that stay true to the original data -- ideally by plotting the raw data points -- are better plots.
 
 ### Code and links
-I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code [here](downloads/2015-01-07-some-alternatives-to-barplots.Rmd) (open in RStudio).
+I didn't want to clutter this post with code block after code block. If you're interested, you can download the R (and Markdown) code [here](http://janhove.github.io/downloads/2015-01-07-some-alternatives-to-barplots.Rmd) (open in RStudio).
 
 Also, as R help pages go, the `ggplot2` [online documentation](http://docs.ggplot2.org/0.9.3.1/index.html) is unparallelled in terms of user-friendliness:
 

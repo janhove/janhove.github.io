@@ -2,8 +2,8 @@
 title: "Overaccuracy and false precision"
 layout: post
 thumbnail: /figs/thumbnails/blank.png
-tags: [statistics]
-category: [stats 101]
+tags: [simplicity]
+category: [Reporting]
 ---
 
 I once attended a talk at a conference where the speaker underscored his claim by showing us a Pearson correlation coefficient -- reported with 9-digit (give or take) precision….

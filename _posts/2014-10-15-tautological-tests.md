@@ -2,8 +2,8 @@
 layout: post
 title: "Silly significance tests: Tautological tests"
 thumbnail: /figs/thumbnails/2014-10-15-tautological-tests.png
-category: [Silly significance tests]
-tags: [statistics]
+category: [Reporting]
+tags: [silly tests, simplicity]
 ---
 
 We can do with fewer significance tests.

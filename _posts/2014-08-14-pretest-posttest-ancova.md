@@ -2,8 +2,8 @@
 layout: post
 title: "Analysing pretest/posttest data"
 thumbnail: /figs/thumbnails/2014-08-14-pretest-posttest-ancova.png
-category: [self-taught statistics]
-tags: [statistics, pretest/posttest design, experiments]
+category: [Analysis]
+tags: [significance, power, simplicity]
 ---
 
 Assigning participants randomly to the control and experimental programmes and testing them before and after the programme is the gold standard for determining the efficacy of pedagogical interventions. But the analyses reported in research articles are often needlessly complicated and may be suboptimal in terms of statistical power.

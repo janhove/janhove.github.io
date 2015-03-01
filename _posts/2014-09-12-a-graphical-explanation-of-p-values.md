@@ -2,8 +2,8 @@
 layout: post
 title: "A purely graphical explanation of p-values"
 thumbnail: /figs/thumbnails/2014-09-12-a-graphical-explanation-of-p-values.png
-category: [stats 101]
-tags: [statistics]
+category: [Teaching]
+tags: [significance]
 ---
 
 _p_-values are confusing creatures--not just to students taking their first statistics course but to seasoned researchers, too.

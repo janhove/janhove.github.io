@@ -2,7 +2,7 @@
 layout: post
 title: "Calibrating p-values in 'flexible' piecewise regression models"
 thumbnail: /figs/thumbnails/2014-08-20-adjusted-pvalues-breakpoint-regression.png
-category: [miscellaneous]
+category: [Analysis]
 tags: [statistics, breakpoint regression, critical period hypothesis, multiple comparisons]
 ---
 
@@ -251,4 +251,4 @@ For the North America data, the estimated Type-I error rate is about 10.5%, whic
 > Looping through different breakpoints increases the Type-I error rate of piecewise regression models.  
 > The observed _p_-values can be calibrated against the distribution of _p_-values under the simulated null.
 
-The distribution of simulated _p_-values will **vary** from **dataset** to dataset and will depend on the **range of breakpoints considered** (the smaller the range, the smaller the skew). Lastly, multiple comparison problem doesn't only apply when following the automatised procedure suggested by Baayen: even if you look at the data first and then decide which breakpoint to fit, your _p_-values will be off if you don't take into account on which breakpoints you _could_ have decided had the data come out differently (see [Gelman and Loken](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf) for a treatment of a more general version of this problem).
+The distribution of simulated _p_-values will **vary** from **dataset** to dataset and will depend on the **range of breakpoints considered** (the smaller the range, the smaller the skew). Lastly, multiple comparison problem **doesn't only apply when following the automatised procedure** suggested by Baayen: even if you look at the data first and then decide which breakpoint to fit, your _p_-values will be off if you don't take into account on which breakpoints you _could_ have decided had the data come out differently (see [Gelman and Loken](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf) for a treatment of a more general version of this problem).

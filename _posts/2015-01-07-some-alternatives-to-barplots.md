@@ -2,8 +2,8 @@
 layout: post
 title: "Some alternatives to bar plots"
 thumbnail: /figs/thumbnails/2015-01-07-some-alternatives-to-bar-plots.png
-category: [graphics]
-tags: [statistics, graphics]
+category: [Reporting]
+tags: [graphics]
 ---
 
 Bar plots. They often deliver the main result of empirical studies, be it at conferences or in journal articles, by proudly showing that the mean score, reaction time etc. in one group is a notch higher than in the other.

@@ -1,9 +1,9 @@
 ---
 title: "Assessing differences of significance"
 layout: post
-tags: [statistics]
+tags: [significance]
 thumbnail: /figs/thumbnails/2014-10-28-assessing-differences-of-significance.png
-category: [stats 201]
+category: [Analysis]
 ---
 
 When it comes to finding a powerful descriptive title for a research paper,

@@ -2,8 +2,8 @@
 layout: post
 title: "Explaining key concepts using permutation tests"
 thumbnail: /figs/thumbnails/2015-02-26-explaining-key-concepts-using-permutation-tests.png
-category: [Statistics 101]
-tags: [statistics, experimental design]
+category: [Teaching]
+tags: [significance, design features]
 ---
 
 It's that time of year again where I have the honour of explaining the nuts and bolts of inferential statistics
@@ -17,8 +17,8 @@ I think that several key concepts can be also illustrated in a less math-intensi
 
 My goal isn't to make the case for a wholesale adoption of permuation tests (which I explain in more detail below).
 Rather, I hope that by discussing permutation tests we can gain a better understanding of some key concepts in inferential statistics that are often neglected,
-and to do so without too many distracting equations and assumptions.
-Some of the points that a discussion of permutation tests raise are
+and that we can do so without too many distracting equations and assumptions.
+Some of the points that a discussion of permutation tests raises are
 
 * the basic logic of inferential (frequentist) statistics;
 * the principle that inference can and must be motivated by the experimental design (including the 'independence assumption' shared by most commonly taught statistical tests);
@@ -30,7 +30,7 @@ But first, we need some fictitious data.
 ### A small-scale randomised experiment
 
 Let's say we want to investigate whether the kind of music you happen to listen to affects how intellectually fulfilling you perceive your life to be.
-We create an experiment with two conditions:
+We design an experiment with two conditions:
 in one condition, people are asked to listen to John Coltrane's [_A Love Supreme_](https://www.youtube.com/watch?v=5Pi5ZJZ07ME);
 in the other condition, they are asked to endure mind-numbing muzak,
 viz. Kenny G dubbing himself over Louis Armstrong's [_What a Wonderful World_](https://www.youtube.com/watch?v=4NPc7Y829dE).
@@ -70,14 +70,14 @@ Typically, we would run an off-the-shelf statistical test (e.g. a _t_-test) to c
 Most of these tests derive from the Central Limit Theorem (CLT): 
 if we're willing to make some assumptions, the CLT tells us how the means from data points sampled randomly from a larger population are distributed.
 From this knowledge, we can derive the probability that the means of our two groups would differ by at least as much as they do
-if randomness is the only factor at play.
+if randomness were the only factor at play.
 For the purposes of this blog post, however, I want to focus on an inferential technique 
 that makes fewer assumptions than CLT-derived tests and that isn't restricted to differences between means.
 
 Its logic is as follows.
 If listening to the Coltrane vs Kenny G song didn't affect the intellectual fulfillment ratings (= the null hypothesis),
 then _any difference_ between the two groups must be **due to the random assignment** of participants to conditions.
-If this is the case, the data that we happened to observe (difference between group means: 2.67):
+If this were the case, the data that we happened to observe (difference between group means: 2.67):
 
 ![center](/figs/2015-02-26-explaining-key-concepts-using-permutation-tests/unnamed-chunk-2-1.png) 
 
@@ -121,7 +121,8 @@ We can compute the number of possible combinations using R's `choose()` function
 
 
 {% highlight r %}
-# How many ways to allocate 12 observations to two groups of equal size (i.e. 6):
+# How many ways to allocate 12 observations 
+# to two groups of equal size (i.e. 6):
 choose(12, 6)
 {% endhighlight %}
 
@@ -143,15 +144,17 @@ If you're not into R, feel free to skip the next few paragraphs -- the rationale
 
 First I define a function 
 that takes a number of data points ('vector' in R-speak)
-and a number of 'indices' that indicate which data points belong to Group 1 (the others belong to Group2):
+and a number of 'indices' that indicate which data points belong to Group 1 (the others belong to Group 2):
 
 
 {% highlight r %}
-# Define function that computes difference in means (adaptable to other functions) between
-# one part of a vector (indices in Group1)
+# Define a function that computes the difference 
+# in means (adaptable to other functions) 
+# between one part of a vector (indices in Group1)
 # and the remaining part (indices NOT in Group1)
 mean.diff <- function(data, Group1) {
-  diff.mean <- mean(data[Group1]) - mean(data[- Group1])
+  diff.mean <- mean(data[Group1]) - 
+                mean(data[- Group1])
   return(diff.mean)
 }
 {% endhighlight %}
@@ -162,16 +165,18 @@ and specify which data points belong to Group 1:
 {% highlight r %}
 # Read in actual data
 actual.data <- c(2, 7, 6, 1, 1, 5)
-# The first, second and third data points are in the 'Coltrane' group:
+# The first, second and third data points 
+# are in the 'Coltrane' group:
 coltrane <- c(1, 2, 3)
-# Compute mean difference between Coltrane group and rest:
+# Compute mean difference 
+# between Coltrane group and rest:
 mean.diff(actual.data, coltrane)
 {% endhighlight %}
 
 
 
 {% highlight text %}
-## [1] 2.666667
+## [1] 2.67
 {% endhighlight %}
 
 Of course, we could've computed this difference in an easier way, but defining this function makes the next couple of steps easier.
@@ -181,9 +186,13 @@ For this, I use the `combn()` function; the numbers refer to the 1st, 2nd, ..., 
 
 
 {% highlight r %}
-combinations <- combn(1:6, # For the 1st, 2nd ... 6th data points
-                      3, # Allocate 3 to Group 1
-                      simplify = FALSE) # (and return as a list)
+# For the 1st, 2nd ... 6th data points
+combinations <- combn(1:6, 
+# Allocate 3 data points to Group 1
+                      3, 
+# (and return output as a list)
+                      simplify = FALSE)
+
 # uncomment next line to show all 20 combinations
 # combinations
 {% endhighlight %}
@@ -193,9 +202,12 @@ for every possible combination of indices listed in `combinations` (i.e., 1-2-3,
 
 
 {% highlight r %}
-diffs <- mapply(mean.diff, # apply function mean.diff
-                Group1 = combinations, # for every combination of indices in combinations
-                MoreArgs = list(data = actual.data)) # apply to actual.data
+# apply function mean.diff
+diffs <- mapply(mean.diff, 
+# for every combination of indices in combinations
+                Group1 = combinations,
+# apply to actual.data 
+                MoreArgs = list(data = actual.data)) 
 {% endhighlight %}
 
 #### Results
@@ -211,7 +223,7 @@ As you can see, four out of 20 possible group mean differences have absolute val
 Put differently, the probability to observe an absolute group mean difference of 2.67 or higher
 _if randomness alone were at play_ is 4/20 = 20%.
 
-This is our **p-value**: the probability with which we would have obtained our observed difference (or even more extreme ones)
+This is our **_p_-value**: the probability with which we would have obtained our observed difference (or even more extreme ones)
 if randomness alone were at play.
 So even if no systematic effect exists, we would still obtain an absolute mean difference of 2.67 or larger in 20% of cases.
 This isn't terribly unlikely (and higher than the 10% threshold we specified above), 
@@ -239,21 +251,29 @@ This code, for instance, operates along exactly the same lines, but compares the
 
 
 {% highlight r %}
-# Define function to compute difference in group variances
+# Define a function to compute 
+# difference in group variances
 var.diff <- function(data, Group1) {
-  diff.var <- var(data[Group1]) - var(data[- Group1])
+  diff.var <- var(data[Group1]) - 
+               var(data[- Group1])
   return(diff.var)
 }
 
-diffs <- mapply(var.diff, # apply function median.diff
-                Group1 = combinations, # for every combination of indices in combinations
-                MoreArgs = list(data = actual.data)) # apply to actual.data
+# apply function median.diff
+diffs <- mapply(var.diff, 
+# for every combination of indices in combinations
+                Group1 = combinations, 
+# apply to actual.data
+                MoreArgs = list(data = actual.data)) 
 
 dotchart(sort(diffs), pch = 16,
          xlab = "Group variance difference",
-         main = "Group variance differences\nfor all possible combinations")
-abline(v = var.diff(actual.data, coltrane), col = "red", lty = 2)
-abline(v = -var.diff(actual.data, coltrane), col = "red", lty = 2)
+         main = "Group variance differences\n
+                 for all possible combinations")
+abline(v = var.diff(actual.data, coltrane), 
+       col = "red", lty = 2)
+abline(v = -var.diff(actual.data, coltrane), 
+       col = "red", lty = 2)
 {% endhighlight %}
 
 ![center](/figs/2015-02-26-explaining-key-concepts-using-permutation-tests/unnamed-chunk-10-1.png) 
@@ -262,10 +282,10 @@ So in 18 out of 20 cases, we would have observed variance differences as large a
 
 #### The test follows from the design
 
-The first two points are primarily of practical importance,
-but, more importantly, permutation tests illustrate all-important theoretical concepts.
+The first two points are primarily of practical importance.
+But, more importantly, permutation tests also illustrate all-important theoretical concepts.
 Specifically, they stress that there is a clear logical link between the statistical test we use 
-and the **experimental design** we opted for --
+and the **experimental design** we opted for:
 using a permutation test is entirely warranted by the random assignment of participants to two equal-sized groups.
 Stressing the link between experimental design and statistical inference -- rather than considering them separately -- is of huge pedagogical, as well as practical, use, I believe.
 
@@ -292,7 +312,7 @@ Rather than being combinable in 20 different ways, the six data points would be 
 * Elaine, Puddy, Jerry / George, Newman, Kramer (difference: -2.67)
 * Newman, Kramer, Jerry / George, Elaine, Puddy (difference: 4.67)
 
-the 14 combinations where Newman and Kramer, and Elaine and Puddy aren't in the same condition wouldn't be part of the range of possible randomisations.
+The 14 combinations where Newman and Kramer, and Elaine and Puddy aren't in the same condition wouldn't be part of the range of possible randomisations.
 The observed absolute difference in group means of 2.67 wouldn't then be associated with a _p_-value of 20%, but with one of 100%!
 
 Less prohibitive restricting would also affect our inferences.
@@ -321,7 +341,7 @@ Consequently, the validity of the conclusions based on this permutation test (an
 While permutation tests can also be used when random sampling was used, they require a different sort of justification (see [Ernst 2004](http://projecteuclid.org/download/pdfview_1/euclid.ss/1113832732)).
 This is beyond the scope of this (already way too long) blog post, 
 but it can be useful for driving home the point that drawing inferences about an effect in a sample and drawing inferences about an effect in a larger population require different kinds of justification.
-In plain terms, unless our participants were randomly sampled from a larger population -- and they rarely if ever are -- we are technically restricted to inferring whether an effect can be observed in the sample we've got.
+In plain and somewhat simplified terms, unless our participants were randomly sampled from a larger population -- and they rarely if ever are -- we are technically restricted to inferring whether an effect can be observed in the sample we've got.
 
 ### Conclusion
 All in all, I think there are a lot of important principles that a discussion of permutation tests can generate.
@@ -333,6 +353,6 @@ Of course, the example I gave was rather simple (small sample size, straightforw
 
 * Michael Ernst's [_Permutation methods: A basis for exact inference_](http://projecteuclid.org/euclid.ss/1113832732) illustrates basic permutation tests and covers the distinction between random assignment and random sampling.
 
-* Gary Oehlert's [_First course in design and analysis_](http://users.stat.umn.edu/~gary/book/fcdae.pdf) of experiments amply covers the rationale for random assignment and the importance of considering design features when analysing experiments.
+* Gary Oehlert's [_First course in design and analysis of experiments_](http://users.stat.umn.edu/~gary/book/fcdae.pdf) amply covers the rationale for random assignment and the importance of considering design features when analysing experiments.
 
 * My paper on [_Analyzing randomized controlled interventions_](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_AnalyzingRandomizedInterventions.pdf) covers many of the points raised here, though not within a permutation-test framework.

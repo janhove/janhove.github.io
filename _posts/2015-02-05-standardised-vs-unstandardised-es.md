@@ -2,8 +2,8 @@
 layout: post
 title: "Why I don't like standardised effect sizes"
 thumbnail: /figs/thumbnails/2015-02-25-standardised-vs-unstandardised-es.png
-category: [stats 201]
-tags: [statistics, effect sizes]
+category: [Reporting]
+tags: [effect sizes]
 ---
 
 With researchers (thankfully) increasingly realising that _p_-values are only poorly related to the strength of the effects that they study,

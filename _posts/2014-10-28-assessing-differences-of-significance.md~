@@ -3,7 +3,7 @@ title: "Assessing differences of significance"
 layout: post
 tags: [statistics]
 thumbnail: /figs/thumbnails/2014-10-28-assessing-differences-of-significance.png
-category: [stats 201]
+category: [Analysis]
 ---
 
 When it comes to finding a powerful descriptive title for a research paper,
@@ -51,12 +51,12 @@ summary(df1)
 
 {% highlight text %}
 ##     Outcome           Group          Condition 
-##  Min.   :-2.771   Group 1:60   Condition A:60  
-##  1st Qu.: 0.226   Group 2:60   Condition B:60  
-##  Median : 1.306                                
+##  Min.   :-2.820   Group 1:60   Condition A:60  
+##  1st Qu.: 0.148   Group 2:60   Condition B:60  
+##  Median : 1.482                                
 ##  Mean   : 1.450                                
-##  3rd Qu.: 2.307                                
-##  Max.   : 6.697
+##  3rd Qu.: 2.703                                
+##  Max.   : 4.969
 {% endhighlight %}
 
 
@@ -87,7 +87,7 @@ but we can straightforwardly account for the observed data without invoking mode
 
 ### Differences between correlation coefficients
 In linguistic research, we're often more interested in comparing the strength of the relationship between two (more or less) continuous variables measured in different samples (e.g. language learners at different levels; different language families etc.).
-In this kind of enterprise, substantial conclusions are often drawn on the basis of significant vs. non-significant correlation coefficients (i.e. _r_s).
+In this kind of enterprise, substantial conclusions are often drawn on the basis of significant vs. non-significant correlation coefficients (i.e. _r_).
 
 #### Independent correlations
 
@@ -188,6 +188,7 @@ r.test(n = 30, r12 = 0.50, r13 = 0.10, r23 = 0.8)
 {% endhighlight %}
 
 Incidentally, the above also applies when comparing the strength of the relationship between one indepedent variable and two dependent variables.
+In addition, the intercorrelation should be taken into account even if it isn't significant.
 
 For a more detailed treatment of comparing correlation coefficients, see Olkin & Finn's (1995) [_Correlation redux_](http://ripl.faculty.asu.edu/wp-content/uploads/2013/01/Olkin-Finn-1995.pdf).
 
@@ -202,7 +203,7 @@ In Group 2, 30 out of 60 participants in Condition A responded positively, and 2
 
 As in the examples above, it would be premature to start looking for moderator variables just yet.
 What we need to investigate is the interaction between Condition and Group.
-To that end, let's first reconstruct the summary table with the number of positive and negative answers per Condition per Group:
+To that end, let's first reconstruct the summary table with the number of positive and negative answers per Condition per Group (this, incidentally, can often be done even if you don't have access to the raw data):
 
 
 {% highlight r %}

@@ -2,8 +2,8 @@
 layout: post
 title: "The curious neglect of covariates in discussions of statistical power"
 thumbnail: /figs/thumbnails/blank.png
-category: [stats 201]
-tags: [statistics]
+category: [Design]
+tags: [power]
 ---
 
 The last couple of years have seen a spate of articles in (especially psychology) journals and on academic blogs discussing the importance of statistical power.
