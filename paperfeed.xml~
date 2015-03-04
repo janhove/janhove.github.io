@@ -5,7 +5,7 @@ title : Jan Vanhove - new publications
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>Jan Vanhove homepage</title>
+ <title>Jan Vanhove: latest publications</title>
  <link href="http://janhove.github.io/paperfeed.xml" rel="self"/>
  <link href="http://janhove.github.io/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>

@@ -194,6 +194,6 @@ that a simple graph can highlight striking patterns that a _t_-test, even when r
 
 ### Acknowledgements and further reading
 
-Thanks to D. E. Johnson for his comments on an earlier draft.
+Thanks to [Daniel Ezra Johnson](http://www.danielezrajohnson.com/) for his comments on an earlier draft.
 
 Many of the points discussed here were inspired by Robert P. Abelson's [_Statistics as principled argument_](https://books.google.ch/books?id=yQLFl1ILjZwC) and William S. Cleveland's [_Visualizing data_](https://books.google.ch/books?id=V-dQAAAAMAAJ).

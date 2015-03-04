@@ -33,12 +33,13 @@ Jan Vanhove and Raphael Berthele. Forthcoming.
 Item-related determinants of cognate guessing in multilinguals.  
 Accepted for publication in G. De Angelis, U. Jessner and M. Kresić (eds), _Crosslinguistic influence and multilingualism_.  
 Data and R code to follow.
-				
-Jan Vanhove and Raphael Berthele. Forthcoming.  
-The lifespan development of cognate guessing skills in an unknown related language.  
-Accepted for publication in _International Review of Applied Linguistics in Language Teaching_.  
-Data and R code to follow.
 
+## 2015
+
+Jan Vanhove and Raphael Berthele. 2015.  
+[The lifespan development of cognate guessing skills in an unknown related language](http://dx.doi.org/10.1515/iral-2015-0001).  
+_International Review of Applied Linguistics in Language Teaching_ 53(1), 1-38.  
+Data and R code available from [figshare](http://dx.doi.org/10.6084/m9.figshare.936924).
 				
 ## 2014
 			
