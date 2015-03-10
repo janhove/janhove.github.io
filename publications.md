@@ -17,11 +17,6 @@ Revision submitted for publication.
 ## Accepted
 
 Jan Vanhove. Forthcoming.  
-[The early learning of interlingual correspondence rules in receptive multilingualism](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).  
-Accepted for publication in _International Journal of Bilingualism_.  
-Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
-
-Jan Vanhove. Forthcoming.  
 [Analyzing randomized controlled interventions: Three notes for applied linguists](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_AnalyzingRandomizedInterventions.pdf).  
 Accepted for publication in _Studies in Second Language Learning and Teaching_.
 
@@ -35,6 +30,11 @@ Accepted for publication in G. De Angelis, U. Jessner and M. Kresić (eds), _Cro
 Data and R code to follow.
 
 ## 2015
+
+Jan Vanhove. 2015.  
+[The early learning of interlingual correspondence rules in receptive multilingualism](http://dx.doi.org/10.1177/1367006915573338)
+_International Journal of Bilingualism_ (OnlineFirst). [Preprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).    
+Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
 
 Jan Vanhove and Raphael Berthele. 2015.  
 [The lifespan development of cognate guessing skills in an unknown related language](http://dx.doi.org/10.1515/iral-2015-0001).  
