@@ -33,7 +33,7 @@ Data and R code to follow.
 
 Jan Vanhove. 2015.  
 [The early learning of interlingual correspondence rules in receptive multilingualism](http://dx.doi.org/10.1177/1367006915573338).  
-_International Journal of Bilingualism_ (OnlineFirst). [Preprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).    
+_International Journal of Bilingualism_ (OnlineFirst). [Postprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf).  
 Data, R code, scoring protocol and stimulus lists available from [figshare](http://hdl.handle.net/10.6084/m9.figshare.1291191).
 
 Jan Vanhove and Raphael Berthele. 2015.  
