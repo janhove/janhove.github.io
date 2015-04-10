@@ -16,9 +16,6 @@ Revision submitted for publication.
 
 ## Accepted
 
-Jan Vanhove. Forthcoming.  
-[Analyzing randomized controlled interventions: Three notes for applied linguists](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_AnalyzingRandomizedInterventions.pdf).  
-Accepted for publication in _Studies in Second Language Learning and Teaching_.
 
 David Birdsong and Jan Vanhove. Forthcoming.  
 Age of second language acquisition: Critical periods and social concerns.  
@@ -30,6 +27,10 @@ Accepted for publication in G. De Angelis, U. Jessner and M. Kresić (eds), _Cro
 Data and R code to follow.
 
 ## 2015
+
+Jan Vanhove. 2015.  
+[Analyzing randomized controlled interventions: Three notes for applied linguists](http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf).  
+_Studies in Second Language Learning and Teaching_ 5(1), 135-152.
 
 Jan Vanhove. 2015.  
 [The early learning of interlingual correspondence rules in receptive multilingualism](http://dx.doi.org/10.1177/1367006915573338).  

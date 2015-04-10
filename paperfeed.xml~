@@ -15,6 +15,25 @@ title : Jan Vanhove - new publications
    <email>jan.vanhove@unifr.ch</email>
  </author>
 
+<entry>
+	<title>New article - The early learning of interlingual correspondence rules in receptive multilingualism </title>
+	<link href="http://janhove.github.io/publications.html"/>
+	<updated>2015-03-10T08:30:00+01:00</updated>
+	<id>http://janhove.github.io/publications.html#ijb2015</id>
+	<content type ="html">
+Aims and objectives: This article investigates whether learners are able to quickly discover simple, systematic graphemic correspondence rules between their L1 and an unknown but closely related language in a setting of receptive multilingualism.
+
+Design: Eighty L1 German speakers participated in a translation task with written Dutch words, most of which had a German cognate. In the first part of the translation task, participants were shown 48 Dutch words, among which either 10 cognates containing the digraph ‹oe› (always corresponding to a German word with ‹u›) or 10 cognates with the digraph ‹ij› (corresponding to German ‹ei›). During this part, participants were given feedback in the form of the correct translation. In the second (feedback-free) part of the task, participants were shown another 150 Dutch words, among which 21 cognates with ‹oe› and 21 cognates with ‹ij›.
+
+Data and analysis: The participants’ German translations of ‹oe› and ‹ij› cognates in the second part were coded for the presence of ‹u› and ‹ei›, respectively. The data were then analyzed in generalized linear mixed models. Data and R code are available online.
+
+Findings: Participants who encountered ‹oe› or ‹ij› cognates in the first part were more likely to translate ‹oe› or ‹ij› cognates using German words containing ‹u› or ‹ei›, respectively, in the second part compared to their respective controls, suggesting that correspondence rule learning had taken place. Learning effects during the second part, i.e. in the absence of explicit feedback, were more modest.
+
+Originality: This study provides the first direct experimental evidence of interlingual correspondence rule learning during a receptive multilingualism task.
+
+Significance: These findings pave the way towards investigations of the learning of more complex, less systematic correspondence rules that are nonetheless of great importance in receptive multilingualism.
+</content>
+</entry>
 
 <entry>
 	<title>New article - The lifespan development of cognate guessing skills in an unknown related language</title>
