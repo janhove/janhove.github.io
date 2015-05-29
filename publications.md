@@ -29,6 +29,9 @@ Data and R code to follow.
 ## 2015
 
 Jan Vanhove. 2015.  
+[Statistische Grundlagen: eine Einführung mit Beispielen aus der Sprachforschung](statintro.html).
+
+Jan Vanhove. 2015.  
 [Analyzing randomized controlled interventions: Three notes for applied linguists](http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf).  
 _Studies in Second Language Learning and Teaching_ 5(1), 135-152.
 

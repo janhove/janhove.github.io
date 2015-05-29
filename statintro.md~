@@ -1,0 +1,20 @@
+---
+layout: page
+title: "An introduction to statistics (German)"
+description: ""
+group: navigation
+---
+{% include JB/setup %}
+
+<h2>Statistische Grundlagen: eine Einführung mit Beispielen aus der Sprachforschung</h2>
+Dieses Skript ist eine Einführung in die Analyse quantitativer Daten,
+die sich an erster Stelle an Forscherinnen und Forscher im Bereich der angewandten Linguistik richtet.
+
+[Skript herunterladen](http://homeweb.unifr.ch/VanhoveJ/Pub/Statistikkurs/StatistischeGrundlagen.pdf)  
+[Datensätze herunterladen](http://homeweb.unifr.ch/VanhoveJ/Pub/Statistikkurs/Datensaetze.zip)
+
+<h3>Geschichte</h3>
+
+<ul>
+ <li>29. Mai 2015: Erste Version veröffentlicht.</li>
+</ul>
