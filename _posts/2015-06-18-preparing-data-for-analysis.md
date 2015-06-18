@@ -34,11 +34,11 @@ Lastly, try to keep the following guidelines in mind:
 
 <li>Colour-coding is fine for your own use, but the colours get lost when the dataset is imported into a statistics program.</li>
 
-<li>'Empty' rows or columns may contain lingering spaces that mess up the dataset when it's imported into a statistics program. By way of example, the csv file <code>FormantMeasurements1.csv</code> (available [here]({{ site.url }}/downloads/FormantMeasurements1.csv)) looks fine when it's opened in a spreadsheet program:</li>
+<li>'Empty' rows or columns may contain lingering spaces that mess up the dataset when it's imported into a statistics program. By way of example, the csv file <code>FormantMeasurements1.csv</code> (available [here]({{ site.url }}/downloads/FormantMeasurements1.csv)) looks fine when it's opened in a spreadsheet program:
 
 <img src="http://janhove.github.io/images/FormantMeasurements1.png" alt = "Example superfluous spaces" />
 
-<li>When the dataset is imported into <code>R</code>, however, there seem to be two additional variables (<code>X</code> and <code>X.1</code>), some missing values (<code>NA</code>) and a <code>Speaker</code> without an ID:
+When the dataset is imported into <code>R</code>, however, there seem to be two additional variables (<code>X</code> and <code>X.1</code>), some missing values (<code>NA</code>) and a <code>Speaker</code> without an ID:
 
 
 {% highlight r %}
