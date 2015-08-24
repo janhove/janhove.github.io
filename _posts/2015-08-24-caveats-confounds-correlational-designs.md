@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Controlling for confounding variables in correlational research: Four caveats"
-thumbnail: blank.png
+thumbnail: /figs/thumbnails/blank.png
 category: [design]
 tags: [correlational studies]
 ---

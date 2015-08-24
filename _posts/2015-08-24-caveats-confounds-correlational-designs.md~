@@ -38,7 +38,7 @@ Some variables are both highly accurate and easy to collect, e.g. the participan
 
 In sum, when a report says that a confound was statistically controlled for, what that actually means is that _a measure_ of this confound was statistically controlled for. This usually undercorrects for the actual confound.
 
-### Caveat 4: The ‘confound’ may itself be an effect of the predictor itself.
+### Caveat 4: The ‘confound’ may itself be an effect of the predictor.
 Let’s say that researchers investigating the link between musical ability and L2 skills notice that the effect disappears once accounting for differences in the amount of L2 exposure, which they take to suggest that there is no causal link between musical ability and L2 skills. However, it is possible that L2 exposure itself is influenced by musical ability (e.g. due to a greater tendency of musically gifted learners to sing and listen to L2 songs):
 
 <img src="/images/Overadjusting.png" alt="Overadjusting">
