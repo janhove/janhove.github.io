@@ -123,4 +123,4 @@ In practical terms, these insights will be useful to me as not collecting the be
 Lastly, some new questions that arose during this exploration:
 
 * Does accounting for a strong within-subjects covariate affect power in a between-subjects randomised experiment?
-* Would by-item/by-participant variability in the covariate effects change these conclusions? Specifically, would accounting for the covariate effect using both a fixed and a random term improve power? (In this dataset, the by-item variability in the between-subjects covariate was negligible.)
+* Would by-item/by-participant variability in the covariate effects change these conclusions? Specifically, would accounting for the covariate effect using both a fixed and a random term improve power? In this dataset, the by-item variability in the between-subjects covariate was negligible, but this is probably different for other variables.
