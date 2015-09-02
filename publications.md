@@ -48,9 +48,8 @@ Data and R code available from [figshare](http://dx.doi.org/10.6084/m9.figshare.
 ## 2014
 			
 Raphael Berthele and Jan Vanhove. 2014.  
-Entre jeunes barbes et vieux de la vieille. Usages du répertoire plurilingue dans une tâche d'intercompréhension à travers les âges.  
-_Bulletin suisse de linguistique appliquée_ 99: 31—50.  
-The journal issue should become available from [the VALS/ASLA website](http://www.vals-asla.ch/cms/fr/bulletin/erschienene_ausgaben.html) in due time.
+[Entre jeunes barbes et vieux de la vieille. Usages du répertoire plurilingue dans une tâche d'intercompréhension à travers les âges.](https://doc.rero.ch/record/255776?ln=en)  
+_Bulletin suisse de linguistique appliquée_ 99: 31—50.
 
 Jan Vanhove. 2014.  
 [Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing](http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf).  
