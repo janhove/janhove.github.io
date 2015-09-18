@@ -22,7 +22,7 @@ This, in turn, means that the information that each participant contributes to t
 Rather than having 40 participants,
 the researcher in the example above could have the equivalent of, say, 8, 14 or 32 participants per group in terms of the information that the sample contains.
 
-The effect of clustering is expressed in the **intra-class correlation** (ICC). This number takes a value between 0 and 1. An ICC of 1 means that all values within a cluster (e.g. a class) are identical to each other so that multiple observations per cluster don't contribute any information to the study. An ICC of 0 means that values within a cluster are no more alike that values from different clusters. For reference, typical ICC values fall in the 0.15 to 0.20 bracket in educational contexts.
+The degree of clustering is expressed in the **intra-class correlation** (ICC). This number takes a value between 0 and 1. An ICC of 1 means that all values within a cluster (e.g. a class) are identical to each other so that multiple observations per cluster don't contribute any information to the study. An ICC of 0 means that values within a cluster are no more alike that values from different clusters. For reference, typical ICC values fall in the 0.15 to 0.20 bracket in educational contexts.
 
 Ordinary _t_-tests and ANOVAs as well as correlation and regression analyses don't take into account the clustered nature of such data. Instead, they assume that each datapoint is independent of any other.
 This may seem like a technicality, but its effect is staggering.
@@ -49,11 +49,11 @@ Before discussing how this can be done, here are some examples of common cluster
 
 * The length of the KIT vowel ([I]) is measured in 15 bilinguals and 13 monolinguals. A total of 840 tokens are collected. In the Results section, you find the following: "We found a significant length difference between [I] sounds produced by bilinguals (n = 450, M = 72 ms, SD = 29 ms) and those produced by the monolingual controls (n = 390, M = 87 ms, SD = 28 ms; t(838) = 7.38, p < 0.001)." This study doesn't concern comparisons of intact groups of students. Nevertheless, vowel tokens produced by one speaker tend to be more alike than vowels produced by different speakers. In other words, vowel tokens cluster by speaker in the same way that students cluster by class. A traditional _t_-test on the individual vowels (i.e. a _t_-test with 840 - 2 = 838 degrees of freedom) ignores this clustering and is therefore invalid.
 
-* 40 participants are randomly assigned to one of two teaching methods on an individual basis. Teaching takes place in four groups of ten participants each (two groups per method). Even though the participants are assigned to the teaching methods individually, some clustering can be expected to arise during teaching (see [Lee and Thompson 2005](http://dx.doi.org/10.1136/bmj.330.7483.142) for discussion). A traditional _t_-test (in this case one with 40 - 2 = 38 degrees of freedom) ignores this clustering, too, and is likely to yield too low a _p_-value.
+* 40 participants are randomly assigned to one of two teaching methods on an individual basis. Teaching takes place in four groups of ten participants each (two groups per method). Even though the participants are assigned to the teaching methods individually, some clustering can be expected to arise during teaching (see [Lee and Thompson 2005](http://dx.doi.org/10.1136/bmj.330.7483.142) for a related discussion). A traditional _t_-test (in this case one with 40 - 2 = 38 degrees of freedom) ignores this clustering, too, and is likely to yield too low a _p_-value.
 
-* 80 primary-school students are divided into age groups and, within age group, are randomly combined into pairs. They are then a [map task](http://groups.inf.ed.ac.uk/maptask/maptask-description.html), and the lexical diversity of their utterances is measured. A regression or correlation analysis then investigates the relationship between the students' age and their lexical diversity. Here, too, the data are clustered -- presumably by class but also per dyad: Mutual likes and dislikes and phenomena such as lexical and syntactic priming may contribute to lexical diversity measurements within each dyad to be more similar than between different dyads in the same age group.
+* 80 primary-school students are divided into age groups and, within age group, are randomly combined into pairs. They are then given a [map task](http://groups.inf.ed.ac.uk/maptask/maptask-description.html), and the lexical diversity of their utterances is measured. A regression or correlation analysis is used to gauge the relationship between the students' age and their lexical diversity. Here, too, the data are clustered -- presumably by class but also per dyad: Mutual likes and dislikes and phenomena such as lexical and syntactic priming may contribute to lexical diversity measurements within each dyad being more similar than between different dyads in the same age group.
 
-* A questionnaire-based experiment is administered to two groups of students taking parallel courses. Students in the first group all fill out version A of the questionnaire; those in the second group fill out version B. Again, even fairly innocuous-looking similarities within each group can lead to an overstated degree of confidence in the study's results.
+* A questionnaire-based experiment is administered to two groups of students taking parallel courses. Students in the first group all fill out version A of the questionnaire; those in the second group fill out version B. Again, even fairly innocuous-looking similarities within each group (friends going to the same course, students having the same timetable because they take the same courses and have similar interests, more convenient to attend one class and not the other due to better train connections etc.) can lead to an overstated degree of confidence in the study's results.
 
 In the last three cases, researchers may _argue_ that no clustering is present in their data, 
 but this argument would be extremely difficult to prove statistically. (It would involve showing that the between-cluster variance is zero.)
@@ -251,14 +251,14 @@ t.test(meanMeasurement ~ Condition,
 {% endhighlight %}
 
 This time, the test fails to show a significant difference (t(6) = 1.1, p = 0.31),
-and we'd be forced to conclude that we have no evidence to show that the intervention worked.
+and we'd be forced to conclude that we have no evidence that the intervention worked. (Which [doesn't](http://www.phil.vt.edu/dmayo/personal_website/Schmidt_StatSigTesting.pdf#page=12) mean that it didn't, mind you.)
 
 ### Further reading and some additional points
 
 For further references and some additional points concerning cluster-randomised experiments, I refer to a recent [article](http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf) of mine (Section 4).
 Here's the bullet-point version of what I think researchers should be aware of when planning or evaluating class-based experiments:
 
-* Properly analysed cluster-randomised experiments have lower statistical power than individually randomised experiments with the same number of participants -- no matter what. Having 200 participants in an individually randomised design or 200 participants in a cluster-randomised design are two entirely different things.
+* Properly analysed cluster-randomised experiments have lower statistical power (i.e., a lower probability of observing statistical differences if the intervention actually works) than individually randomised experiments with the same number of participants -- no matter what. Having 200 participants in an individually randomised design or 200 participants in a cluster-randomised design are two entirely different things.
 
 * Increasing the number of participants per cluster increases power, but not as much as you'd think. For instance, if having 10 classes of 20 participants gives you 40% power, having 10 classes of 200 participants gives you about 53% power.
 Increasing the number of clusters is much more efficient. With 14 classes of 20 participants each, you'd already have 57% power.
@@ -267,7 +267,7 @@ Increasing the number of clusters is much more efficient. With 14 classes of 20 
 
 * Think about what sort of covariates would account for uninteresting variance in the dependent variable. Pretest scores, for instance, can be averaged by class, too, and be entered into an [analysis of covariance](http://janhove.github.io/analysis/2014/08/14/pretest-posttest-ancova/) on the class means. Don't go overboard with this, though: Each covariate costs a degree of freedom, and sacrificing a degree of freedom for a weakly predictive covariate could actually result in a loss of power.
 
-* _Don't run experiments with only one cluster per condition._ 
+* **_Don't run experiments with only one cluster per condition._**
 A _t_-test on two cluster means will have 2 - 2 = 0 degrees of freedom and will return an error. 
 Conceptually, a study with one cluster per condition has no reliable way of telling whether any difference between the two classes are due to the experimental condition or to the classes tested.
 
