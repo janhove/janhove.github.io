@@ -28,7 +28,7 @@ Paradoxically, dichotomisation can sometimes lead to a simultaneous **increase o
 i.e. finding a pattern where there is in fact none 
 ([Maxwell & Delaney 1993](http://www.researchgate.net/profile/Harold_Delaney/publication/232580560_Bivariate_median_splits_and_spurious_statistical_significance/links/550065790cf2d61f820d6f93.pdf)) -- a statistical double whammy.
 
-### Problem 2: Spurious threshold effects
+### Problem 2: Spurios threshold effects
 Furthermore, discretisation draws categorical boundaries where none exist and may thereby **spuriously suggest the presence of cut-offs or threshold effects**
 (e.g. [Altman & Royston 2006](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1458573/); 
 [Vanhove 2013](http://dx.doi.org/10.1371/journal.pone.0069172)). 
