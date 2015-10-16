@@ -19,7 +19,7 @@ Self-taught in statistics, I blog about statistical issues and research design i
 ## Latest blog posts
 
 <div class="row">
-  {% for post in site.posts limit:3 %}
+  {% for post in site.posts limit:0 %}
    <div class="span4">
     <a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a>
 	<hr />
@@ -40,8 +40,24 @@ Self-taught in statistics, I blog about statistical issues and research design i
 </div>
 
 
-{% for post in site.posts limit:10 offset:3 %}
+{% for post in site.posts limit:10 offset:0 %}
+
+
 <hr />
+<div class="row">
+<div class="span12">
+    <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
+{{ post.content | split:'<!--more-->' | first }}
+
+<p>
+	<a class="btn" href="{{ BASE_PATH }}{{ post.url }}">Read more...</a>
+	</p>
+</div>
+</div>
+
+{% endfor %}
+
+<!--<hr />
 <div class="row">
   <div class="span2">
     {% if post.thumbnail %}
@@ -50,11 +66,4 @@ Self-taught in statistics, I blog about statistical issues and research design i
 	<img src="/assets/themes/tmtxt-responsive/images/no-thumnail.jpg" align="center" />
 	{% endif %}
   </div>
-  <div class="span10">
-    <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
-{{ post.content | split:'<!--more-->' | first }}
-  </div>
-</div>
-{% endfor %}
-
-
+</div>-->
