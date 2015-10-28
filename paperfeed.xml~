@@ -16,6 +16,39 @@ title : Jan Vanhove - new publications
  </author>
 
 <entry>
+	<title>New article - Item-related determinants of cognate guessing in multilinguals</title>
+	<link href="http://janhove.github.io/publications.html"/>
+	<updated>2015-10-28T08:30:00+01:00</updated>
+	<id>http://janhove.github.io/publications.html#itemdets</id>
+	<content type ="html">
+</content>
+</entry>
+
+<entry>
+	<title>New booklet - Statistische Grundlagen: eine Einführung mit Beispielen aus der Sprachforschung</title>
+	<link href="http://janhove.github.io/publications.html"/>
+	<updated>2015-05-29T08:30:00+01:00</updated>
+	<id>http://janhove.github.io/publications.html#statcourse</id>
+	<content type ="html">
+Dieses Skript ist eine Einführung in die Analyse quantitativer Daten, die sich an erster Stelle an Forscherinnen und Forscher im Bereich der angewandten Linguistik richtet.
+</content>
+</entry>
+
+<entry>
+	<title>New article - Analyzing randomized controlled interventions: Three notes for applied linguists</title>
+	<link href="http://janhove.github.io/publications.html"/>
+	<updated>2015-03-10T08:30:00+01:00</updated>
+	<id>http://janhove.github.io/publications.html#ssllt2015</id>
+	<content type ="html">
+I discuss three common practices that obfuscate or invalidate the statistical analysis of randomized controlled interventions in applied linguistics. These are (a) checking whether randomization produced groups that are balanced on a number of possibly relevant covariates, (b) using repeated measures ANOVA to analyze pretest-posttest designs, and (c) using traditional significance tests to analyze interventions in which whole groups were assigned to the conditions (cluster randomization). 
+
+The first practice is labeled superfluous, and taking full advantage of important covariates regardless of balance is recommended. The second is needlessly complicated, and analysis of covariance is recommended as a more powerful alternative. The third produces dramatic inferential errors, which are largely, though not entirely, avoided when mixed-effects modeling is used. 
+
+This discussion is geared towards applied linguists who need to design, analyze, or assess intervention studies or other randomized controlled trials. Statistical formalism is kept to a minimum throughout.
+</content>
+</entry>
+
+<entry>
 	<title>New article - The early learning of interlingual correspondence rules in receptive multilingualism </title>
 	<link href="http://janhove.github.io/publications.html"/>
 	<updated>2015-03-10T08:30:00+01:00</updated>

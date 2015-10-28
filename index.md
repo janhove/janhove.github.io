@@ -9,7 +9,7 @@ title: Homepage
 </div> -->
 
 I teach and do research at the Department of Multilingualism at the University of Fribourg.
-Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
+I blog about statistical issues and research design in applied linguistics and multilingualism research.
 
 
 

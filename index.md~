@@ -66,8 +66,4 @@ Self-taught in statistics, I blog about statistical issues and research design i
 	<img src="/assets/themes/tmtxt-responsive/images/no-thumnail.jpg" align="center" />
 	{% endif %}
   </div>
-  <div class="span10">
-    <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
-{{ post.content | split:'<!--more-->' | first }}
-  </div>
 </div>-->
