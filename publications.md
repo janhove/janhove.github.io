@@ -27,7 +27,7 @@ Accepted for publication in E. Nicoladis and S. Montanari (eds), _Lifespan persp
 
 Jan Vanhove and Raphael Berthele. 2015.  
 Item-related determinants of cognate guessing in multilinguals.  
-In G. De Angelis, U. Jessner and M. Kresić (eds), _Crosslinguistic influence and crosslinguistic interaction in multilingual language learning_, 95-118. London: Bloomsbury.  
+In G. De Angelis, U. Jessner and M. Kresić (eds), _Crosslinguistic influence and crosslinguistic interaction in multilingual language learning_, 95-118. London: Bloomsbury. [Postprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/ItemRelatedDeterminants.pdf).  
 Data and R code available from [figshare](http://dx.doi.org/10.6084/m9.figshare.763246).
 
 Jan Vanhove. 2015.  
