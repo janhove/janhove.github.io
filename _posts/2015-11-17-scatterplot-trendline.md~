@@ -24,7 +24,7 @@ This makes graphs -- rather than numerical descriptions or significance tests --
 one that may not be entirely comfortable with concepts such as, say, standard deviations or confidence intervals (any casual definition of either of which is almost certainly wrong).
 
 Since knowing how to draw a good graph is bound to be a useful skill for our students -- whether they'll become 
-researchers themselves or will have to communicate research data to policy makers and teachers -- 
+researchers themselves or will have to communicate research data to policy makers and teacher -- 
 I've decided I'm going to stress it more in my teaching.
 This blog post is a step-by-step solution to an exercise I gave my students.
 While they were free to use whatever program they wanted, I'm going to use R in this solution.
