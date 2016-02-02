@@ -41,16 +41,16 @@ library(plyr)
 analyseCluster.fnc <- function(dataset) {
   
   # Compute mean and number of observations in each cluster
-  dat.sum <- ddply(Data, .(cluster, conditionCluster), summarise,
+  dat.sum <- ddply(dataset, .(cluster, conditionCluster), summarise,
                    meanOutcome = mean(outcome),
                    n = length(outcome))
   
   # Compute p-value for t-test on outcomes (ignoring clustering)
   # (anova = t-test here)
-  ttestIgnore <- anova(lm(outcome ~ conditionCluster, Data))$'Pr(>F)'[1]
+  ttestIgnore <- anova(lm(outcome ~ conditionCluster, dataset))$'Pr(>F)'[1]
   
   # Compute p-value for t-test on cluster means, weighted for cluster size
-  ttestWeighted <- anova(lm(meanOutcome ~ conditionCluster, dat.sum, weights = n))$'Pr(>F)'[1]
+  ttestWeighted <- anova(lm(meanOutcome ~ conditionCluster, dat.sum, weights = n)))$'Pr(>F)'[1]
   
   # Compute p-value for t-test on cluster means, unweighted
   ttestUnweighted <- anova(lm(meanOutcome ~ conditionCluster, dat.sum))$'Pr(>F)'[1]
@@ -66,16 +66,16 @@ analyseCluster.fnc <- function(dataset) {
 simulate.fnc <- function(ICC = 0.1, 
                          clusterSizes = c(10, 50, 13, 80, 14, 86, 62, 45, 41, 8),
                          treatment = 0) {
-  Data <- createData.fnc(ICC = ICC,
+  Data <- createData.fnc(ICC = 0.1,
                          clusterSizes = sample(clusterSizes), # resample (wo replacement) clusterSizes: you don't know beforehand which cluster ends up in which condition
                          treatment = treatment)
   
-  pVals <- analyseCluster.fnc(Data = Data)
+  pVals <- analyseCluster.fnc(Data)
   return(pVals)
 }
 
 # Now run the simulation 10,000 times and see how many p-values are below 0.05 (should be 5%)
-pvals <- replicate(1e4, simulate.fnc())
+pvals <- replicate(1e4, simulate.fnc(clusterSizes = c(10, 50, 13, 80, 14, 86, 62, 45, 41, 8)))
 mean(unlist(pvals[1,] <= 0.05)) # 44%
 mean(unlist(pvals[2,] <= 0.05)) # 9%
 mean(unlist(pvals[3,] <= 0.05)) # 5%
