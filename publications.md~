@@ -35,7 +35,8 @@ Jan Vanhove. 2015.
 
 Jan Vanhove. 2015.  
 [Analyzing randomized controlled interventions: Three notes for applied linguists](http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf).  
-_Studies in Second Language Learning and Teaching_ 5(1), 135-152.
+_Studies in Second Language Learning and Teaching_ 5(1), 135-152.  
+**Correction:** See the [correction note](/design/2016/02/16/cluster-randomisation-correction) for this paper.
 
 Jan Vanhove. 2015.  
 [The early learning of interlingual correspondence rules in receptive multilingualism](http://dx.doi.org/10.1177/1367006915573338).  
