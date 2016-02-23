@@ -2,7 +2,7 @@
 layout: post
 title: "The problem with cutting up continuous variables and what to do when things aren't linear"
 thumbnail: /figs/thumbnails/blank.png
-category: [analysis]
+category: [Analysis]
 tags: [power, generalised additive models, non-linarities]
 ---
 

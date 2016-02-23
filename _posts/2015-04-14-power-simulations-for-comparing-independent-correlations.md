@@ -2,7 +2,7 @@
 layout: post
 title: "Power simulations for comparing independent correlations"
 thumbnail: /figs/thumbnails/2015-04-14-power-simulations-for-comparing-independent-correlations.png
-category: [design]
+category: [Design]
 tags: [significance, power]
 ---
 

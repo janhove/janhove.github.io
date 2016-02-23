@@ -44,7 +44,8 @@
           <a class="brand" href="{{ HOME_PATH }}">{{ site.title }}</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="/about.html">About</a></li>        
+              <li><a href="/about.html">About</a></li>
+              <li><a href="/statintro.html">Intro to statistics (German)</a></li>        
         <li><a href="/publications.html">Publications</a></li>
         <li><a href="/archive.html">Blog archive</a></li>
         <li><a href="/categories.html">Blog categories</a></li>

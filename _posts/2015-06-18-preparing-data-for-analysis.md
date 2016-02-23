@@ -2,7 +2,7 @@
 layout: post
 title: "Some tips on preparing your data for analysis"
 thumbnail: /figs/thumbnails/blank.png
-category: [analysis]
+category: [Analysis]
 tags: [organisation]
 ---
 

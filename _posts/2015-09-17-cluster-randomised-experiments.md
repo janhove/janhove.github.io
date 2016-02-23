@@ -2,7 +2,7 @@
 layout: post
 title: "Analysing experiments with intact groups: the problem and an easy solution"
 thumbnail: /figs/thumbnails/2015-09-17-cluster-randomised-experiments.png
-category: [design]
+category: [Design]
 tags: [significance, power, design features, cluster-randomised experiments]
 ---
 

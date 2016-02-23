@@ -26,7 +26,7 @@ That said, when coming up with descriptive names and labels, try to keep them sh
 Lastly, try to keep the following guidelines in mind:
 
 <ul>
-<li>Capitalisation matters. In R, an informant whose `Sex` is `man` is of a different gender than one whose `Sex` is `Man`. Any such confusions become clear soon enough when analysing the data and they're pretty easy to take care of. But avoiding them is better for the analyst's grumpiness level :)</li>
+<li>Capitalisation matters. In R, an informant whose <code>Sex</code> is <code>man</code> is of a different gender than one whose <code>Sex</code> is <code>Man</code>. Any such confusions become clear soon enough when analysing the data and they're pretty easy to take care of. But avoiding them is better for the analyst's grumpiness level :)</li>
 
 <li>Special characters are tricky. German Umlaut characters and French accents may show up without problems on your computer, but may require the manual specification of a character encoding on a different system. Try to either avoid special characters or know which character encoding you saved the dataset in (see the <a href="https://support.office.com/en-ca/article/Choose-text-encoding-when-you-open-and-save-files-60d59c21-88b5-4006-831c-d536d42fd861">MS Office support page</a> for Excel; LibreOffice users can just use the 'Save as' function and will be asked which encoding they prefer).</li>
 
@@ -34,11 +34,11 @@ Lastly, try to keep the following guidelines in mind:
 
 <li>Colour-coding is fine for your own use, but the colours get lost when the dataset is imported into a statistics program.</li>
 
-<li>'Empty' rows or columns may contain lingering spaces that mess up the dataset when it's imported into a statistics program. By way of example, the csv file `FormantMeasurements1.csv` (available [here]({{ site.url }}/downloads/FormantMeasurements1.csv)) looks fine when it's opened in a spreadsheet program:
+<li>'Empty' rows or columns may contain lingering spaces that mess up the dataset when it's imported into a statistics program. By way of example, the csv file <code>FormantMeasurements1.csv</code> (available <a href ="http://janhove.github/io/downloads/FormantMeasurements1.csv">here</a>) looks fine when it's opened in a spreadsheet program:
 
-![Formant measurements (example 1)](http://janhove.github.io/images/FormantMeasurements1.png)
+<img src="http://janhove.github.io/images/FormantMeasurements1.png" alt = "Example superfluous spaces" />
 
-When the dataset is imported into `R`, however, there seem to be two additional variables (`X` and `X.1`), some missing values (`NA`) and a `Speaker` without an ID:
+When the dataset is imported into <code>R</code>, however, there seem to be two additional variables (<code>X</code> and <code>X.1</code>), some missing values (<code>NA</code>) and a <code>Speaker</code> without an ID:
 
 
 {% highlight r %}
@@ -71,7 +71,7 @@ The reason is that there are superfluous spaces in cells D99 and G9.
 </li>
 
 <li>Similarly, a value label with a trailing space will be inconspicuous in your spreadsheet program but will affect how the dataset is read in into your statistics program.
-The csv file `FormantMeasurements2.csv` contains the same data as `FormantMeasurements1.csv`, but when read into `R`, there seem to be two `Speaker`s with the same ID (`S2`):
+The csv file <code>FormantMeasurements2.csv</code> contains the same data as <code>FormantMeasurements1.csv</code>, but when read into <code>R</code>, there seem to be two <code>Speaker</code>s with the same ID (<code>S2</code>):
 
 
 {% highlight r %}
@@ -91,9 +91,10 @@ summary(dat)
 ##           Max.   :24.00   duut   : 8   Max.   :1031.1   Max.   :2773.7  
 ##                           (Other):48
 {% endhighlight %}
+
 The reason is that there's a trailing space in cell A28.
 
-Less obvious (because it doesn't show up in the `summary()` output) is that there's also a superfluous space in the `Word` column (the carrier word `tiet` occurs twice, once with and once without trailing space):
+Less obvious (because it doesn't show up in the <code>summary()</code> output) is that there's also a superfluous space in the <code>Word</code> column (the carrier word <code>tiet</code> occurs twice, once with and once without trailing space):
 
 
 {% highlight r %}

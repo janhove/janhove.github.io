@@ -4,7 +4,7 @@ layout: post
 output: html_document
 tags: [effect sizes, power]
 thumbnail: /figs/thumbnails/blank.png
-category: Design
+category: [Design]
 ---
 
 A couple of weeks ago, I outlined four reasons [why I don't like standardised effect sizes]({% post_url 2015-02-05-standardised-vs-unstandardised-es %}) such as Cohen's _d_ or Pearson's _r_ and prefer raw effect sizes instead.

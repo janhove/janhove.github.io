@@ -164,7 +164,7 @@ Here, I estimate the power for a comparison with two samples of 20 observations.
 {% highlight r %}
 results20 <- outer(corrs, corrs, 
                    function(x, y) mapply(compute.power, 
-                                         r12 = x, r34 = y, 
+                                         popr12 = x, popr34 = y, 
                                          n1 = 20, n2 = 20, 
                                          n.sims = 1000))
 {% endhighlight %}

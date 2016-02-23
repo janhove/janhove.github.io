@@ -4,7 +4,7 @@ layout: post
 output: html_document
 tags: [effect sizes, graphics, simplicity]
 thumbnail: /figs/thumbnails/2015-03-03-more-selective-approach.png
-category: Reporting
+category: [Reporting]
 ---
 
 [Daniël Lakens](http://daniellakens.blogspot.ch/2015/02/which-statistics-should-you-report.html) recently argued that, when reporting statistics in a research paper, 'the more the merrier', since reporting several descriptive and inferential statistics facilitates the aggregation of research results. 

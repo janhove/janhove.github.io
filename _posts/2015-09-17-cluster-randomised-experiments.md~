@@ -12,6 +12,9 @@ The set-up of studies like these is pretty standard in applied linguistics -- bu
 In this post, I explain the problem with comparing intact groups using traditional statistical tools and 
 present a solution that's easy to both understand and implement.
 
+
+<!--more-->
+
 ### The problem
 In a textbook experiment, the 40 students from the example above would have been assigned to one of the teaching methods randomly and on an individual basis.
 In the example above, however, the assignment to one of the teaching methods wasn't done individually but class-by-class, so that all students in the same class were taught using the same method.
