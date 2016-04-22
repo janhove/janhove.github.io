@@ -47,6 +47,8 @@ I blog about statistical issues and research design in applied linguistics and m
 <div class="row">
 <div class="span12">
     <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
+    <p><small>{{ post.date | date: "%-d %B %Y" }}</small></p>
+    
 {{ post.content | split:'<!--more-->' | first }}
 
 <p>

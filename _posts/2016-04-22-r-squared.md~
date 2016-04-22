@@ -1,0 +1,154 @@
+---
+layout: post
+title: "Why reported R² values tend to be too high"
+category: [Analysis]
+tags: [effect sizes, multiple comparisons, multiple regression]
+---
+
+After reading a couple of papers whose conclusions were heavily based on _R²_ ("variance explained") values, 
+I thought I’d summarise why I’m often skeptical of such conclusions.
+The reason, in a nutshell, is that reported _R²_ values tend to overestimate how much of the variance in the outcome variable the model can actually "explain".
+To dyed-in-the-wool quantitative researchers, 
+none of this blog post will be new, 
+but I hope that it will make some readers think twice before focusing heavily on _R²_ values.
+
+<!--more-->
+
+### What's _R²_?
+_R²_, or the _coefficient of determination_, takes values between 0 and 1 and represents the proportion of the variance in the outcome variable
+that the predictors in a regression model jointly "explain".
+There are a couple of ways to calculate _R²_,
+and for ordinary regression models, all of them produce the same result.
+However, for other regression models, such as logistic regression or mixed-effects models,
+the different definitions of _R²_ can produce different results,
+so that it's not clear which definition, if indeed any, is the right one in every case.
+Here, I'll stick to discussing _R²_ for ordinary regression models.
+
+Incidentally, I put "variance explained" between scare quotes,
+as I think "variance described" would be a better way of putting it.
+"Variance explained" could suggest that the regression model has the status of an explanatory theoretical model
+that truly attempts to explain why the data look the way they do.
+The regression model does no such thing.
+
+### Problems with _R²_
+I've written about my skepticism about standardised effect sizes before
+([here]({% post_url 2015-02-05-standardised-vs-unstandardised-es %}) 
+and [here]({% post_url 2015-03-16-standardised-es-revisited %})).
+_R²_ inherits all of the problems I discussed there
+and adds some additional ones.
+To be clear, I don't doubt that _R²_ can be used sensibly;
+it's just that it often isn't.
+
+The first problem with taking _R²_ values at face value is 
+that they tend to be too high:
+even if the predictor variables and the outcome are actually unrelated,
+you'll find that the predictors "explain" some proportion of the variance in the outcome.
+This is easiest to see when you have one predictor variable and one outcome variable.
+Even if the predictor and the outcome are unrelated,
+sampling error will cause the correlation coefficient (_r_) to deviate from 0 in any one sample.
+These deviations from 0 can be both positive or negative (left panels in the figure below),
+and averaged over many samples, the correlation coefficient will be 0 (dashed lines).
+When you have one predictor and one outcome variable,
+_R²_ can simply be calculated by squaring the correlation coefficient.
+But when you square negative values, you get positive numbers,
+so that sampling error will cause _R²_ to be positive (right panels) -- 
+there will always be some "variance explained"!
+What's more, since sampling error plays a bigger role in small samples,
+this overestimation of "variance explained" is larger in smaller samples (top vs. bottom panels).
+
+![center](/figs/2016-04-22-r-squared/unnamed-chunk-1-1.png)
+
+Second, _R²_ always increases when you add more predictors to the regression model.
+But by adding more and more predictors, you're bound to model random fluctuations ('noise') in the data.
+As a result, if you were to apply the same model to a new dataset,
+you could find that the more complex model actually has a worse fit than a simpler model.
+
+#### '_R²_ hacking'
+You may object that while the above may be true,
+it's also irrelevant:
+your statistics package also outputs an 'adjusted _R²_' value
+that corrects the _R²_ value based on the sample size and the number of predictors.
+Adjusted _R²_ values can be negative so that they aren't biased away from 0 (figure below).
+
+![center](/figs/2016-04-22-r-squared/unnamed-chunk-2-1.png)
+
+This is true in principle.
+In practice, though, reported adjusted _R²_ values are often too high, too.
+The reason is what I'll call '_R²_ hacking':
+analytical decisions in variable selection, data transformation and outlier treatment
+with which the analyst deliberately or indeliberately enhances the model's fit to the present data,
+but which cause the model to generalise poorly to new data.
+_R²_ hacking is like [_p_ hacking](http://blogs.discovermagazine.com/neuroskeptic/2015/05/18/p-hacking-a-talk-and-further-thoughts/#.VxngW0I5vCI),
+but rather than selecting for statistical significance,
+the analyst (deliberately or indeliberately) selects for larger (adjusted or unadjusted) _R²_ values.
+
+The effects of _R²_ hacking are most easily illustrated
+in the simple scenario where the analyst has several predictor variable at their disposal,
+for the sake of parsimony selects the predictor with the highest absolute sample correlation
+to the outcome as the sole predictor in a simple regression model,
+and then reports the model's adjusted _R²_.
+The code below simulates such a scenario
+and assumes that none of the predictors are actually related to the outcome.
+
+
+{% highlight r %}
+# Run 10,000 simulations
+adjrs <- replicate(1e4, {
+  # Generate dataset with 25 observations for 1 outcome and 10 predictors.
+  # None of the predictors is actually related to the outcome here:
+  dat <- data.frame(y = rnorm(25),
+                    x1 = rnorm(25), x2 = rnorm(25), x3 = rnorm(25),
+                    x4 = rnorm(25), x5 = rnorm(25), x6 = rnorm(25),
+                    x7 = rnorm(25), x8 = rnorm(25), x9 = rnorm(25),
+                    x10 = rnorm(25))
+  # Select predictor with highest absolute sample correlation to outcome
+  # as sole predictor in simple regression model
+  formula.lm <- as.formula(paste("y ~ ", 
+                                 noquote(names(which.max(abs(cor(dat)[1,-1]))))))
+  # Run simple regression model and calculate adjusted R²
+  adjr <- summary(lm(formula.lm, dat))$adj.r.squared
+  # Return adjusted R²
+  return(adjr)
+})
+
+# Plot histogram with results
+par(mfrow = c(1,1), las = 1, cex = 0.9, cex.main = 1.1)
+hist(adjrs, col = "#4DAF4A", 
+     xlim = c(-0.2, 1),
+     ylim = c(0, 4000),
+     main = "adjusted R²\n(n = 25)",
+     xlab = "adjusted R²")
+abline(v = mean(adjrs), lty = 2)
+{% endhighlight %}
+
+![center](/figs/2016-04-22-r-squared/unnamed-chunk-3-1.png)
+
+As the histogram above shows,
+prior variable screening causes the average adjusted _R²_ value to be higher than zero.
+This positive bias also occurs when the predictors actually _are_ related to the outcome.
+For the figure below, I also simulated 10,000 datasets with one outcome variable and ten possible predictors.
+This time, all of the predictors were weakly related to the outcome.
+The left panel shows the distribution of the adjusted _R²_ value 
+when we always choose the same predictor for the simple regression model (i.e., no data-dependent variable selection).
+The average adjusted _R²_ in this case is about 4%.
+The panel on the right shows what happens when we select the predictor with the
+highest sample correlation (data-dependent variable selection): the average adjusted _R²_ is now about 21%.
+So, predictor selection inflates the "variance explained" by a factor of 5 in this case.
+
+![center](/figs/2016-04-22-r-squared/unnamed-chunk-4-1.png)
+
+The reason for this positive bias is that the adjusted _R²_ value
+was corrected for the number of predictors that occur in the model (1) --
+not for the number of predictors that were actually consider when building the model (10).
+But at least in this case, we know what the number of predictors considered was.
+Similar situations arise, however, when the predictors were selected by more informal procedures
+such as visually inspecting the data before deciding which predictors are worth a place in the model
+or trying out different data transformations and picking the one that yield the prettiest scatterplots.
+
+### Conclusion
+The reason I'm often skeptical about conclusions based on adjusted or unadjusted _R²_ values is that
+these values are bound to be overestimates: 
+the same model applied to a new dataset will in all likelihood produce appreciably poorer fits
+and may sometimes be worse than having no regression model at all.
+There are methods to minimise this danger,
+but those are for another time.

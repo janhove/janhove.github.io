@@ -9,7 +9,7 @@ title: Homepage
 </div> -->
 
 I teach and do research at the Department of Multilingualism at the University of Fribourg.
-Self-taught in statistics, I blog about statistical issues and research design in applied linguistics and multilingualism research.
+I blog about statistical issues and research design in applied linguistics and multilingualism research.
 
 
 
@@ -47,6 +47,7 @@ Self-taught in statistics, I blog about statistical issues and research design i
 <div class="row">
 <div class="span12">
     <p><a href="{{ BASE_PATH }}{{ post.url }}"><h3>{{ post.title }}</h3></a></p>
+    <p><small>{{ post.date | date: "%-d %B %Y" }}</small></p>
 {{ post.content | split:'<!--more-->' | first }}
 
 <p>

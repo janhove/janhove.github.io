@@ -113,6 +113,7 @@ I hope I'm mistaken in this,
 but my impression is that most researchers doing power analyses out there just plug in a 'medium' or 'large' Cohen's _d_ or Pearson's _r_ and jot down the minimum sample size that the software returns.
 Perhaps it's more useful to think about how sources of extraneous variance can be brought under control in order to increase power (tighter design, more accurate measures, including covariates), rather than assuming that whatever yardstick out there also applies to one's own study.
 
+<a name="complexmodels"></a>
 ### Reason No. 4: What about more complex models?
 All discussions and tutorials on standardised effect sizes that I've come across assume that you have a comparatively easy statistical model:
 if you run a t-test, compute Cohen's _d_;
