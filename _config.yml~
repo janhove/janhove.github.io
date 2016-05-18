@@ -65,7 +65,7 @@ JB :
   #   http://s3.amazonaws.com/yoursite/themes/watermelon
   #   /assets
   # ASSET_PATH : false
-  ASSET_PATH : http://janhove.github.io/assets/themes/twitter-2.0
+  ASSET_PATH : https://janhove.github.io/assets/themes/twitter-2.0
   # see https://github.com/plusjade/jekyll-bootstrap/issues/113
 
   # These paths are to the main pages Jekyll-Bootstrap ships with.
