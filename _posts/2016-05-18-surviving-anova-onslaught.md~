@@ -1,0 +1,125 @@
+---
+layout: post
+title: "Surviving the ANOVA onslaught"
+category: [Teaching]
+tags: [simplicity, reading]
+---
+
+At a workshop last week, we were asked to bring along examples of good and bad academic writing.
+Several of the bad examples were papers where the number of significance tests was so large
+that the workshop participants felt that they couldn't make sense of the Results section.
+It's not that they didn't understand each test separately
+but rather that they couldn't see the forest for the trees.
+I, too, wish researchers would stop inundating their readers with _t_, _F_ and _p_-values (especially in the running text),
+but until such time readers need to learn how to survive the ANOVA onslaught.
+Below I present a list of guidelines to help them with that.
+
+<!--more-->
+
+ 1. **Identify the central, _genuine_ research questions and the corresponding hypotheses.**  
+ Research papers surprisingly often contain 'padding' research questions (RQs)
+ that are largely unrelated to the core goal of the study. 
+ When scanning the Results section, you can usually leave aside the paragraphs about these uninteresting RQs. 
+ For example, in a report on a pretest/posttest experiment 
+ where participants were randomly assigned to conditions,
+ you may find RQs such as _Do participants in the treatment condition have different pretest scores from those in the control condition?_
+ or _Do participants have higher scores on the posttest than on the pretest?_
+ Both questions are [uninteresting](http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf#page=5) 
+ as they don't tell you whether the treatment actually worked.
+ 
+ 2. **Draw a graph of the predictions.**  
+ Having identified the key RQs and hypotheses, 
+ I often find it useful to sketch 
+ how the data would look like if the researchers' predictions panned out
+ and what kind of data would, within reason, falsify their hypotheses.
+ These graphs are usually simple hand-drawn line charts that illustrate the expected group differences,
+ but I find that they help me to better understand the logic behind the study
+ and to focus on the important analyses in the Results section.
+ 
+ 3. **Look for a graph in the paper.**  
+ Ideally, the paper will contain a graph of the main results that you can then compare with the graphs you drew yourself.
+ Do the results seem to confirm or disconfirm the researchers' predictions?
+ Sometimes, a good graph will allow you to carry out the easiest of significance tests yourself: the ['inter-ocular trauma test'](http://www.johndcook.com/blog/2009/08/31/the-iot-test/)--if the conclusion hits you between the eyes, it's significant.
+ If the results are less clear cut, you'll need to scan the Results section for the more details,
+ but by now, you should have a clearer idea of what you're looking for--and what you can ignore for now.
+ If the paper doesn't contain a graph, you can often draw one yourself on the basis of the data provided in the tables.
+ 
+ 4. **Ignore tests unrelated to the central research questions.**  
+ Results sections sometimes contain significance tests that are unrelated to the research questions the authors formulated up front.
+ Such tests include include 
+ [balance tests]({% post_url 2014-09-26-balance-tests %}) in randomised experiments 
+ (e.g. _The control and intervention group did not differ in terms of SES (t(36) = 0.8, p = 0.43)._),
+ [tautological tests]({% post_url 2014-10-15-tautological-tests %})
+ (e.g. _A one-way ANOVA confirmed that participants categorised as young, middle-aged and old differed in age (F(2, 57) = 168.2, p < 0.001)._)
+ as well as some [less obvious cases]({% post_url 2015-06-08-unrelated-tests %}).
+ By and large, these tests tend to add little to nothing to the study and can be ignored
+ the first time round.
+ In non-randomised experiments, systematic differences on background variables 
+ between the groups may represent confounds, but these can be assessed
+ based on the descriptive statistics and don't need to be rubber-stamped with a significance test.
+ 
+ 5. **Main effect or interaction?**  
+ Complex designs often target the interaction between two independent variables
+ rather than each independent variable separately.
+ If researchers write that they're expecting an interaction between variable _A_ and variable _B_,
+ then what they mean is that they expect _A_ to have a different effect on the outcome variable
+ depending on what value _B_ has.
+ When running the test for the interaction between _A_ and _B_,
+ statistical software also returns the significance tests
+ for _A_ and _B_ separately, and researchers often report these, too.
+ But if you're not really interested in the effects of _A_ and _B_ separately,
+ then you can [ignore the tests for the main effects]({% post_url 2016-02-23-uninteresting-main-effects %}).  
+ Two further references: [interpreting main effects in the presence of an interaction](http://www.theanalysisfactor.com/interpret-main-effects-interaction/); [interpreting 'removable' interactions](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3267935/).
+ 
+ 6. **Don't get distracted by _F1_ and _F2_ analyses.**  
+ Until fairly recently, articles in psycholinguistics journals would often contain two _F_-tests, 
+ labelled _F1_ and _F2_, for each comparison.
+ The goal of these double analyses was to find out 
+ whether the results would generalise not only to different participants
+ but also to different stimuli from the ones used in the experiment.
+ To this end, researchers calculated average scores, reaction times etc., 
+ for each participant within each 'cell' (combination of independent variables)
+ and analysed these averages in a 'subject ANOVA' (_F1_).
+ Then, again within each cell, the data were aggregated for each stimulus,
+ and the by-stimulus averages were analysed in an 'item ANOVA' (_F2_).
+ Findings were deemed to be generalisable when both analyses returned significance.  
+ _F1_ and _F2_ analyses were stopgap solutions 
+ and have now been eclipsed by [more suitable methods of analysis](http://dx.doi.org/10.1016/j.jml.2007.12.005).  
+ So in case you were wondering what these _F1_ and _F2_ numbers mean in that pre-2012 paper you were reading:
+ it's to see whether the finding would generalise to both new participants and new stimuli.
+ 
+ 7. **Ask yourself some critical questions.**  
+      a. Is it the _means_ you're really interested in?  
+      ANOVA compares group means, but when the data are strongly skewed or bimodal (= double-humped),
+      means may be poor indicators of the tendencies in the data.
+      Ideally, you'd be able to tell from the graphs how well the group means capture the tendencies in the data,
+      but often all you get is a barplot with the group means.
+      
+      b. Are there _dependencies_ in the data that the analysis doesn't account for?  
+      If the paper reports on a [cluster-randomised experiment]({% post_url 2015-09-17-cluster-randomised-experiments %}) 
+      (e.g. an intervention study in which whole classes were assigned to the same condition),
+      then these clusters (e.g. classes) need to be somehow taken into consideration in the analysis.
+      Not doing so can dramatically affect the results.
+      Clustering could also occur when the intervention involves students interacting with each other, 
+      for instance when learning vocabulary in a communicative task.
+      
+      c. Are the groups _real groups_ or are they the result of arbitrarily cutting up a continuous variable?  
+      Cutting up some continuous variable such as age so that participants can be categorised into ANOVA-friendly groups
+      has its [problems]({% post_url 2015-10-16-nonlinear-relationships %}) on the statistical side.
+      Furthermore, when interpreting the results, discretising continuous variables may sometimes tempt the researchers or readers
+      to infer threshold effects where none exist.
+      
+      d. Is the outcome variable _really continuous_ or was is it binary variable converted to percentages?  
+      ANOVAs and _t_-tests work for continuous outcome variables.
+      Treating a binary dependent variable (e.g. accuracy) as a continuous variable can alter the study's result.
+      Binary dependent variables call for [different statistical approaches](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2613284/).
+      
+      e. How _generous_ are the researchers when interpreting their results?  
+      Running a test is one thing, interpreting its result is another.
+      Common shortcuts include 
+      [interpreting 'no significant difference' to mean 'equal'](http://www.phil.vt.edu/dmayo/personal_website/Schmidt_StatSigTesting.pdf#page=12),
+      [interpreting differences in significance]({% post_url 2014-10-28-assessing-differences-of-significance %}) and
+      reading a lot into post-hoc analyses (see ['researcher degrees of freedom'](http://dx.doi.org/10.1177/0956797611417632) 
+      and ['the garden of forking paths'](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf)).
+      
+This may not cover all the bases, but I reckon it covers enough of them to get started.
