@@ -15,6 +15,6 @@ die sich an erster Stelle an Forscherinnen und Forscher im Bereich der angewandt
 <h2>Geschichte</h2>
 
 <ul>
- <li>18. Mai 2016: Zweite Version.</li>
+ <li>19. Mai 2016: Zweite Version.</li>
  <li>29. Mai 2015: Erste Version veröffentlicht.</li>
 </ul>
