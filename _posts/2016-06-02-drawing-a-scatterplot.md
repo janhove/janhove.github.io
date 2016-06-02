@@ -221,8 +221,8 @@ to plot them, we need to add the `label` aesthetic to the ggplot call and specif
 ggplot(data = translations,
        aes(x = OrthographicDistance,
            y = ProportionCorrect,
-           label = Item)) +                    # specify label aesthetic
-  geom_text() +                                # plot text labels instead of points
+           label = Item)) + # specify label aesthetic
+  geom_text() +             # plot text labels instead of points
   xlab("orthographic Levenshtein distance") +
   ylab("proportion of correct translations") +
   theme_bw()
