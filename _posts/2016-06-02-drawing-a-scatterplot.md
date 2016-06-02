@@ -199,7 +199,7 @@ The `theme_bw` layer get rid of the default grey background.
 ggplot(data = translations,
        aes(x = OrthographicDistance,
            y = ProportionCorrect)) + 
-  geom_point(pch = 1) +
+  geom_point(shape = 1) +
   xlab("orthographic Levenshtein distance") +
   ylab("proportion of correct translations") +
   theme_bw()
