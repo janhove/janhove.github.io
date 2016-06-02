@@ -166,7 +166,7 @@ ggplot(data = translations,
 
 ![center](/figs/2016-06-02-drawing-a-scatterplot/unnamed-chunk-8-1.png)
 
-It's possible to change the appearance of these dots,
+You can change the appearance of these dots,
 for instance by setting the `shape` parameter.
 For further examples, see the [ggplot2 documentation](http://docs.ggplot2.org/current/geom_point.html).
 
