@@ -375,7 +375,7 @@ ggplot(data = semproj_perCondition,
         panel.grid.major.y = element_line(colour = "grey65"),
         panel.grid.minor.y = element_line(colour = "grey85", size = 0.2),
         panel.grid.major.x = element_blank(),
-        panel.grid.minor.y = element_blank())
+        panel.grid.minor.x = element_blank())
 {% endhighlight %}
 
 ![center](/figs/2016-06-13-drawing-a-linechart/unnamed-chunk-15-1.png)
