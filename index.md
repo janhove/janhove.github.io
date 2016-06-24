@@ -1,17 +1,12 @@
 ---
 layout: page
-title: Homepage
+title: Blog
 ---
 {% include JB/setup %}
 
-<!-- <div style="float: right">
-   <img src="/figs/foto.JPG" alt="Photo" title="Photo"/>
-</div> -->
 
 I teach and do research at the Department of Multilingualism at the University of Fribourg.
 I blog about statistical issues and research design in applied linguistics and multilingualism research.
-
-
 
 <p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new blog posts.</a></p>
 <p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
@@ -58,14 +53,3 @@ I blog about statistical issues and research design in applied linguistics and m
 </div>
 
 {% endfor %}
-
-<!--<hr />
-<div class="row">
-  <div class="span2">
-    {% if post.thumbnail %}
-	<img src="{{ post.thumbnail }}" align="center" />
-	{% else %}
-	<img src="/assets/themes/tmtxt-responsive/images/no-thumnail.jpg" align="center" />
-	{% endif %}
-  </div>
-</div>-->
