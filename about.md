@@ -6,7 +6,7 @@ group: navigation
 ---
 {% include JB/setup %}
 
-<div style="float:right,margin:20px"><img src="/figs/foto.JPG" alt="Photo" title="Photo"/> </div>
+<div style="float:right,padding:20px"><img src="/figs/foto.JPG" alt="Photo" title="Photo"/> </div>
 
 <p>
 I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism at the University of Fribourg in Switzerland.</p>
