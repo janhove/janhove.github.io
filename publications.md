@@ -14,12 +14,12 @@ Jan Vanhove and Raphael Berthele. 2015.
 Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
 Revision submitted for publication.
 
-## Accepted
+## 2016
 
 
-David Birdsong and Jan Vanhove. Forthcoming.  
-Age of second language acquisition: Critical periods and social concerns.  
-Accepted for publication in E. Nicoladis and S. Montanari (eds), _Lifespan perspectives on bilingualism_.
+David Birdsong and Jan Vanhove. 2016.  
+Age of second-language acquisition: Critical periods and social concerns.  
+Accepted for publication in E. Nicoladis and S. Montanari (eds), _Bilingualism across the lifespan: Factors moderating language proficiency_, 163-182. Berlin/Washington, DC: De Gruyter Mouton/American Psychological Association. [Postprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/AgeofSLA.pdf)
 				
 
 
