@@ -4,11 +4,9 @@ title: Blog
 ---
 {% include JB/setup %}
 
-
-A blog about statistics and research design geared towards researchers in bilingualism, multilingualism, and applied linguistics.
+<p>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</p>
 
 <p><a href="blogfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new blog posts.</a></p>
-<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
 ## Latest blog posts
 
