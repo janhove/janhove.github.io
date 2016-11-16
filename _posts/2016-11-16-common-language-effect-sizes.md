@@ -75,7 +75,7 @@ While they point out that their measure is quite robust with respect to this ass
 you can use a brute-force method that doesn't make this assumption to see 
 if that yields different results.
 
-On http://janhove.github.io/RCode/CommonLanguageEffectSizes.R, I provide a function, `cles.fnc()`,
+On [http://janhove.github.io/RCode/CommonLanguageEffectSizes.R](http://janhove.github.io/RCode/CommonLanguageEffectSizes.R), I provide a function, `cles.fnc()`,
 that randomly pairs observations from the two groups a large number of times
 and checks how often the observation sampled randomly from the first group is greater
 than the one sampled randomly from the second group.
