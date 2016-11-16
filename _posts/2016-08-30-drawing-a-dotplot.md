@@ -2,7 +2,7 @@
 layout: post
 title: "Tutorial: Drawing a dot plot"
 category: [Reporting]
-tags: [tutorial, graphics]
+tags: [tutorial, graphics, R]
 ---
 
 In the fourth tutorial on drawing useful plots with `ggplot2`, we're taking a closer look at **dot plots** -- a useful and more flexible alternative to bar and pie charts.

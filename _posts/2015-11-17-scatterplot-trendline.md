@@ -3,7 +3,7 @@ layout: post
 title: "Drawing a scatterplot with a non-linear trend line"
 thumbnail: /figs/blank.png
 category: [Reporting]
-tags: [graphics, non-linearities]
+tags: [graphics, non-linearities, R]
 ---
 
 This blog post is a step-by-step guide to drawing scatterplots with non-linear trend lines in [R](http://r-project.org).

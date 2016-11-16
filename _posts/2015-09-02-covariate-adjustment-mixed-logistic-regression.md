@@ -3,7 +3,7 @@ layout: post
 title: "Covariate adjustment in logistic mixed models: Is it worth the effort?"
 thumbnail: /figs/thumbnails/2015-09-02-covariate-adjustment-mixed-logistic-regression.png
 category: [Design]
-tags: [power, effect sizes, logistic regression, mixed-effects models]
+tags: [power, effect sizes, logistic regression, mixed-effects models, R]
 ---
 
 The [previous]({% post_url 2015-07-17-covariate-adjustment-logistic-regression %}) post

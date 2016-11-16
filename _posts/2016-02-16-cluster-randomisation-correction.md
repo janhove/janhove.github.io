@@ -3,7 +3,7 @@ layout: post
 title: "Experiments with intact groups: spurious significance with improperly weighted t-tests"
 thumbnail: /figs/blank.png
 category: [Design]
-tags: [significance, design features, cluster-randomised experiments, correction]
+tags: [significance, design features, cluster-randomised experiments, correction, R]
 ---
 
 When analysing experiments in which intact groups (clusters) were assigned to the experimental conditions,

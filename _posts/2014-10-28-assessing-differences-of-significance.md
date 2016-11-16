@@ -1,7 +1,7 @@
 ---
 title: "Assessing differences of significance"
 layout: post
-tags: [significance]
+tags: [significance, R]
 thumbnail: /figs/thumbnails/2014-10-28-assessing-differences-of-significance.png
 category: [Analysis]
 ---

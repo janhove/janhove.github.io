@@ -3,7 +3,7 @@ layout: post
 title: "Calibrating p-values in 'flexible' piecewise regression models"
 thumbnail: /figs/thumbnails/2014-08-20-adjusted-pvalues-breakpoint-regression.png
 category: [Analysis]
-tags: [significance, breakpoint regression, multiple comparisons]
+tags: [significance, breakpoint regression, multiple comparisons, R]
 ---
 
 Last year, I published an [article](http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0069172) in which I critiqued the statistical tools used to assess the hypothesis that ultimate second-language (L2) proficiency is non-linearly related to the age of onset of L2 acquisition.

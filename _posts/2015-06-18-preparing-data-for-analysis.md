@@ -3,7 +3,7 @@ layout: post
 title: "Some tips on preparing your data for analysis"
 thumbnail: /figs/thumbnails/blank.png
 category: [Analysis]
-tags: [organisation]
+tags: [organisation, R]
 ---
 
 How to prepare your spreadsheets so that they can be analysed efficiently is something you tend to learn on the job.

@@ -10,16 +10,22 @@ group: navigation
 
 ## Submitted manuscripts and working papers
 
-Jan Vanhove and Raphael Berthele. 2015.  
+Jan Vanhove and Raphael Berthele.  
 Exploring the interactions between formal distance and participant-related variables in receptive multilingualism.  
 Revision submitted for publication.
+
+## Forthcoming
+
+Jan Vanhove.  
+The influence of Standard and substandard Dutch on gender assignment in L2 German.  
+Accepted for publication in _Language Learning_.
 
 ## 2016
 
 
 David Birdsong and Jan Vanhove. 2016.  
 Age of second-language acquisition: Critical periods and social concerns.  
-Accepted for publication in E. Nicoladis and S. Montanari (eds), _Bilingualism across the lifespan: Factors moderating language proficiency_, 163-182. Berlin/Washington, DC: De Gruyter Mouton/American Psychological Association. [Postprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/AgeofSLA.pdf)
+In E. Nicoladis and S. Montanari (eds), _Bilingualism across the lifespan: Factors moderating language proficiency_, 163-182. Berlin/Washington, DC: De Gruyter Mouton/American Psychological Association. [Postprint](http://homeweb.unifr.ch/VanhoveJ/Pub/papers/AgeofSLA.pdf)
 				
 
 

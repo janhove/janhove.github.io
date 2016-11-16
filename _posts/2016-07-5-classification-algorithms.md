@@ -2,7 +2,7 @@
 layout: post
 title: "Classifying second-language learners as native- or non-nativelike: Don't neglect classification error rates"
 category: [Analysis]
-tags: [machine learning, random forests]
+tags: [machine learning, random forests, R]
 ---
 
 I'd promised to write another installment on drawing [graphs]({% post_url 2016-06-21-drawing-a-boxplot %}),

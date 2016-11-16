@@ -2,7 +2,7 @@
 layout: post
 title: "Tutorial: Drawing a line chart"
 category: [Reporting]
-tags: [graphics, tutorial]
+tags: [graphics, tutorial, R]
 ---
 
 Graphs are incredibly useful

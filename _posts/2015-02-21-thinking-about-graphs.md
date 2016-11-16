@@ -3,7 +3,7 @@ layout: post
 title: "Thinking about graphs"
 thumbnail: /figs/thumbnails/2015-02-21-thinking-about-graphs.png
 category: [Reporting]
-tags: [graphics]
+tags: [graphics, R]
 ---
 
 I firmly believe that research results are best communicated graphically.

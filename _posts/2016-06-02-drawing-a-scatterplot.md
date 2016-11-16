@@ -2,7 +2,7 @@
 layout: post
 title: "Tutorial: Drawing a scatterplot"
 category: [Reporting]
-tags: [graphics, tutorial]
+tags: [graphics, tutorial, R]
 ---
 
 Graphs are incredibly useful

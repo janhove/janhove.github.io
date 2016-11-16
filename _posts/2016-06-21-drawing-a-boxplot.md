@@ -2,7 +2,7 @@
 layout: post
 title: "Tutorial: Drawing a boxplot"
 category: [Reporting]
-tags: [graphics, tutorial]
+tags: [graphics, tutorial, R]
 ---
 
 In the two previous blog posts,

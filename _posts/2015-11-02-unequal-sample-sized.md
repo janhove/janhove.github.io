@@ -3,7 +3,7 @@ layout: post
 title: "Causes and consequences of unequal sample sizes"
 thumbnail: /figs/blank.png
 category: [Design]
-tags: [power, design features, missing data]
+tags: [power, design features, missing data, R]
 ---
 
 In this blog post, I want to dispel a myth that’s reasonably common among students: the notion that there’s something wrong about a study that compares groups of different sizes.

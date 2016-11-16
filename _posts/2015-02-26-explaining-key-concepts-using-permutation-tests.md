@@ -3,7 +3,7 @@ layout: post
 title: "Explaining key concepts using permutation tests"
 thumbnail: /figs/thumbnails/2015-02-26-explaining-key-concepts-using-permutation-tests.png
 category: [Teaching]
-tags: [significance, design features]
+tags: [significance, design features, R]
 ---
 
 It's that time of year again where I have the honour of explaining the nuts and bolts of inferential statistics

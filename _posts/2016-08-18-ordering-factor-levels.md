@@ -2,7 +2,7 @@
 layout: post
 title: "R tip: Ordering factor levels more easily"
 category: [Analysis]
-tags: [R tip, graphics]
+tags: [R tip, graphics, R]
 ---
 
 By default, `R` sorts the levels of a factor alphabetically.

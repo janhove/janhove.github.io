@@ -3,7 +3,7 @@ layout: post
 title: "Covariate adjustment in logistic regression — and some counterintuitive findings"
 thumbnail: /figs/thumbnails/2015-07-17-covariate-adjustment-logistic-regression.png
 category: [Analysis]
-tags: [power, effect sizes, logistic regression]
+tags: [power, effect sizes, logistic regression, R]
 ---
 
 Including sensible covariates is a good idea when analysing continuous experimental data,

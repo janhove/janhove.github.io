@@ -3,7 +3,7 @@ layout: post
 title: "Power simulations for comparing independent correlations"
 thumbnail: /figs/thumbnails/2015-04-14-power-simulations-for-comparing-independent-correlations.png
 category: [Design]
-tags: [significance, power]
+tags: [significance, power, R]
 ---
 
 Every now and then, researchers want to compare the strength of a correlation between two samples or studies.

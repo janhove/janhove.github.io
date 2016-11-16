@@ -3,7 +3,7 @@ layout: post
 title: "The problem with cutting up continuous variables and what to do when things aren't linear"
 thumbnail: /figs/thumbnails/blank.png
 category: [Analysis]
-tags: [power, generalised additive models, non-linearities]
+tags: [power, generalised additive models, non-linearities, R]
 ---
 
 A common analytical technique is to cut up continuous variables (e.g. age, word frequency, L2 proficiency) into discrete categories and then use them as predictors in a group comparison (e.g. ANOVA). 

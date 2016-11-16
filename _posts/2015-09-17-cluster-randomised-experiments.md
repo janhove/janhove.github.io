@@ -3,7 +3,7 @@ layout: post
 title: "Analysing experiments with intact groups: the problem and an easy solution"
 thumbnail: /figs/thumbnails/2015-09-17-cluster-randomised-experiments.png
 category: [Design]
-tags: [significance, power, design features, cluster-randomised experiments]
+tags: [significance, power, design features, cluster-randomised experiments, R]
 ---
 
 To evaluate a new teaching method, a researcher arranges for one class of 20 students to be taught with the old method and another class of 20 students with the new method.
