@@ -81,7 +81,7 @@ and checks how often the observation sampled randomly from the first group is gr
 than the one sampled randomly from the second group.
 Ties are also taken into account.
 
-Here's how the `cls.fnc()` function works:
+Here's how the `cles.fnc()` function works:
 
 
 {% highlight r %}
