@@ -109,7 +109,7 @@ cles <- cles.fnc(variable = "Outcome", group = "Group", baseline = "A", data = d
 ##     Brute-force method: 0.4
 {% endhighlight %}
 
-The results for both methods aren't identical (38% vs. 41%), but they're in the same ballpark.
+The results for both methods aren't identical (38% vs. 40%), but they're in the same ballpark.
 This is more often the case than not.
 
 You can turn off the output by setting the parameter `print` to `FALSE`:
