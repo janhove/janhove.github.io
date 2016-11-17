@@ -43,7 +43,7 @@ df <- data.frame(Outcome = c(rbeta(40, 4, 14),   # 40 observations in A
 
 A couple of boxplots to show the spread and central tendencies:
 
-![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-194-1.png)
+![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-21-1.png)
 
 And the key summary statistics:
 
@@ -75,10 +75,12 @@ While they point out that their measure is quite robust with respect to this ass
 you can use a brute-force method that doesn't make this assumption to see 
 if that yields different results.
 
-On [http://janhove.github.io/RCode/CommonLanguageEffectSizes.R](http://janhove.github.io/RCode/CommonLanguageEffectSizes.R), I provide a function, `cles.fnc()`,
-that randomly pairs observations from the two groups a large number of times
-and checks how often the observation sampled randomly from the first group is greater
-than the one sampled randomly from the second group.
+**Edit: On Twitter, Guillaume Rousselet [suggested](https://twitter.com/robustgar/status/798962929475457024) a quicker _and_ mor exhaustive brute-force method for computing common-language effect sizes. I've updated the code and post to implement his suggestion.**
+
+On [http://janhove.github.io/RCode/CommonLanguageEffectSizes.R](http://janhove.github.io/RCode/CommonLanguageEffectSizes.R), 
+I provide a function, `cles.fnc()`,
+that pairs each observation from the first group to each observation from the second group
+and then checks how often the observation from the first group is larger than the one from the second group.
 Ties are also taken into account.
 
 Here's how the `cles.fnc()` function works:
@@ -88,12 +90,11 @@ Here's how the `cles.fnc()` function works:
 # Read in the function
 source("http://janhove.github.io/RCode/CommonLanguageEffectSizes.R")
 
-# Set the number of random samples (runs);
-# the variable you want to compare between the groups,
+# Set variable you want to compare between the groups,
 # the group name,
 # the baseline level,
 # and the dataset:
-cles <- cles.fnc(runs = 1e4, variable = "Outcome", group = "Group", baseline = "A", data = df)
+cles <- cles.fnc(variable = "Outcome", group = "Group", baseline = "A", data = df)
 {% endhighlight %}
 
 
@@ -105,9 +106,7 @@ cles <- cles.fnc(runs = 1e4, variable = "Outcome", group = "Group", baseline = "
 ## is higher/larger than a random Outcome observation from the other group(s):
 ## 
 ##     Algebraic method:   0.38
-##     Brute-force method: 0.41
-## 
-## (brute-force method based on 10000 runs)
+##     Brute-force method: 0.4
 {% endhighlight %}
 
 The results for both methods aren't identical (38% vs. 41%), but they're in the same ballpark.
@@ -117,10 +116,10 @@ You can turn off the output by setting the parameter `print` to `FALSE`:
 
 {% highlight r %}
 ## (not run)
-# cles <- cles.fnc(runs = 1e4, variable = "Outcome", group = "Group", baseline = "A", data = df, print = FALSE)
+# cles <- cles.fnc(variable = "Outcome", group = "Group", baseline = "A", data = df, print = FALSE)
 {% endhighlight %}
 
-You can also extract three pieces of information from the `cles` object if you want to pass them on to other functions:
+You can also extract information from the `cles` object if you want to pass it on to other functions:
 
 
 {% highlight r %}
@@ -142,19 +141,7 @@ cles$brute     # brute-force method
 
 
 {% highlight text %}
-## [1] 0.41
-{% endhighlight %}
-
-
-
-{% highlight r %}
-cles$runs      # number of randomly constructed AB pairs
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## [1] 10000
+## [1] 0.4
 {% endhighlight %}
 
 
@@ -172,7 +159,7 @@ df <- data.frame(Outcome = c(sample(0:20, 10, replace = TRUE),
 
 Boxplots:
 
-![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-201-1.png)
+![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-28-1.png)
 
 McGraw & Wong's (1992) method suggests that there's a 6% chance
 that a random observation in A will be higher than one in B.
@@ -182,7 +169,7 @@ but it's clearly correct at the sample level.
 
 
 {% highlight r %}
-cles.fnc(runs = 1e4, variable = "Outcome", group = "Group", baseline = "A", data = df)
+cles <- cles.fnc(variable = "Outcome", group = "Group", baseline = "A", data = df)
 {% endhighlight %}
 
 
@@ -195,21 +182,6 @@ cles.fnc(runs = 1e4, variable = "Outcome", group = "Group", baseline = "A", data
 ## 
 ##     Algebraic method:   0.06
 ##     Brute-force method: 0
-## 
-## (brute-force method based on 10000 runs)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## $algebraic
-## [1] 0.061
-## 
-## $brute
-## [1] 0
-## 
-## $runs
-## [1] 10000
 {% endhighlight %}
 
 ### For use with more complex datasets
@@ -230,7 +202,7 @@ df <- data.frame(Time = c(rep(1, 40), rep(2, 40), rep(3, 40)),
 
 The boxplots:
 
-![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-204-1.png)
+![center](/figs/2016-11-16-common-language-effect-sizes/unnamed-chunk-31-1.png)
 
 Using the `by()` function, you can run `cles.fnc()` separately for each `Time`.
 For more complex datasets, you can include more variables in the `INDICES` list.
@@ -241,7 +213,7 @@ cles <- with(df, # select dataframe df
              by(data = df, # group dataframe df
                 INDICES = list(Time = Time), # by Time
                 # and run cles.fnc() within each group
-                FUN = function(x) cles.fnc(runs = 1e4, "Outcome", "Group", "A", data = x, print = FALSE)))
+                FUN = function(x) cles.fnc("Outcome", "Group", "A", data = x, print = FALSE)))
 cles
 {% endhighlight %}
 
@@ -255,19 +227,13 @@ cles
 ## $brute
 ## [1] 0.55
 ## 
-## $runs
-## [1] 10000
-## 
 ## -------------------------------------------------------- 
 ## Time: 2
 ## $algebraic
 ## [1] 0.46
 ## 
 ## $brute
-## [1] 0.51
-## 
-## $runs
-## [1] 10000
+## [1] 0.5
 ## 
 ## -------------------------------------------------------- 
 ## Time: 3
@@ -276,7 +242,4 @@ cles
 ## 
 ## $brute
 ## [1] 0.77
-## 
-## $runs
-## [1] 10000
 {% endhighlight %}
