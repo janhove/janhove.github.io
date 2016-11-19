@@ -1,5 +1,5 @@
 #
-# plot.r.fnc
+# plot_r
 # 
 # Given a correlation coefficient and a sample size, 
 # this function draws 16 scatterplots
@@ -9,9 +9,9 @@
 # jan.vanhove@unifr.ch
 # http://janhove.github.io
 #
-# Last change: 18 November 2016
+# Last change: 19 November 2016
 
-plot.r.fnc <- function(r = 0.6, n = 50) {
+plot_r <- function(r = 0.6, n = 50, showdata = FALSE) {
   
   # Function for computing y vector.
   # Largely copy-pasted from
@@ -47,10 +47,10 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
   )
   
   # Case 1: Textbook case with normal x distribution and normally distributed residuals
-  x <- rnorm(n)
-  y <- rnorm(n)
-  y <- compute.y(x, y, r)
-  plot(
+  x <- rnorm(n)           # specify x distribution
+  y <- rnorm(n)           # specify y distribution
+  y <- compute.y(x, y, r) # recompute y to fit with x and r
+  plot(                   # plot
     x,
     y,
     ylab = "",
@@ -58,6 +58,8 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(1) Normal x, normal residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df1 <- data.frame(x, y) # store x and y to data frame
+ 
   
   # Case 2: Textbook case with uniform x distribution and normally distributed residuals
   x <- runif(n, 0, 1)
@@ -71,6 +73,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(2) Uniform x, normal residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df2 <- data.frame(x, y)
   
   # Case 3: Skewed x distribution (positive): A couple of outliers could have high leverage.
   x <- rlnorm(n, 5)
@@ -84,6 +87,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(3) +-skewed x, normal residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df3 <- data.frame(x, y)
   
   # Case 4: Skewed x distribution (negative): Same as 4.
   x <- rlnorm(n, 5) * -1 + 5000
@@ -97,6 +101,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(4) --skewed x, normal residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df4 <- data.frame(x, y)
   
   # Case 5: Skewed residual distribution (positive), similar to 3-4
   x <- rnorm(n)
@@ -110,6 +115,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(5) Normal x, +-skewed residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df5 <- data.frame(x, y)
   
   # Case 6: Skewed residual distribution (negative), same as 5
   x <- rnorm(n)
@@ -124,6 +130,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(6) Normal x, --skewed residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df6 <- data.frame(x, y)
   
   # Case 7: Variance increases with x. Correlation coefficient under/oversells predictive power depending on scenario.
   # Also, significance may be affected.
@@ -140,6 +147,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(7) Increasing spread", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df7 <- data.frame(x, y)
   
   # Case 8: Same as 7, but variance decreases with x
   x <- rnorm(n)
@@ -156,6 +164,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(8) Decreasing spread", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df8 <- data.frame(x, y)
   
   # Case 9: Nonlinearity (quadratic trend).
   x <- rnorm(n)
@@ -169,6 +178,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(9) Quadratic trend", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df9 <- data.frame(x, y)
   
   # Case 10: Sinusoid relationship
   x <- runif(n,-2 * pi, 2 * pi)
@@ -182,6 +192,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(10) Sinusoid relationship", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df10 <- data.frame(x, y)
   
   # Case 11: A single positive outlier can skew the results.
   x <- rnorm(n - 1)
@@ -196,6 +207,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(11) A single positive outlier", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df11 <- data.frame(x, y)
   
   # Regression without outlier
   group1 <- x[1:(n - 1)]
@@ -222,6 +234,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(12) A single negative outlier", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df12 <- data.frame(x, y)
   
   # Regression line without outlier
   group1 <- x[1:(n - 1)]
@@ -247,6 +260,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(13) Bimodal residuals", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df13 <- data.frame(x, y)
   
   # Case 14: Two groups
   # Create two groups within each of which
@@ -270,6 +284,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(14) Two groups", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df14 <- data.frame(x, y)
   
   # Also add lines of regression within each group
   
@@ -310,6 +325,7 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(15) Sampling at the extremes", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df15 <- data.frame(x, y)
   
   # Case 16: Lumpy x/y data, as one would observe for questionnaire items
   x <- sample(1:5, n, replace = TRUE, prob = sample(c(5, 4, 3, 2, 1))) # unequal proportions for each answer just for kicks
@@ -323,11 +339,29 @@ plot.r.fnc <- function(r = 0.6, n = 50) {
     main = paste("(16) Coarse data", sep = "")
   )
   abline(lm(y ~ x), col = "dodgerblue3")
+  df16 <- data.frame(x, y)
   
+  # Overall title
   title(
     paste("All correlations: r(", n, ") = ", r, sep = ""),
     outer = TRUE,
     cex.main = 2
   )
   par(op)
+  
+  # Define data frame with numeric output
+  df <- list(plot = 1:16, data = list(df1, df2, df3, df4,
+                                     df5, df6, df7, df8,
+                                     df9, df10, df11, df12,
+                                     df13, df14, df15, df16))
+  df <- structure(df, class = c("tbl_df", "data.frame"), row.names = 1:16)
+  
+  # Show numeric output depending on setting
+  if(!(showdata %in% c(NULL, TRUE, FALSE, 1:16, "all"))) {
+    warning("'showdata' must be TRUE, FALSE, 'all', or a number between 1 and 16.")
+  } else if(showdata %in% c(TRUE, "all")) {
+    return(df)
+  } else if(showdata %in% 1:16) {
+    return(df$data[[showdata]])
+  }
 }
