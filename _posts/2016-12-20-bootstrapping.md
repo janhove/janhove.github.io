@@ -228,7 +228,7 @@ This proportion is a _p_-value as it expresses the (approximate) probability of 
 sample statistic of at least this magnitude if the null hypothesis is actually true.
 
 (Example for more advanced users: 
-Likelihood ratio tests used for comparing nested mixed effects models are based on the assumption that likelihood ratios follow a $\chi^2$ distribution if the null hypothesis is true. 
+Likelihood ratio tests used for comparing nested mixed effects models are based on the assumption that likelihood ratios follow a Χ² distribution if the null hypothesis is true. 
 This is a good enough assumption for large samples, 
 but when you're fitting mixed effects models, it isn't always clear exactly what a large sample is.
 When in doubt, you can [resort](https://cran.r-project.org/web/packages/pbkrtest/index.html) to [bootstrapping](https://cran.r-project.org/web/packages/lme4/lme4.pdf#page.6) in such cases:
