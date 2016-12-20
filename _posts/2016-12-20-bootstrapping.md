@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A few examples of bootstrapping"
+title: "Some illustrations of bootstrapping"
 category: [Teaching]
 tags: [bootstrapping, R]
 ---
