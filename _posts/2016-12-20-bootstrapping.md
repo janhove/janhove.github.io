@@ -161,7 +161,7 @@ we fit a regression model on them and jot down the estimated coefficient for `z.
 
 The regression model above is really just an equation:
 
-![Regression equation](http://janhove.github.io/figs/2016-12-20-bootstrapping.equation.png)
+![Regression equation](http://janhove.github.io/figs/2016-12-20-bootstrapping/equation.png)
 
 where the random errors are assumed to be normally distributed around 0 with a standard deviation
 that is estimated from the data.
