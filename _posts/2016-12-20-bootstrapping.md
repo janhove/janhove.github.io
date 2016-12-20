@@ -161,7 +161,7 @@ we fit a regression model on them and jot down the estimated coefficient for `z.
 
 The regression model above is really just an equation:
 
-$$\textrm{TotCorrect}_i = 16.50 + 1.15 \times \textrm{z.WST}_i + 1.89 \times \textrm{z.Raven}_i + 1.60 \times \textrm{z.English.Cloze}_i + \textrm{random error}_i$$
+![Regression equation](http://janhove.github.io/figs/2016-12-20-bootstrapping.equation.png)
 
 where the random errors are assumed to be normally distributed around 0 with a standard deviation
 that is estimated from the data.
