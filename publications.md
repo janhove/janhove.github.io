@@ -8,10 +8,6 @@ group: navigation
 
 <p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
-## Submitted manuscripts and working papers
-
-
-
 ## Forthcoming
 
 Jan Vanhove.  
@@ -21,7 +17,7 @@ Accepted for publication in _Language Learning_.
 ## 2017
 
 Jan Vanhove and Raphael Berthele.  
-Interactions between formal distance and participant-related variables in receptive multilingualism.  
+[Interactions between formal distance and participant-related variables in receptive multilingualism](https://doi.org/10.1515/iral-2017-0007).  
 _International Review of Applied Linguistics in Language Teaching_, advance online publication.  
 Data and R code available from [figshare](https://dx.doi.org/10.6084/m9.figshare.1172058.v3).
 
