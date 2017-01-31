@@ -91,4 +91,6 @@ Note that if we decided we would rather have the argumentative first and the nar
 
 3. When the menial steps involve data that you need to preprocess or squeeze into the right format, don’t manually edit the original data files. Instead, do your data wrangling in your statistics program and use a script, not a graphical user interface. This way, any changes are documented and easily reversible.
 
-4. Most imporantly, *make a back-up of the files you want to edit*. Don’t run a command on batch of text files only to find out that all exclamation marks have been replaced by spaces rather than dots. You can’t click “undo previous” when working at the prompt.
+4. Double-check a couple of edited files to see if everything went according to plan.
+
+5. Most imporantly, *make a back-up of the files you want to edit*. Don’t run a command on batch of text files only to find out that all exclamation marks have been replaced by spaces rather than dots. You can’t click “undo previous” when working at the prompt.
