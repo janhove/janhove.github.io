@@ -2,7 +2,7 @@
 title: "More on why I don't like standardised effect sizes"
 layout: post
 output: html_document
-tags: [effect sizes, power]
+tags: [effect sizes, power, measurement error]
 thumbnail: /figs/thumbnails/blank.png
 category: [Design]
 ---

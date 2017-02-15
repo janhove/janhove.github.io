@@ -3,7 +3,7 @@ layout: post
 title: "Controlling for confounding variables in correlational research: Four caveats"
 thumbnail: /figs/thumbnails/blank.png
 category: [Design]
-tags: [correlational studies]
+tags: [correlational studies, measurement error]
 ---
 
 In correlational studies, it is often claimed that a predictor variable is related to the outcome, even after statistically controlling for a likely confound. This is then usually taken to suggest that the relationship between the predictor and the outcome is truly causal rather than a by-product of some more important effect. This post discusses four caveats that I think should be considered when interpreting such causal claims. These caveats are well-known in the literature on 'statistical control', but I think it's useful to discuss them here nonetheless.
