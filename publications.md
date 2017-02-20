@@ -8,13 +8,14 @@ group: navigation
 
 <p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
 
-## Forthcoming
 
-Jan Vanhove.  
-The influence of Standard and substandard Dutch on gender assignment in L2 German.  
-Accepted for publication in _Language Learning_.
 
 ## 2017
+
+Jan Vanhove.  
+[The influence of Standard and substandard Dutch on gender assignment in second language German](https://10.1111/lang.12230).  
+_Language Learning_, advance online publication.  
+Preregistration, elicitation materials, data and R code available from the [Open Science Framework](https://osf.io/5ahzj/).
 
 Jan Vanhove and Raphael Berthele.  
 [Interactions between formal distance and participant-related variables in receptive multilingualism](https://doi.org/10.1515/iral-2017-0007).  
