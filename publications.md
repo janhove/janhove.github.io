@@ -13,7 +13,7 @@ group: navigation
 ## 2017
 
 Jan Vanhove.  
-[The influence of Standard and substandard Dutch on gender assignment in second language German](https://10.1111/lang.12230).  
+[The influence of Standard and substandard Dutch on gender assignment in second language German](https://dx.doi.org/10.1111/lang.12230).  
 _Language Learning_, advance online publication.  
 Preregistration, elicitation materials, data and R code available from the [Open Science Framework](https://osf.io/5ahzj/).
 
