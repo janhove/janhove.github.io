@@ -635,6 +635,7 @@ a.thumbnail:hover{border-color:#0088cc;-webkit-box-shadow:0 1px 4px rgba(0, 105,
   text-indent: -2em;
   padding-left: 2em;
   max-width: 500px;
+  text-align: justify;
 }
 
 [alt=center] {
