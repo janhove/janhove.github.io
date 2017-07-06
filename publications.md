@@ -11,7 +11,7 @@ group: navigation
 <div id = "pub">
 
 <p>Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1111/lang.12230">The influence of Standard and substandard Dutch on gender assignment in second language German</a>. 
-<i>Language Learning</i>, advance online publication.<br />
+<i>Language Learning</i>. 67(2). 431&ndash;460.<br />
 Preregistration, elicitation materials, data and R code available from the <a href = "https://osf.io/5ahzj/">Open Science Framework</a>.</p>
 
 <p>Jan Vanhove and Raphael Berthele. 2017. <a href = "https://doi.org/10.1515/iral-2017-0007">Interactions between formal distance and participant-related variables in receptive multilingualism</a>. 
@@ -41,10 +41,10 @@ Data and R code available from
 <a href = "statintro.html">Statistische Grundlagen: eine Einführung mit Beispielen aus der Sprachforschung</a>.</p>
 
 <p>Jan Vanhove. 2015.
-<a href = "http://www.ssllt.amu.edu.pl/images/vol.5.no.1/SSLLT%205%281%29%20135-152%20Vanhove.pdf">Analyzing 
+<a href = "http://dx.doi.org/10.14746/ssllt.2015.5.1.7">Analyzing 
 randomized controlled interventions: Three notes for applied linguists</a>.
 <i>Studies in Second Language Learning and Teaching</i> 5(1). 135&ndash;152.<br />
-<b>Correction:</b> See the <a href = "http://www.ssllt.amu.edu.pl/images/vol.6.no.2/SSLLT%206(2)%20359-361%20Correction%20note.pdf">correction note</a> for this paper.</p>
+<b>Correction:</b> See the <a href = "http://pressto.amu.edu.pl/index.php/ssllt/article/view/5827/5895">correction note</a> for this paper.</p>
 
 <p>Jan Vanhove and Raphael Berthele. 2015.
 <a href = "http://dx.doi.org/10.1515/iral-2015-0001">The lifespan development of 
