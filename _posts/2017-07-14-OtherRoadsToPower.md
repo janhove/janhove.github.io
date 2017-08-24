@@ -38,6 +38,8 @@ convince you that the use of standardised effect sizes for planning studies
 overly stresses sample size as the main determinant of a study's power
 and that by abandoning it other roads to power can be opened up.
 
+<!--more-->
+
 # Interpretability
 When justifying their use of standardised effect sizes,
 researchers usually cite the need to be able to compare
