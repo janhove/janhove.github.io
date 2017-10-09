@@ -8,7 +8,7 @@ group: navigation
 
 <!--<div style="float:right,margin: 0px 0px 15px 20px"><img src="/figs/foto.JPG" alt="Photo" title="Photo"/> </div>-->
 <p><img style="float: right; margin: 0px 0px 15px 15px;" src="/figs/foto.JPG" alt="Photo" title="Photo"/>
-I'm an 'Oberassistent' (senior assistant) at the Department of Multilingualism at the University of Fribourg in Switzerland.</p>
+I'm a 'maître d'enseignment et de recherche / Lehr- und Forschungsrat' (senior lecturer?) at the Department of Multilingualism at the University of Fribourg in Switzerland.</p>
 
 <p>I studied English and Swedish literature and linguistics at Ghent University (B.A., 2007) and got my Master's in European linguistics at the University of Freiburg in Germany (2010). 
 I then briefly worked at the Department of Scandinavian Studies in Groningen (project <a href="http://www.let.rug.nl/gooskens/project/">Mutual intelligibility of closely related languages</a>) 

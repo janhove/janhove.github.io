@@ -10,6 +10,11 @@ group: navigation
 
 <div id = "pub">
 
+<p>Raphael Berthele and Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove independence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
+<i>International Journal of Bilingual Education and Bilingualism</i>.<br />
+Data and R code available from the <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
+
+
 <p>Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1111/lang.12230">The influence of Standard and substandard Dutch on gender assignment in second language German</a>. 
 <i>Language Learning</i>. 67(2). 431&ndash;460.<br />
 Preregistration, elicitation materials, data and R code available from the <a href = "https://osf.io/5ahzj/">Open Science Framework</a>.</p>
