@@ -101,6 +101,8 @@ intended to help you visualise in broad strokes the
 relationship between each determinant and statistical power.
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-1-1.png)
+> **Figure 1:** The three determinants of statistical power:
+> effect size, error variance, and sample size.
 
 (Sidebar: I'm yet to be convinced that single-figure
 claims about the statistical power of a study, e.g., are 
@@ -137,8 +139,9 @@ it would seem: it's difficult to come up with a situation
 in which researchers can change the effect size under
 investigation without changing their research question.
 Similarly, researchers may feel that the within-group
-variability isn't under their control: reducing
-measurement error is one theoretical option but it isn't 
+variability isn't under their control: 
+[reducing measurement error](https://neuroneurotic.net/2016/09/18/boosting-power-with-better-experiments/) 
+is one theoretical option but it isn't 
 always feasible; investigating a more homogeneous sample
 of participants is another option but one that's hardly
 desirable in a field in which samples are too homogeneous
@@ -268,13 +271,15 @@ terms because the latter assume a linear relationship
 between the covariate and the outcome. However,
 tools exist for modelling the 
 **covariate as a nonlinear term**, for instance, using
-polynomial terms or in generalised additive models. So
-modelling the covariate nonlinearly is the fourth option.
+polynomial terms or in 
+[generalised additive models](http://janhove.github.io/analysis/2015/10/16/nonlinear-relationships). 
+So modelling the covariate nonlinearly is the fourth option.
 
 # Comparison of different designs and methods of analysis
 So which design and which method of analysis are to be
 preferred in terms of power and precision? There are some
-published simulation results (e.g., Maxwell et al. 1984),
+published simulation results (e.g., 
+[Maxwell et al. 1984](http://psycnet.apa.org/doi/10.1037/0033-2909.95.1.136)),
 but for full flexibility I ran a couple of simulations
 of my own. The R code is absolutely atrocious, so I'll
 just summarise what I did.
@@ -362,6 +367,14 @@ related to the outcome.
 
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-2-1.png)
+> **Figure 2:** The proportion of _p_-values below 0.05
+> for simulations in which the condition effect was
+> actually 0 and the covariate was linearly related to the
+> outcome. These numbers should hover around the 0.05
+> mark; the dotted vertical lines the 95% probability
+> region around 0.05.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 Importantly, not all design/analysis combinations retain
 their nominal Type-I error rate of 0.05. On the one hand,
@@ -383,6 +396,14 @@ Compare this to a scenario where the covariate is
 maximally nonlinear:
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-3-1.png)
+> **Figure 3:** The proportion of _p_-values below 0.05
+> for simulations in which the condition effect was
+> actually 0 and the covariate was nonlinearly related to the
+> outcome. These numbers should hover around the 0.05
+> mark; the dotted vertical lines the 95% probability
+> region around 0.05.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 
 Again, the generalised additive model is anti-conservative, 
@@ -413,6 +434,12 @@ would on average be 2, i.e., the within-group
 standard deviation would be 1.4.)
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-4-1.png)
+> **Figure 4:** The proportion of _p_-values below 0.05
+> for simulations in which the condition effect was
+> 0.8 and the covariate was linearly related to the
+> outcome.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 When the covariate is linearly related to the outcome,
 the analyses in which the covariate is actually considered
@@ -448,6 +475,12 @@ a tad too optimistic).
 And now for a nonlinear covariate:
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-5-1.png)
+> **Figure 5:** The proportion of _p_-values below 0.05
+> for simulations in which the condition effect was
+> 0.8 and the covariate was nonlinearly related to the
+> outcome.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 
 Treating the covariate as potentially nonlinear
@@ -475,8 +508,20 @@ is slightly worse due to the loss of degrees of freedom;
 and the CRD is ever so slightly worse than the RBD and ARD.
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-6-1.png)
+> **Figure 6:** The 90th percentiles of the width of the
+> 95% confidence intervals around the condition effect
+> when the covariate was linearly related to the outcome.
+> In other words, 90% of the confidence intervals are
+> narrower than the numbers plotted above.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 ![center](/figs/2017-10-24-increasing-power-precision/unnamed-chunk-7-1.png)
+> **Figure 7:** The 90th percentiles of the width of the
+> 95% confidence intervals around the condition effect
+> when the covariate was nonlinearly related to the outcome.
+> (CRD = completely randomised design; ARD = alternate ranks
+> design; RBD = randomized block design)
 
 Note that both of the plots above show the 90th percentile 
 of the widths of the _entire_ confidence interval.
