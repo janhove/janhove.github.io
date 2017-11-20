@@ -5,7 +5,7 @@ category: [Design]
 tags: [design features, mixed-effects models, replication]
 ---
 
-In recent years, psychologists have started to run large-scale replications of seminal studies. For a variety of reasons, which I won’t go into, this welcome development hasn’t quite made it to research on language learning and bi- and multilingualism. That said, I think it can be interesting to scrutinise how these large-scale replications are conducted. In this blog post, I take a closer look at a replication attempt by [Donnell et al.](https://www.psychologicalscience.org/publications/replication-dijksterhuis-van-knippenberg) with some 4,500 participants that’s currently in press at Psychological Science and make five suggestions as to how I think similar replications could be designed to be even more informative.
+In recent years, psychologists have started to run large-scale replications of seminal studies. For a variety of reasons, which I won’t go into, this welcome development hasn’t quite made it to research on language learning and bi- and multilingualism. That said, I think it can be interesting to scrutinise how these large-scale replications are conducted. In this blog post, I take a closer look at a replication attempt by [O'Donnell et al.](https://www.psychologicalscience.org/publications/replication-dijksterhuis-van-knippenberg) with some 4,500 participants that’s currently in press at Psychological Science and make five suggestions as to how I think similar replications could be designed to be even more informative.
  
 <!--more-->
 
