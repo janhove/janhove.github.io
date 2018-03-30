@@ -10,6 +10,13 @@ group: navigation
 
 <div id = "pub">
 
+<h3>2018</h3>
+
+<p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2018. 
+<a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> 
+<i>International Journal of Bilingualism</i>.<br />
+Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.5379448">figshare</a>.</p>
+
 <h3>2017</h3>
 
 <p>Amelia Lambelet, Raphael Berthele, Magalie Desgrippes, Carlos Pestana and Jan Vanhove. 2017. Chapter 2: Testing interdependence in Portuguese Heritage speakers in Switzerland: the HELASCOT project. In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 26-33. Multilingual Matters.</p>

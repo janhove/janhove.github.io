@@ -15,7 +15,15 @@ title : Jan Vanhove - new publications
    <email>jan.vanhove@unifr.ch</email>
  </author>
  
-    <entry>
+<entry>
+	<title>New article - The effect of bidialectalism on executive function</title>
+	<link href="http://janhove.github.io/publications.html"/>
+	<updated>2018-03-30T11:00:00+01:00</updated>
+	<id>http://janhove.github.io/publications.html#bidialectalism</id>
+	<content type ="html">We investigate how varying usage patterns in speakers of closely related language varieties might impact executive function. More specifically, bidialectals with more balanced usage were predicted to show better inhibitory control than less balanced bidialectals. Thirty-four adult bidialectals of Standard German and Swabian German performed two executive function tasks (flanker and Simon). The participants’ reaction times on the two executive function tasks were analysed using regression models. Data and R code are available online. Contrary to predictions, Swabian-dominant bidialectals showed smaller flanker and Simon effects than balanced German-Swabian bidialectals. Furthermore, contrary to some previous studies, executive function task performances correlated significantly. We discuss how bidialectal language usage patterns can be assessed and how arbitrary analytical decisions affect findings regarding the effects of bidialectalism on executive function. These findings shed a new light on the effects of bilingualism/bidialectalism on executive function.</content>
+</entry> 
+
+<entry>
 	<title>New book chapter - Testing the interdependence of languages (HELASCOT project)</title>
 	<link href="http://janhove.github.io/publications.html"/>
 	<updated>2017-11-30T15:30:00+01:00</updated>
