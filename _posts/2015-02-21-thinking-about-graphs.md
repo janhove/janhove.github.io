@@ -80,7 +80,7 @@ ggplot(dat, aes(x = Block, y = CorrectVowel)) +
 > Only answers on untrained correspondences were considered, i.e., ‹ij› cognates for ‹oe› participants and vice versa.
 
 Some of the labels overlap, and I used a vector graphics editor ([Inkscape](http://inkscape.org)) to move the labels horizontally to sort that out.
-I think that this plot contains a lot of useful information, [especially compared to a run-of-the-mill barplot]({% post_url 07-01-2015-some-alternatives-to-barplots %}):
+I think that this plot contains a lot of useful information, [especially compared to a run-of-the-mill barplot]({% post_url 2015-01-07-some-alternatives-to-barplots %}):
 not only are the individual datapoints plotted, they are also labelled so that it's relatively easy to see that _schoen_ was a particulary difficult word and that _wijze_ saw a 10pp-increase in accuracy from Block 1 to Block 3.
 
 ### Other options?
