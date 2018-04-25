@@ -22,13 +22,13 @@ everywhere they look. This blog post is for them.
 
 In the following, I'll outline the assumptions of the
 simple linear regression and how they can be checked visually
-without succumbing to paranoia. $t$-tests, ANOVA and ANCOVA 
+without succumbing to paranoia. _t_-tests, ANOVA and ANCOVA 
 all make essentially the same
 assumptions. These assumptions can be checked in the same
 way as illustrated below, but doing so requires that they 
 are rewritten as regression models. For instance, if you
-want to test whether the mean of a variable called $Y$
-varies between group encoded in variable $X$ using a $t$-test,
+want to test whether the mean of a variable called _Y_
+varies between group encoded in variable _X_ using a _t_-test,
 you'd ordinarily do this in R using the following syntax:
 
 
@@ -72,7 +72,7 @@ on t-distributions, you tacitly assume that the residuals are drawn
 from a normal distribution. This assumption isn't _that_ important
 inasmuch as the Central Limit Theorem tends to kick in for reasonably-sized
 samples. Perhaps more importantly in such cases, the regression line
-captures the conditional means of $y$ given $x$ (e.g., the 
+captures the conditional means of _y_ given _x_ (e.g., the 
 estimated mean for the outcome when the predictor value is 15).
 But if the distribution of the residuals is bimodal, skewed
 or otherwise wonky, the mean may not be such a relevant summary
@@ -151,7 +151,7 @@ Buja et al. (2009) and Majumder et al. (2013) suggest the following procedure:
 <li>Fit your model.</li>
 <li>Simulate new outcome data from your model. In our example,
 the estimated intercept is about 7.83 and the estimated slope
-parameter for the `WST` variable is about 0.29.
+parameter for the WST variable is about 0.29.
 
 
 {% highlight r %}
@@ -167,9 +167,9 @@ coef(wst.lm)
 {% endhighlight %}
 
 For a participant
-with a `WST` value of 13, the fitted `TotCorrect` value is consequently
-$7.83 + 0.29 \times 13 = 11.6$. To simulate a new datum
-for such a participant, this fitted value ($11.6$)
+with a WST value of 13, the fitted TotCorrect value is consequently
+7.83 + 0.29*13 = 11.6. To simulate a new datum
+for such a participant, this fitted value (11.6)
 is combined with a random number drawn from a normal
 distribution whose mean is 0 and whose standard
 deviation equals the model estimate for the standard deviation
@@ -189,15 +189,15 @@ sigma(wst.lm)
 
 Such new outcome data are simulated a couple of times
 for each observation in the dataset. (This can be achieved
-quickly using the `simulate()` function.)
+quickly using the simulate() function.)
 
 
 Importantly, the new outcome data were simulated from
 a regression model that assumes that the relationship between
 the predictor and the outcome is linear, that the residuals
 are randomly sampled from one and the same normal distribution and
-so have constant variance. In a word, _all assumptions we
-want to test are literally true in the simulated data_.</li>
+so have constant variance. In a word, <i>all assumptions we
+want to test are literally true in the simulated data</i>.</li>
 
 <li>Now refit your model to the simulated datasets and extract the residuals from each model.</li>
 
