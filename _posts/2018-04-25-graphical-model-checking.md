@@ -290,7 +290,7 @@ ggplot(parade,
 
 In your view, which plot shows the strongest residual trend?
 
-After you've made up your mind, copy-paste `decrypt("Khsg zfVf Nq G9BNVN9q T")` (the output of the `lineup()` command above) to the R prompt.
+After you've made up your mind, copy-paste `decrypt("BW2I fPEP 3t dy13E3yt S")` (the output of the `lineup()` command above) to the R prompt.
 If this confirms your answer, then perhaps you ought to consider 
 reading up on models that can take into account nonlinear patterns.
 But if you thought another plot was more conspicuous, then that shows
