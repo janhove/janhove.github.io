@@ -12,6 +12,11 @@ group: navigation
 
 <h3>2018</h3>
 
+<p>Audrey Bonvin, Jan vanhove, Raphael Berthele and Amelia Lambelet. 2018.
+<a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz</a>.
+<i>Zeitschrift für Interkulturellen Fremdsprachenunterricht</i> 23(1). 135-148.<br />
+Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.4578991">figshare</a>.</p>
+
 <p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2018. 
 <a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> 
 <i>International Journal of Bilingualism</i>.<br />
