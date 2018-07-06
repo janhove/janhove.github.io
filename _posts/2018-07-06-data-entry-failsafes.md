@@ -1,5 +1,5 @@
 ---
-title: "A data entry form with failsafes"
+title: "A data entry form with sanity checks"
 layout: post
 tags: [data entry]
 category: [Design]
