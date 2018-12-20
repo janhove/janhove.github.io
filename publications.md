@@ -14,7 +14,7 @@ group: navigation
 
 <p>Jan Vanhvoe. Forthcoming.
 When labeling L2 users as nativelike or not, consider misclassification error.
-<i>Second Language Research</li>.<br />
+<i>Second Language Research</i>.<br />
 Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.</p>
 
 
