@@ -10,6 +10,18 @@ group: navigation
 
 <div id = "pub">
 
+<h3>To appear</h3>
+
+<p>Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. Forthcoming.
+Predicting perceptions of the lexical richness of short French, German, and Portuguese texts.
+<i>Journal of Writing Research</i>.<br />
+Technical report, data (including texts), elicitation materials, and R code available from the <a href="https://osf.io/vw4pc/">Open Science Framework</a>.</p>
+
+<p>Jan Vanhove. Forthcoming.
+Metalinguistic knowledge about the native language and language transfer in gender assignment.
+<i>Studies in Second Language Learning and Teaching</i>.<br />
+Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
+
 <h3>2018</h3>
 
 <p>Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018.
