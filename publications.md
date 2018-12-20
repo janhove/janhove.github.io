@@ -12,7 +12,7 @@ group: navigation
 
 <h3>To appear</h3>
 
-<p>Jan Vanhvoe. Forthcoming.
+<p>Jan Vanhove. Forthcoming.
 When labeling L2 users as nativelike or not, consider misclassification error.
 <i>Second Language Research</i>.<br />
 Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.</p>
