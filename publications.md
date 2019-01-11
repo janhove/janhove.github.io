@@ -6,7 +6,7 @@ group: navigation
 ---
 {% include JB/setup %}
 
-<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>
+<!--<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>-->
 
 <div id = "pub">
 
@@ -17,16 +17,17 @@ When labeling L2 users as nativelike or not, consider misclassification error.
 <i>Second Language Research</i>.<br />
 Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.</p>
 
-
-<p>Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. Forthcoming.
-Predicting perceptions of the lexical richness of short French, German, and Portuguese texts.
-<i>Journal of Writing Research</i>.<br />
-Technical report, data (including texts), elicitation materials, and R code available from the <a href="https://osf.io/vw4pc/">Open Science Framework</a>.</p>
-
 <p>Jan Vanhove. Forthcoming.
 Metalinguistic knowledge about the native language and language transfer in gender assignment.
 <i>Studies in Second Language Learning and Teaching</i>.<br />
 Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
+
+<h3>2019</h3>
+
+<p>Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. Forthcoming.
+<a href="http://www.jowr.org/abstracts/vol10_3/VanHove_et_al_2019_10_3_abstract.html">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts</a>.
+<i>Journal of Writing Research</i>.<br />
+Technical report, data (including texts), elicitation materials, and R code available from the <a href="https://osf.io/vw4pc/">Open Science Framework</a>.</p>
 
 <h3>2018</h3>
 
