@@ -19,7 +19,7 @@ Data, elicitation materials, and R code available from the <a href="https://osf.
 
 <h3>2019</h3>
 
-<p>Jan Vanhove. Forthcoming.
+<p>Jan Vanhove.
 <a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>.
 <i>Second Language Research</i>.
 <a href="https://doc.rero.ch/record/324140">Preprint</a>.<br />
