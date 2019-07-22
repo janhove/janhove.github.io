@@ -10,14 +10,12 @@ group: navigation
 
 <div id = "pub">
 
-<h3>To appear</h3>
-
-<p>Jan Vanhove. Forthcoming.
-Metalinguistic knowledge about the native language and language transfer in gender assignment.
-<i>Studies in Second Language Learning and Teaching</i>.<br />
-Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
-
 <h3>2019</h3>
+
+<p>Jan Vanhove. 2019.
+<a href="https://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove2019c.pdf">Metalinguistic knowledge about the native language and language transfer in gender assignment</a>.
+<i>Studies in Second Language Learning and Teaching</i> 9(2). 397-419.<br />
+Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
 
 <p>Jan Vanhove. 2019.
 <a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>.
