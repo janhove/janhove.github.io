@@ -7,7 +7,8 @@ group: navigation
 {% include JB/setup %}
 
 <!--<div style="float:right,margin: 0px 0px 15px 20px"><img src="/figs/foto.JPG" alt="Photo" title="Photo"/> </div>-->
-<p><img style="float: right; margin: 0px 0px 15px 15px; max-width: 250px; height: auto;" src="https://www3.unifr.ch/pluriling/en/assets/public/fotos/team/jan_vanhove.jpg" alt="Me loitering about the restrooms." title="Photo"/>
+<!--<p><img style="float: right; margin: 0px 0px 15px 15px; max-width: 250px; height: auto;" src="https://www3.unifr.ch/pluriling/en/assets/public/fotos/team/jan_vanhove.jpg" alt="Me loitering about the restrooms." title="Photo"/>-->
+<p><img style="float: right; margin: 0px 0px 15px 15px; max-width: 250px; height: auto;" src="/figs/jan_kop.jpg" alt="" title="Photo"/>
 I'm a 'maître d'enseignment et de recherche / Lehr- und Forschungsrat' (which I think corresponds to 'senior lecturer' elsewhere. I get a pay check at the end of the month is all I know) at the Department of Multilingualism at the University of Fribourg in Switzerland.</p>
 
 <p>I studied English and Swedish literature and linguistics at Ghent University (B.A., 2007) and got my Master's in European linguistics at the University of Freiburg in Germany (2010). 
