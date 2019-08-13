@@ -13,11 +13,25 @@ I'm a 'maître d'enseignment et de recherche / Lehr- und Forschungsrat' (which I
 
 <p>I studied English and Swedish literature and linguistics at Ghent University (B.A., 2007) and got my Master's in European linguistics at the University of Freiburg in Germany (2010). 
 I then briefly worked at the Department of Scandinavian Studies in Groningen (project <a href="http://www.let.rug.nl/gooskens/project/">Mutual intelligibility of closely related languages</a>) 
-before finally coming to Fribourg to do my <a href="http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf">PhD</a>(2014).</p>
+before finally coming to Fribourg to do my <a href="http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf">PhD</a> (2014).</p>
 
 <p>Apart from persuing my own research interests (e.g., about multilingualism in closely related languages), 
 I regularly collaborate on projects at the <a href = "http://www.institut-mehrsprachigkeit.ch/en/">Institute of Multilingualism</a>
-(e.g., on heritage languages, language aptitude, and lexical richness).</p>
+(e.g., on 
+<a href="http://www.institut-mehrsprachigkeit.ch/en/content/language-origin-and-language-school">heritage languages</a>, 
+<a href="http://www.institut-mehrsprachigkeit.ch/en/content/language-aptitude-why-and-how-assess-it">language aptitude</a>, and 
+<a href="http://www.institut-mehrsprachigkeit.ch/en/content/written-productions-children-immigration-background">lexical richness</a>).</p>
+
+
+<h3>Sundry profiles</h3>
+
+<p><a href="https://twitter.com/janhove">Twitter</a></p>
+
+<p><a href ="https://scholar.google.com/citations?user=xZ5id3sAAAAJ">Google Scholar</a></p>
+
+<p><a href="https://orcid.org/0000-0002-4607-4836">ORCID</a></p>
+
+<p><a href="https://publons.com/researcher/J-1146-2019/">Publons</a></p>
 
 <h3>Contact</h3>
 
