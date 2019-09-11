@@ -41,11 +41,11 @@ You find the `R` code reproduce all analyses at the bottom of this page.
 
 The `outcome` in each dataset was created using the following equation:
 
-$$\textrm{outcome}_i = 0.4\times\textrm{predictor1}_i + 1.9\times\textrm{predictor2}_i + \varepsilon_i$$
+![center](/figs/2019-09-11-collinearity/equation.png)
 
-where the residuals ($\varepsilon_i$) were drawn from a normal distribution with a standard deviation of 3.5.
+where the residuals were drawn from a normal distribution with a standard deviation of 3.5.
 
-$$\varepsilon_i \sim N(0, 3.5^2)$$
+![center](/figs/2019-09-11-collinearity/residuals.png)
 
 The four datasets are presented in **Figures 1 through 4**. Beginning analysts may be surprised
 to see that I consider a situation where two predictors are correlated at r = 0.50 to be a case
@@ -102,7 +102,7 @@ the estimates vary much more around this average when there is strong collineari
 > in which the two predictors were completely orthogonal (r = 0.00) and from
 > a distribution in which they were highly correlated (r = 0.98). In all
 > cases, both predictors were independently related to the outcome:
-> $\textrm{outcome}_i = 0.4\times\textrm{predictor1}_i + 1.9\times\textrm{predictor2}_i + \varepsilon_i$.
+> ![equation](/figs/2019-09-11-collinearity/equation.png).
 > On each simulated sample, I ran a multiple regression model, and I then 
 > extracted the estimated model coefficients. This figure shows the estimated
 > coefficients for the first predictor. While the estimates vary more when
