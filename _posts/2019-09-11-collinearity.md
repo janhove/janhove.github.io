@@ -1,6 +1,7 @@
 ---
 title: "Collinearity isn't a disease that needs curing"
 layout: post
+mathjax: true
 tags: [R, multiple regression, assumptions, collinearity]
 category: [Analysis]
 ---
