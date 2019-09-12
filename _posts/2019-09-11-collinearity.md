@@ -16,8 +16,6 @@ collaborator at ease, so below you find my more elaborate answer.
 
 <!--more-->
 
-
-
 ## What's collinearity?
 Collinearity (or 'multicollinearity') means that a substantial
 amount of information contained in some of the predictors
@@ -32,21 +30,13 @@ I've created four datasets with two continuous predictors to illustrate
 collinearity and its consequences. 
 You find the `R` code reproduce all analyses at the bottom of this page.
 
-
-
-
-
-
-
-
-
 The `outcome` in each dataset was created using the following equation:
 
-![center](/figs/2019-09-11-collinearity/equation.png)
+$$\textrm{outcome}_i = 0.4 \times \textrm{predictor1}_i + 1.9 \times \textrm{predictor2}_i + \varepsilon_i$$
 
-where the residuals were drawn from a normal distribution with a standard deviation of 3.5.
+where the residuals ($\varepsilon$) were drawn from a normal distribution with a standard deviation of 3.5.
 
-![center](/figs/2019-09-11-collinearity/residuals.png)
+$$\varepsilon_i \sim N(0, 3.5^2)$$
 
 The four datasets are presented in **Figures 1 through 4**. Beginning analysts may be surprised
 to see that I consider a situation where two predictors are correlated at r = 0.50 to be a case
@@ -78,7 +68,6 @@ you obtain the estimates that are shown in **Figure 5** along with
 their 90% confidence intervals.
 
 
-
 ![center](/figs/2019-09-11-collinearity/unnamed-chunk-10-1.png)
 
 > **Figure 5.** Estimated coefficients and their 90% confidence intervals for the models fitted to the four datasets. 
@@ -96,14 +85,13 @@ both when there is no and very strong collinearity. It's just that
 the estimates vary much more around this average when there is strong collinearity.
 
 
-
 ![center](/figs/2019-09-11-collinearity/unnamed-chunk-12-1.png)
 
 > **Figure 6.** I simulated samples of 50 observations from a distribution
 > in which the two predictors were completely orthogonal (r = 0.00) and from
 > a distribution in which they were highly correlated (r = 0.98). In all
 > cases, both predictors were independently related to the outcome:
-> ![equation](/figs/2019-09-11-collinearity/equation.png).
+> $\textrm{outcome}_i = 0.4 \times \textrm{predictor1}_i + 1.9 \times \textrm{predictor2}_i + \varepsilon_i$.
 > On each simulated sample, I ran a multiple regression model, and I then 
 > extracted the estimated model coefficients. This figure shows the estimated
 > coefficients for the first predictor. While the estimates vary more when
