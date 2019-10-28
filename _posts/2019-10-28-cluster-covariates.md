@@ -60,10 +60,11 @@ library(lme4)       # fitting multilevel models
 library(lmerTest)   # for p-values in multilevel models
 
 # Generate clustered data; set seed for reproducibility
-set.seed(2019-10-27)
-d_example <- clustered_data(n_per_class = sample(15:25, size = 14, replace = TRUE),
-                            ICC = 0.15, effect = 0.2, 
-                            reliability_post = 1, reliability_pre = 0.7^2)
+set.seed(2019-10-28, kind = "Mersenne-Twister")
+d_example <- clustered_data(
+  n_per_class = sample(15:25, size = 14, replace = TRUE),
+  ICC = 0.15, effect = 0.2, 
+  reliability_post = 1, reliability_pre = 0.7^2)
 {% endhighlight %}
 
 You can consult the help page for the `clustered_data()` command
@@ -173,24 +174,24 @@ summary(m1)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -0.4352 -0.4045  0.0499  0.3300  0.5185 
+## -0.8311 -0.3386  0.0264  0.2692  0.8889 
 ## 
 ## Coefficients:
 ##                       Estimate Std. Error t value Pr(>|t|)
-## (Intercept)             0.0674     0.1418    0.48    0.643
-## conditionintervention   0.3865     0.2006    1.93    0.078
+## (Intercept)            -0.0478     0.1831   -0.26    0.798
+## conditionintervention   0.4973     0.2590    1.92    0.079
 ## 
-## Residual standard error: 0.375 on 12 degrees of freedom
-## Multiple R-squared:  0.236,	Adjusted R-squared:  0.173 
-## F-statistic: 3.71 on 1 and 12 DF,  p-value: 0.078
+## Residual standard error: 0.485 on 12 degrees of freedom
+## Multiple R-squared:  0.235,	Adjusted R-squared:  0.171 
+## F-statistic: 3.69 on 1 and 12 DF,  p-value: 0.0789
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.40 \pm 0.34$,
-and the result of the significance test is $t(12) = 1.16$, $p = 0.27$. 
+The estimated intervention effect in this example is $0.50 \pm 0.26$,
+and the result of the significance test is $t(12) = 1.92$, $p = 0.08$. 
 (You find the degrees of freedom for the t-test on the third line from the bottom.)
 
 Some researchers may object that this approach reduces the
-original data set of 279 observations to just the 14 class means
+original data set of 280 observations to just the 14 class means
 and hence throws away vital information. Having reached a certain age, 
 I'll quote myself on this topic:
 
@@ -249,30 +250,30 @@ summary(m2)
 ## Formula: outcome ~ condition + (1 | class)
 ##    Data: d_example
 ## 
-## REML criterion at convergence: 804
+## REML criterion at convergence: 833
 ## 
 ## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -2.765 -0.668 -0.106  0.685  2.576 
+##     Min      1Q  Median      3Q     Max 
+## -2.6984 -0.5908  0.0535  0.6678  2.2562 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  class    (Intercept) 0.0939   0.306   
-##  Residual             0.9129   0.955   
-## Number of obs: 286, groups:  class, 14
+##  class    (Intercept) 0.169    0.411   
+##  Residual             1.064    1.031   
+## Number of obs: 280, groups:  class, 14
 ## 
 ## Fixed effects:
-##                       Estimate Std. Error     df t value Pr(>|t|)
-## (Intercept)              0.075      0.140 11.544    0.53    0.603
-## conditionintervention    0.394      0.200 11.830    1.97    0.072
+##                       Estimate Std. Error      df t value Pr(>|t|)
+## (Intercept)            -0.0614     0.1781 11.2342   -0.34    0.737
+## conditionintervention   0.5100     0.2527 11.4011    2.02    0.068
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr)
-## cndtnntrvnt -0.702
+## cndtnntrvnt -0.705
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.38 \pm 0.34$,
-and the result of the significance test is $t(12.1) = 1.11$, $p = 0.29$.
+The estimated intervention effect in this example is $0.51 \pm 0.26$,
+and the result of the significance test is $t(11.4) = 2.02$, $p = 0.07$.
 This is slightly different from but highly similar to the results for Approach 1.
 Both approaches will yield _identical_ results if all clusters have the same size,
 so keep things simple if this is the case for your data (also see Murtaugh 2007).
@@ -337,20 +338,20 @@ summary(m3)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -0.2686 -0.1527 -0.0046  0.1228  0.3693 
+## -0.4615 -0.2164  0.0701  0.1637  0.4497 
 ## 
 ## Coefficients:
 ##                       Estimate Std. Error t value Pr(>|t|)
-## (Intercept)            -0.1317     0.0778   -1.69    0.116
-## conditionintervention   0.2302     0.1100    2.09    0.058
+## (Intercept)             -0.220      0.113   -1.96   0.0740
+## conditionintervention    0.492      0.159    3.09   0.0094
 ## 
-## Residual standard error: 0.206 on 12 degrees of freedom
-## Multiple R-squared:  0.267,	Adjusted R-squared:  0.206 
-## F-statistic: 4.38 on 1 and 12 DF,  p-value: 0.0583
+## Residual standard error: 0.298 on 12 degrees of freedom
+## Multiple R-squared:  0.443,	Adjusted R-squared:  0.397 
+## F-statistic: 9.55 on 1 and 12 DF,  p-value: 0.00936
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.25 \pm 0.17$,
-and the result of the significance test is $t(12) = 1.49$, $p = 0.16$. 
+The estimated intervention effect in this example is $0.49 \pm 0.16$,
+and the result of the significance test is $t(12) = 3.09$, $p = 0.01$. 
 Note how in this example, the standard error for the intervention effect 
 estimate is more than halved compared to the two approaches that ignore the 
 covariate.
@@ -392,21 +393,21 @@ summary(m4)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -0.3372 -0.0942  0.0087  0.0661  0.3394 
+## -0.2885 -0.1814  0.0371  0.1027  0.5279 
 ## 
 ## Coefficients:
 ##                       Estimate Std. Error t value Pr(>|t|)
-## (Intercept)             0.1786     0.0741    2.41    0.035
-## conditionintervention   0.1649     0.1079    1.53    0.155
-## mean_pretest            0.6530     0.1089    6.00    9e-05
+## (Intercept)             0.0455     0.0889    0.51   0.6188
+## conditionintervention   0.4870     0.1241    3.93   0.0024
+## mean_pretest            0.8994     0.1399    6.43  4.9e-05
 ## 
-## Residual standard error: 0.19 on 11 degrees of freedom
-## Multiple R-squared:  0.821,	Adjusted R-squared:  0.789 
-## F-statistic: 25.2 on 2 and 11 DF,  p-value: 7.76e-05
+## Residual standard error: 0.232 on 11 degrees of freedom
+## Multiple R-squared:  0.839,	Adjusted R-squared:  0.81 
+## F-statistic: 28.7 on 2 and 11 DF,  p-value: 4.32e-05
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.15 \pm 0.11$,
-and the result of the significance test is $t(11) = 1.36$, $p = 0.20$.
+The estimated intervention effect in this example is $0.49 \pm 0.12$,
+and the result of the significance test is $t(11) = 3.93$, $p = 0.002$.
 Note how in this example, too, the standard error is considerably lower than 
 in the two approaches that ignore the covariate.
 
@@ -440,32 +441,32 @@ summary(m5)
 ## Formula: outcome ~ condition + pretest + (1 | class)
 ##    Data: d_example
 ## 
-## REML criterion at convergence: 618
+## REML criterion at convergence: 680
 ## 
 ## Scaled residuals: 
 ##     Min      1Q  Median      3Q     Max 
-## -3.1224 -0.6648  0.0141  0.7290  2.8168 
+## -2.5381 -0.6974  0.0239  0.6771  2.7744 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  class    (Intercept) 0.020    0.142   
-##  Residual             0.477    0.691   
-## Number of obs: 286, groups:  class, 14
+##  class    (Intercept) 0.0577   0.240   
+##  Residual             0.6143   0.784   
+## Number of obs: 280, groups:  class, 14
 ## 
 ## Fixed effects:
 ##                       Estimate Std. Error       df t value Pr(>|t|)
-## (Intercept)             0.1494     0.0783  11.0299    1.91    0.083
-## conditionintervention   0.2465     0.1120  11.5437    2.20    0.049
-## pretest                 0.4432     0.0267 282.8240   16.60   <2e-16
+## (Intercept)            -0.0131     0.1122  10.8640   -0.12   0.9095
+## conditionintervention   0.5054     0.1594  11.0897    3.17   0.0088
+## pretest                 0.4628     0.0317 275.3617   14.62   <2e-16
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) cndtnn
-## cndtnntrvnt -0.701       
-## pretest      0.053 -0.082
+## cndtnntrvnt -0.703       
+## pretest      0.033 -0.004
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.25 \pm 0.18$,
-and the result of the significance test is $t(11.5) = 1.38$, $p = 0.19$. 
+The estimated intervention effect in this example is $0.51 \pm 0.16$,
+and the result of the significance test is $t(11.1) = 3.17$, $p = 0.01$. 
 Again the pretest effect is entirely uninteresting; just include it in the analysis but otherwise ignore it.
 
 So we have at least five ways of analysing data from 
@@ -838,6 +839,6 @@ Vanhove, Jan. 2015.
 _Studies in Second Language Learning and Teaching_ 5. 135–152.
 Also see the [correction note](http://pressto.amu.edu.pl/index.php/ssllt/article/view/5827/5895) for this paper.
 
-Wright, Neil D. 2015. 
-[_Choosing covariates in the analysis of cluster randomised trials_.](http://qmro.qmul.ac.uk/xmlui/handle/123456789/9017)
-Queen Mary University of London PhD thesis.
+<!-- Wright, Neil D. 2015.  -->
+<!-- [_Choosing covariates in the analysis of cluster randomised trials_.](http://qmro.qmul.ac.uk/xmlui/handle/123456789/9017) -->
+<!-- Queen Mary University of London PhD thesis. -->
