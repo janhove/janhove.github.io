@@ -108,7 +108,7 @@ ggplot(data = d_example,
   facet_wrap(~ condition, scales = "free_x")
 {% endhighlight %}
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-25-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-21-1.png)
 
 > **Figure 1.** Simulated data for a cluster-randomised experiment in which
 > seven classes were assigned to the control condition and seven to the
@@ -125,7 +125,7 @@ ggplot(data = d_example,
   geom_smooth(method = "lm", se = FALSE)
 {% endhighlight %}
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-26-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-22-1.png)
 
 > **Figure 2.** Pretest vs. outcome scores in the simulated 
 > cluster-randomised experiment. The pretest could actually
@@ -149,7 +149,7 @@ d_per_class <- d_example %>%
 
 **Figure 3** shows what this looks like.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-28-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-24-1.png)
 
 > **Figure 3.** In Approach 1, the outcome is averaged per class,
 > and it is these averages that are analysed in the statistical model.
@@ -313,7 +313,7 @@ d_per_class <- d_example %>%
 
 **Figure 4** shows what this looks like.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-33-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-29-1.png)
 
 > **Figure 4.** In Approach 3, the outcome is first regressed against
 > the covariate. The residuals of this regression are then averaged
@@ -371,7 +371,7 @@ d_per_class <- d_example %>%
 
 **Figure 5** shows the data that are submitted to the statistical analysis.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-36-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-32-1.png)
 
 > **Figure 5.** In Approach 4, both the outcome and the covariate
 > are averaged per class. The averaged covariate is then used
@@ -535,7 +535,7 @@ significant difference in only 5% of cases. In other words, the Type-I
 error rate should be 0.05. As **Figure 6** shows, all five analytical approaches
 seem to have the advertised Type-I error rate of 0.05.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-41-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-37-1.png)
 
 > **Figure 6.** Observed Type-I error rates for scenario 1 (typical
 > cluster sizes, intra-class correlation of 0.17). If the true
@@ -547,7 +547,7 @@ seem to have the advertised Type-I error rate of 0.05.
 When there is an effect of the intervention, we should observe significant
 differences more often. As **Figure 7** shows, Approach 4 performs either on par with or considerably better than the alternative approaches.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-42-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-38-1.png)
 
 > **Figure 7.** Observed power for scenario 1 (typical
 > cluster sizes, intra-class correlation of 0.17). When
@@ -601,7 +601,7 @@ is lower (0.03). As **Figure 8** shows, Approach 5 (multilevel model with covari
 
 
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-46-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-42-1.png)
 
 > **Figure 8.** Observed Type-I error rates for scenario 2 (typical
 > cluster sizes, intra-class correlation of 0.03). If the true
@@ -611,7 +611,7 @@ is lower (0.03). As **Figure 8** shows, Approach 5 (multilevel model with covari
 > is fairly strongly related to the outcome, but otherwise
 > all five approaches seem to perform adequately in terms of their Type-I error rate.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-47-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-43-1.png)
 
 > **Figure 9.** Observed power for scenario 2 (typical
 > cluster sizes, intra-class correlation of 0.03). 
@@ -641,7 +641,7 @@ in this setting, yet performs best power-wise.
 
 
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-51-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-47-1.png)
 
 > **Figure 10.** Observed Type-I error rates for scenario 3 
 > (wildly different cluster sizes, intra-class correlation of 0.17).
@@ -650,7 +650,7 @@ in this setting, yet performs best power-wise.
 > The other four approaches seem to be perform adequately
 > in terms of their Type-I error rate.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-52-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-48-1.png)
 
 > **Figure 11.** Observed power for scenario 3 
 > (wildly different cluster sizes, intra-class correlation of 0.17).
@@ -682,7 +682,7 @@ the correlation between outcome and covariate is fairly strong.
 
 
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-56-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-52-1.png)
 
 > **Figure 12.** Observed Type-I error rates for scenario 4 
 > (wildly different cluster sizes, intra-class correlation of 0.03).
@@ -696,7 +696,7 @@ the correlation between outcome and covariate is fairly strong.
 
 
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-60-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-56-1.png)
 
 > **Figure 13.** Since the observed Type-I error rate
 > varied considerably between the five approaches in scenario 4
@@ -736,7 +736,7 @@ p-values. If you try out two or more approaches and
 always report the lowest p-value, your Type-I error rate
 will blow up (see Simmons et al. 2011).
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-63-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-59-1.png)
 
 > **Figure 14.** _Left:_ p-values for Approaches 4 (x-axis) and 5 (y-axis)
 > ran on the same data when there is no intervention effect. _Right:_ Same,
@@ -763,14 +763,14 @@ reasonable for cluster-randomised experiments with few clusters.
 
 
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-65-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-61-1.png)
 
 > **Figure 15.** Observed Type-I error rates for a cluster-randomised
 > experiment with just 6 classes of similar size, an ICC of 0.17 and a fairly
 > strong covariate ($\rho = 0.7$). All approaches perform adequately
 > in terms of their Type-I error.
 
-![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-66-1.png)
+![center](/figs/2019-10-28-cluster-covariates/unnamed-chunk-62-1.png)
 
 > **Figure 16.** Observed power for a cluster-randomised
 > experiment with just 6 classes of similar size, 
