@@ -50,7 +50,7 @@ I ran a simulation to find out, which I'll report in the remainder of this post.
 
 <!--more-->
 
-### Introducing the contenders contenders
+### Introducing the contenders
 
 Below, I'm going to introduce three R functions for computing
 confidence intervals for standardised effect sizes (standardised mean

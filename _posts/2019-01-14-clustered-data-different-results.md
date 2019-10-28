@@ -1,7 +1,7 @@
 ---
 title: "Guarantees in the long run vs. interpreting the data at hand: Two analyses of clustered data"
 layout: post
-tags: [mixed-effect models, cluster-randomised experiments]
+tags: [R, mixed-effects models, cluster-randomised experiments]
 category: [Analysis]
 ---
 
