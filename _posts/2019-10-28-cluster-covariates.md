@@ -272,7 +272,7 @@ summary(m2)
 ## cndtnntrvnt -0.705
 {% endhighlight %}
 
-The estimated intervention effect in this example is $0.51 \pm 0.26$,
+The estimated intervention effect in this example is $0.51 \pm 0.25$,
 and the result of the significance test is $t(11.4) = 2.02$, $p = 0.07$.
 This is slightly different from but highly similar to the results for Approach 1.
 Both approaches will yield _identical_ results if all clusters have the same size,
@@ -353,7 +353,7 @@ summary(m3)
 The estimated intervention effect in this example is $0.49 \pm 0.16$,
 and the result of the significance test is $t(12) = 3.09$, $p = 0.01$. 
 Note how in this example, the standard error for the intervention effect 
-estimate is more than halved compared to the two approaches that ignore the 
+estimate is considerably reduced compared to the two approaches that ignore the 
 covariate.
 
 ### Approach 4: Analyse the cluster means, adjust for the cluster mean covariate values
