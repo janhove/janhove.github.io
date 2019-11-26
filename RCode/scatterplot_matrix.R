@@ -50,9 +50,3 @@ myScatterMatrix <- function(..., cex.labels = 1.8, top = panel.smooth, bottom = 
   pairs(..., upper.panel = top, lower.panel = bottom, diag.panel = middle, las = las, cex.labels = cex.labels)
 }
 
-data(iris)
-myScatterMatrix(
-  x = subset(iris, select = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width)),
-  labels = c("Length sepal", "Width sepal", "Length petal", "Width petal"),
-  cex.labels = 1.2
-)
