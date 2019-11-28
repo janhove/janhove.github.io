@@ -6,7 +6,7 @@ panel.cor <- function(x, y, ...)
   # text(0.5, 0.5, txt, cex = 2.5*sqrt(abs(cor(x,y, use = "p"))))
   text(0.5, 0.5, txt, cex = 1.3)
   text(0.5, 0.3, paste("n =", length(x[!is.na(x) & !is.na(y)])))
-  text(0.5, 0.1, paste("missing:", length(x[is.na(x) | is.na(y)])))
+  # text(0.5, 0.1, paste("missing:", length(x[is.na(x) | is.na(y)])))
   ## uncomment these lines to also plot a 95% confidence interval
   #CI <- paste(paste(expression("95%")), 
   #            "-BI: ",
