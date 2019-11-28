@@ -49,7 +49,7 @@ panel.hist <- function(x, ...)
   text(mean(range(x[!is.na(x)])), 1.1*max(y), paste("n =", length(x[!is.na(x)])))
 }
 
-myScatterMatrix <- function(..., cex.labels = 1.5, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1, tcl = -0.2) {
+scatterplot_matrix <- function(..., cex.labels = 1.5, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1, tcl = -0.2) {
   pairs(..., upper.panel = top, lower.panel = bottom, diag.panel = middle, 
   			las = las, tcl = tcl, 
   			cex.labels = cex.labels)
