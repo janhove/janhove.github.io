@@ -26,7 +26,7 @@ panel.smooth <- function(x, y, span=2/3, iter=3, ...) {
     ok <- is.finite(x) & is.finite(y)
     if (any(ok)) 
       lines(stats::lowess(x[ok], y[ok], f = span, iter = iter), 
-            col = "grey30", lwd = 1, ...)
+            col = "black", lwd = 1, ...)
   } else if(!is.numeric(x) && is.numeric(y)) {
     boxplot(y ~ x)
   } else if(is.numeric(x) && !is.numeric(y)) {
@@ -41,12 +41,16 @@ panel.hist <- function(x, ...)
   usr <- par("usr"); on.exit(par(usr))
   par(usr = c(usr[1:2], 0, 1.5) )
   h <- hist(x, plot = FALSE)
-  breaks <- h$breaks; nB <- length(breaks)
-  y <- h$counts; y <- y/max(y)
+  breaks <- h$breaks
+  nB <- length(breaks)
+  y <- h$counts
+  y <- y/max(y)
   rect(breaks[-nB], 0, breaks[-1], y, col="grey", ...)
+  text(mean(range(x[!is.na(x)])), 1.1*max(y), paste("n =", length(x[!is.na(x)])))
 }
 
-myScatterMatrix <- function(..., cex.labels = 1.8, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1) {
-  pairs(..., upper.panel = top, lower.panel = bottom, diag.panel = middle, las = las, cex.labels = cex.labels)
+myScatterMatrix <- function(..., cex.labels = 1.5, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1, tcl = -0.2) {
+  pairs(..., upper.panel = top, lower.panel = bottom, diag.panel = middle, 
+  			las = las, tcl = tcl, 
+  			cex.labels = cex.labels)
 }
-
