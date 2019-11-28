@@ -27,12 +27,7 @@ panel.smooth <- function(x, y, span=2/3, iter=3, ...) {
     if (any(ok)) 
       lines(stats::lowess(x[ok], y[ok], f = span, iter = iter), 
             col = "black", lwd = 1, ...)
-  } else if(!is.numeric(x) && is.numeric(y)) {
-    boxplot(y ~ x)
-  } else if(is.numeric(x) && !is.numeric(y)) {
-    boxplot(x ~ y)
-  }
-  
+  } 
 }
 
 # Histograms
