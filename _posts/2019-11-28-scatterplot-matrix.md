@@ -1,5 +1,5 @@
 ---
-title: "Adjusting for a covariate in cluster-randomised experiments"
+title: "Drawing scatterplot matrices"
 layout: post
 mathjax: true
 tags: [R, graphics, correlational studies, non-linearities, multiple regression]
