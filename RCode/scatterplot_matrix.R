@@ -41,7 +41,7 @@ panel.hist <- function(x, ...)
   y <- h$counts
   y <- y/max(y)
   rect(breaks[-nB], 0, breaks[-1], y, col="grey", ...)
-  text(max(range(x[!is.na(x)])), 1.5*max(y), paste("n =", length(x[!is.na(x)])))
+  text(max(range(x[!is.na(x)])), 1.45*max(y), paste("n =", length(x[!is.na(x)])), adj = c(1, 1))
 }
 
 scatterplot_matrix <- function(..., cex.labels = 1.5, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1, tcl = -0.2) {
