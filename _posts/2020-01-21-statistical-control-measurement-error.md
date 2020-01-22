@@ -41,47 +41,6 @@ If you want to follow along, you need the following R packages/settings:
 library(tidyverse)
 
 library(rstan) # for fitting Bayesian models
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Loading required package: StanHeaders
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## rstan (Version 2.19.2, GitRev: 2e1f913d3ca3)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## For execution on a local, multicore CPU with excess RAM we recommend calling
-## options(mc.cores = parallel::detectCores()).
-## To avoid recompilation of unchanged Stan programs, we recommend calling
-## rstan_options(auto_write = TRUE)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## 
-## Attaching package: 'rstan'
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## The following object is masked from 'package:tidyr':
-## 
-##     extract
-{% endhighlight %}
-
-
-
-{% highlight r %}
 # to avoid unnecessary recompiling
 rstan_options(auto_write = TRUE) 
 # Distribute work over multiple CPU cores
@@ -1082,15 +1041,11 @@ Brunner, Jerry and Peter C. Austin. 2009.
 [Inflation of Type I error rate in multiple regression when independent variables are measured with error.](https://doi.org/10.1002/cjs.10004) 
 _Canadian Journal of Statistics_ 37(1). 33–46.
 
-<!-- McElreath, Richard. 2016. -->
-<!-- _Statistical rethinking: A Bayesian course with examples in R and Stan._ -->
-<!-- Boca Raton, FL: CRC Press. -->
-
 Berthele, Raphael and Amelia Lambelet (eds.). 2017. 
 _Heritage and school language literacy development in migrant children: Interdependence or independence?_
 Multilingual Matters.
 
-Carlos Pestana, Amelia Lambelet and Jan Vanhove. 2017. 
+Pestana, Carlos, Amelia Lambelet and Jan Vanhove. 2017. 
 Chapter 4: Reading comprehension development in Portuguese heritage speakers in Switzerland (HELASCOT project). 
 In Raphael Berthele and Amelia Lambelet (eds.), 
 _Heritage and school language literacy development in migrant children: Interdependence or independence?_, pp. 58-82. 
