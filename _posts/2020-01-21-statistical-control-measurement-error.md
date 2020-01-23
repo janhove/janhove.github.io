@@ -233,16 +233,16 @@ reasonable priors in context-free examples.
 meas_error_code <- '
 data { 
   // Number of observations
-  int<lower = 1> N;      
+  int<lower = 1> N;
   // Observed outcome
-  vector[N] Z;         
+  vector[N] Z;
   // Observed predictors
   vector[N] obs_A;
   vector[N] obs_B;
 }
 parameters {
   // Parameters for regression
-  real intercept;  
+  real intercept;
   real slope_A;
   real slope_B;
   real<lower = 0> sigma; 
@@ -321,9 +321,11 @@ model {
   sigma ~ normal(0, 2);
   
   // Prior for reliabilities
-  reliability_A ~ beta(30, 10); // assume this has been estimated using some metric to be 
-                                // roughly 0.78, but with considerable uncertainty
-  reliability_B ~ beta(95, 5); // assume this has been estimated using exceptional reliability
+  // assume the reliability for A has been estimated using some 
+  // metric to be roughly 0.78, but with considerable uncertainty
+  reliability_A ~ beta(30, 10); 
+	// assume B has been estimated using exceptional reliability
+  reliability_B ~ beta(95, 5); 
   
   // Prior for latent means
   latent_means ~ normal(0, 3);
@@ -415,29 +417,22 @@ print(meas_error_model,
 
 
 {% highlight text %}
-## Inference for Stan model: a0097a8b7ada54ca1932fb79ef145067.
-## 4 chains, each with iter=8000; warmup=2000; thin=1; 
-## post-warmup draws per chain=6000, total post-warmup draws=24000.
+## (output simplified for readability)
 ## 
-##                  mean se_mean   sd  2.5%   25%   50%   75% 97.5% n_eff Rhat
-## intercept        1.62    0.05 1.43 -1.61  0.75  1.78  2.67  3.97   710 1.01
-## slope_A          0.74    0.01 0.16  0.48  0.62  0.72  0.84  1.10   662 1.01
-## slope_B         -0.07    0.01 0.24 -0.62 -0.22 -0.05  0.10  0.33   759 1.01
-## sigma            1.23    0.00 0.07  1.08  1.19  1.23  1.28  1.35  1155 1.00
-## sigma_lat_A      1.57    0.00 0.08  1.40  1.51  1.56  1.62  1.73  1199 1.00
-## sigma_lat_B      0.83    0.00 0.03  0.78  0.81  0.83  0.85  0.88  6128 1.00
-## latent_means[1]  2.91    0.00 0.08  2.74  2.85  2.91  2.96  3.07 12540 1.00
-## latent_means[2] -4.01    0.00 0.04 -4.08 -4.03 -4.01 -3.98 -3.93 20533 1.00
-## latent_rho       0.76    0.00 0.04  0.68  0.73  0.77  0.80  0.85   778 1.00
-## slope_A_std      1.15    0.01 0.22  0.78  0.99  1.13  1.28  1.64   756 1.01
-## slope_B_std     -0.06    0.01 0.20 -0.52 -0.19 -0.04  0.08  0.27   758 1.01
-## reliability_A    0.72    0.00 0.06  0.60  0.67  0.72  0.76  0.84   687 1.01
-## reliability_B    0.95    0.00 0.02  0.90  0.94  0.96  0.97  0.99   218 1.01
-## 
-## Samples were drawn using NUTS(diag_e) at Tue Jan 21 19:04:37 2020.
-## For each parameter, n_eff is a crude measure of effective sample size,
-## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).
+##                  mean   sd  2.5%   25%   50%   75% 97.5% n_eff Rhat
+## intercept        1.62 1.43 -1.61  0.75  1.78  2.67  3.97   710 1.01
+## slope_A          0.74 0.16  0.48  0.62  0.72  0.84  1.10   662 1.01
+## slope_B         -0.07 0.24 -0.62 -0.22 -0.05  0.10  0.33   759 1.01
+## sigma            1.23 0.07  1.08  1.19  1.23  1.28  1.35  1155 1.00
+## sigma_lat_A      1.57 0.08  1.40  1.51  1.56  1.62  1.73  1199 1.00
+## sigma_lat_B      0.83 0.03  0.78  0.81  0.83  0.85  0.88  6128 1.00
+## latent_means[1]  2.91 0.08  2.74  2.85  2.91  2.96  3.07 12540 1.00
+## latent_means[2] -4.01 0.04 -4.08 -4.03 -4.01 -3.98 -3.93 20533 1.00
+## latent_rho       0.76 0.04  0.68  0.73  0.77  0.80  0.85   778 1.00
+## slope_A_std      1.15 0.22  0.78  0.99  1.13  1.28  1.64   756 1.01
+## slope_B_std     -0.06 0.20 -0.52 -0.19 -0.04  0.08  0.27   758 1.01
+## reliability_A    0.72 0.06  0.60  0.67  0.72  0.76  0.84   687 1.01
+## reliability_B    0.95 0.02  0.90  0.94  0.96  0.97  0.99   218 1.01
 {% endhighlight %}
 
 To get some sense of what the model is doing, 
@@ -519,7 +514,10 @@ par(mfrow = c(1, 1))
 In statistics at least, shrinkage is generally a good thing:
 The shrunken values (i.e., the model's guesses) lie, on average,
 closer to the true but unobserved values than the observed values do.
-This is clearly the case for variable A:
+This is clearly the case for variable A; here I compute the mean of
+the absolute differences between the true latent construct scores
+on the one hand and the observed values and the mean estimated values
+on the other hand.
 
 
 {% highlight r %}
@@ -610,14 +608,10 @@ as their heritage language. The study consisted of three data collections
 (and many more pupils), but we're just going to analyse the reading proficiency
 data collected during waves 2 and 3 here.
 
-The full datasets are are available as an R package from https://github.com/janhove/helascot,
+The full datasets are are available as an R package from 
+[https://github.com/janhove/helascot](github.com/janhove/helascot),
 but copy-paste the command below into R to work with the reduced dataset we'll work
 with here.
-
-
-
-
-
 
 {% highlight r %}
 skills <- structure(list(Subject = c("A_PLF_1", "A_PLF_10", "A_PLF_12", 
@@ -774,16 +768,16 @@ The rationale for them is explained in the comments sprinkled throughout the cod
 interdependence_code <- '
 data { 
   // Number of observations
-  int<lower = 1> N;      
+  int<lower = 1> N;
   // Observed outcome
-  vector[N] FR_T3;         
+  vector[N] FR_T3;
   // Observed predictors
   vector[N] FR_T2;
   vector[N] PT_T2;
 }
 parameters {
   // Parameters for regression
-  real intercept;  
+  real intercept;
   real slope_FR;
   real slope_PT;
   real<lower = 0> sigma; 
@@ -811,16 +805,23 @@ transformed parameters {
   vector[N] lat_PT_T2;
   real error_FR_T2; // standard error of measurement
   real error_PT_T2;
-  matrix[2, 2] sigma_lat; // standard deviations of latent variables, in matrix form
-  cov_matrix[2] latent_cor; // correlation and covariance matrix for latent variables 
+
+  // standard deviations of latent variables, in matrix form
+  matrix[2, 2] sigma_lat; 
+  // correlation and covariance matrix for latent variables 
+  cov_matrix[2] latent_cor;
   cov_matrix[2] latent_cov;
+  
+  // Slopes for standardised latent predictors
   real slope_FR_std;
   real slope_PT_std;
   
   // Express measurement error in terms of 
   // standard deviation of constructs and reliability
-  error_FR_T2 = sqrt(sigma_lat_FR_T2^2/reliability_FR_T2 - sigma_lat_FR_T2^2);
-  error_PT_T2 = sqrt(sigma_lat_PT_T2^2/reliability_PT_T2 - sigma_lat_PT_T2^2);
+  error_FR_T2 = sqrt(sigma_lat_FR_T2^2/reliability_FR_T2 - 
+  										sigma_lat_FR_T2^2);
+  error_PT_T2 = sqrt(sigma_lat_PT_T2^2/reliability_PT_T2 - 
+  										sigma_lat_PT_T2^2);
   
   // Define diagonal matrix with standard errors of latent variables
   sigma_lat[1, 1] = sigma_lat_FR_T2;
@@ -854,27 +855,31 @@ model {
   // The intercept is for FR_T2 and PT_T2 = 0, so a pupil with
   // poor scores at T2. So probably pretty low.
   intercept ~ normal(0.20, 0.10);
+  
   // French at T2 is bound to positively predict French at T3,
   // but the slope can at most be 1 (bounded data).
   slope_FR ~ normal(0.50, 0.25);
+  
   // Portuguese at T2 is not necessarily a positive predictor of
   // French at T3, given French at T2. So centre around 0.
   slope_PT ~ normal(0, 0.25);
+  
   // If neither of the T2 variables predicts T3, uncertainty
   // is highest when the mean T3 score is 0.5. Since these scores
   // are bounded between 0 and 1, the standard deviation could not 
   // be much higher than 0.20. But French T2 is bound to be a predictor,
-  // so let us choose a slighlty lower value.
+  // so let us choose a slightly lower value.
   sigma ~ normal(0.15, 0.08);
   
   // Prior reliabilities
-  reliability_FR_T2 ~ beta(73, 27); // alpha = 0.73, 95% CI [0.65, 0.78], 
-                                    // which is roughly beta(73, 27)
+  // alpha = 0.73, 95% CI [0.65, 0.78], which is roughly beta(73, 27)
+  reliability_FR_T2 ~ beta(73, 27); 
+                                    // 
   reliability_PT_T2 ~ beta(79, 21);  // alpha = 0.79, 95% CI [0.72, 0.84]
   
   // Prior expectation for latent means, viz., the means
-  // for French and Portuguese T2. These are going to be in the 0.4-0.6
-  // range.
+  // for French and Portuguese T2. These are going to be 
+  // in the 0.4-0.6 range.
   latent_means ~ normal(0.50, 0.10);
   
   // Prior expectation for correlation between latent variables:
@@ -910,10 +915,10 @@ data_list <- list(
 
 
 {% highlight r %}
-interdependence_model <- stan(model_code = interdependence_code,  
-                              data = data_list,
-                              iter = 8000, warmup = 2000,
-                              control = list(adapt_delta = 0.99, max_treedepth = 12))
+interdependence_model <- stan(
+	model_code = interdependence_code, data = data_list,
+	iter = 8000, warmup = 2000,
+	control = list(adapt_delta = 0.99, max_treedepth = 12))
 {% endhighlight %}
 
 After tweaking the `adapt_delta` and `max_treedepth` parameters
@@ -949,27 +954,20 @@ print(interdependence_model,
 
 
 {% highlight text %}
-## Inference for Stan model: 6844aaf2f1893890594b898174a6beb2.
-## 4 chains, each with iter=8000; warmup=2000; thin=1; 
-## post-warmup draws per chain=6000, total post-warmup draws=24000.
-## 
-##                   mean se_mean   sd  2.5%  25%  50%  75% 97.5% n_eff Rhat
-## intercept         0.19       0 0.05  0.09 0.16 0.19 0.23  0.29 21554    1
-## slope_FR          0.71       0 0.16  0.41 0.61 0.71 0.82  1.02 13769    1
-## slope_PT          0.10       0 0.14 -0.17 0.01 0.10 0.20  0.38 15948    1
-## sigma             0.12       0 0.01  0.09 0.11 0.12 0.12  0.14 16838    1
-## sigma_lat_FR_T2   0.16       0 0.01  0.13 0.15 0.15 0.16  0.18 17463    1
-## sigma_lat_PT_T2   0.18       0 0.01  0.16 0.17 0.18 0.19  0.21 19076    1
-## latent_means[1]   0.65       0 0.02  0.62 0.64 0.65 0.67  0.69 23988    1
-## latent_means[2]   0.64       0 0.02  0.60 0.63 0.64 0.66  0.68 27767    1
-## latent_rho        0.81       0 0.08  0.64 0.76 0.82 0.87  0.95  2747    1
-## reliability_FR_T2 0.75       0 0.04  0.67 0.72 0.75 0.78  0.82 14058    1
-## reliability_PT_T2 0.79       0 0.04  0.71 0.76 0.79 0.82  0.86  8199    1
-## 
-## Samples were drawn using NUTS(diag_e) at Tue Jan 21 19:12:19 2020.
-## For each parameter, n_eff is a crude measure of effective sample size,
-## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).
+## (output simplified for readability)
+##
+##                   mean   sd  2.5%  25%  50%  75% 97.5%
+## intercept         0.19 0.05  0.09 0.16 0.19 0.23  0.29
+## slope_FR          0.71 0.16  0.41 0.61 0.71 0.82  1.02
+## slope_PT          0.10 0.14 -0.17 0.01 0.10 0.20  0.38
+## sigma             0.12 0.01  0.09 0.11 0.12 0.12  0.14
+## sigma_lat_FR_T2   0.16 0.01  0.13 0.15 0.15 0.16  0.18
+## sigma_lat_PT_T2   0.18 0.01  0.16 0.17 0.18 0.19  0.21
+## latent_means[1]   0.65 0.02  0.62 0.64 0.65 0.67  0.69
+## latent_means[2]   0.64 0.02  0.60 0.63 0.64 0.66  0.68
+## latent_rho        0.81 0.08  0.64 0.76 0.82 0.87  0.95
+## reliability_FR_T2 0.75 0.04  0.67 0.72 0.75 0.78  0.82
+## reliability_PT_T2 0.79 0.04  0.71 0.76 0.79 0.82  0.86
 {% endhighlight %}
 
 Considerable shrinkage is observed for both predictors (**Figure 4**);
