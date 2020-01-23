@@ -819,9 +819,9 @@ transformed parameters {
   // Express measurement error in terms of 
   // standard deviation of constructs and reliability
   error_FR_T2 = sqrt(sigma_lat_FR_T2^2/reliability_FR_T2 - 
-  										sigma_lat_FR_T2^2);
+    sigma_lat_FR_T2^2);
   error_PT_T2 = sqrt(sigma_lat_PT_T2^2/reliability_PT_T2 - 
-  										sigma_lat_PT_T2^2);
+    sigma_lat_PT_T2^2);
   
   // Define diagonal matrix with standard errors of latent variables
   sigma_lat[1, 1] = sigma_lat_FR_T2;
@@ -874,8 +874,8 @@ model {
   // Prior reliabilities
   // alpha = 0.73, 95% CI [0.65, 0.78], which is roughly beta(73, 27)
   reliability_FR_T2 ~ beta(73, 27); 
-                                    // 
-  reliability_PT_T2 ~ beta(79, 21);  // alpha = 0.79, 95% CI [0.72, 0.84]
+  // alpha = 0.79, 95% CI [0.72, 0.84]
+  reliability_PT_T2 ~ beta(79, 21);
   
   // Prior expectation for latent means, viz., the means
   // for French and Portuguese T2. These are going to be 
