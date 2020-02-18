@@ -851,10 +851,10 @@ print(interdependence_model, probs = c(0.025, 0.975),
 
 Unsurprisingly, the model confidently finds a link between
 French skills at T2 and at T3, even on the level of the unobserved
-true scores ($\widehat{\beta}_{\textrm{French}} = 0.71 \pm 0.16$).
+true scores ($\widehat{\beta}\_{\textrm{French}} = 0.71 \pm 0.16$).
 But more importantly, the evidence for an additional effect
 of Portuguese skills at T2 on French skills at T3 is flimsy
-($\widehat{\beta}_{\textrm{Portuguese}} = 0.11 \pm 0.14$).
+($\widehat{\beta}\_{\textrm{Portuguese}} = 0.11 \pm 0.14$).
 The latent T2 variables are estimated to correlate
 strongly at $\widehat{\rho} = 0.81 \pm 0.08$. These results
 don't change much when a flat prior on $\rho$ is specified (this 
