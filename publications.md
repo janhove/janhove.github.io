@@ -13,6 +13,10 @@ group: navigation
 <h3>2019</h3>
 
 <p>Jan Vanhove. 2019.
+<a href="https://doi.org/10.5117/TET2019.1.BOEK">[Review of the book De vele gezichten van het Nederlands in Vlaanderen. Een inleiding tot de variatietaalkunde by Gert De Sutter (ed.)]</a>.
+<i>Taal en Tongval</i> 71. 89-93.
+
+<p>Jan Vanhove. 2019.
 <a href="https://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove2019c.pdf">Metalinguistic knowledge about the native language and language transfer in gender assignment</a>.
 <i>Studies in Second Language Learning and Teaching</i> 9(2). 397-419.<br />
 Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
