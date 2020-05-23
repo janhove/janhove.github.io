@@ -67,7 +67,7 @@ process 10,000 times. You can reproduce this simulation using the code below.
 Even though the distributions' means and medians are the same,
 the Mann--Whitney returns significance ($p < 0.05$) in about 7% of the comparisons
 for the smaller samples
-and 18% for the larger samples. If the test were sensitive only to differences
+and 8% for the larger samples. If the test were sensitive only to differences
 in the mean or median, if should return significance in only 5% of the comparisons.
 
 
@@ -90,7 +90,7 @@ pvals_50 <- replicate(n_sim, {
 
 # Same but with samples of 500 observations.
 pvals_500 <- replicate(n_sim, {
-  x <- runif(50, min = -3*sqrt(3), max = 3*sqrt(3))
+  x <- runif(500, min = -3*sqrt(3), max = 3*sqrt(3))
   y <- runif(500, min = -sqrt(3), max = sqrt(3))
   wilcox.test(x, y)$p.value
 })
@@ -121,7 +121,7 @@ ggplot(data = d,
   )
 {% endhighlight %}
 
-![center](/figs/2020-05-23-nonparametric/unnamed-chunk-96-1.png)
+![center](/figs/2020-05-23-nonparametric/unnamed-chunk-7-1.png)
 
 > **Figure 1.**
 
@@ -145,7 +145,7 @@ otherwise only 5% of the comparisons should have been significant
 
 
 
-![center](/figs/2020-05-23-nonparametric/unnamed-chunk-98-1.png)
+![center](/figs/2020-05-23-nonparametric/unnamed-chunk-9-1.png)
 
 > **Figure 2.**
 
@@ -166,7 +166,7 @@ So the Mann--Whitney does _not_ test for differences in the median;
 otherwise only 5% of the comparisons should have been significant
 (since the medians of the distributions are the same).
 
-![center](/figs/2020-05-23-nonparametric/unnamed-chunk-99-1.png)
+![center](/figs/2020-05-23-nonparametric/unnamed-chunk-10-1.png)
 
 > **Figure 3.**
 
