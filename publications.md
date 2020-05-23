@@ -26,7 +26,7 @@ PsyArXiv Preprints.</p>
 <a href="http://www.institut-mehrsprachigkeit.ch/en/file/895/download?token=cSz47kV0">Heritage language and school language: are literacy skills transferable?</a>.
 Fribourg, Switzerland: Institute of Multilingualism.</p>
 
-<p>Raphael Berthele and Jan Vanhove. 2017. 
+<p>Raphael Berthele and Jan Vanhove. 2020. 
 <a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove independence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
 <i>International Journal of Bilingual Education and Bilingualism</i> 23(5). 550-566.<br />
 Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
