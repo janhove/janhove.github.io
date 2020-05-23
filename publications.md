@@ -10,6 +10,27 @@ group: navigation
 
 <div id = "pub">
 
+<h3Preprints</h3>
+
+<p>Jan Vanhove.
+<a href ="https://doi.org/10.31234/osf.io/mv2wx">Collinearity isn't a disease that needs curing</a>.
+PsyArXiv Preprints.</p>
+
+<p>Jan Vanhove.
+<a href = "https://osf.io/zvawb">Checking the assumptions of your statistical model without getting paranoid</a>.
+PsyArXiv Preprints.</p>
+
+<h3>2020</h3>
+
+<p>Amelia Lambelet, Raphael Berthele, Jan Vanhove, Magalie Desgrippes, Carlos Pestana and Fabricio Decandio. 2020. 
+<a href="http://www.institut-mehrsprachigkeit.ch/en/file/895/download?token=cSz47kV0">Heritage language and school language: are literacy skills transferable?</a>.
+Fribourg, Switzerland: Institute of Multilingualism.</p>
+
+<p>Raphael Berthele and Jan Vanhove. 2017. 
+<a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove independence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
+<i>International Journal of Bilingual Education and Bilingualism</i> 23(5). 550-566.<br />
+Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
+
 <h3>2019</h3>
 
 <p>Jan Vanhove. 2019.
@@ -33,17 +54,18 @@ Data and R code available from the <a href="https://osf.io/pxefv/">Open Science 
 <i>Journal of Writing Research</i> 10(3). 499-525.<br />
 Technical report, data (including texts), elicitation materials, and R code available from the <a href="https://osf.io/vw4pc/">Open Science Framework</a>.</p>
 
+<p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2019. 
+<a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> 
+<i>International Journal of Bilingualism</i> 23(2). 612-628.<br />
+Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.5379448">figshare</a>.</p>
+
+
 <h3>2018</h3>
 
 <p>Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018.
 <a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz</a>.
 <i>Zeitschrift für Interkulturellen Fremdsprachenunterricht</i> 23(1). 135-148.<br />
 Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.4578991">figshare</a>.</p>
-
-<p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2018. 
-<a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> 
-<i>International Journal of Bilingualism</i>.<br />
-Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.5379448">figshare</a>.</p>
 
 <h3>2017</h3>
 
@@ -54,10 +76,6 @@ Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.53794
 <p>Amelia Lambelet, Magalie Desgrippes and Jan Vanhove. 2017. Chapter 5: The development of argumentative and narrative writing skills in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 83-96. Multilingual Matters.</p>
 
 <p>Jan Vanhove and Raphael Berthele. 2017. Chapter 6: Testing the interdependence of languages (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 97-118. Multilingual Matters.</p>
-
-<p>Raphael Berthele and Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove independence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
-<i>International Journal of Bilingual Education and Bilingualism</i>.<br />
-Data and R code available from the <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
 
 <p>Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1111/lang.12230">The influence of Standard and substandard Dutch on gender assignment in second language German</a>. 
 <i>Language Learning</i>. 67(2). 431&ndash;460.<br />
