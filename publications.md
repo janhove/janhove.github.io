@@ -10,7 +10,7 @@ group: navigation
 
 <div id = "pub">
 
-<h3Preprints</h3>
+<h3>Preprints</h3>
 
 <p>Jan Vanhove.
 <a href ="https://doi.org/10.31234/osf.io/mv2wx">Collinearity isn't a disease that needs curing</a>.
