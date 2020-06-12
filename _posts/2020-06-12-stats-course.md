@@ -6,7 +6,7 @@ tags: [measurement error, logistic regression, organisation, correlational studi
 category: [Teaching]
 ---
 
-Last semester I taught a class for Phd students and collaborators that 
+Last semester I taught a class for PhD students and collaborators that 
 focused on how the output of regression models is to be interpreted.
 Most participants had at least some experience with fitting regression models,
 but I had noticed that they were often unsure about the precise _statistical_
@@ -27,21 +27,21 @@ as the reading list.
 
 ### Week 1: Uses of statistical models: Description vs. prediction vs. inference
 
-Statistical models have three main uses. 
-The first is to describe the data at hand, and once you've figured out what aspects of
-the data the parameter estimates reflect, a descriptive interpretation of a
-statistical model isn't too difficult to get right. Weeks 6, 7, 8 and 11 are devoted
+Regression models have three main uses. 
+The first is to describe the data at hand. The difficulty here mostly consists
+in figuring out what aspects of the data the parameter estimates reflect.
+Weeks 6, 7, 8 and 11 are devoted
 to statistical interpretation of model parameters and how variables can be recoded
 so that the model output aligns more closely with the research questions.
 
-However, their main use
+However, the main use of regression models
 in the social sciences is to draw inferences, usually causal ones. 
 Moving from a descriptive to causal interpretation of a statistical model
 requires making additional assumptions. Weeks 2 through 5 are devoted to a tool
 (directed acyclic graphs)
 that allows you to make explicit the assumptions you're willing to make about
 the causal relationships between your variables and that allows you to derive
-from these assumptions which causal claims are permissible.
+from these assumptions any further permissible causal claims.
 Another type of inference is the move from observable quantities (e.g., test scores)
 to unobervables (e.g., language skills). Weeks 10 and 11 are devoted to this
 topic.
@@ -69,7 +69,7 @@ some causal relationship in your data. (Some researchers seem to assume
 that the more variables you control for, the better, but controlling for the
 wrong variables can mess up your inferences entirely.)
 This, of course, is most useful when you're still planning your research project,
-because otherwise you may find out that you need to control for a variable
+because otherwise you may find that you need to control for a variable
 that you didn't collect, or that you controlled (on purpose or by accident)
 for a variable you shouldn't have controlled for.
 
@@ -105,7 +105,7 @@ BLUPS.
 Another point was that you can also gain a better understanding
 of what the model parameters express by _first_ fitting the model
 on your data and _then_ having this model predict new data.
-As you're figuring out how the model came up with these predictions,
+By figuring out how the model came up with these predictions,
 you learn what each parameter estimate literally means.
 
 * Text: DeBruine and Barr (2019).
@@ -116,7 +116,7 @@ Weeks 7 and 8 were devoted to contrast coding, i.e., how you can
 recode non-numeric predictors such that the model's output aligns
 more closely with what you want to know. I've recently
 [blogged](https://janhove.github.io/analysis/2020/05/05/contrast-coding) 
-about contrast coding, and I was surprise I didn't learn about this useful
+about contrast coding, and I was surprised I didn't learn about this useful
 technique until 2020 (of all years).
 
 * Text: Schad et al. (2020), up to and including the section _What makes a good set of contrasts?_
@@ -155,7 +155,7 @@ of interactions.
 
 Logistic regression models can be difficult to understand, and the linear
 probability model (i.e., ordinary linear regression) isn't to be dismissed
-out of hand when working with binary data. A related blog post is [_Interactions in logistic regression models](https://janhove.github.io/analysis/2019/08/07/interactions-logistic).
+out of hand when working with binary data. A related blog post is [_Interactions in logistic regression models_](https://janhove.github.io/analysis/2019/08/07/interactions-logistic).
 
 * Text: Huang (2019).
 
@@ -165,7 +165,9 @@ In week 12 I went through some examples of verbal research questions or hypothes
 that at first blush seem pretty well delineated. On closer inspection, however,
 it becomes clear that radically different patterns in the data would yield the 
 same answer to these questions, and that the research questions or hypotheses
-were, in fact, underspecified.
+were, in fact, underspecified. Drawing several possible data patterns and
+interpreting them in light of your literal research question or hypothesis
+can help you rephrase that question or hypothesis less ambiguously.
 
 No texts.
 
