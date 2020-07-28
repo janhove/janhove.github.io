@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Week 7: Scatterplots | Quantitative Methodology: Drawing plots</title>
+  <meta name="description" content="Tutorials for the graphing assignments." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Week 7: Scatterplots | Quantitative Methodology: Drawing plots" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Tutorials for the graphing assignments." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Week 7: Scatterplots | Quantitative Methodology: Drawing plots" />
+  
+  <meta name="twitter:description" content="Tutorials for the graphing assignments." />
+  
+
+<meta name="author" content="Jan Vanhove (jan.vanhove@unifr.ch, https://janhove.github.io)" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="week-6-dotplots.html"/>
+<link rel="next" href="week-8-scatterplots-with-trend-lines.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Quantitative Methodology</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
+<li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
+<li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
+<li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
+<li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes"><i class="fa fa-check"></i><b>2.4</b> Labelling axes</a></li>
+<li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
+<li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
+<li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
+<li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
+<li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
+<li class="chapter" data-level="6.3.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#optional-possible-improvements-and-further-information"><i class="fa fa-check"></i><b>6.3.4</b> Optional: Possible improvements and further information</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
+<li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships"><i class="fa fa-check"></i><b>8.4</b> Examples of nonlinear relationships</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#exercise-7"><i class="fa fa-check"></i><b>8.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-first-graded-assignment.html"><a href="week-9-first-graded-assignment.html"><i class="fa fa-check"></i><b>9</b> Week 9: First graded assignment</a></li>
+<li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
+<li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
+<li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
+<li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
+<li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
+<li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
+<li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantitative Methodology: Drawing plots</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-7-scatterplots" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Week 7: Scatterplots</h1>
+<div id="goals-5" class="section level2">
+<h2><span class="header-section-number">7.1</span> Goals</h2>
+<ol style="list-style-type: decimal">
+<li>You’ll learn how to visualise the relationship between two continuous variables in a scatterplot.</li>
+<li>You’ll gain some experience with summarising and manipulating large datasets.</li>
+</ol>
+</div>
+<div id="summarising-datasets" class="section level2">
+<h2><span class="header-section-number">7.2</span> Summarising datasets</h2>
+<p><span class="citation">Vanhove (<a href="#ref-Vanhove2014" role="doc-biblioref">2014</a>)</span> investigated how people’s ability to
+recognise written and spoken cognates in a related but
+unknown language develops throughout the lifespan and
+how it is related to linguistic and cognitive factors.
+The dataset <code>Vanhove2014_Translations.csv</code> contains the
+<em>raw data</em> of this study. For each of the 163 participants,
+this dataset contains 100 entries (one for each cognate),
+for a total of 16,300 rows.
+Each translation was rated as correct or incorrect.
+Additionally, the dataset contains some information
+about the participants (e.g., their performance on other
+tasks) as well as about the stimuli (e.g., a measure
+expressing its formal similarity to its French, German or English cognate).</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="week-7-scatterplots.html#cb48-1"></a><span class="co"># Read in data</span></span>
+<span id="cb48-2"><a href="week-7-scatterplots.html#cb48-2"></a>d &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2014_Translations.csv&quot;</span>))</span></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Stimulus = col_character(),
+##   Subject = col_double(),
+##   Mode = col_character(),
+##   Trial = col_double(),
+##   Translation = col_character(),
+##   Correct = col_double(),
+##   Sex = col_character(),
+##   Age = col_double(),
+##   NrLang = col_double(),
+##   DS.Total = col_double(),
+##   WST.Right = col_double(),
+##   Raven.Right = col_double(),
+##   English.Total = col_double(),
+##   Status = col_character(),
+##   MinLev = col_double()
+## )</code></pre>
+<p>The variables:</p>
+<ul>
+<li><code>Stimulus</code>: The word to be translated.</li>
+<li><code>Subject</code>: The participant’s ID.</li>
+<li><code>Mode</code>: Whether the word was presented in its spoken (<code>Auditory</code>) or in its written form (<code>Visual</code>).</li>
+<li><code>Trial</code>: The position of the word in the task.</li>
+<li><code>Translation</code>: The participant’s translation attempt for the stimulus.</li>
+<li><code>Correct</code>: Whether the translation was correct (1) or incorrect (0).</li>
+<li><code>Sex</code></li>
+<li><code>Age</code></li>
+<li><code>NrLang</code>: The number of languages the participant spoken.</li>
+<li><code>DS.Total</code>: The participant’s score on a working memory task.</li>
+<li><code>WST.Right</code>: The participant’s score on a German vocabulary test.</li>
+<li><code>Raven.Right</code>: The participant’s score on an intelligence test.</li>
+<li><code>English.Total</code>: The participant’s score on an English-language test.</li>
+<li><code>Status</code>: Whether the stimulus has a German, English, or French cognates (<code>target</code>) or not (<code>profile</code>).</li>
+<li><code>MinLev</code>: The degree of formal discrepancy between the stimulus and its most similar German, English or French cognate. (lower = more similar)</li>
+</ul>
+<p>Missing values were labelled <code>NA</code> (not available).</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="week-7-scatterplots.html#cb50-1"></a><span class="co"># The output of summary(d) isn&#39;t shown here for reasons of space.</span></span>
+<span id="cb50-2"><a href="week-7-scatterplots.html#cb50-2"></a><span class="kw">summary</span>(d)</span></code></pre></div>
+<pre><code>##    Stimulus            Subject         Mode               Trial     
+##  Length:16300       Min.   :  64   Length:16300       Min.   : 1.0  
+##  Class :character   1st Qu.:2909   Class :character   1st Qu.:13.0  
+##  Mode  :character   Median :5731   Mode  :character   Median :25.5  
+##                     Mean   :5317                      Mean   :25.5  
+##                     3rd Qu.:7794                      3rd Qu.:38.0  
+##                     Max.   :9913                      Max.   :50.0  
+##                                                                     
+##  Translation           Correct           Sex                 Age       
+##  Length:16300       Min.   :0.0000   Length:16300       Min.   :10.00  
+##  Class :character   1st Qu.:0.0000   Class :character   1st Qu.:16.00  
+##  Mode  :character   Median :0.0000   Mode  :character   Median :39.00  
+##                     Mean   :0.3523                      Mean   :40.28  
+##                     3rd Qu.:1.0000                      3rd Qu.:60.00  
+##                     Max.   :1.0000                      Max.   :86.00  
+##                                                                        
+##      NrLang         DS.Total        WST.Right      Raven.Right  
+##  Min.   :1.000   Min.   : 2.000   Min.   : 4.00   Min.   : 0.0  
+##  1st Qu.:2.000   1st Qu.: 5.000   1st Qu.:29.00   1st Qu.:12.0  
+##  Median :3.000   Median : 6.000   Median :34.00   Median :19.0  
+##  Mean   :3.067   Mean   : 6.374   Mean   :30.24   Mean   :17.8  
+##  3rd Qu.:4.000   3rd Qu.: 8.000   3rd Qu.:36.00   3rd Qu.:24.0  
+##  Max.   :9.000   Max.   :12.000   Max.   :41.00   Max.   :35.0  
+##                                   NA&#39;s   :100                   
+##  English.Total      Status              MinLev      
+##  Min.   : 3.00   Length:16300       Min.   :0.0000  
+##  1st Qu.:20.75   Class :character   1st Qu.:0.2857  
+##  Median :31.00   Mode  :character   Median :0.4000  
+##  Mean   :28.30                      Mean   :0.4566  
+##  3rd Qu.:37.00                      3rd Qu.:0.6062  
+##  Max.   :44.00                      Max.   :1.0000  
+##  NA&#39;s   :300</code></pre>
+<p>In order to be able to sensibly visualise these data,
+we need to first transform this dataset. If we’re interested
+in the relationship between the participants’ age, sex,
+and linguistic and cognitive test results on the one hand
+and their translation performance on the other hand,
+it seems useful to first compute the number of correct
+translations for spoken and written words per participant.
+There are a couple of ways you could do this in R;
+I find the method outlined below the most transparent one.</p>
+<p>Let’s start with a simple example. We’ll first
+compute the total number of correct responses in
+the entire dataset. The comments show you how you
+can read the R code out loud.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="week-7-scatterplots.html#cb52-1"></a><span class="co"># 1st attempt: Total number of correct answers</span></span>
+<span id="cb52-2"><a href="week-7-scatterplots.html#cb52-2"></a></span>
+<span id="cb52-3"><a href="week-7-scatterplots.html#cb52-3"></a><span class="co"># Take object &#39;d&#39; (our dataset), and then</span></span>
+<span id="cb52-4"><a href="week-7-scatterplots.html#cb52-4"></a>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-5"><a href="week-7-scatterplots.html#cb52-5"></a><span class="st">  </span><span class="co"># summarise it as follows:</span></span>
+<span id="cb52-6"><a href="week-7-scatterplots.html#cb52-6"></a><span class="st">  </span><span class="co"># - compute the sum of &#39;Correct&#39; and call this sum &#39;number_correct&#39;</span></span>
+<span id="cb52-7"><a href="week-7-scatterplots.html#cb52-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_correct =</span> <span class="kw">sum</span>(Correct))</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   number_correct
+##            &lt;dbl&gt;
+## 1           5743</code></pre>
+<p>The result is shown in the console. We can also
+save it as a separate object so that we can
+work with it later. Here I save it as an object
+called <code>overall_accuracy</code>:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="week-7-scatterplots.html#cb54-1"></a>overall_accuracy &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb54-2"><a href="week-7-scatterplots.html#cb54-2"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_correct =</span> <span class="kw">sum</span>(Correct))</span></code></pre></div>
+<p>(To type the symbol combination <em>%&gt;%</em> (known as the <em>pipe</em>; read out loud as ‘and then’),
+you can also use the shortcut ctrl + shift + m.)</p>
+<p>The total number of correct answers in the entire dataset
+isn’t too useful to us: we need the number of correct answers
+per participant.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="week-7-scatterplots.html#cb55-1"></a><span class="co"># 2nd attempt: Number of correct answers per participant</span></span>
+<span id="cb55-2"><a href="week-7-scatterplots.html#cb55-2"></a></span>
+<span id="cb55-3"><a href="week-7-scatterplots.html#cb55-3"></a><span class="co"># Create new object &#39;per_part&#39; as follows:</span></span>
+<span id="cb55-4"><a href="week-7-scatterplots.html#cb55-4"></a><span class="co"># take &#39;d&#39;, and then...</span></span>
+<span id="cb55-5"><a href="week-7-scatterplots.html#cb55-5"></a>per_part &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb55-6"><a href="week-7-scatterplots.html#cb55-6"></a><span class="st">  </span><span class="co"># group it by Subject, and then...</span></span>
+<span id="cb55-7"><a href="week-7-scatterplots.html#cb55-7"></a><span class="st">  </span><span class="kw">group_by</span>(Subject) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb55-8"><a href="week-7-scatterplots.html#cb55-8"></a><span class="st">  </span><span class="co"># compute the sum of Correct within each group</span></span>
+<span id="cb55-9"><a href="week-7-scatterplots.html#cb55-9"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_correct =</span> <span class="kw">sum</span>(Correct))</span></code></pre></div>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="week-7-scatterplots.html#cb57-1"></a><span class="co"># Show result</span></span>
+<span id="cb57-2"><a href="week-7-scatterplots.html#cb57-2"></a>per_part</span></code></pre></div>
+<pre><code>## # A tibble: 163 x 2
+##    Subject number_correct
+##      &lt;dbl&gt;          &lt;dbl&gt;
+##  1      64             49
+##  2      78             39
+##  3     134             36
+##  4     230             38
+##  5     288             21
+##  6     326             45
+##  7     447             47
+##  8     527             24
+##  9     545             33
+## 10     550             46
+## # … with 153 more rows</code></pre>
+<p>Now we have the total number of correct translations per participant,
+but this figure contains both the responses to written and to spoken words.
+It’d be more useful to split this figure up by modality:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="week-7-scatterplots.html#cb59-1"></a><span class="co"># 3rd attempt: Number of correct translations per participant,</span></span>
+<span id="cb59-2"><a href="week-7-scatterplots.html#cb59-2"></a><span class="co"># split up by modality.</span></span>
+<span id="cb59-3"><a href="week-7-scatterplots.html#cb59-3"></a></span>
+<span id="cb59-4"><a href="week-7-scatterplots.html#cb59-4"></a>per_part2 &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb59-5"><a href="week-7-scatterplots.html#cb59-5"></a><span class="st">  </span><span class="co"># group by Subject and Mode</span></span>
+<span id="cb59-6"><a href="week-7-scatterplots.html#cb59-6"></a><span class="st">  </span><span class="kw">group_by</span>(Subject, Mode) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb59-7"><a href="week-7-scatterplots.html#cb59-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_correct =</span> <span class="kw">sum</span>(Correct))</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;Subject&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="week-7-scatterplots.html#cb61-1"></a>per_part2</span></code></pre></div>
+<pre><code>## # A tibble: 326 x 3
+## # Groups:   Subject [163]
+##    Subject Mode     number_correct
+##      &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+##  1      64 Auditory             24
+##  2      64 Visual               25
+##  3      78 Auditory             19
+##  4      78 Visual               20
+##  5     134 Auditory             24
+##  6     134 Visual               12
+##  7     230 Auditory             12
+##  8     230 Visual               26
+##  9     288 Auditory             12
+## 10     288 Visual                9
+## # … with 316 more rows</code></pre>
+<p>Our goal is to visualise the relationship between variables such as
+IQ, age, and L1 vocabulary skills on the one hand and the participants’
+translation performance on the other hand. To do this, we need to add
+these variable to the summary. Again, there are several ways to do this;
+here’s one.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="week-7-scatterplots.html#cb63-1"></a><span class="co"># 4th attempt: Like above, but adding Age, etc.</span></span>
+<span id="cb63-2"><a href="week-7-scatterplots.html#cb63-2"></a></span>
+<span id="cb63-3"><a href="week-7-scatterplots.html#cb63-3"></a><span class="co"># Create a new object with participant-related information.</span></span>
+<span id="cb63-4"><a href="week-7-scatterplots.html#cb63-4"></a><span class="co"># Take &#39;d&#39;, and then...</span></span>
+<span id="cb63-5"><a href="week-7-scatterplots.html#cb63-5"></a>part_info &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb63-6"><a href="week-7-scatterplots.html#cb63-6"></a><span class="st">  </span><span class="co"># Select the following columns</span></span>
+<span id="cb63-7"><a href="week-7-scatterplots.html#cb63-7"></a><span class="st">  </span><span class="kw">select</span>(Subject, Age, Sex, WST.Right,</span>
+<span id="cb63-8"><a href="week-7-scatterplots.html#cb63-8"></a>         Raven.Right, English.Total,</span>
+<span id="cb63-9"><a href="week-7-scatterplots.html#cb63-9"></a>         NrLang, DS.Total)</span></code></pre></div>
+<p>Like <code>d</code>, <code>part_info</code> consists of 16,300 rows.
+But each row is repeated 100 times.
+Using <code>distinct()</code>, the duplicates are deleted:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="week-7-scatterplots.html#cb64-1"></a>part_info &lt;-<span class="st"> </span>part_info <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb64-2"><a href="week-7-scatterplots.html#cb64-2"></a><span class="st">  </span><span class="kw">distinct</span>()</span></code></pre></div>
+<p>Now we can add the information from <code>part_info</code> to <code>per_part2</code>:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="week-7-scatterplots.html#cb65-1"></a><span class="co"># Create new object &#39;per_part3&#39;.</span></span>
+<span id="cb65-2"><a href="week-7-scatterplots.html#cb65-2"></a><span class="co"># Take object &#39;per_part2&#39;, and then...</span></span>
+<span id="cb65-3"><a href="week-7-scatterplots.html#cb65-3"></a>per_part3 &lt;-<span class="st"> </span>per_part2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb65-4"><a href="week-7-scatterplots.html#cb65-4"></a><span class="st">  </span><span class="co"># join it with &#39;part_info&#39; using &#39;Subject&#39; as the &quot;zipper&quot;</span></span>
+<span id="cb65-5"><a href="week-7-scatterplots.html#cb65-5"></a><span class="st">  </span><span class="kw">full_join</span>(part_info, <span class="dt">by =</span> <span class="st">&quot;Subject&quot;</span>)</span>
+<span id="cb65-6"><a href="week-7-scatterplots.html#cb65-6"></a></span>
+<span id="cb65-7"><a href="week-7-scatterplots.html#cb65-7"></a><span class="co"># Show result</span></span>
+<span id="cb65-8"><a href="week-7-scatterplots.html#cb65-8"></a>per_part3</span></code></pre></div>
+<pre><code>## # A tibble: 326 x 10
+## # Groups:   Subject [163]
+##    Subject Mode  number_correct   Age Sex   WST.Right Raven.Right English.Total
+##      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;
+##  1      64 Audi…             24    27 fema…        34          28            42
+##  2      64 Visu…             25    27 fema…        34          28            42
+##  3      78 Audi…             19    47 fema…        33          26            27
+##  4      78 Visu…             20    47 fema…        33          26            27
+##  5     134 Audi…             24    33 male         32          24            24
+##  6     134 Visu…             12    33 male         32          24            24
+##  7     230 Audi…             12    84 male         37          20            31
+##  8     230 Visu…             26    84 male         37          20            31
+##  9     288 Audi…             12    28 male         35          24            39
+## 10     288 Visu…              9    28 male         35          24            39
+## # … with 316 more rows, and 2 more variables: NrLang &lt;dbl&gt;, DS.Total &lt;dbl&gt;</code></pre>
+<p>One final problem remains: The number of correct answers
+includes responses to both cognates and to non-cognates.
+We’re only interested in the responses to cognates, however.
+Using <code>filter()</code>, we only retain the responses that are of interest:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="week-7-scatterplots.html#cb67-1"></a><span class="co"># 5th attempt: Like above, but only consider target stimuli.</span></span>
+<span id="cb67-2"><a href="week-7-scatterplots.html#cb67-2"></a>per_part &lt;-<span class="st"> </span>d <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb67-3"><a href="week-7-scatterplots.html#cb67-3"></a><span class="st">  </span><span class="co"># only consider target stimuli</span></span>
+<span id="cb67-4"><a href="week-7-scatterplots.html#cb67-4"></a><span class="st">  </span><span class="kw">filter</span>(Status <span class="op">==</span><span class="st"> &quot;target&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb67-5"><a href="week-7-scatterplots.html#cb67-5"></a><span class="st">  </span><span class="co"># group by Subject and Mode</span></span>
+<span id="cb67-6"><a href="week-7-scatterplots.html#cb67-6"></a><span class="st">  </span><span class="kw">group_by</span>(Subject, Mode) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb67-7"><a href="week-7-scatterplots.html#cb67-7"></a><span class="st">  </span><span class="co"># Compute sum of Correct</span></span>
+<span id="cb67-8"><a href="week-7-scatterplots.html#cb67-8"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">number_correct =</span> <span class="kw">sum</span>(Correct)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb67-9"><a href="week-7-scatterplots.html#cb67-9"></a><span class="st">  </span><span class="co"># Add the information from part_info using Subject as the &quot;zipper&quot;</span></span>
+<span id="cb67-10"><a href="week-7-scatterplots.html#cb67-10"></a><span class="st">  </span><span class="kw">full_join</span>(part_info, <span class="dt">by =</span> <span class="st">&quot;Subject&quot;</span>)</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;Subject&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="week-7-scatterplots.html#cb69-1"></a>per_part</span></code></pre></div>
+<pre><code>## # A tibble: 326 x 10
+## # Groups:   Subject [163]
+##    Subject Mode  number_correct   Age Sex   WST.Right Raven.Right English.Total
+##      &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;       &lt;dbl&gt;         &lt;dbl&gt;
+##  1      64 Audi…             23    27 fema…        34          28            42
+##  2      64 Visu…             25    27 fema…        34          28            42
+##  3      78 Audi…             19    47 fema…        33          26            27
+##  4      78 Visu…             20    47 fema…        33          26            27
+##  5     134 Audi…             24    33 male         32          24            24
+##  6     134 Visu…             12    33 male         32          24            24
+##  7     230 Audi…             12    84 male         37          20            31
+##  8     230 Visu…             26    84 male         37          20            31
+##  9     288 Audi…             12    28 male         35          24            39
+## 10     288 Visu…              9    28 male         35          24            39
+## # … with 316 more rows, and 2 more variables: NrLang &lt;dbl&gt;, DS.Total &lt;dbl&gt;</code></pre>
+</div>
+<div id="scatterplots" class="section level2">
+<h2><span class="header-section-number">7.3</span> Scatterplots</h2>
+<p>To investigate the relationhip between, say, <code>WST.Right</code> and <code>number_correct</code>,
+we can plot these data in a scatterplot. While we’re at it, we can split up
+this graph into two panels: one for written words, and one for spoken words.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="week-7-scatterplots.html#cb71-1"></a><span class="kw">ggplot</span>(<span class="dt">dat =</span> per_part,</span>
+<span id="cb71-2"><a href="week-7-scatterplots.html#cb71-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> WST.Right, </span>
+<span id="cb71-3"><a href="week-7-scatterplots.html#cb71-3"></a>           <span class="dt">y =</span> number_correct)) <span class="op">+</span></span>
+<span id="cb71-4"><a href="week-7-scatterplots.html#cb71-4"></a><span class="st">  </span><span class="co"># Incidentally, you can specify the shape and colour of the points yourself.</span></span>
+<span id="cb71-5"><a href="week-7-scatterplots.html#cb71-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">colour =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;green&quot;</span>) <span class="op">+</span></span>
+<span id="cb71-6"><a href="week-7-scatterplots.html#cb71-6"></a><span class="st">  </span><span class="co"># Type in &quot;colours()&quot; to see which colour names are recognised by R.</span></span>
+<span id="cb71-7"><a href="week-7-scatterplots.html#cb71-7"></a><span class="st">  </span><span class="co"># Type in ?pch to see which &#39;shape&#39; values are accepted.</span></span>
+<span id="cb71-8"><a href="week-7-scatterplots.html#cb71-8"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;L1 vocabulary test&quot;</span>) <span class="op">+</span></span>
+<span id="cb71-9"><a href="week-7-scatterplots.html#cb71-9"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Number of correct translations</span><span class="ch">\n</span><span class="st">(out of 45)&quot;</span>) <span class="op">+</span></span>
+<span id="cb71-10"><a href="week-7-scatterplots.html#cb71-10"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Mode) <span class="op">+</span></span>
+<span id="cb71-11"><a href="week-7-scatterplots.html#cb71-11"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;A title of your choice&quot;</span>,</span>
+<span id="cb71-12"><a href="week-7-scatterplots.html#cb71-12"></a>       <span class="dt">subtitle =</span> <span class="st">&quot;(and perhaps even a subtitle)&quot;</span>,</span>
+<span id="cb71-13"><a href="week-7-scatterplots.html#cb71-13"></a>       <span class="dt">caption =</span> <span class="st">&quot;(and a caption)&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-61-1.png" width="432" /></p>
+<p>(The warning concerns two missing values in the <code>WST</code> variable.)</p>
+<p>As we’ll discuss in class, scatterplots are the <em>indispensable</em>
+first (and sometimes final) step when analysing
+the relationship between two continuous variables.</p>
+<p>As for the decision which variable to put along which axis.
+By and large, put the variable that is most likely to be the <em>cause</em>
+of the relationship along the <em>x</em> axis and the variable that is most
+likely to be the <em>effect</em> along the <em>y</em> axis. In this case,
+it seems more likely that L1 skills affect one’s ability to recognise
+cognates in a foreign language than vice versa. Hence, put
+the variable representing L1 skills along the <em>x</em> axis.</p>
+</div>
+<div id="exercise-6" class="section level2">
+<h2><span class="header-section-number">7.4</span> Exercise</h2>
+<p>Draw a scatterplot that shows the relationship between
+the participants’ score on the English-language test and the
+number of correct translations.
+How many participants’ data are shown?</p>
+<p>Hand in both the graph and the compiled HTML report.
+Mention the number of participants whose data are shown in the R code.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Vanhove2014">
+<p>Vanhove, Jan. 2014. Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing. University of Fribourg PhD thesis. <a href="http://doc.rero.ch/record/210293">http://doc.rero.ch/record/210293</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="week-6-dotplots.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-8-scatterplots-with-trend-lines.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots</title>
+  <meta name="description" content="Tutorials for the graphing assignments." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Tutorials for the graphing assignments." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots" />
+  
+  <meta name="twitter:description" content="Tutorials for the graphing assignments." />
+  
+
+<meta name="author" content="Jan Vanhove (jan.vanhove@unifr.ch, https://janhove.github.io)" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="week-1-installing-and-configuring-r-and-rstudio.html"/>
+<link rel="next" href="week-3-drawing-a-boxplot.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Quantitative Methodology</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
+<li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
+<li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
+<li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
+<li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes"><i class="fa fa-check"></i><b>2.4</b> Labelling axes</a></li>
+<li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
+<li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
+<li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
+<li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
+<li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
+<li class="chapter" data-level="6.3.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#optional-possible-improvements-and-further-information"><i class="fa fa-check"></i><b>6.3.4</b> Optional: Possible improvements and further information</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
+<li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships"><i class="fa fa-check"></i><b>8.4</b> Examples of nonlinear relationships</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#exercise-7"><i class="fa fa-check"></i><b>8.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-first-graded-assignment.html"><a href="week-9-first-graded-assignment.html"><i class="fa fa-check"></i><b>9</b> Week 9: First graded assignment</a></li>
+<li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
+<li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
+<li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
+<li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
+<li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
+<li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
+<li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantitative Methodology: Drawing plots</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-2-reading-in-data-and-drawing-a-histogram" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Week 2: Reading in data and drawing a histogram</h1>
+<div id="goals-1" class="section level2">
+<h2><span class="header-section-number">2.1</span> Goals</h2>
+<ol style="list-style-type: decimal">
+<li>Importing CSV files into R.</li>
+<li>Drawing a histogram.</li>
+<li>Labelling axes.</li>
+</ol>
+</div>
+<div id="importing-csv-files-into-r" class="section level2">
+<h2><span class="header-section-number">2.2</span> Importing CSV files into R</h2>
+<ol style="list-style-type: decimal">
+<li>On Moodle you’ll find a file named <code>Vanhove2015_Vpn.csv</code>. This file contains a couple of pieces of information about the participants in an experiment that I conducted a couple of years ago: <code>ID</code>, scores on German, English and French vocabulary tests (<code>Wortschatz</code>, <code>Englisch</code> and <code>Französisch</code>, respectively), sex (<code>Geschlecht</code>), and age (<code>Alter</code>). Save the CSV file <em>directly</em> to the <code>data</code> subdirectory in the R project directory that you created last week. Do <em>not</em> open the file in Excel first to use its ‘save as’ function: On German- and French-language systems (among others), this tends to mess up the file’s internal structure.</li>
+<li>Open the CSV file using a text editor (e.g., Windows’ Wordpad or Gnu’s gedit) and note how the file is structured: There are separate columns for each variable, and each line contains data for one participant only. Different values are separated by commas (hence <em>CSV</em>: comma-separated values).</li>
+<li>You can also open the CSV file in Excel, LibreOffice Calc or other spreadsheet software, but be careful not to use the ‘save as’ function unless you know what you’re doing. If you use the ‘save as’ function in Excel on a non-English system, the commas will be replaced by semi-colons and chaos will ensue. (I prefer <a href="https://www.libreoffice.org">LibreOffice Calc</a>, which is free software and which allows you to save CSV files as, well, CSV files.)</li>
+<li>Open the R project that you created last week, e.g., by double-clicking the <code>.Rproj</code> file.</li>
+<li>Create a new script (<code>File &gt; New File &gt; R Script</code>).</li>
+<li>Type the commands for loading the <code>tidyverse</code> and <code>here</code> packages in this script and run them. (See last week.) Note that you do not have to <em>reinstall</em> these packages; you just need to <em>load</em> them.</li>
+<li>Add and run the following command. It reads in the CSV file <code>Vanhove2015_Vpn.csv</code> stored in the <code>data</code> subdirectory and assigns its contents to a new object that can be referred to in R as <code>d_hist</code>. You can pick another name, but then you’ll have to make the necessary changes in the code that follows, too. The ‘assignment operator’ is an arrow made up from a less than sign (<code>&lt;</code>) and a dash (<code>-</code>).</li>
+</ol>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb15-1"></a>d_hist &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2015_Vpn.csv&quot;</span>))</span></code></pre></div>
+<pre><code>## Parsed with column specification:
+## cols(
+##   VPN = col_double(),
+##   Wortschatz = col_double(),
+##   Englisch = col_double(),
+##   Französisch = col_double(),
+##   Geschlecht = col_character(),
+##   Alter = col_double()
+## )</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>If you type in the name of the newly created object (viz., <code>d_hist</code>) to the R prompt, you’ll see part of the dataset displayed. If you want to inspect the whole dataset, use the following command:</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb17-1"></a><span class="kw">view</span>(d_hist)</span></code></pre></div>
+<ol start="9" style="list-style-type: decimal">
+<li>If that worked, congratulations: You’ve successfully imported the data set. If not: Double-check your steps (including downloading the dataset). If it still doesn’t work, upload the dataset as you’ve downloaded it as well as the R commands that you used to Moodle along with any error messages or warnings.</li>
+</ol>
+</div>
+<div id="drawing-a-histogram" class="section level2">
+<h2><span class="header-section-number">2.3</span> Drawing a histogram</h2>
+<p>A histogram shows how a variable is distributed <span class="citation">(see Johnson <a href="#ref-Johnson2013" role="doc-biblioref">2013</a>)</span>. Histograms are particularly useful to check if
+there are any ‘univariate’ outliers (i.e., values that lie far from the bulk of the data if you consider only this one variable) and to see if the variale seems to be distributed approximately uniformly, normally, bimodaly or more wonkily.</p>
+<p>Since you’ve already loaded the <code>tidyverse</code> and since you’ve already read in the data, we can start to draw some histograms.
+Like for last week’s scatterplot, we need to define the object and the variables we want to plot (lines 1–2). Instead of drawing points, we draw a histogram:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,       <span class="co"># specify data set</span></span>
+<span id="cb18-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span><span class="st"> </span><span class="co"># variable to be drawn</span></span>
+<span id="cb18-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>()          <span class="co"># draw as histogram</span></span></code></pre></div>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>The histogram shows, among other things, that there are 8 individuals with an English vocabulary score just below 0.7 and 4 with a score just below 0.6. By default, 30 such <em>bins</em> are drawn, but as the warning indicates (‘Pick better value’), there’s nothing special about this number. For instance, you can adjust the desired bin width:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb20-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb20-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="fl">0.2</span>) <span class="co"># binwidth of 0.2 points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb21-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb21-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="fl">0.1</span>) <span class="co"># binwidth of 0.1 points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb22-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb22-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="fl">0.05</span>) <span class="co"># binwidth of 0.05 points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb23-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb23-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">30</span>) <span class="co"># binwidth of 1/30 points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>There aren’t any hard and fast rules for determining the optimal bin width. The default settings (1st plot) produce a histogram that seems to be a bit too fine-grained, whereas a bin width of 0.2 (2nd plot) results in too coarse a histogram. The other three histograms seem fine by me; I’d probably pick the 4th or 5th for a presentation or when writing a paper.</p>
+</div>
+<div id="labelling-axes" class="section level2">
+<h2><span class="header-section-number">2.4</span> Labelling axes</h2>
+<p>Use <code>xlab()</code> and <code>ylab()</code> to label axes. Don’t forget the quotation marks.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb24-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb24-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="fl">0.05</span>) <span class="op">+</span></span>
+<span id="cb24-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-4"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="op">+</span></span>
+<span id="cb24-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-5"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Important:</p>
+<div class="figure"><span id="fig:unnamed-chunk-18"></span>
+<img src="https://imgs.xkcd.com/comics/convincing.png" alt="Source: https://xkcd.com/833/."  />
+<p class="caption">
+Figure 2.1: Source: <a href="https://xkcd.com/833/" class="uri">https://xkcd.com/833/</a>.
+</p>
+</div>
+</div>
+<div id="adjusting-the-colour-scheme" class="section level2">
+<h2><span class="header-section-number">2.5</span> Adjusting the colour scheme</h2>
+<p>I’ve added two parameters to the <code>geom_histogram()</code> call. You can change
+these settings yourself.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_hist,</span>
+<span id="cb25-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Englisch)) <span class="op">+</span></span>
+<span id="cb25-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-3"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="fl">0.05</span>,</span>
+<span id="cb25-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-4"></a>                 <span class="dt">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb25-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-5"></a>                 <span class="dt">fill =</span> <span class="st">&quot;darkgrey&quot;</span>) <span class="op">+</span></span>
+<span id="cb25-6"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-6"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="op">+</span></span>
+<span id="cb25-7"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-7"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="exercise-1" class="section level2">
+<h2><span class="header-section-number">2.6</span> Exercise</h2>
+<ol style="list-style-type: decimal">
+<li><p>Create <em>one new</em> script with which you draw a suitable histogram for the <code>Französisch</code> variable as well as for the <code>Wortschatz</code> variable. This will require you to tinker with the <code>binwidth</code> setting. Don’t forget to adjust the axis labels. Use <code>ggsave()</code> (see last week) to save your preferred histogram for each of the two variables.</p></li>
+<li><p>Compile a HTML report.</p></li>
+<li><p>Hand in both the HTML report and the two figures via Moodle.</p></li>
+</ol>
+<!-- ### Reading: Descriptive statistics -->
+<!-- Text: Ludke et al. (2014). (REFERENCE) -->
+<!-- First read the entire text. As you're reading the results section, focus on the descriptive statistics and the graphs; we'll discuss the statistical tests in class where needed. Then answer the following questions or explain these terms in a manner that you find intelligible: -->
+<!-- 1. What is this study's most important research question or its most important aim? -->
+<!-- 2. Briefly describe this study's design (including the participants). Is this study a "true experiment"? -->
+<!-- 3. Which measures did the researchers take to maximally ensure the study's internal validity? Put differently, how did they try to ensure that any differences between the conditions could be attributed to differences between speaking, rhythmic speaking and singing rather than to other factor? -->
+<!-- 4. "Digital audio recordings were made during each experimental sessions." (p. 46, 2nd column, last paragraph) Why? -->
+<!-- 5. What does this mean: "Measures of participants’ mood, background experience, and abilities in music and language were also administered in order to check that the randomly assigned groups were matched for these factors." (p. 43, 2nd column, last paragraph) -->
+<!-- 6. What can you glean from Figure 2 (p. 48)? (In your own words, without referring to the running text.) -->
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Johnson2013">
+<p>Johnson, Daniel Ezra. 2013. Descriptive statistics. In Robert J. Podesva &amp; Devyani Sharma (eds.), <em>Research methods in linguistics</em>, 288–315. Cambridge: Cambridge University Press.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="week-1-installing-and-configuring-r-and-rstudio.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-3-drawing-a-boxplot.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

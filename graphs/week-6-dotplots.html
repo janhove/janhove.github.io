@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Week 6: Dotplots | Quantitative Methodology: Drawing plots</title>
+  <meta name="description" content="Tutorials for the graphing assignments." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Week 6: Dotplots | Quantitative Methodology: Drawing plots" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Tutorials for the graphing assignments." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Week 6: Dotplots | Quantitative Methodology: Drawing plots" />
+  
+  <meta name="twitter:description" content="Tutorials for the graphing assignments." />
+  
+
+<meta name="author" content="Jan Vanhove (jan.vanhove@unifr.ch, https://janhove.github.io)" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="week-5-line-charts.html"/>
+<link rel="next" href="week-7-scatterplots.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Quantitative Methodology</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
+<li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
+<li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
+<li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
+<li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes"><i class="fa fa-check"></i><b>2.4</b> Labelling axes</a></li>
+<li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
+<li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
+<li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
+<li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
+<li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
+<li class="chapter" data-level="6.3.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#optional-possible-improvements-and-further-information"><i class="fa fa-check"></i><b>6.3.4</b> Optional: Possible improvements and further information</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
+<li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships"><i class="fa fa-check"></i><b>8.4</b> Examples of nonlinear relationships</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#exercise-7"><i class="fa fa-check"></i><b>8.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-first-graded-assignment.html"><a href="week-9-first-graded-assignment.html"><i class="fa fa-check"></i><b>9</b> Week 9: First graded assignment</a></li>
+<li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
+<li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
+<li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
+<li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
+<li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
+<li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
+<li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantitative Methodology: Drawing plots</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-6-dotplots" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Week 6: Dotplots</h1>
+<div id="goals-4" class="section level2">
+<h2><span class="header-section-number">6.1</span> Goals</h2>
+<ol style="list-style-type: decimal">
+<li>You’ll learn how to draw simple dotcharts…</li>
+<li>and why they’re better than <em>pie charts</em>.</li>
+<li>You’ll gain some experience in debugging R code with typos :)</li>
+</ol>
+</div>
+<div id="pie-charts-bar-charts-and-dotplots" class="section level2">
+<h2><span class="header-section-number">6.2</span> Pie charts, bar charts, and dotplots</h2>
+<p>The three graphs below all show the same data
+(the proportion of sales of a pie producer by pie taste).<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-37-1.png" width="1152" /></p>
+<p>The graph on the left is a traditional <strong>pie chart</strong>.
+Though common, this type of graph has serious shortcomings,
+for which reason it should rarely be used:</p>
+<ol style="list-style-type: decimal">
+<li><p>Pie charts aren’t very flexible: When the number of categories
+is larger than here, pie charts are hardly comprehensible.
+It’s also difficult to add additional information to pie charts
+(e.g., the proportion of sales by taste the year before; see below).</p></li>
+<li><p>Readers gauge the numbers (in this case: the proportions)
+that the pie chart represents less accurately than when they’re
+presented in a bar chart or in a dot plot <span class="citation">(Cleveland &amp; McGill <a href="#ref-Cleveland1984" role="doc-biblioref">1984</a>)</span>.</p></li>
+</ol>
+<p>The graph in the middle is a <strong>bar chart</strong>, the one of the right
+a <strong>dot plot</strong>. Both are better choices than pie charts.
+For one things, they’re more flexible.
+For instance, you can add the sales from the year before to
+both graphs—as separate bars or by using different symbols.
+This would be difficult to accomplish in a pie chart:</p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-38-1.png" width="960" /></p>
+<p>I prefer dot plots because it’s easier to visualise a large
+number of categories and I find them less ‘busy’.</p>
+<p><strong>Tip:</strong> If you prefer bar charts: It’s usually better to plot the bars <em>next</em> to each other rather than to stack them on <em>top</em> of each other.</p>
+<p><strong>Tip:</strong> Don’t use pie charts.</p>
+<p>Incidentally, if you enter the following command in R,
+the help page for the <code>pie()</code> function opens.
+Then scroll down to the section <code>Note</code>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="week-6-dotplots.html#cb41-1"></a><span class="co"># Help page for pie()</span></span>
+<span id="cb41-2"><a href="week-6-dotplots.html#cb41-2"></a>?pie</span></code></pre></div>
+</div>
+<div id="tutorial-2" class="section level2">
+<h2><span class="header-section-number">6.3</span> Tutorial</h2>
+<p>We’ll use data from <span class="citation">Vanhove (<a href="#ref-Vanhove2017" role="doc-biblioref">2017</a>)</span> (see Moodle).
+For this study, I recruited 175 native speakers of Dutch
+from Belgium and the Netherlands. I showed them 44
+German words with Dutch cognates
+(e.g., <em>Stadt</em> (NL <em>stad</em>) or <em>Schiff</em> (NL <em>schip</em>))
+and asked them to choose their gender-marked definitive article
+(<em>der</em> (masculine), <em>die</em> (feminine), <em>das</em> (neuter)).
+Dutch and German are closely related languages,
+but there are a number of cognates whose grammatical gender
+differs between both languages. The Dutch word <em>strand</em> `beach’,
+for instance, is neuter, whereas the German word <em>Strand</em> is
+masculine.
+One of the research questions was if Belgian and Dutch participants
+were more likely to choose the neuter article <em>das</em> if the German word’s
+Dutch cognate is neuter than when it has common gender.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>Read in this dataset in <code>R</code>.</p>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Stimulus = col_character(),
+##   Country = col_character(),
+##   NeuterResponses = col_double(),
+##   DutchCognate = col_character(),
+##   GermanGender = col_character(),
+##   DutchGender = col_character()
+## )</code></pre>
+<p>The first few rows should look as follows:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="week-6-dotplots.html#cb43-1"></a><span class="kw">head</span>(dat)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+##   Stimulus Country         NeuterResponses DutchCognate GermanGender DutchGender
+##   &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;      
+## 1 Stadt    Belgium                  0      stad         feminine     common     
+## 2 Stadt    The Netherlands          0      stad         feminine     common     
+## 3 Saal     Belgium                  0      zaal         masculine    common     
+## 4 Saal     The Netherlands          0.0674 zaal         masculine    common     
+## 5 Nacht    Belgium                  0.0652 nacht        feminine     common     
+## 6 Nacht    The Netherlands          0.0225 nacht        feminine     common</code></pre>
+<p>The column <code>NeuterResponses</code> contains the proportion of neuter article
+(<em>das</em>)
+choices per German word (<code>Stimulus</code>) per (<code>Country</code>).
+The column <code>GermanGender</code> contains the word’s correct gender (in German);
+the column <code>DutchGender</code> contains the grammatical gender of the word’s Dutch cognate.</p>
+<div id="a-first-attempt" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> A first attempt</h3>
+<p>We can plot the proportion of <em>das</em> choices per word
+separately per country
+(Belgium vs. the Netherlands).
+This will show us how strongly the response pattern varies per word
+and whether Belgian and Dutch speakers of Dutch show different preferences.
+The code and comments show how to build this dot plot:</p>
+<p><strong>Tip:</strong> You’ll learn more by typing in these commands yourself
+and adding your <em>own</em> comments than by copy-pasting them. For
+this reason, I added a couple of typos and left out a couple of
+commas and brackets – all for you to find and fix, enjoy!</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="week-6-dotplots.html#cb45-1"></a><span class="kw">ggplot</span>(dat,                    <span class="co"># Data set</span></span>
+<span id="cb45-2"><a href="week-6-dotplots.html#cb45-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> NeuteResponses, <span class="co"># Proportions along x axis</span></span>
+<span id="cb45-3"><a href="week-6-dotplots.html#cb45-3"></a>           <span class="dt">y =</span> Stimulus,       <span class="co"># Stimulus names along y axis</span></span>
+<span id="cb45-4"><a href="week-6-dotplots.html#cb45-4"></a>           <span class="dt">shape =</span> Country)) <span class="op">+</span><span class="st"> </span><span class="co"># Different symbols by country</span></span>
+<span id="cb45-5"><a href="week-6-dotplots.html#cb45-5"></a><span class="st">  </span><span class="kw">geom_point</span>()                 <span class="co"># Plot as points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+</div>
+<div id="highlight-differences-between-different-categories-of-stimuli" class="section level3">
+<h3><span class="header-section-number">6.3.2</span> Highlight differences between different categories of stimuli</h3>
+<p>The plot above doesn’t offer an answer to the research question
+since the difference between stimuli with different Dutch genders
+isn’t highlighted.
+To accomplish this, we can plot stimuli with neuter cognates and
+those with common-gender cognates in different boxes (<em>facetting</em>,
+see the tutorial on line charts).
+(To see what <code>scales = "free_y"</code> and <code>space = "free_y"</code> accomplish,
+leave these parameters out of the call, i.e., using just <code>facet_grid(DutchGender ~.)</code>.)</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="week-6-dotplots.html#cb46-1"></a><span class="kw">ggplot</span>(dat,</span>
+<span id="cb46-2"><a href="week-6-dotplots.html#cb46-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> NeuterResponses,</span>
+<span id="cb46-3"><a href="week-6-dotplots.html#cb46-3"></a>           <span class="dt">y =</span> Stimulus </span>
+<span id="cb46-4"><a href="week-6-dotplots.html#cb46-4"></a>           <span class="dt">shape =</span> Country)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb46-5"><a href="week-6-dotplots.html#cb46-5"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb46-6"><a href="week-6-dotplots.html#cb46-6"></a><span class="st">  </span><span class="kw">facet_grid</span>(DutchGender <span class="op">~</span><span class="st"> </span>.,   <span class="co"># split up vertically by Dutch gender</span></span>
+<span id="cb46-7"><a href="week-6-dotplots.html#cb46-7"></a>             <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>,</span>
+<span id="cb46-8"><a href="week-6-dotplots.html#cb46-8"></a>             <span class="dt">space =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>This graph shows pretty clearly that both Belgian and Dutch
+speakers of Dutch pick <em>das</em> more often if the German word
+has a neuter-gender cognate than when it has a common-gender
+cognate: The points in the lower box lie more to the right
+than those in the upper box. With a single exception (<em>Boot</em>),
+there is no overlap between these two distributions.</p>
+<p>Additionally, the responses of Belgian and Dutch participants
+don’t seem to vary much from one another.
+(For instance, we don’t observe that most triangles lie to the
+right of the circles or that Belgian participants prefer <em>das</em> for <em>Wurst</em>
+and Dutch participants don’t.)</p>
+</div>
+<div id="a-final-attempt" class="section level3">
+<h3><span class="header-section-number">6.3.3</span> A final attempt</h3>
+<p>The previous graph is good enough. But we can do better still.
+German is taught in school in both Flanders and the Netherlands,
+and at least some participants will have known which words are
+neuter in German and which aren’t.
+So some of the variation between the stimuli will be attributable
+to the stimuli’s German gender.
+To highlight this, we can split up the graph not only by
+the words’ Dutch gender, but also by their German gender.
+And we still have to label the axes!</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="week-6-dotplots.html#cb47-1"></a><span class="kw">ggplot</span>(dat,</span>
+<span id="cb47-2"><a href="week-6-dotplots.html#cb47-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> NeuterResponses, </span>
+<span id="cb47-3"><a href="week-6-dotplots.html#cb47-3"></a>           <span class="dt">y =</span> Stimulus,</span>
+<span id="cb47-4"><a href="week-6-dotplots.html#cb47-4"></a>           <span class="dt">shape =</span> Country)) <span class="op">+</span></span>
+<span id="cb47-5"><a href="week-6-dotplots.html#cb47-5"></a><span class="st">  </span><span class="kw">geom_point</span>() </span>
+<span id="cb47-6"><a href="week-6-dotplots.html#cb47-6"></a>  <span class="kw">facet_grid</span>(DutchGender <span class="op">+</span><span class="st"> </span>GermanGender <span class="op">~</span><span class="st"> </span>., <span class="co"># split up by Dutch and German gender</span></span>
+<span id="cb47-7"><a href="week-6-dotplots.html#cb47-7"></a>             <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>, <span class="dt">space =</span> <span class="st">&quot;free_y&quot;</span>) <span class="op">+</span></span>
+<span id="cb47-8"><a href="week-6-dotplots.html#cb47-8"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Proportion &#39;das&#39;&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="co"># axis label for x</span></span>
+<span id="cb47-9"><a href="week-6-dotplots.html#cb47-9"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)                   <span class="co"># the y axis is self-explanatory</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p>The upper three boxes show feminine, masculine and neuter
+German words with common-gender cognates; the lower three boxes
+show feminine, masculine and neuter German words with neuter-gender
+cognates.
+The graph shows that the factor <em>Dutch gender</em> is the most important
+determinant of the participants’ article choices. But the factor
+<em>German gender</em> also plays a role: When a German word is neuter,
+both Belgian and Dutch people choose <em>das</em> more often than when
+it’s feminine or masculine.</p>
+</div>
+<div id="optional-possible-improvements-and-further-information" class="section level3">
+<h3><span class="header-section-number">6.3.4</span> Optional: Possible improvements and further information</h3>
+<ul>
+<li>Now the words are sorted alphabetically in each box. But this order can be customised.</li>
+<li>The symbols used in the graph above are difficult to distinguish optically. They, too, can be changed.</li>
+</ul>
+<p>If you’re interested in these possibilities, please refer to
+<a href="https://janhove.github.io/reporting/2016/08/30/drawing-a-dotplot" class="uri">https://janhove.github.io/reporting/2016/08/30/drawing-a-dotplot</a>.</p>
+<p>The versatility and usefulness of dotplots in linguistics
+is highlighted by <span class="citation">Sönning (<a href="#ref-Soenning2016" role="doc-biblioref">2016</a>)</span>. Another useful introduction
+is <span class="citation">Jacoby (<a href="#ref-Jacoby2006" role="doc-biblioref">2006</a>)</span>.</p>
+<p><em>I don’t expect you to carry out these additional steps. But perhaps they’re useful to you in the future.</em></p>
+</div>
+</div>
+<div id="for-other-kinds-of-data" class="section level2">
+<h2><span class="header-section-number">6.4</span> For other kinds of data</h2>
+<p>In the tutorial above, we worked with proportions.
+But you can use dot plots for other types of data, too.
+See <a href="http://perceptualedge.com/articles/b-eye/dot_plots.pdf" class="uri">http://perceptualedge.com/articles/b-eye/dot_plots.pdf</a> for some examples.</p>
+</div>
+<div id="exercise-5" class="section level2">
+<h2><span class="header-section-number">6.5</span> Exercise</h2>
+<p><span class="citation">Baten (<a href="#ref-Baten2011" role="doc-biblioref">2011</a>)</span> was interested in the acquisition of the German case system
+by Flemish pupils. He reported his results in elaborate tables;
+we’ll focus on the accuracy data for accusative and dative pronouns
+(e.g., <em>dich</em> vs. <em>dir</em>) that occur after prepositions.
+I tabulated the results in <code>ErgebniseBaten2011.csv</code> (Moodle).
+This data set contains 4 columns:</p>
+<ul>
+<li><code>Grade</code>: Baten’s participants were pupils from 10th, 11th and 12th grade.</li>
+<li><code>TargetCase</code>: The correct form was either an accusative or a dative pronoun.</li>
+<li><code>Position</code>: Some pronouns occurred after a preposition that is either always followed by an accusative (e.g., <em>bis</em>) or always followed by a dative (e.g., <em>nach</em>); these are marked as <code>fixed-preposition</code>. Other pronouns occurred after a preposition that could be followed by both an accusative or a dative, depending on its meaning (e.g., <em>in</em> and <em>auf</em>; <code>wechsel-preposition</code>).</li>
+</ul>
+<p>Below you’ll find two graphs. Both highlight that there’s a huge leap in
+accuracy between 10th and 11th grade. Moreover, accuracy is higher
+for the ‘fixed’ prepositions than for the ‘Wechselpräpositionen’.
+(This is slightly clearer in the second graph, I think.)</p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-49-1.png" width="288" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-50-1.png" width="432" /></p>
+<p><strong>Your task:</strong> Draw <em>both</em> graphs yourself. Hand in the compiled HTML report.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Baten2011">
+<p>Baten, Kristof. 2011. Processability Theory and German case acquisition. <em>Language Learning</em> 61. 455–505.</p>
+</div>
+<div id="ref-Cleveland1984">
+<p>Cleveland, William S. &amp; Robert McGill. 1984. Graphical perception: Theory, experimentation, and application to the development of graphical methods. <em>Journal of the American Statistical Association</em> 79. 531–554.</p>
+</div>
+<div id="ref-Jacoby2006">
+<p>Jacoby, William G. 2006. The dot plot: A graphical display for labeled quantitative values. <em>The Political Methodologist</em> 14(1). 6–14.</p>
+</div>
+<div id="ref-Soenning2016">
+<p>Sönning, Lukas. 2016. The dot plot: A graphical tool for data analysis and presentation. In Hanna Christ, Daniel Klenovšak, Lukas Sönning &amp; Valentin Werner (eds.), <em>A blend of MaLT: Selected contributions from the Methods and Linguistic Theories Symposium 2015</em>, 101–129. Bamberg, Germany: University of Bamberg Press. doi:<a href="https://doi.org/10.20378/irbo-51101">10.20378/irbo-51101</a>.</p>
+</div>
+<div id="ref-Vanhove2017">
+<p>Vanhove, Jan. 2017. The influence of standard and substandard Dutch on gender assignment in second language German. <em>Language Learning</em> 67(2). 431–460. doi:<a href="https://doi.org/10.1111/lang.12230">10.1111/lang.12230</a>.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>Fictitious data from the help page for the R function pie().<a href="week-6-dotplots.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Common gender = non-neuter. Present-day Standard Dutch hardly distinguishes between masculine and feminine gender.<a href="week-6-dotplots.html#fnref4" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="week-5-line-charts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-7-scatterplots.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

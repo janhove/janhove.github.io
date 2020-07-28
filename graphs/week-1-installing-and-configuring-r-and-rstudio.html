@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Week 1: Installing and configuring R and RStudio | Quantitative Methodology: Drawing plots</title>
+  <meta name="description" content="Tutorials for the graphing assignments." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Week 1: Installing and configuring R and RStudio | Quantitative Methodology: Drawing plots" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Tutorials for the graphing assignments." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Week 1: Installing and configuring R and RStudio | Quantitative Methodology: Drawing plots" />
+  
+  <meta name="twitter:description" content="Tutorials for the graphing assignments." />
+  
+
+<meta name="author" content="Jan Vanhove (jan.vanhove@unifr.ch, https://janhove.github.io)" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="week-2-reading-in-data-and-drawing-a-histogram.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Quantitative Methodology</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
+<li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
+<li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
+<li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
+<li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes"><i class="fa fa-check"></i><b>2.4</b> Labelling axes</a></li>
+<li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
+<li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
+<li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
+<li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
+<li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
+<li class="chapter" data-level="6.3.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#optional-possible-improvements-and-further-information"><i class="fa fa-check"></i><b>6.3.4</b> Optional: Possible improvements and further information</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
+<li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships"><i class="fa fa-check"></i><b>8.4</b> Examples of nonlinear relationships</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#exercise-7"><i class="fa fa-check"></i><b>8.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-first-graded-assignment.html"><a href="week-9-first-graded-assignment.html"><i class="fa fa-check"></i><b>9</b> Week 9: First graded assignment</a></li>
+<li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
+<li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
+<li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
+<li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
+<li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
+<li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
+<li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantitative Methodology: Drawing plots</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-1-installing-and-configuring-r-and-rstudio" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Week 1: Installing and configuring R and RStudio</h1>
+<div id="goals" class="section level2">
+<h2><span class="header-section-number">1.1</span> Goals</h2>
+<ol style="list-style-type: decimal">
+<li>Install software: <code>R</code>, <code>RStudio</code>, and <code>tidyverse/ggplot2</code>.</li>
+<li>Configure <code>R</code> and <code>RStudio</code>.</li>
+<li>Draw and save a first graph (scatterplot).</li>
+</ol>
+</div>
+<div id="software" class="section level2">
+<h2><span class="header-section-number">1.2</span> Software</h2>
+<ol style="list-style-type: decimal">
+<li>Download the free program <code>R</code> from <a href="https://r-project.org" class="uri">https://r-project.org</a> (Download, CRAN) and install it.</li>
+<li>Download and install the free program <code>RStudio</code>: <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a>.
+RStudio offers a tidier user interface for <code>R</code>.</li>
+<li>Open <code>RStudio</code>. You should see four frames as in Figure <a href="week-1-installing-and-configuring-r-and-rstudio.html#fig:rstudio">1.1</a> below. If you only see three frames, click <code>File</code>, <code>New File</code>, <code>R Script</code>.</li>
+</ol>
+<div class="figure"><span id="fig:rstudio"></span>
+<img src="RStudio.png" alt="RStudio. _Top left_: Script editor. This is where you can enter and edit commands and comments. _Bottom left_: R console. Commands that you copy from the script editor to this console will be evaluated by `R`. _Top right_: Here you'll find a list of the objects currently available in R's working memory (none at the moment). _Bottom right_: Plots (none at the moment), help pages etc."  />
+<p class="caption">
+Figure 1.1: RStudio. <em>Top left</em>: Script editor. This is where you can enter and edit commands and comments. <em>Bottom left</em>: R console. Commands that you copy from the script editor to this console will be evaluated by <code>R</code>. <em>Top right</em>: Here you’ll find a list of the objects currently available in R’s working memory (none at the moment). <em>Bottom right</em>: Plots (none at the moment), help pages etc.
+</p>
+</div>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Go to <code>Tools &gt; Global Options... &gt; General.</code> Untick <code>Restore .RData into workspace at startup</code> and set <code>Save workspace to .RData on exit</code> to <code>Never</code>. This will help ensure that when other people run the same code as you, the results will be the same, too.</p></li>
+<li><p>Go to <code>Tools &gt; Global Options...&gt; Code &gt; Saving</code>. Set <code>Default text encoding</code> to <code>UTF-8</code>.</p></li>
+<li><p>Enter the following line into the script editor (top left). Brackets, quotation marks, capitalisation, and the like all matter to computers, so pay attention to them.</p></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div>
+<ol start="7" style="list-style-type: decimal">
+<li><p>Now select this line in the script editor. Then click <code>Code</code>, <code>Run Line(s)</code>. (Shortcut for Windows/Linux: ctrl + enter; Mac: command + enter.)
+This relays the command <code>install.packages("tidyverse")</code> to <code>R</code>.
+This command adds the <code>tidyverse</code> suite to your installation of R;
+the <code>tidyverse</code> is a collection of useful add-ons that enable you to work
+more flexibly and more efficiently with datasets. One of these add-ons
+is the <code>ggplot2</code> package, which features state-of-the-art functions for drawing
+graphics.</p></li>
+<li><p>You may need to select a server from a pop-up window. Any server will work.</p></li>
+<li><p>Wait as the add-on package is being installed.</p></li>
+<li><p>Install the <code>here</code> package using the same set of commands, i.e.,
+run the line below.</p></li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb2-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;here&quot;</span>)</span></code></pre></div>
+<ol start="11" style="list-style-type: decimal">
+<li><p>Do the same with the <code>devtools</code> package.</p></li>
+<li><p>Click on <code>File &gt; New Project... &gt; New Directory</code>.
+Navigate to somewhere on your computer where you want to create a new directory
+and call this directory (for instance, <code>quantmeth_plots</code>). You will use this
+directory to store the data and scripts that you’ll need for drawing the graphs
+in as well for saving the graphs themselves to.</p></li>
+<li><p>When you’re done, close RStudio. Navigate to the directory you’ve just created.
+You should find an <code>.Rproj</code> file there. Double-click it. If all is well, RStudio
+should fire up.</p></li>
+<li><p>Create the following subdirectories in the directory you’re currently in:
+<code>data</code>, <code>scripts</code> and <code>figures</code>.</p></li>
+</ol>
+<p>Now we’re good to go!</p>
+</div>
+<div id="drawing-a-first-scatterplot" class="section level2">
+<h2><span class="header-section-number">1.3</span> Drawing a first scatterplot</h2>
+<p>I’ll assume that you’ve opened your newly created <code>R</code> project.
+If you haven’t, navigate to the directory you’ve just created and double-click
+the <code>.Rproj</code> file.</p>
+<p>Enter the commands below into the script editor (top left);
+<strong>do not</strong> enter them directly into the console (bottom left).
+While nothing terrible will happen if you do enter commands directly
+into the console, entering them into the script editor first is a good
+habit to get into: it’s much easier to spot errors, document your analysis,
+make tweaks to your code, and reuse old code in the editor than in the console.</p>
+<p>As for documenting your analysis, be sure to comment your <code>R</code> scripts liberally.
+When you’re still starting out learning <code>R</code>, I suggest you use comments to
+keep track of literally every command.
+You can enter comments by prefixing a line with <code>#</code>.
+Everything on the same line after <code>#</code> will be ignored by <code>R</code>
+but will be visible to you and other people you’d like to share
+your scripts with (e.g., when asking for help).</p>
+<ol style="list-style-type: decimal">
+<li>After you’ve installed the <code>tidyverse</code> suite and the <code>here</code> and <code>devtools</code> packages,
+you still need to load
+them in order to make their functions available.
+While <strong>you only need to install a package or suite once</strong>,
+<strong>you need to load its functions every time you start a new session</strong>.
+When you run this command, a number of messages
+will appear about packages that were attached and ‘conflicts’. You can safely
+ignore these. Loading the <code>here</code> package should make the current path
+appear at the prompt.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb3-1"></a><span class="co"># Load tidyverse package</span></span>
+<span id="cb3-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb3-2"></a><span class="co"># (this is a comment, by the way -- use them liberally)</span></span>
+<span id="cb3-3"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb3-3"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>## ── Attaching packages ────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
+## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ───────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb7-1"></a><span class="co"># Load here package</span></span>
+<span id="cb7-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb7-2"></a><span class="kw">library</span>(here)</span></code></pre></div>
+<pre><code>## here() starts at /home/jan/ownCloud/BookletMethodology</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><code>R</code> comes with a number of pre-installed datasets, among which
+the <code>iris</code> dataset. This dataset contains measurements of 150 flowers.
+(Later we’ll work with linguistic datasets of our own.)
+Load this pre-installed dataset using <code>data()</code>:</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb9-1"></a><span class="co"># Load iris dataset</span></span>
+<span id="cb9-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb9-2"></a><span class="kw">data</span>(iris)</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Show this dataset by entering its name. Take note of how this dataset
+is laid out: it contains measurements of 150 flowers, with each flower
+being represented by one row. For each flower, 5 pieces of information (‘variables’)
+are available, among which 4 numeric ones (<code>Sepal.Length</code>, <code>Sepal.Width</code>, <code>Petal.Length</code>, <code>Petal.Width</code>) and one non-numeric (<code>Species</code>).
+Datasets constructed in this way (1 row per observation, different columns per variable) tend to be easier to analyse than datasets with other lay-outs
+(e.g., one row per variable, different columns for separate observations).</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb10-1"></a><span class="co"># Show dataset</span></span>
+<span id="cb10-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb10-2"></a>iris</span></code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1            5.1         3.5          1.4         0.2     setosa
+## 2            4.9         3.0          1.4         0.2     setosa
+## 3            4.7         3.2          1.3         0.2     setosa
+## 4            4.6         3.1          1.5         0.2     setosa
+## 5            5.0         3.6          1.4         0.2     setosa
+## 6            5.4         3.9          1.7         0.4     setosa
+## 7            4.6         3.4          1.4         0.3     setosa
+## 8            5.0         3.4          1.5         0.2     setosa
+## 9            4.4         2.9          1.4         0.2     setosa
+## 10           4.9         3.1          1.5         0.1     setosa
+## 11           5.4         3.7          1.5         0.2     setosa
+## 12           4.8         3.4          1.6         0.2     setosa
+## 13           4.8         3.0          1.4         0.1     setosa
+## 14           4.3         3.0          1.1         0.1     setosa
+## 15           5.8         4.0          1.2         0.2     setosa
+## 16           5.7         4.4          1.5         0.4     setosa
+## 17           5.4         3.9          1.3         0.4     setosa
+## 18           5.1         3.5          1.4         0.3     setosa
+## 19           5.7         3.8          1.7         0.3     setosa
+## 20           5.1         3.8          1.5         0.3     setosa
+## 21           5.4         3.4          1.7         0.2     setosa
+## 22           5.1         3.7          1.5         0.4     setosa
+## 23           4.6         3.6          1.0         0.2     setosa
+## 24           5.1         3.3          1.7         0.5     setosa
+## 25           4.8         3.4          1.9         0.2     setosa
+## 26           5.0         3.0          1.6         0.2     setosa
+## 27           5.0         3.4          1.6         0.4     setosa
+## 28           5.2         3.5          1.5         0.2     setosa
+## 29           5.2         3.4          1.4         0.2     setosa
+## 30           4.7         3.2          1.6         0.2     setosa
+## 31           4.8         3.1          1.6         0.2     setosa
+## 32           5.4         3.4          1.5         0.4     setosa
+## 33           5.2         4.1          1.5         0.1     setosa
+## 34           5.5         4.2          1.4         0.2     setosa
+## 35           4.9         3.1          1.5         0.2     setosa
+## 36           5.0         3.2          1.2         0.2     setosa
+## 37           5.5         3.5          1.3         0.2     setosa
+## 38           4.9         3.6          1.4         0.1     setosa
+## 39           4.4         3.0          1.3         0.2     setosa
+## 40           5.1         3.4          1.5         0.2     setosa
+## 41           5.0         3.5          1.3         0.3     setosa
+## 42           4.5         2.3          1.3         0.3     setosa
+## 43           4.4         3.2          1.3         0.2     setosa
+## 44           5.0         3.5          1.6         0.6     setosa
+## 45           5.1         3.8          1.9         0.4     setosa
+## 46           4.8         3.0          1.4         0.3     setosa
+## 47           5.1         3.8          1.6         0.2     setosa
+## 48           4.6         3.2          1.4         0.2     setosa
+## 49           5.3         3.7          1.5         0.2     setosa
+## 50           5.0         3.3          1.4         0.2     setosa
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor
+## 101          6.3         3.3          6.0         2.5  virginica
+## 102          5.8         2.7          5.1         1.9  virginica
+## 103          7.1         3.0          5.9         2.1  virginica
+## 104          6.3         2.9          5.6         1.8  virginica
+## 105          6.5         3.0          5.8         2.2  virginica
+## 106          7.6         3.0          6.6         2.1  virginica
+## 107          4.9         2.5          4.5         1.7  virginica
+## 108          7.3         2.9          6.3         1.8  virginica
+## 109          6.7         2.5          5.8         1.8  virginica
+## 110          7.2         3.6          6.1         2.5  virginica
+## 111          6.5         3.2          5.1         2.0  virginica
+## 112          6.4         2.7          5.3         1.9  virginica
+## 113          6.8         3.0          5.5         2.1  virginica
+## 114          5.7         2.5          5.0         2.0  virginica
+## 115          5.8         2.8          5.1         2.4  virginica
+## 116          6.4         3.2          5.3         2.3  virginica
+## 117          6.5         3.0          5.5         1.8  virginica
+## 118          7.7         3.8          6.7         2.2  virginica
+## 119          7.7         2.6          6.9         2.3  virginica
+## 120          6.0         2.2          5.0         1.5  virginica
+## 121          6.9         3.2          5.7         2.3  virginica
+## 122          5.6         2.8          4.9         2.0  virginica
+## 123          7.7         2.8          6.7         2.0  virginica
+## 124          6.3         2.7          4.9         1.8  virginica
+## 125          6.7         3.3          5.7         2.1  virginica
+## 126          7.2         3.2          6.0         1.8  virginica
+## 127          6.2         2.8          4.8         1.8  virginica
+## 128          6.1         3.0          4.9         1.8  virginica
+## 129          6.4         2.8          5.6         2.1  virginica
+## 130          7.2         3.0          5.8         1.6  virginica
+## 131          7.4         2.8          6.1         1.9  virginica
+## 132          7.9         3.8          6.4         2.0  virginica
+## 133          6.4         2.8          5.6         2.2  virginica
+## 134          6.3         2.8          5.1         1.5  virginica
+## 135          6.1         2.6          5.6         1.4  virginica
+## 136          7.7         3.0          6.1         2.3  virginica
+## 137          6.3         3.4          5.6         2.4  virginica
+## 138          6.4         3.1          5.5         1.8  virginica
+## 139          6.0         3.0          4.8         1.8  virginica
+## 140          6.9         3.1          5.4         2.1  virginica
+## 141          6.7         3.1          5.6         2.4  virginica
+## 142          6.9         3.1          5.1         2.3  virginica
+## 143          5.8         2.7          5.1         1.9  virginica
+## 144          6.8         3.2          5.9         2.3  virginica
+## 145          6.7         3.3          5.7         2.5  virginica
+## 146          6.7         3.0          5.2         2.3  virginica
+## 147          6.3         2.5          5.0         1.9  virginica
+## 148          6.5         3.0          5.2         2.0  virginica
+## 149          6.2         3.4          5.4         2.3  virginica
+## 150          5.9         3.0          5.1         1.8  virginica</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Draw a scatterplot using the following command,
+which plots the flowers’ <code>Sepal.Length</code> along the <em>x</em> axis
+and their <code>Petal.Length</code> along the <em>y</em> axis. Pay particular
+attention to the brackets, commas, pluses, capitalisation, etc.:
+The command won’t work if you type <code>petal.length</code> instead of <code>Petal.Length</code>
+or if you forget a bracket or the plus sign.
+The indentations aren’t important, but they’re useful to show the
+command’s structure.</li>
+</ol>
+<p>Explanation: Line 1 specifies the name of the dataset as it’s known
+in <code>R</code> (<code>data =</code>). Lines 2–3 specify the variables to be plotted
+(the plot’s <em>aesthetics</em>, <code>aes</code>) and how they should be plotted
+(along the <em>x</em> and <em>y</em> axes). Line 4 specifies that the data should
+be plotted as points.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb12-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> iris,             <span class="co"># Specify the name of the dataset</span></span>
+<span id="cb12-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb12-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Sepal.Length,    <span class="co"># Variable for x axis (aes = &#39;aesthetics&#39;)</span></span>
+<span id="cb12-3"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb12-3"></a>           <span class="dt">y =</span> Petal.Length)) <span class="op">+</span><span class="st"> </span><span class="co"># Variable for y axis (don&#39;t forget the &#39;+&#39;)</span></span>
+<span id="cb12-4"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb12-4"></a><span class="st">  </span><span class="kw">geom_point</span>()                  <span class="co"># Plot the data as points</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>If you’ve successfully run the commands above, you should see a graph displayed
+in the bottom right pane. Now save this figure to your computer using the following command. The figure will be saved in the subdirectory <code>figures</code>, and it will be a <code>.png</code> file.</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb13-1"></a><span class="co"># This saves the plot to the figures subdirectory.</span></span>
+<span id="cb13-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb13-2"></a><span class="kw">ggsave</span>(<span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;01_first_scatterplot.png&quot;</span>))</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Add the following lines. They output the R, RStudio and package versions used as well as some additional information that can be useful when figuring out why something isn’t working as it should.</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb14-1"></a><span class="co"># Software versions used</span></span>
+<span id="cb14-2"><a href="week-1-installing-and-configuring-r-and-rstudio.html#cb14-2"></a>devtools<span class="op">::</span><span class="kw">session_info</span>()</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Click <code>File &gt; Compile Report...</code>. Select HTML and store the script in the <code>scripts</code> directory as <code>01_first_scatterplot.R</code>. If you’ve followed this tutorial to the letter, you will now find both an <code>.R</code> file and a corresponding <code>.html</code> file in your script directory. The <code>.R</code> file contains the command that you used to draw the plot, and the <code>.html</code> report nicely keeps track of both the commands and their output. If the report compiles without hiccoughs, anyone with the same data and the same software versions will be able to <strong>reproduce</strong> your analysis.</li>
+</ol>
+</div>
+<div id="exercise" class="section level2">
+<h2><span class="header-section-number">1.4</span> Exercise</h2>
+<ol style="list-style-type: decimal">
+<li><p>Create a <em>new</em> script with which you draw a scatterplot
+in which the <code>Petal.Width</code> variable from the <code>iris</code>dataset is plotting
+along the <em>x</em>-axis and the <code>Sepal.Width</code> variable is plotted along the <em>y</em>-axis.
+You don’t have to reinstall all the packages again, but you will need to <em>load</em> them.
+Give the script and the figure sensible names (something starting with <code>01_</code> would be good; use <code>02_</code>, <code>03_</code> etc. in the following weeks), and save them to the appropriate subdirectories.</p></li>
+<li><p>Compile a HTML report.</p></li>
+<li><p>Hand in both the HTML report and the figure via Moodle.</p></li>
+</ol>
+<!-- ### Reading -->
+<!-- Text: Johnson (2013). (REFERENCE) -->
+<!-- First read the entire text.  -->
+<!-- Then explain the following terms in a manner that you find intelligible  -->
+<!-- (e.g., your own definition, examples, illustration): -->
+<!-- 1. Continuous vs. categorical variables (pp. 289-290) -->
+<!-- 2. Histogram (pp. 292-293) -->
+<!-- 3. Bimodal distribution (p. 292) -->
+<!-- 4. Outliers (p. 292) -->
+<!-- 5. Normal distribution (pp. 293-294) -->
+<!-- 6. Arithmetic mean vs. median vs. mode (pp. 295-296) -->
+<!-- 7. The effect of outliers on the mean and median (p. 297) -->
+<!-- 8. Quantile, percentile and quartile (p. 298) -->
+<!-- 9. Standard deviation and variance (p. 299) -->
+<!-- 10. Left- and right-skewed distributions (p. 301) -->
+<!-- 11. Association (p. 303) -->
+<!-- 12. Pearson correlation (p. 305, first paragraph) -->
+<!-- 13. Regression line (p. 305) -->
+<!-- 14. Ordinal vs. nominal variables (p. 307) -->
+<!-- 15. Bar chart (pp. 307-308) -->
+<!-- 16. Contingency table (p. 311) -->
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-2-reading-in-data-and-drawing-a-histogram.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

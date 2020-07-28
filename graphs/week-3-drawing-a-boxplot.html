@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Week 3: Drawing a boxplot | Quantitative Methodology: Drawing plots</title>
+  <meta name="description" content="Tutorials for the graphing assignments." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Week 3: Drawing a boxplot | Quantitative Methodology: Drawing plots" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Tutorials for the graphing assignments." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Week 3: Drawing a boxplot | Quantitative Methodology: Drawing plots" />
+  
+  <meta name="twitter:description" content="Tutorials for the graphing assignments." />
+  
+
+<meta name="author" content="Jan Vanhove (jan.vanhove@unifr.ch, https://janhove.github.io)" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="week-2-reading-in-data-and-drawing-a-histogram.html"/>
+<link rel="next" href="week-4-boxplots-deluxe.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Quantitative Methodology</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
+<li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
+<li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
+<li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
+<li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
+<li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes"><i class="fa fa-check"></i><b>2.4</b> Labelling axes</a></li>
+<li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
+<li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
+<li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
+<li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
+<li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
+<li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
+<li class="chapter" data-level="6.3.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#optional-possible-improvements-and-further-information"><i class="fa fa-check"></i><b>6.3.4</b> Optional: Possible improvements and further information</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
+<li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships"><i class="fa fa-check"></i><b>8.4</b> Examples of nonlinear relationships</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#exercise-7"><i class="fa fa-check"></i><b>8.5</b> Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-first-graded-assignment.html"><a href="week-9-first-graded-assignment.html"><i class="fa fa-check"></i><b>9</b> Week 9: First graded assignment</a></li>
+<li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
+<li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
+<li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
+<li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
+<li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
+<li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
+<li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Quantitative Methodology: Drawing plots</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-3-drawing-a-boxplot" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Week 3: Drawing a boxplot</h1>
+<ol style="list-style-type: decimal">
+<li>Drawing basic boxplots to compare groups.</li>
+<li>Adjusting the appearance of plots.</li>
+</ol>
+<div id="reading-in-data" class="section level2">
+<h2><span class="header-section-number">3.1</span> Reading in data</h2>
+<ol style="list-style-type: decimal">
+<li>Download the file <code>VowelChoices_ij.csv</code> from
+Moodle to the <code>data</code> subdirectory of your R project directory.
+This file contains a part of the results
+of a learning experiment <span class="citation">(Vanhove <a href="#ref-Vanhove2016" role="doc-biblioref">2016</a>)</span>
+in which 80 participants were assigned to one
+of two learning conditions
+(<code>LearningCondition</code>).
+The column <code>PropCorrect</code> contains the proportion
+of correct answers for each participant,
+and the question we want to answer concerns
+the difference in the performance between
+learners in the different conditions.</li>
+<li>Open your R project.</li>
+<li>Create a new script and copy the commands with which you loaded the packages and imported the dataset from last week’s script to this new script.</li>
+<li>Adapt the command for importing the data so that it’ll read in the file <code>VowelChoices_ij.csv</code> and that the dataset will be known in R as <code>d_box</code>. Execute these commands.</li>
+</ol>
+<p><strong>From now on, I’ll assume that you won’t enter commands directly to the R console but that you’ll first enter them into a script which you’ll then execute (= much more efficient and manageable).</strong></p>
+<p><strong>Tip: Comment your code profusely (with <code>#</code>). This way you’ll be able to understand what your code accomplishes in a few months’ time, which will make it easier to recycle your scripts. You don’t have to copy my comments verbatim.</strong> <em>“Your closest collaborator is you six months ago but you don’t reply to email.”</em></p>
+<ol start="5" style="list-style-type: decimal">
+<li>Inspect the dataset in R to check that it contains 80 rows and 3 labelled columns (<code>Subject</code>, <code>LearningCondition</code>, <code>PropCorrect</code>).</li>
+<li>You can obtain a quick summary of a dataset with the <code>summary()</code> command::</li>
+</ol>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="week-3-drawing-a-boxplot.html#cb26-1"></a><span class="co"># Summary dataset</span></span>
+<span id="cb26-2"><a href="week-3-drawing-a-boxplot.html#cb26-2"></a><span class="kw">summary</span>(d_box)</span></code></pre></div>
+<pre><code>##    Subject          LearningCondition   PropCorrect    
+##  Length:80          Length:80          Min.   :0.0000  
+##  Class :character   Class :character   1st Qu.:0.2262  
+##  Mode  :character   Mode  :character   Median :0.3333  
+##                                        Mean   :0.3685  
+##                                        3rd Qu.:0.4762  
+##                                        Max.   :0.9048</code></pre>
+</div>
+<div id="drawing-boxplots" class="section level2">
+<h2><span class="header-section-number">3.2</span> Drawing boxplots</h2>
+<p>See <span class="citation">Johnson (<a href="#ref-Johnson2013" role="doc-biblioref">2013</a>)</span> for an explanation of boxplots.
+Here we’ll draw basic boxplots in order to compare
+two parts of a dataset. But you can also use
+boxplots to compare more than two groups.
+Next week we’ll add the individual data points to
+these boxplots which can make them more informative still.</p>
+<p>From now on, I’ll always assume that you’ve loaded the <code>tidyverse</code> and <code>here</code> packages.</p>
+<ol style="list-style-type: decimal">
+<li>The following command plots the accuracy
+data (<code>PropCorrect</code>) using a separate boxplot for
+each condition (<code>LearningCondition</code>).
+You already know how the first three lines work;
+the fourth specifies that the data should be plotted
+using boxplots.</li>
+</ol>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="week-3-drawing-a-boxplot.html#cb28-1"></a><span class="co"># Boxplot PropCorrect vs. LearningCondition</span></span>
+<span id="cb28-2"><a href="week-3-drawing-a-boxplot.html#cb28-2"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,              <span class="co"># specify dataset</span></span>
+<span id="cb28-3"><a href="week-3-drawing-a-boxplot.html#cb28-3"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, <span class="co"># x-axis: groups/conditions</span></span>
+<span id="cb28-4"><a href="week-3-drawing-a-boxplot.html#cb28-4"></a>           <span class="dt">y =</span> PropCorrect)) <span class="op">+</span><span class="st">    </span><span class="co"># y-axis: results</span></span>
+<span id="cb28-5"><a href="week-3-drawing-a-boxplot.html#cb28-5"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()                  <span class="co"># summarise data with boxplots</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Label the <em>x</em>-axis as “Learning condition” and the <em>y</em>-axis as “Proportion correct answers”. I don’t provide the commands for doing so; you already know them.</li>
+</ol>
+</div>
+<div id="adjusting-the-appearance-of-plots" class="section level2">
+<h2><span class="header-section-number">3.3</span> Adjusting the appearance of plots</h2>
+<ol style="list-style-type: decimal">
+<li>By default, <code>ggplot2</code> (the part of the <code>tidyverse</code> that takes care of plotting) produces plots with a grey background
+(which doesn’t seem to please anyone save for its developer).
+This can be changed by appending the command <code>theme_bw()</code> (<em>black and white</em>)
+to the <code>ggplot</code> call:</li>
+</ol>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="week-3-drawing-a-boxplot.html#cb29-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,           </span>
+<span id="cb29-2"><a href="week-3-drawing-a-boxplot.html#cb29-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, </span>
+<span id="cb29-3"><a href="week-3-drawing-a-boxplot.html#cb29-3"></a>           <span class="dt">y =</span> PropCorrect)) <span class="op">+</span><span class="st">    </span></span>
+<span id="cb29-4"><a href="week-3-drawing-a-boxplot.html#cb29-4"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st">               </span></span>
+<span id="cb29-5"><a href="week-3-drawing-a-boxplot.html#cb29-5"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span><span class="st">          </span></span>
+<span id="cb29-6"><a href="week-3-drawing-a-boxplot.html#cb29-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb29-7"><a href="week-3-drawing-a-boxplot.html#cb29-7"></a><span class="st">  </span><span class="kw">theme_bw</span>()</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>For other options, see <a href="http://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">http://ggplot2.tidyverse.org/reference/ggtheme.html</a>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>To change the font size, insert a number between the brackets of the <code>theme_bw()</code> command. Finding a suitable font size is a matter of trial and error.</li>
+</ol>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="week-3-drawing-a-boxplot.html#cb30-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,           </span>
+<span id="cb30-2"><a href="week-3-drawing-a-boxplot.html#cb30-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, </span>
+<span id="cb30-3"><a href="week-3-drawing-a-boxplot.html#cb30-3"></a>           <span class="dt">y =</span> PropCorrect)) <span class="op">+</span><span class="st">    </span></span>
+<span id="cb30-4"><a href="week-3-drawing-a-boxplot.html#cb30-4"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span><span class="st">               </span></span>
+<span id="cb30-5"><a href="week-3-drawing-a-boxplot.html#cb30-5"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span><span class="st">          </span></span>
+<span id="cb30-6"><a href="week-3-drawing-a-boxplot.html#cb30-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb30-7"><a href="week-3-drawing-a-boxplot.html#cb30-7"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dv">15</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<ol start="3" style="list-style-type: decimal">
+<li>When you’re happy with a plot, you can save it using <code>ggsave()</code>. You can set the width and height of the figure using the <code>width</code> and <code>height</code> parameters, e.g.,</li>
+</ol>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="week-3-drawing-a-boxplot.html#cb31-1"></a><span class="kw">ggsave</span>(<span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;03_boxplot.png&quot;</span>), <span class="dt">width =</span> <span class="dv">8</span>, <span class="dt">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+</div>
+<div id="exercise-2" class="section level2">
+<h2><span class="header-section-number">3.4</span> Exercise</h2>
+<p>The file <code>Vanhove2014_CognateProfile.csv</code> contains data from <span class="citation">Vanhove (<a href="#ref-Vanhove2014" role="doc-biblioref">2014</a>)</span>.
+163 Swiss-Germans attempted to translate 45 written Swedish words, all of which
+had German, English and/or French cognates.
+To check which participants already had some minimal knowledge of Swedish,
+they also had to translate five words without cognates in German, English or French
+(e.g., <em>älska</em> ‘to love’); these are known as ‘profile words’.
+For the subsequent analysis, it was important to know
+(a) how many participants could translate at least one such profile word correctly; and
+(b) if participants who could translate at least one such profile word did better at translating cognates than those who couldn’t.</p>
+<p>The column <code>CorrectCognates</code> contains the number of correct cognate
+translations per participant; the column shows whether the participant
+in question was able to translate at least one profile word correctly (<code>yes</code> vs. <code>no</code>).</p>
+<ol style="list-style-type: decimal">
+<li>Read in the dataset into R and use the <code>summary()</code> function to find out how many participants translated at least one profile word correctly. Mention your answer in the script as a comment.</li>
+<li>Use a boxplot to compare the number of correctly translated cognate words between participants that could translate at least one profile word correctly and those that couldn’t. Label your axes appropriately.</li>
+<li>Compile the HTML report.</li>
+<li>Submit both the boxplot and the HTML report.</li>
+</ol>
+<!-- ### Reading -->
+<!-- Text: Slavin et al. (2011). (REFERENCE) -->
+<!-- This text is pretty difficult, particularly as far as the analysis and the presentation of the results are concerned. The introductory and methodological paragraphs deal with some concepts that we’ve already discussed (particularly on p. 49) as well as with some procedures that are new to us. -->
+<!-- First try to read the entire text, but skip any spots you don’t understand for the time being. Then answer the following questions. -->
+<!-- 1. "[C]hildren's reading proficiency in their native language is a strong predictor of their ultimate English reading performance." (p. 48) What does this mean? -->
+<!-- 2. What do these terms mean? -->
+<!--     * matching (p. 49) -->
+<!--     * selection bias (p. 49 and p. 50) -->
+<!--     * teacher/school effects (p. 49) -->
+<!--     * within-school design (p. 51). (What would a between-school design look like?) -->
+<!-- 3. What is the independent variable (predictor) in this study? What are the dependent variables (outcomes)? -->
+<!-- 4. How were the pupils assigned to the groups? -->
+<!-- 5. Slavin et al. discuss in detail how many pupils couldn’t be tested in each group (TBE vs. SEI; Table 2) and whether the characteristics of these pupils differed between the groups (Table 3). Any ideas why they discuss this at all? -->
+<!-- 6. "Children were pretested … on the English Peabody Picture Vocabulary Test (PPVT) and its Spanish equivalent, the Test de Vocabulario en Imagenes Peabody (TVIP)." (p. 51) Why did the researchers conduct pretests? Try to find at least two reasons. -->
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Johnson2013">
+<p>Johnson, Daniel Ezra. 2013. Descriptive statistics. In Robert J. Podesva &amp; Devyani Sharma (eds.), <em>Research methods in linguistics</em>, 288–315. Cambridge: Cambridge University Press.</p>
+</div>
+<div id="ref-Vanhove2014">
+<p>Vanhove, Jan. 2014. Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing. University of Fribourg PhD thesis. <a href="http://doc.rero.ch/record/210293">http://doc.rero.ch/record/210293</a>.</p>
+</div>
+<div id="ref-Vanhove2016">
+<p>Vanhove, Jan. 2016. The early learning of interlingual correspondence rules in receptive multilingualism. <em>International Journal of Bilingualism</em> 20(5). 580–593. doi:<a href="https://doi.org/10.1177/1367006915573338">10.1177/1367006915573338</a>.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="week-2-reading-in-data-and-drawing-a-histogram.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-4-boxplots-deluxe.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
