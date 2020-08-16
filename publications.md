@@ -32,7 +32,7 @@ Data and R code available from the <a href="https://osf.io/sg7cv/">Open Science 
 Fribourg, Switzerland: Institute of Multilingualism.</p>
 
 <p>Raphael Berthele and Jan Vanhove. 2020. 
-<a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove independence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
+<a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove interdependence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. 
 <i>International Journal of Bilingual Education and Bilingualism</i> 23(5). 550-566.<br />
 Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
 
