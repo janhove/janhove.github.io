@@ -3,6 +3,7 @@ layout: page
 title: Blog
 ---
 {% include JB/setup %}
+{% include mathjax.html %}
 
 <p>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</p>
 
