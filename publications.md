@@ -10,22 +10,20 @@ group: navigation
 
 <div id = "pub">
 
-<h3>Preprints</h3>
-
-<p>Jan Vanhove.
-<a href ="https://doi.org/10.31234/osf.io/mv2wx">Collinearity isn't a disease that needs curing</a>.
-PsyArXiv Preprints.</p>
-
-<p>Jan Vanhove.
-<a href = "https://osf.io/zvawb">Checking the assumptions of your statistical model without getting paranoid</a>.
-PsyArXiv Preprints.</p>
-
 <h3>2020</h3>
+
+<p>Jan Vanhove. 2020.
+<a href="https://10.31234/osf.io/ef4zc">Capitalising on covariates in cluster-randomised experiments</a>. PsyArXiv Preprints.<br/>
+Data and R code available from the <a href="https://osf.io/wzjra/">Open Science Framework</a>.</p>
 
 <p>Jan Vanhove. 2020. 
 <a href="https://doi.org/10.1075/itl.20010.van">Towards simpler and more transparent quantitative research reports</a>. 
 <i>ITL - International Journal of Applied Linguistics.</i> <a href="https://doc.rero.ch/record/328689">Preprint</a>.<br /> 
 Data and R code available from the <a href="https://osf.io/sg7cv/">Open Science Framework</a>.</p>
+
+<p>Jan Vanhove.
+<a href ="https://doi.org/10.31234/osf.io/mv2wx">Collinearity isn't a disease that needs curing</a>.
+PsyArXiv Preprints.</p>
 
 <p>Amelia Lambelet, Raphael Berthele, Jan Vanhove, Magalie Desgrippes, Carlos Pestana and Fabricio Decandio. 2020. 
 <a href="http://www.institut-mehrsprachigkeit.ch/en/file/895/download?token=cSz47kV0">Heritage language and school language: are literacy skills transferable?</a>.
@@ -66,6 +64,10 @@ Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.53794
 
 
 <h3>2018</h3>
+
+<p>Jan Vanhove.
+<a href = "https://osf.io/zvawb">Checking the assumptions of your statistical model without getting paranoid</a>.
+PsyArXiv Preprints.</p>
 
 <p>Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018.
 <a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz</a>.
