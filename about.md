@@ -16,6 +16,8 @@ I regularly collaborate on projects at the <a href = "http://www.institut-mehrsp
 <a href="http://www.institut-mehrsprachigkeit.ch/en/content/language-aptitude-why-and-how-assess-it">language aptitude</a>, and 
 <a href="http://www.institut-mehrsprachigkeit.ch/en/content/written-productions-children-immigration-background">lexical richness</a>).</p>
 
+<p>I'm also a saxophonist with <a href="http://beatmoustache.ch/"><i>Beat Moustache</i></a>, a ska-pop band that mostly plays original songs in Bernese German, and <i>Pädu &amp; Mätthus belgischer Fanclub</i>, a three-man band (guitar/voice, drums/voice, and yours truly on sax) that lacks an on-line presence and plays mostly covers.</p>
+
 
 <h3>Sundry profiles</h3>
 
