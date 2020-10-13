@@ -13,7 +13,7 @@ group: navigation
 <h3>2020</h3>
 
 <p>Jan Vanhove. 2020.
-<a href="https://10.31234/osf.io/ef4zc">Capitalising on covariates in cluster-randomised experiments</a>. PsyArXiv Preprints.<br/>
+<a href="https://doi.org/10.31234/osf.io/ef4zc">Capitalising on covariates in cluster-randomised experiments</a>. PsyArXiv Preprints.<br/>
 Data and R code available from the <a href="https://osf.io/wzjra/">Open Science Framework</a>.</p>
 
 <p>Jan Vanhove. 2020. 
