@@ -13,6 +13,13 @@ group: navigation
 <h3>2020</h3>
 
 <p>Jan Vanhove. 2020.
+<a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>.
+<i>Second Language Research</i> 36(4). 709&ndash;724.
+<a href="https://doc.rero.ch/record/324140">Preprint</a>.<br />
+Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.
+</p>
+
+<p>Jan Vanhove. 2020.
 <a href="https://doi.org/10.31234/osf.io/ef4zc">Capitalising on covariates in cluster-randomised experiments</a>. PsyArXiv Preprints.<br/>
 Data and R code available from the <a href="https://osf.io/wzjra/">Open Science Framework</a>.</p>
 
@@ -44,13 +51,6 @@ Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.
 <a href="https://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove2019c.pdf">Metalinguistic knowledge about the native language and language transfer in gender assignment</a>.
 <i>Studies in Second Language Learning and Teaching</i> 9(2). 397-419.<br />
 Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
-
-<p>Jan Vanhove. 2019.
-<a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>.
-<i>Second Language Research</i>.
-<a href="https://doc.rero.ch/record/324140">Preprint</a>.<br />
-Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.
-</p>
 
 <p>Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019.
 <a href="http://www.jowr.org/abstracts/vol10_3/VanHove_et_al_2019_10_3_abstract.html">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts</a>.
