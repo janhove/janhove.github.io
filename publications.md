@@ -6,8 +6,6 @@ group: navigation
 ---
 {% include JB/setup %}
 
-<!--<p><a href="paperfeed.xml"><img src="/figs/feed.png" alt="Feed"/>&nbsp;Subscribe to new academic publications.</a></p>-->
-
 <div id = "pub">
 
 <h3>2020</h3>
@@ -41,6 +39,8 @@ Fribourg, Switzerland: Institute of Multilingualism.</p>
 <i>International Journal of Bilingual Education and Bilingualism</i> 23(5). 550-566.<br />
 Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
 
+
+
 <h3>2019</h3>
 
 <p>Jan Vanhove. 2019.
@@ -63,6 +63,7 @@ Technical report, data (including texts), elicitation materials, and R code avai
 Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.5379448">figshare</a>.</p>
 
 
+
 <h3>2018</h3>
 
 <p>Jan Vanhove.
@@ -73,6 +74,9 @@ PsyArXiv Preprints.</p>
 <a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz</a>.
 <i>Zeitschrift für Interkulturellen Fremdsprachenunterricht</i> 23(1). 135-148.<br />
 Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.4578991">figshare</a>.</p>
+
+
+
 
 <h3>2017</h3>
 
@@ -92,6 +96,8 @@ Preregistration, elicitation materials, data and R code available from the <a hr
 <i>International Review of Applied Linguistics in Language Teaching</i>. 55(1). 23&ndash;40.<br />
 Data and R code available from <a href = "https://dx.doi.org/10.6084/m9.figshare.1172058.v3">figshare</a>.</p>
 
+
+
 <h3>2016</h3>
 
 <p>David Birdsong and Jan Vanhove. 2016.
@@ -104,6 +110,8 @@ In E. Nicoladis and S. Montanari (eds), <i>Bilingualism across the lifespan: Fac
 <a href = "http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf">Postprint</a>.<br />
 Data, R code, scoring protocol and stimulus lists available from 
 <a href = "http://hdl.handle.net/10.6084/m9.figshare.1291191">figshare</a>.</p>
+
+
 
 <h3>2015</h3>
 
@@ -130,6 +138,8 @@ cognate guessing skills in an unknown related language</a>.
 <i>International Review of Applied Linguistics in Language Teaching</i> 53(1). 1&ndash;38.<br />
 Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.936924">figshare</a>.</p>
 
+
+
 <h3>2014</h3>
 
 <p>Raphael Berthele and Jan Vanhove. 2014.
@@ -140,6 +150,8 @@ Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.
 <a href = "http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf">Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing</a>.
 Ph.D. thesis. University of Fribourg.<br />
 Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.795286">figshare</a>.</p>
+
+
 
 <h3>2013</h3>
 
@@ -153,3 +165,5 @@ Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.
 <i>PLOS ONE</i> 8(7). e69172.<br />
 The data used in this paper were culled from scatterplots in a <a href = "http://dx.doi.org/10.1017/S0142716410000056">paper</a> by Robert DeKeyser and colleagues. 
 The reanalysed data and the R script can be downloaded from the article's <a href = "http://dx.doi.org/10.1371/journal.pone.0069172">webpage</a>.</p>
+
+</div>
