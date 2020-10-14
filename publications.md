@@ -165,5 +165,3 @@ Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.
 <i>PLOS ONE</i> 8(7). e69172.<br />
 The data used in this paper were culled from scatterplots in a <a href = "http://dx.doi.org/10.1017/S0142716410000056">paper</a> by Robert DeKeyser and colleagues. 
 The reanalysed data and the R script can be downloaded from the article's <a href = "http://dx.doi.org/10.1371/journal.pone.0069172">webpage</a>.</p>
-
-</div>
