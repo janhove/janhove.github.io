@@ -11,6 +11,9 @@ group: navigation
 <h3>2020</h3>
 
 <p>Jan Vanhove. 2020.
+<a href="https://homeweb.unifr.ch/VanhoveJ/Pub/QuantMeth.pdf">Quantitative methodology. An introduction.</a></p>
+
+<p>Jan Vanhove. 2020.
 <a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>.
 <i>Second Language Research</i> 36(4). 709&ndash;724.
 <a href="https://doc.rero.ch/record/324140">Preprint</a>.<br />
