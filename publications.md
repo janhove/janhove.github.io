@@ -10,7 +10,7 @@ group: navigation
 
 <h3>2021</h3>
 
-<p>Jan Vanhove.
+<p>Jan Vanhove. 2021.
 <a href="https://doi.org/10.15626/MP.2021.2548">Collinearity isn't a disease that needs curing</a>.
 <i>Meta-Psychology</i> 5.</p>
 
