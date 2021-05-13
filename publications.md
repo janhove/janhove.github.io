@@ -8,6 +8,12 @@ group: navigation
 
 <div id = "pub">
 
+<h3>2021</h3>
+
+<p>Jan Vanhove.
+<a href="https://doi.org/10.15626/MP.2021.2548">Collinearity isn't a disease that needs curing</a>.
+<i>Meta-Psychology</i> 5.</p>
+
 <h3>2020</h3>
 
 <p>Jan Vanhove. 2020.
@@ -28,10 +34,6 @@ Data and R code available from the <a href="https://osf.io/wzjra/">Open Science 
 <a href="https://doi.org/10.1075/itl.20010.van">Towards simpler and more transparent quantitative research reports</a>. 
 <i>ITL - International Journal of Applied Linguistics.</i> <a href="https://doc.rero.ch/record/328689">Preprint</a>.<br /> 
 Data and R code available from the <a href="https://osf.io/sg7cv/">Open Science Framework</a>.</p>
-
-<p>Jan Vanhove.
-<a href ="https://doi.org/10.31234/osf.io/mv2wx">Collinearity isn't a disease that needs curing</a>.
-PsyArXiv Preprints.</p>
 
 <p>Amelia Lambelet, Raphael Berthele, Jan Vanhove, Magalie Desgrippes, Carlos Pestana and Fabricio Decandio. 2020. 
 <a href="http://www.institut-mehrsprachigkeit.ch/en/file/895/download?token=cSz47kV0">Heritage language and school language: are literacy skills transferable?</a>.
