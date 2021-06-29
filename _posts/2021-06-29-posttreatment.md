@@ -22,9 +22,9 @@ _after_ the intervention, it's possible that the
 vocabulary scores are themselves affected by the
 intervention as well. If this is indeed the case,
 you may end up doing more harm than good.
-In this blog post, I will take a closer look at five
-general cases where controlling for such a `post-treatment'
-variable is harmful.
+In this blog post, I will take a closer look at four
+general cases where controlling for such a 'post-treatment'
+variable is harmful, and one case where it improves matters.
 
 <!--more-->
 
@@ -37,7 +37,7 @@ i.e., the French vocabulary scores in our example.
 `x` is a binary variable, `y` and `z` are continuous.
 Since `z` is a post-treatment variable, it's possible
 that it is itself influenced directly or indirectly
-by `x`. In the five cases examined below, this is
+by `x`. In the first four cases examined below, this is
 indeed the case.
 
 I've included all R code as I think running simulations
@@ -64,7 +64,7 @@ reduce the precision of these estimates.
 To appreciate this,
 let's simulate some data. The function `case1()`
 defined in the next code snippet generates 
-a dataset corersponding to Case 1.
+a dataset corresponding to Case 1.
 The parameter `beta_xy` specifies the coefficient
 of the influence of `x` on `y`; the goal of the analysis
 is to estimate the value of this parameter from the data.
@@ -187,7 +187,7 @@ estimated without bias but with decreased precision, let's generate 5,000
 such datasets and analyse them with and without taking the control variable
 into account. The function `sim_case1()` defined below runs these analyses;
 the ggplot call plots the estimates for the $\beta_{xy}$ parameter.
-As the caption to Figure 4 explains, this simulation confirms what we observed
+As the caption to Figure 1.4 explains, this simulation confirms what we observed
 above.
 
 
@@ -393,7 +393,7 @@ ggplot(data = results_sim_case2,
 
 > **Figure 2.4.** In Case 2,
 > the distribution of the parameter estimates is centred around the
-> correct value both when the control variable isn't taken into account
+> correct value when the control variable isn't taken into account
 > but it is strongly biased when this control variable _is_ taken into account,
 > i.e., the analysis with the covariate yields biased estimates.
 
@@ -499,7 +499,10 @@ ggplot(data = df_case3,
 The linear model now yields a parameter estimate
 of $\widehat{\beta_{xy}} = -0.31 \pm 0.11$, which is
 considerably farther from the actual parameter value of 1
-and even has the wrong sign.
+and even has the wrong sign. (This isn't evident from Figure 3.3,
+but keep in mind that the graphical analysis in Figure 3.3 uses
+a median split on the continuous covariate whereas the linear model
+below respects the continuous nature of this covariate.)
 
 
 {% highlight r %}
@@ -590,7 +593,7 @@ $1 + 1.5\times 0.5 = 1.75$.
 If this doesn't make immediate sense, consider what a change of one unit in `x` causes downstream:
 A one-unit increase in `x` directly increases `y` by 1.
 It also increases `z` by 1.5.
-But a one-unit increase _in `z`_ causes an increase of 0.5 in `y` as well, so a 1.5-unit increase in `z` causes an additional increase of 0.75 in `y`. So in total, a one-unit increase in `x` causes a 1.75-point increase in `y`.
+But a one-unit increase in `z` causes an increase of 0.5 in `y` as well, so a 1.5-unit increase in `z` causes an additional increase of 0.75 in `y`. So in total, a one-unit increase in `x` causes a 1.75-point increase in `y`.
 
 
 {% highlight r %}
@@ -665,7 +668,7 @@ of $\widehat{\beta_{xy}} = 1.11 \pm 0.17$.
 This analysis correctly estimates the _direct_
 effect of `x` on `y` (i.e., without the additional causal link between `x` on `y` through `z`).
 This may be interesting in its own right, but the analysis
-addresses a question different from ``What's the causal
+addresses a question different from ''What's the causal
 influence of `x` on `y`?''
 
 
