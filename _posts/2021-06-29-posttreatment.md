@@ -50,7 +50,7 @@ upshot, just ignore the code snippets :)
 ## Case 1: `x` affects both `y` and `z`; `y` and `z` don't affect each other.
 In the first case, `x` affects both `y` and `z`, but `z` and `y` don't influence each other.
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-197-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-2-1.png)
 
 > **Figure 1.1.** The causal links between `x`, `y` and `z`
 > in Case 1.
@@ -120,7 +120,7 @@ ggplot(data = df_case1,
   geom_point(position = position_jitter(width = 0.2), pch = 1)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-200-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-5-1.png)
 
 > **Figure 1.2.** Graphical analysis without the covariate
 > for Case 1.
@@ -159,7 +159,7 @@ ggplot(data = df_case1,
   facet_wrap(~ z_split)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-202-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-7-1.png)
 > **Figure 1.3.** Graphical analysis with the covariate (median split) for Case 1.
 
 The linear model is again able to retrieve the coefficient
@@ -227,7 +227,7 @@ ggplot(data = results_sim_case1,
   facet_wrap(~ covariate)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-204-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-9-1.png)
 
 > **Figure 1.4.** In Case 1,
 > the distribution of the parameter estimates is centred around the
@@ -264,7 +264,7 @@ results_sim_case1 %>%
 In the second case, `x` affects `y` directly,
 and `y` in turns affects `z`.
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-206-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-11-1.png)
 
 > **Figure 2.1.** The causal links between `x`, `y` and `z`
 > in Case 2.
@@ -302,7 +302,7 @@ ggplot(data = df_case2,
   geom_point(position = position_jitter(width = 0.2), pch = 1)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-208-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-13-1.png)
 
 > **Figure 2.2.** Graphical analysis without the covariate
 > for Case 2.
@@ -336,7 +336,7 @@ ggplot(data = df_case2,
   facet_wrap(~ z_split)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-210-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-15-1.png)
 
 > **Figure 2.3.** Graphical analysis with the covariate
 > for Case 2.
@@ -389,7 +389,7 @@ ggplot(data = results_sim_case2,
   facet_wrap(~ covariate)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-212-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-17-1.png)
 
 > **Figure 2.4.** In Case 2,
 > the distribution of the parameter estimates is centred around the
@@ -424,7 +424,7 @@ Now `z` is affected by both `x` and `y`.
 `x` still affects `y`, though. Taking the
 covariate into account again yields biased estimates.
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-214-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-19-1.png)
 
 > **Figure 3.1.** The causal links between `x`, `y` and `z`
 > in Case 3.
@@ -457,7 +457,7 @@ ggplot(data = df_case3,
   geom_point(position = position_jitter(width = 0.2), pch = 1)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-216-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-21-1.png)
 
 > **Figure 3.2.** Graphical analysis without the covariate
 > for Case 3.
@@ -491,7 +491,7 @@ ggplot(data = df_case3,
   facet_wrap(~ z_split)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-218-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-23-1.png)
 
 > **Figure 3.3.** Graphical analysis with the covariate
 > for Case 3.
@@ -544,7 +544,7 @@ ggplot(data = results_sim_case3,
   facet_wrap(~ covariate)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-220-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-25-1.png)
 
 > **Figure 3.4.** In Case 3, too,
 > the distribution of the parameter estimates is centred around the
@@ -580,7 +580,7 @@ $\beta_{xz}$ the effect of `x` on `z`
 and $\beta_{zy}$ the effect of `z` on `y`.
 Then the _total_ effect of `x` on `y` is $\beta_{xy} + \beta_{xz}\times\beta_{zy}$.
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-222-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-27-1.png)
 
 > **Figure 4.1.** The causal links between `x`, `y` and `z`
 > in Case 4.
@@ -621,7 +621,7 @@ ggplot(data = df_case4,
   geom_point(position = position_jitter(width = 0.2), pch = 1)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-224-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-29-1.png)
 
 > **Figure 4.2.** Graphical analysis without the covariate
 > for Case 4.
@@ -655,7 +655,7 @@ ggplot(data = df_case4,
   facet_wrap(~ z_split)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-226-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-31-1.png)
 
 > **Figure 4.3.** Graphical analysis with the covariate
 > for Case 4.
@@ -711,7 +711,7 @@ ggplot(data = results_sim_case4,
   facet_wrap(~ covariate)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-228-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-33-1.png)
 
 > **Figure 4.4.** In Case 4, the analysis without the
 > covariate correctly estimates the _total_ causal influence
@@ -746,7 +746,7 @@ The result is an increase in statistical precision. This is the only of the five
 cases examined in which the control variable has added value for the purposes
 of estimated the causal influence of `x` on `y`.
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-230-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-35-1.png)
 
 > **Figure 5.1.** The causal links between `x`, `y` and `z`
 > in Case 5.
@@ -786,7 +786,7 @@ ggplot(data = df_case5,
   geom_point(position = position_jitter(width = 0.2), pch = 1)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-232-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-37-1.png)
 
 > **Figure 5.2.** Graphical analysis without the covariate
 > for Case 5.
@@ -817,7 +817,7 @@ ggplot(data = df_case5,
   facet_wrap(~ z_split)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-234-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-39-1.png)
 
 > **Figure 5.3.** Graphical analysis with the covariate
 > for Case 5.
@@ -869,7 +869,7 @@ ggplot(data = results_sim_case5,
   facet_wrap(~ covariate)
 {% endhighlight %}
 
-![center](/figs/2021-06-29-posttreatment/unnamed-chunk-236-1.png)
+![center](/figs/2021-06-29-posttreatment/unnamed-chunk-41-1.png)
 
 > **Figure 5.4.** In Case 5, both analyses are centred
 > around the correct value, i.e., both are unbiased.
