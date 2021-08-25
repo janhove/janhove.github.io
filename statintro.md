@@ -19,7 +19,7 @@ die sich an erster Stelle an Forscherinnen und Forscher im Bereich der angewandt
 <h2>Geschichte</h2>
 
 <ul>
-<<li>25. August 2021: Fünfte Version. Erhebliche Überarbeitung.</li>
+ <li>25. August 2021: Fünfte Version. Erhebliche Überarbeitung.</li>
  <li>7. September 2019: Vierte Version.</li>
  <li>4. Juli 2018: Dritte Version. Komplette Überarbeitung.</li>
  <li>19. Mai 2016: Zweite Version.</li>
