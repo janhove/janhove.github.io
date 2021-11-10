@@ -15,7 +15,7 @@ group: navigation
 In Raphael Berthele & Isabelle Udry (eds.), 
 <i>Individual differences in early instructed language learning: The role of language aptitude, cognition, and motivation</i> (pp. 91-103). 
 Berlin, Germany: Language Science Press.<br />
-Data and R code available from the <a href="https://osf.io/hstv7/">Open Science Framework<a/>.
+Data and R code available from the <a href="https://osf.io/hstv7/">Open Science Framework</a>.
 </p>
 
 <p>Isabelle Udry and Jan Vanhove. 2021.
