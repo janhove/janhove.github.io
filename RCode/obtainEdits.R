@@ -210,6 +210,6 @@ obtain_edits <- function(textA, textB) {
 
 ###############################################################
 # Example
-original  <- "Check howmany changes need be made in order to change the first tekst in to the second one."
-corrected <- "Check how many changes need to be made in order to change the first text into the second one."
-obtain_edits(original, corrected)
+# original  <- "Check howmany changes need be made in order to change the first tekst in to the second one."
+# corrected <- "Check how many changes need to be made in order to change the first text into the second one."
+# obtain_edits(original, corrected)
