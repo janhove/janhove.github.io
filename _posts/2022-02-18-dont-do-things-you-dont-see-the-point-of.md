@@ -72,3 +72,5 @@ analysis, ask them how they think running such an analysis
 would help them address their research question. 
 Even if the added value of such an analysis is clear to you, 
 it may not be clear to them.
+
+**Edit (February 21, 2022)**: Also see Daniël Lakens' blog post [_The New Heuristics_](http://daniellakens.blogspot.com/2019/03/the-new-heuristics.html), where he proposes researchers should adhere to the adage _justify everything_.
