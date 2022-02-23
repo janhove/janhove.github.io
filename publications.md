@@ -10,6 +10,32 @@ group: navigation
 
 <h3>2021</h3>
 
+<p>Raphael Berthele, Jan Vanhove, Carina Steiner, Isabelle Udry and Hansjakob Schneider. 2021. 
+<a href="https://doi.org/10.5281/zenodo.5464751">Predicting L2 achievement: Results from a test battery measuring language aptitude, general learning ability, and affective factors.</a> 
+In Raphael Berthele & Isabelle Udry (eds.), 
+<i>Individual differences in early instructed language learning: The role of language aptitude, cognition, and motivation</i> (pp. 91-103). 
+Berlin, Germany: Language Science Press.<br />
+Data and R code available from the <a href="https://osf.io/hstv7/">Open Science Framework</a>.
+</p>
+
+<p>Isabelle Udry and Jan Vanhove. 2021.
+<a href="https://doi.org/10.5281/zenodo.5464763">The stability of language aptitude: Insights from a longitudinal study on young learners' language analytic abilities.</a> 
+In Raphael Berthele & Isabelle Udry (eds.), 
+<i>Individual differences in early instructed language learning: The role of language aptitude, cognition, and motivation</i> (pp. 197-209). 
+Berlin, Germany: Language Science Press.<br />
+Data and R code available from the <a href="https://osf.io/hstv7/">Open Science Framework</a>.
+</p>
+
+<p>Jan Vanhove. 2021.
+<a href="https://osf.io/d9gnh/">Language aptitude in primary school.</a>
+Technical report.
+</p>
+
+<p>Jan Vanhove. 2021. 
+<a href="https://doi.org/10.1075/itl.20010.van">Towards simpler and more transparent quantitative research reports</a>. 
+<i>ITL - International Journal of Applied Linguistics</i> 172(1). 3&ndash;25. <a href="https://doc.rero.ch/record/328689">Preprint</a>.<br /> 
+Data and R code available from the <a href="https://osf.io/sg7cv/">Open Science Framework</a>.</p>
+
 <p>Jan Vanhove. 2021.
 <a href="https://doi.org/10.15626/MP.2021.2548">Collinearity isn't a disease that needs curing</a>.
 <i>Meta-Psychology</i> 5.</p>
@@ -29,11 +55,6 @@ Data and R code available from the <a href="https://osf.io/pxefv/">Open Science 
 <p>Jan Vanhove. 2020.
 <a href="https://doi.org/10.31234/osf.io/ef4zc">Capitalising on covariates in cluster-randomised experiments</a>. PsyArXiv Preprints.<br/>
 Data and R code available from the <a href="https://osf.io/wzjra/">Open Science Framework</a>.</p>
-
-<p>Jan Vanhove. 2020. 
-<a href="https://doi.org/10.1075/itl.20010.van">Towards simpler and more transparent quantitative research reports</a>. 
-<i>ITL - International Journal of Applied Linguistics.</i> <a href="https://doc.rero.ch/record/328689">Preprint</a>.<br /> 
-Data and R code available from the <a href="https://osf.io/sg7cv/">Open Science Framework</a>.</p>
 
 <p>Amelia Lambelet, Raphael Berthele, Jan Vanhove, Magalie Desgrippes, Carlos Pestana and Fabricio Decandio. 2020. 
 <a href="http://www.institut-mehrsprachigkeit.ch/en/file/895/download?token=cSz47kV0">Heritage language and school language: are literacy skills transferable?</a>.
@@ -89,7 +110,7 @@ Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.45
 
 <p>Carlos Pestana, Amelia Lambelet and Jan Vanhove. 2017. Chapter 4: Reading comprehension development in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 58-82. Multilingual Matters.</p>
 
-<p>Amelia Lambelet, Magalie Desgrippes and Jan Vanhove. 2017. Chapter 5: The development of argumentative and narrative writing skills in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 83-96. Multilingual Matters.</p>
+<p>Magalie Desgrippes, Amelia Lambelet and Jan Vanhove. 2017. Chapter 5: The development of argumentative and narrative writing skills in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 83-96. Multilingual Matters.</p>
 
 <p>Jan Vanhove and Raphael Berthele. 2017. Chapter 6: Testing the interdependence of languages (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 97-118. Multilingual Matters.</p>
 

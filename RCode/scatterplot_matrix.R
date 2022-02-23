@@ -1,6 +1,7 @@
 # Define panel with correlation coefficients
 panel.cor <- function(x, y, ...)
 {
+	opar <- par() 
   par(usr = c(0, 1, 0, 1))
   txt <- as.character(sprintf("%.2f", cor(x,y, use = "p"))) # round to two decimal places
   # text(0.5, 0.5, txt, cex = 2.5*sqrt(abs(cor(x,y, use = "p"))))
@@ -17,6 +18,7 @@ panel.cor <- function(x, y, ...)
   #            sep = ""
   #)
   #text(0.5, 0.3, CI, cex=1.5)
+  par(opar)
 }
 
 # Scatterplot with lowess scatterplot smoother
@@ -33,6 +35,7 @@ panel.smooth <- function(x, y, span=2/3, iter=3, ...) {
 # Histograms
 panel.hist <- function(x, ...)
 {
+	opar <- par() 
   usr <- par("usr"); on.exit(par(usr))
   par(usr = c(usr[1:2], 0, 1.5) )
   h <- hist(x, plot = FALSE)
@@ -42,6 +45,7 @@ panel.hist <- function(x, ...)
   y <- y/max(y)
   rect(breaks[-nB], 0, breaks[-1], y, col="grey", ...)
   text(max(range(x[!is.na(x)])), 1.45*max(y), paste("n =", length(x[!is.na(x)])), adj = c(1, 1))
+  par(opar)
 }
 
 scatterplot_matrix <- function(..., cex.labels = 1.5, top = panel.smooth, bottom = panel.cor, middle = panel.hist, las = 1, tcl = -0.2) {
