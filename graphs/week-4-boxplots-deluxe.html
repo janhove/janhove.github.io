@@ -4,19 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots</title>
+  <title>4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots" />
+  <meta property="og:title" content="4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Tutorials for the graphing assignments." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots" />
+  <meta name="twitter:title" content="4 Week 4: Boxplots deluxe | Quantitative Methodology: Drawing plots" />
   
   <meta name="twitter:description" content="Tutorials for the graphing assignments." />
   
@@ -32,7 +31,8 @@
   
 <link rel="prev" href="week-3-drawing-a-boxplot.html"/>
 <link rel="next" href="week-5-line-charts.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,22 +48,24 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +85,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -116,6 +118,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,13 +158,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
-<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
 <li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
 <li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
 <li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
 <li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
 <li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
@@ -147,28 +174,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
 <li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
 <li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
 <li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
 <li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
 <li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
 <li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
 <li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
 <li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
 <li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
 <li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
-<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
 <li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
 <li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
@@ -177,13 +210,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
 <li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
 <li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
 <li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
 <li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
 <li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
 <li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
@@ -194,7 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
 <li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
 <li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
-<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
 <li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
@@ -220,17 +256,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="week-4-boxplots-deluxe" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Week 4: Boxplots deluxe</h1>
-<div id="goals-2" class="section level2">
-<h2><span class="header-section-number">4.1</span> Goals</h2>
+<div id="week-4-boxplots-deluxe" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Week 4: Boxplots deluxe<a href="week-4-boxplots-deluxe.html#week-4-boxplots-deluxe" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="goals-2" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Goals<a href="week-4-boxplots-deluxe.html#goals-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>You’ll learn how to add the individual data points underlying a boxplot to this boxplot. This makes for more informative graphs, particularly for smallish datasets (up till 100–150 observations or so).</li>
 <li>To do this, we’ll use a technique known as <em>jittering</em> to make overlapping datapoints more visible.</li>
 </ol>
 </div>
-<div id="tutorial" class="section level2">
-<h2><span class="header-section-number">4.2</span> Tutorial</h2>
+<div id="tutorial" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Tutorial<a href="week-4-boxplots-deluxe.html#tutorial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Run-of-the-mill boxplots are useful when
 you want to get a quick idea of the distribution
 of the data in different groups (see last week).</p>
@@ -249,13 +285,13 @@ use scripts rather than typing your commands directly to the prompt.</p>
 <li>Read in the dataset <code>VowelChoices_ij.csv</code> (see last week).</li>
 <li>Draw the boxplot of last week’s tutorial again.</li>
 </ol>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="week-4-boxplots-deluxe.html#cb32-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,</span>
-<span id="cb32-2"><a href="week-4-boxplots-deluxe.html#cb32-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, <span class="dt">y =</span> PropCorrect)) <span class="op">+</span></span>
-<span id="cb32-3"><a href="week-4-boxplots-deluxe.html#cb32-3"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
-<span id="cb32-4"><a href="week-4-boxplots-deluxe.html#cb32-4"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span></span>
-<span id="cb32-5"><a href="week-4-boxplots-deluxe.html#cb32-5"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span></span>
-<span id="cb32-6"><a href="week-4-boxplots-deluxe.html#cb32-6"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-27-1.png" width="384" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="week-4-boxplots-deluxe.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,</span>
+<span id="cb34-2"><a href="week-4-boxplots-deluxe.html#cb34-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, <span class="at">y =</span> PropCorrect)) <span class="sc">+</span></span>
+<span id="cb34-3"><a href="week-4-boxplots-deluxe.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb34-4"><a href="week-4-boxplots-deluxe.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="week-4-boxplots-deluxe.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="week-4-boxplots-deluxe.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-28-1.png" width="384" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li>We can add another <em>layer</em> to this graph by
 inserting the command <code>geom_point()</code> into the ggplot call.
@@ -263,14 +299,14 @@ inserting the command <code>geom_point()</code> into the ggplot call.
 Since we insert <code>geom_point()</code> <em>after</em> <code>geom_boxplot()</code>,
 these points will be plotted <em>on top of</em> (rather than underneath) the boxplots.</li>
 </ol>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="week-4-boxplots-deluxe.html#cb33-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,</span>
-<span id="cb33-2"><a href="week-4-boxplots-deluxe.html#cb33-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, <span class="dt">y =</span> PropCorrect)) <span class="op">+</span></span>
-<span id="cb33-3"><a href="week-4-boxplots-deluxe.html#cb33-3"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
-<span id="cb33-4"><a href="week-4-boxplots-deluxe.html#cb33-4"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st">    </span><span class="co"># draw individual data points</span></span>
-<span id="cb33-5"><a href="week-4-boxplots-deluxe.html#cb33-5"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span></span>
-<span id="cb33-6"><a href="week-4-boxplots-deluxe.html#cb33-6"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span></span>
-<span id="cb33-7"><a href="week-4-boxplots-deluxe.html#cb33-7"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-28-1.png" width="384" /></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="week-4-boxplots-deluxe.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,</span>
+<span id="cb35-2"><a href="week-4-boxplots-deluxe.html#cb35-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, <span class="at">y =</span> PropCorrect)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="week-4-boxplots-deluxe.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb35-4"><a href="week-4-boxplots-deluxe.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span>    <span class="co"># draw individual data points</span></span>
+<span id="cb35-5"><a href="week-4-boxplots-deluxe.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="week-4-boxplots-deluxe.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb35-7"><a href="week-4-boxplots-deluxe.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-29-1.png" width="384" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li><p>If you count the number of points in this graph, you’ll notice that there are fewer points (28) than there were participants (80).
 The reason is that several participants obtained the same result, and their data are plotted on top of each other.
@@ -282,45 +318,45 @@ To do this, we need to specify the <code>position</code> parameter inside the <c
 <li>Notice that I’ve additionally specified the <code>outlier.shape</code> parameter in the <code>geom_boxplot()</code> command as <code>NA</code> (<em>not available</em>). This prevents the <code>geom_boxplot()</code> command from plotting outlying data points so that these points aren’t plotted twice (as part of the boxplot and as an individual data point).</li>
 </ul></li>
 </ol>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="week-4-boxplots-deluxe.html#cb34-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,</span>
-<span id="cb34-2"><a href="week-4-boxplots-deluxe.html#cb34-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, </span>
-<span id="cb34-3"><a href="week-4-boxplots-deluxe.html#cb34-3"></a>           <span class="dt">y =</span> PropCorrect)) <span class="op">+</span></span>
-<span id="cb34-4"><a href="week-4-boxplots-deluxe.html#cb34-4"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span><span class="st"> </span><span class="co"># don&#39;t plot outliers twice</span></span>
-<span id="cb34-5"><a href="week-4-boxplots-deluxe.html#cb34-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position =</span> <span class="kw">position_jitter</span>(<span class="dt">width =</span> <span class="fl">0.2</span>,   <span class="co"># horizontal jittering</span></span>
-<span id="cb34-6"><a href="week-4-boxplots-deluxe.html#cb34-6"></a>                                        <span class="dt">height =</span> <span class="dv">0</span>)) <span class="op">+</span><span class="st"> </span><span class="co"># but no vertical jittering</span></span>
-<span id="cb34-7"><a href="week-4-boxplots-deluxe.html#cb34-7"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span></span>
-<span id="cb34-8"><a href="week-4-boxplots-deluxe.html#cb34-8"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span></span>
-<span id="cb34-9"><a href="week-4-boxplots-deluxe.html#cb34-9"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-29-1.png" width="384" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="week-4-boxplots-deluxe.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,</span>
+<span id="cb36-2"><a href="week-4-boxplots-deluxe.html#cb36-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
+<span id="cb36-3"><a href="week-4-boxplots-deluxe.html#cb36-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="week-4-boxplots-deluxe.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> <span class="co"># don&#39;t plot outliers twice</span></span>
+<span id="cb36-5"><a href="week-4-boxplots-deluxe.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>,   <span class="co"># horizontal jittering</span></span>
+<span id="cb36-6"><a href="week-4-boxplots-deluxe.html#cb36-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span> <span class="co"># but no vertical jittering</span></span>
+<span id="cb36-7"><a href="week-4-boxplots-deluxe.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="week-4-boxplots-deluxe.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="week-4-boxplots-deluxe.html#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-30-1.png" width="384" /></p>
 <ol start="5" style="list-style-type: decimal">
 <li>To make the individual data points more visually distinct, we can change the plotting symbol by changing the <code>shape</code> parameter. This overview shows which plotting symbols are available:</li>
 </ol>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>Empty circles tend to work well (shape 1):</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="week-4-boxplots-deluxe.html#cb35-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> d_box,</span>
-<span id="cb35-2"><a href="week-4-boxplots-deluxe.html#cb35-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> LearningCondition, </span>
-<span id="cb35-3"><a href="week-4-boxplots-deluxe.html#cb35-3"></a>           <span class="dt">y =</span> PropCorrect)) <span class="op">+</span></span>
-<span id="cb35-4"><a href="week-4-boxplots-deluxe.html#cb35-4"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb35-5"><a href="week-4-boxplots-deluxe.html#cb35-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position =</span> <span class="kw">position_jitter</span>(<span class="dt">width =</span> <span class="fl">0.2</span>,   </span>
-<span id="cb35-6"><a href="week-4-boxplots-deluxe.html#cb35-6"></a>                                        <span class="dt">height =</span> <span class="dv">0</span>), </span>
-<span id="cb35-7"><a href="week-4-boxplots-deluxe.html#cb35-7"></a>             <span class="dt">shape =</span> <span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="co">#  1 = empty circles</span></span>
-<span id="cb35-8"><a href="week-4-boxplots-deluxe.html#cb35-8"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="op">+</span></span>
-<span id="cb35-9"><a href="week-4-boxplots-deluxe.html#cb35-9"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="op">+</span></span>
-<span id="cb35-10"><a href="week-4-boxplots-deluxe.html#cb35-10"></a><span class="st">  </span><span class="kw">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-31-1.png" width="384" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="week-4-boxplots-deluxe.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,</span>
+<span id="cb37-2"><a href="week-4-boxplots-deluxe.html#cb37-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
+<span id="cb37-3"><a href="week-4-boxplots-deluxe.html#cb37-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span></span>
+<span id="cb37-4"><a href="week-4-boxplots-deluxe.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span> </span>
+<span id="cb37-5"><a href="week-4-boxplots-deluxe.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>,   </span>
+<span id="cb37-6"><a href="week-4-boxplots-deluxe.html#cb37-6" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">height =</span> <span class="dv">0</span>), </span>
+<span id="cb37-7"><a href="week-4-boxplots-deluxe.html#cb37-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span> <span class="co">#  1 = empty circles</span></span>
+<span id="cb37-8"><a href="week-4-boxplots-deluxe.html#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="week-4-boxplots-deluxe.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb37-10"><a href="week-4-boxplots-deluxe.html#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">12</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-32-1.png" width="384" /></p>
 <p>(Shapes 21 through 25 resemble shapes 1 through 5, but they can be coloured in.)</p>
 <ol start="6" style="list-style-type: decimal">
 <li>More info: <a href="https://janhove.github.io/reporting/2016/06/21/drawing-a-boxplot" class="uri">https://janhove.github.io/reporting/2016/06/21/drawing-a-boxplot</a>.</li>
 </ol>
 </div>
-<div id="exercise-3" class="section level2">
-<h2><span class="header-section-number">4.3</span> Exercise</h2>
+<div id="exercise-3" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Exercise<a href="week-4-boxplots-deluxe.html#exercise-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The dataset <code>Wagenmakers_Zeelenberg.csv</code> contains data from a study by <span class="citation">Wagenmakers et al. (<a href="#ref-Wagenmakers2016" role="doc-biblioref">2016</a>)</span>.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
 In this experiment, participants were instructed to either <code>smile</code> or <code>pout</code> (<code>Condition</code>)
 as they judged the funniness of four cartoons on a 10-point scale (0–9).
 The mean rating per participant can be found in the creatively named column <code>MeanRating</code>.
 The research question was if smiling participants gave higher funniness ratings than pouting ones.</p>
-<p><strong>Your task:</strong> Draw boxplots (with individual data points) on the basis of which this research question
+<p><strong>Your task:</strong> Compute the number of participants in each condition as well as the mean <code>MeanRating</code> per condition. Also draw boxplots (with individual data points) on the basis of which this research question
 can be answered. Label your axes appropriately. Save a graph you’re happy with
 using <code>ggsave()</code>. Submit both your graph and the compiled HTML report.</p>
 <!-- ### Reading -->
@@ -339,10 +375,10 @@ using <code>ggsave()</code>. Submit both your graph and the compiled HTML report
 
 </div>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-Wagenmakers2016">
-<p>Wagenmakers, E.-J., T. Beek, L. Dijkhoff, Q. F. Gronau, A. Acosta, Jr. R. B. Adams, D. N. Albohn, et al. 2016. Registered replication report: Strack, Martin, &amp; Stepper (1988). <em>Perspectives on Psychological Science</em> 11(6). 917–928. doi:<a href="https://doi.org/10.1177/1745691616674458">10.1177/1745691616674458</a>.</p>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Wagenmakers2016" class="csl-entry">
+Wagenmakers, E.-J., T. Beek, L. Dijkhoff, Q. F. Gronau, A. Acosta, Jr. R. B. Adams, D. N. Albohn, et al. 2016. Registered replication report: <span>S</span>track, <span>M</span>artin, &amp; <span>S</span>tepper (1988). <em>Perspectives on Psychological Science</em> 11(6). 917–928. doi:<a href="https://doi.org/10.1177/1745691616674458">10.1177/1745691616674458</a>.
 </div>
 </div>
 <div class="footnotes">
@@ -362,7 +398,6 @@ using <code>ggsave()</code>. Submit both your graph and the compiled HTML report
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -381,6 +416,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -401,6 +437,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section",
 "scroll_highlight": true

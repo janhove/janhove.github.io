@@ -4,19 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Week 5: Line charts | Quantitative Methodology: Drawing plots</title>
+  <title>5 Week 5: Line charts | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Week 5: Line charts | Quantitative Methodology: Drawing plots" />
+  <meta property="og:title" content="5 Week 5: Line charts | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Tutorials for the graphing assignments." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Week 5: Line charts | Quantitative Methodology: Drawing plots" />
+  <meta name="twitter:title" content="5 Week 5: Line charts | Quantitative Methodology: Drawing plots" />
   
   <meta name="twitter:description" content="Tutorials for the graphing assignments." />
   
@@ -32,7 +31,8 @@
   
 <link rel="prev" href="week-4-boxplots-deluxe.html"/>
 <link rel="next" href="week-6-dotplots.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,22 +48,24 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +85,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -116,6 +118,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,13 +158,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
-<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
 <li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
 <li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
 <li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
 <li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
 <li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
@@ -147,28 +174,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
 <li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
 <li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
 <li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
 <li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
 <li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
 <li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
 <li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
 <li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
 <li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
 <li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
-<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
 <li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
 <li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
@@ -177,13 +210,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
 <li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
 <li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
 <li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
 <li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
 <li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
 <li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
@@ -194,7 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
 <li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
 <li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
-<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
 <li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
@@ -220,17 +256,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="week-5-line-charts" class="section level1">
-<h1><span class="header-section-number">Chapter 5</span> Week 5: Line charts</h1>
-<div id="goals-3" class="section level2">
-<h2><span class="header-section-number">5.1</span> Goals</h2>
+<div id="week-5-line-charts" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Week 5: Line charts<a href="week-5-line-charts.html#week-5-line-charts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="goals-3" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Goals<a href="week-5-line-charts.html#goals-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>You’ll learn how to draw line charts in R. Line charts are a popular choice for visualising temporal developments, but they can be used for other purposes, too.</li>
 <li>You’ll also learn how to split up a complex graph into several simpler graphs. This technique is known as <em>facetting</em> or creating <em>small multiples</em>.</li>
 </ol>
 </div>
-<div id="tutorial-1" class="section level2">
-<h2><span class="header-section-number">5.2</span> Tutorial</h2>
+<div id="tutorial-1" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Tutorial<a href="week-5-line-charts.html#tutorial-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Line charts are a reasonable choice for presenting
 the results of more complex studies. They’re often
 used to depict temporal developments, but I don’t
@@ -242,7 +278,7 @@ presented their results in four tables
 (Tables 4–7). I entered the results pertaining
 to the PPVT (English) and TVIP (Spanish) post-tests
 into a CSV file (<code>Peabody_Slavin2011.csv</code>):</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="week-5-line-charts.html#cb36-1"></a>slavin &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Peabody_Slavin2011.csv&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="week-5-line-charts.html#cb38-1" aria-hidden="true" tabindex="-1"></a>slavin <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Peabody_Slavin2011.csv&quot;</span>))</span></code></pre></div>
 <ul>
 <li><code>Grade</code>: Grades 1 through 4.</li>
 <li><code>CourseType</code>: EI (English immersion) or TBE (transitional bilingual education).</li>
@@ -253,14 +289,14 @@ into a CSV file (<code>Peabody_Slavin2011.csv</code>):</p>
 </ul>
 <p>We can plot the development in the English and Spanish test scores
 for the two course types:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="week-5-line-charts.html#cb37-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> slavin,</span>
-<span id="cb37-2"><a href="week-5-line-charts.html#cb37-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Grade, </span>
-<span id="cb37-3"><a href="week-5-line-charts.html#cb37-3"></a>           <span class="dt">y =</span> Mean,</span>
-<span id="cb37-4"><a href="week-5-line-charts.html#cb37-4"></a>           <span class="dt">colour =</span> Language,        <span class="co"># use different colours per language</span></span>
-<span id="cb37-5"><a href="week-5-line-charts.html#cb37-5"></a>           <span class="dt">linetype =</span> CourseType)) <span class="op">+</span><span class="st"> </span><span class="co"># use different line types per course type</span></span>
-<span id="cb37-6"><a href="week-5-line-charts.html#cb37-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="co"># connect data points with a line</span></span>
-<span id="cb37-7"><a href="week-5-line-charts.html#cb37-7"></a><span class="st">  </span><span class="kw">geom_point</span>()  <span class="co"># add data points as points for good measure</span></span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-33-1.png" width="384" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="week-5-line-charts.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> slavin,</span>
+<span id="cb39-2"><a href="week-5-line-charts.html#cb39-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Grade, </span>
+<span id="cb39-3"><a href="week-5-line-charts.html#cb39-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Mean,</span>
+<span id="cb39-4"><a href="week-5-line-charts.html#cb39-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> Language,        <span class="co"># use different colours per language</span></span>
+<span id="cb39-5"><a href="week-5-line-charts.html#cb39-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> CourseType)) <span class="sc">+</span> <span class="co"># use different line types per course type</span></span>
+<span id="cb39-6"><a href="week-5-line-charts.html#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="co"># connect data points with a line</span></span>
+<span id="cb39-7"><a href="week-5-line-charts.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()  <span class="co"># add data points as points for good measure</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-34-1.png" width="384" /></p>
 <p>You should understand most of the R code above by now;
 if you don’t, please refer to the previous tutorials.
 What’s new is that you can specify more than just an
@@ -280,18 +316,21 @@ is to plot different lines in separate graphs (<em>small multiples</em>)
 and show the different graphs side-by-side. This is known as <em>facetting</em>.
 The command <code>facet_grid()</code> can be used to specify
 the variables according to which the graph should be separated
-and how (<code>rows ~ columns</code>).
+and how.
 Since the information regarding <code>Language</code> and <code>CourseType</code>
 is expressed in the facets, we don’t have to express it using
 colours and linetypes any more. (But feel free to do so
-if you think it makes things clearer!)</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="week-5-line-charts.html#cb38-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> slavin,</span>
-<span id="cb38-2"><a href="week-5-line-charts.html#cb38-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Grade,   </span>
-<span id="cb38-3"><a href="week-5-line-charts.html#cb38-3"></a>           <span class="dt">y =</span> Mean)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb38-4"><a href="week-5-line-charts.html#cb38-4"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb38-5"><a href="week-5-line-charts.html#cb38-5"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb38-6"><a href="week-5-line-charts.html#cb38-6"></a><span class="st">  </span><span class="kw">facet_grid</span>(CourseType <span class="op">~</span><span class="st"> </span>Language) <span class="co"># TBE vs. EI in rows; Span. vs. Eng. in columns</span></span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-34-1.png" width="384" /></p>
+if you think it makes things clearer!) We need to quote the names
+of the variables according to which the facets are to be drawn
+in a <code>vars()</code> call.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="week-5-line-charts.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> slavin,</span>
+<span id="cb40-2"><a href="week-5-line-charts.html#cb40-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Grade,   </span>
+<span id="cb40-3"><a href="week-5-line-charts.html#cb40-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Mean)) <span class="sc">+</span> </span>
+<span id="cb40-4"><a href="week-5-line-charts.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb40-5"><a href="week-5-line-charts.html#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb40-6"><a href="week-5-line-charts.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(CourseType), <span class="co"># TBE vs. EI in rows; </span></span>
+<span id="cb40-7"><a href="week-5-line-charts.html#cb40-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">cols =</span> <span class="fu">vars</span>(Language))   <span class="co"># Span. vs. Eng. in columns</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-35-1.png" width="384" /></p>
 <p>Or you can combine facetting with using different colours or line types.
 In the next plot, the data for different languages are shown in separate
 panels, but each panel shows the data for both the TBE and EI pupils.
@@ -302,41 +341,38 @@ and English, we’d draw this graph the other way round.
 In addition to connecting the means with a line, this graph also visualises
 the means using a symbol in order to highlight that there were four discrete
 measurement times (i.e., no measurements between Grades 1 and 2).</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="week-5-line-charts.html#cb39-1"></a><span class="kw">ggplot</span>(<span class="dt">data =</span> slavin,</span>
-<span id="cb39-2"><a href="week-5-line-charts.html#cb39-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Grade,</span>
-<span id="cb39-3"><a href="week-5-line-charts.html#cb39-3"></a>           <span class="dt">y =</span> Mean,</span>
-<span id="cb39-4"><a href="week-5-line-charts.html#cb39-4"></a>           <span class="dt">shape =</span> CourseType,       <span class="co"># different symbols by course type</span></span>
-<span id="cb39-5"><a href="week-5-line-charts.html#cb39-5"></a>           <span class="dt">linetype =</span> CourseType)) <span class="op">+</span></span>
-<span id="cb39-6"><a href="week-5-line-charts.html#cb39-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb39-7"><a href="week-5-line-charts.html#cb39-7"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb39-8"><a href="week-5-line-charts.html#cb39-8"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Language) <span class="co"># only split graph by column (Sp. vs. Eng.)</span></span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-35-1.png" width="384" /></p>
-<p>Note the use of <code>. ~ columns</code> in <code>facet_grid()</code>. This
-splits up the graph in different columns but not in different rows.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="week-5-line-charts.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> slavin,</span>
+<span id="cb41-2"><a href="week-5-line-charts.html#cb41-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Grade,</span>
+<span id="cb41-3"><a href="week-5-line-charts.html#cb41-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Mean,</span>
+<span id="cb41-4"><a href="week-5-line-charts.html#cb41-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> CourseType,       <span class="co"># different symbols by course type</span></span>
+<span id="cb41-5"><a href="week-5-line-charts.html#cb41-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> CourseType)) <span class="sc">+</span></span>
+<span id="cb41-6"><a href="week-5-line-charts.html#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb41-7"><a href="week-5-line-charts.html#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb41-8"><a href="week-5-line-charts.html#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Language)) <span class="co"># only split graph by column (Sp. vs. Eng.)</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-36-1.png" width="384" /></p>
 <p><strong>Brain-teaser:</strong>
-Why does the mean performance in Spanish get progressively worse as the children are getting older?
-(What’s the outcome variable, exactly?)</p>
+Why does the mean performance in Spanish get progressively worse as the children are getting older? (What’s the outcome variable, exactly?)</p>
 </div>
-<div id="about-facetting" class="section level2">
-<h2><span class="header-section-number">5.3</span> About facetting</h2>
+<div id="about-facetting" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> About facetting<a href="week-5-line-charts.html#about-facetting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You can also use facetting for other types of plots.
 I’m sure you fondly remember your scatterplot from the
 first tutorial; here it is again but the different species
 are shown in separate panels:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="week-5-line-charts.html#cb40-1"></a><span class="kw">data</span>(iris)</span>
-<span id="cb40-2"><a href="week-5-line-charts.html#cb40-2"></a><span class="kw">ggplot</span>(iris,</span>
-<span id="cb40-3"><a href="week-5-line-charts.html#cb40-3"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> Sepal.Width,</span>
-<span id="cb40-4"><a href="week-5-line-charts.html#cb40-4"></a>           <span class="dt">y =</span> Sepal.Length)) <span class="op">+</span></span>
-<span id="cb40-5"><a href="week-5-line-charts.html#cb40-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb40-6"><a href="week-5-line-charts.html#cb40-6"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Species)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-36-1.png" width="384" /></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="week-5-line-charts.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb42-2"><a href="week-5-line-charts.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris,</span>
+<span id="cb42-3"><a href="week-5-line-charts.html#cb42-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
+<span id="cb42-4"><a href="week-5-line-charts.html#cb42-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length)) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="week-5-line-charts.html#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="week-5-line-charts.html#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Species))</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-37-1.png" width="384" /></p>
 </div>
-<div id="for-those-interested" class="section level2">
-<h2><span class="header-section-number">5.4</span> For those interested</h2>
+<div id="for-those-interested" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> For those interested<a href="week-5-line-charts.html#for-those-interested" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For a longer example, see <a href="https://janhove.github.io/reporting/2016/06/13/drawing-a-linechart" class="uri">https://janhove.github.io/reporting/2016/06/13/drawing-a-linechart</a>.</p>
 </div>
-<div id="exercise-4" class="section level2">
-<h2><span class="header-section-number">5.5</span> Exercise</h2>
+<div id="exercise-4" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Exercise<a href="week-5-line-charts.html#exercise-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The dataset <code>MorphologicalCues.csv</code> contains data stemming from a
 learning task in which the participants had to associate a morphological
 form with a syntactic function. 70 learners were randomly assigned to
@@ -363,10 +399,10 @@ using <code>ggsave()</code>. Submit both your graph and the compiled HTML report
 
 </div>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-Slavin2011">
-<p>Slavin, Robert E., Nancy Madden, Malgarita Calderón, Anne Chamberlain &amp; Megan Hennessy. 2011. Reading and language outcomes of a multiyear randomized evaluation of transitional bilingual education. <em>Educational Evaluation and Policy Analysis</em> 33(1). 47–58. doi:<a href="https://doi.org/10.3102/0162373711398127">10.3102/0162373711398127</a>.</p>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Slavin2011" class="csl-entry">
+Slavin, Robert E., Nancy Madden, Malgarita Calderón, Anne Chamberlain &amp; Megan Hennessy. 2011. Reading and language outcomes of a multiyear randomized evaluation of transitional bilingual education. <em>Educational Evaluation and Policy Analysis</em> 33(1). 47–58. doi:<a href="https://doi.org/10.3102/0162373711398127">10.3102/0162373711398127</a>.
 </div>
 </div>
             </section>
@@ -379,7 +415,6 @@ using <code>ggsave()</code>. Submit both your graph and the compiled HTML report
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -398,6 +433,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -418,6 +454,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section",
 "scroll_highlight": true

@@ -4,19 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots</title>
+  <title>8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots" />
+  <meta property="og:title" content="8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Tutorials for the graphing assignments." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots" />
+  <meta name="twitter:title" content="8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots" />
   
   <meta name="twitter:description" content="Tutorials for the graphing assignments." />
   
@@ -32,7 +31,8 @@
   
 <link rel="prev" href="week-7-scatterplots.html"/>
 <link rel="next" href="week-9-first-graded-assignment.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,22 +48,24 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +85,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -116,6 +118,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,13 +158,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
-<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
 <li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
 <li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
 <li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
 <li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
 <li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
@@ -147,28 +174,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
 <li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
 <li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
 <li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
 <li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
 <li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
 <li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
 <li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
 <li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
 <li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
 <li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
-<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
 <li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
 <li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
@@ -177,13 +210,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
 <li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
 <li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
 <li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
 <li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
 <li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
 <li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
@@ -194,7 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
 <li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
 <li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
-<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
 <li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
@@ -220,48 +256,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="week-8-scatterplots-with-trend-lines" class="section level1">
-<h1><span class="header-section-number">Chapter 8</span> Week 8: Scatterplots with trend lines</h1>
-<div id="goal" class="section level2">
-<h2><span class="header-section-number">8.1</span> Goal</h2>
+<div id="week-8-scatterplots-with-trend-lines" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Week 8: Scatterplots with trend lines<a href="week-8-scatterplots-with-trend-lines.html#week-8-scatterplots-with-trend-lines" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="goal" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Goal<a href="week-8-scatterplots-with-trend-lines.html#goal" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You’ll learn to highlight the trend in the relationship between
 two variables using scatterplot smoothers.</p>
 </div>
-<div id="drawing-scatterplot-smoothers" class="section level2">
-<h2><span class="header-section-number">8.2</span> Drawing scatterplot smoothers</h2>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="week-8-scatterplots-with-trend-lines.html#cb73-1"></a><span class="kw">ggplot</span>(<span class="dt">dat =</span> per_part,</span>
-<span id="cb73-2"><a href="week-8-scatterplots-with-trend-lines.html#cb73-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> English.Total, </span>
-<span id="cb73-3"><a href="week-8-scatterplots-with-trend-lines.html#cb73-3"></a>           <span class="dt">y =</span> number_correct)) <span class="op">+</span></span>
-<span id="cb73-4"><a href="week-8-scatterplots-with-trend-lines.html#cb73-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb73-5"><a href="week-8-scatterplots-with-trend-lines.html#cb73-5"></a><span class="st">  </span><span class="kw">geom_smooth</span>() <span class="op">+</span><span class="st"> </span><span class="co"># add smoother</span></span>
-<span id="cb73-6"><a href="week-8-scatterplots-with-trend-lines.html#cb73-6"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="op">+</span></span>
-<span id="cb73-7"><a href="week-8-scatterplots-with-trend-lines.html#cb73-7"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="op">+</span></span>
-<span id="cb73-8"><a href="week-8-scatterplots-with-trend-lines.html#cb73-8"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Mode)</span></code></pre></div>
+<div id="drawing-scatterplot-smoothers" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Drawing scatterplot smoothers<a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="week-8-scatterplots-with-trend-lines.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
+<span id="cb72-2"><a href="week-8-scatterplots-with-trend-lines.html#cb72-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
+<span id="cb72-3"><a href="week-8-scatterplots-with-trend-lines.html#cb72-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
+<span id="cb72-4"><a href="week-8-scatterplots-with-trend-lines.html#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb72-5"><a href="week-8-scatterplots-with-trend-lines.html#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="co"># add smoother</span></span>
+<span id="cb72-6"><a href="week-8-scatterplots-with-trend-lines.html#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
+<span id="cb72-7"><a href="week-8-scatterplots-with-trend-lines.html#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
+<span id="cb72-8"><a href="week-8-scatterplots-with-trend-lines.html#cb72-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-62-1.png" width="480" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-64-1.png" width="480" /></p>
 <p>The blue line is the smoother;
 the grey ribbon around it is known as a (95%) confidence band
 and communicates our uncertainty about the precise location
 of the smoother (due to lack of data and variability in the data).
 Of course, you can change the colour of the line to suit
-your personal taste, and you can turn off the grey ribbon (<code>se = FALSE</code>; <code>se</code> is short for ‘standard error’, which is unfortunate – a standard error and a confidence band aren’t the same thing).</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="week-8-scatterplots-with-trend-lines.html#cb77-1"></a><span class="kw">ggplot</span>(<span class="dt">dat =</span> per_part,</span>
-<span id="cb77-2"><a href="week-8-scatterplots-with-trend-lines.html#cb77-2"></a>       <span class="kw">aes</span>(<span class="dt">x =</span> English.Total, </span>
-<span id="cb77-3"><a href="week-8-scatterplots-with-trend-lines.html#cb77-3"></a>           <span class="dt">y =</span> number_correct)) <span class="op">+</span></span>
-<span id="cb77-4"><a href="week-8-scatterplots-with-trend-lines.html#cb77-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb77-5"><a href="week-8-scatterplots-with-trend-lines.html#cb77-5"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">se =</span> <span class="ot">FALSE</span>, <span class="dt">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></span>
-<span id="cb77-6"><a href="week-8-scatterplots-with-trend-lines.html#cb77-6"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="op">+</span></span>
-<span id="cb77-7"><a href="week-8-scatterplots-with-trend-lines.html#cb77-7"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="op">+</span></span>
-<span id="cb77-8"><a href="week-8-scatterplots-with-trend-lines.html#cb77-8"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Mode)</span></code></pre></div>
+your personal taste, and you can turn off the grey ribbon (<code>se = FALSE</code>; <code>se</code> is short for ‘standard error’, which is unfortunate – a standard error and a confidence band aren’t the same thing).
+We’re going to turn off the confidence band because it’s bound to be misinterpreted
+anyway.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="week-8-scatterplots-with-trend-lines.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
+<span id="cb76-2"><a href="week-8-scatterplots-with-trend-lines.html#cb76-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
+<span id="cb76-3"><a href="week-8-scatterplots-with-trend-lines.html#cb76-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
+<span id="cb76-4"><a href="week-8-scatterplots-with-trend-lines.html#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb76-5"><a href="week-8-scatterplots-with-trend-lines.html#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb76-6"><a href="week-8-scatterplots-with-trend-lines.html#cb76-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
+<span id="cb76-7"><a href="week-8-scatterplots-with-trend-lines.html#cb76-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
+<span id="cb76-8"><a href="week-8-scatterplots-with-trend-lines.html#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-63-1.png" width="480" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-65-1.png" width="480" /></p>
 </div>
-<div id="so-whats-a-scatterplot-smoother-anyway" class="section level2">
-<h2><span class="header-section-number">8.3</span> So what’s a scatterplot smoother anyway?</h2>
+<div id="so-whats-a-scatterplot-smoother-anyway" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> So what’s a scatterplot smoother anyway?<a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Scatterplot smoothers were developed to discover relationships
 (including nonlinear ones) between two variables that aren’t
 necessarily immediately obvious if the data are shown in a
@@ -272,19 +310,17 @@ whereas the average number of correct translations for written words for partici
 <p>We needn’t amuse ourselves with the maths behind these smoothers,
 but the following points are important:</p>
 <ol style="list-style-type: decimal">
-<li><p>The trend line is nearly always a bit <em>wiggly</em> (to use the actual technical mathematical term!). This is the case even when the relationship itself is as good as linear.</p></li>
-<li><p>The uncertainty about the smoother is larger at the extremes (high and low <span class="math inline">\(x\)</span> values). The confidence band is correspondingly wider at these places.</p></li>
+<li><p>The trend line is nearly always a bit <em>wiggly</em> (to use the actual technical term). This is the case even when the relationship itself is as good as linear.</p></li>
+<li><p>The uncertainty about the smoother is larger at the extremes (high and low <span class="math inline">\(x\)</span> values). The confidence band is correspondingly wider at these places. But again, we’re not going to plot the confidence bands in order not to confuse ourselves or our readership.</p></li>
 <li><p>The default settings for <code>geom_smooth()</code> tend to work fairly well, but sometimes it’s necessary to fiddle with them so that the smoother captures the trend in the data better. See next section.</p></li>
 </ol>
 </div>
-<div id="examples-of-nonlinear-relationships" class="section level2">
-<h2><span class="header-section-number">8.4</span> Examples of nonlinear relationships</h2>
+<div id="examples-of-nonlinear-relationships" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Examples of nonlinear relationships<a href="week-8-scatterplots-with-trend-lines.html#examples-of-nonlinear-relationships" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This section serves to show you what true nonlinear relationships
 can look like and how you sometimes need to fiddle with <code>geom_smooth()</code>’s settings.</p>
 <p>In the first example, the <em>red</em> line was drawn with the default settings. This line doesn’t capture an important feature of the relationship (the data points go up and down). The <em>blue</em> line captures this trend much better. It was drawn using the command <code>geom_smooth(span = 0.1)</code>. The <code>span</code> parameter determines how wiggly the curve may be (the smaller <code>span</code>, the wigglier the curve). By default, span is set to 0.75. Finding a decent span value is matter of trial and error.</p>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-64-1.png" width="336" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-66-1.png" width="336" /></p>
 <p>In the second example, the <em>red</em> line was drawn
 using <code>geom_smooth(span = 0.1)</code>.
 This line is much too wiggly, and it essentially
@@ -292,18 +328,15 @@ models random deviations from the general trend.
 The <em>blue</em> line, drawn with the default setting (<code>span = 0.75</code>),
 captures the general trend much more sensibly.
 The <em>green</em> line, by contrast, isn’t wiggly enough (<code>span = 3</code>).</p>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-65-1.png" width="576" /></p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-67-1.png" width="576" /></p>
 <p><strong>Summing up:</strong> Generally, the default settings work reasonably well. But when you notice that visually salient patterns
 in the scatterplot aren’t captured by the trend line,
 you need to fiddle a bit with the <code>span</code> parameter.</p>
 <p>More generally, data analysis and statistics aren’t a matter of
 blindly applying formulae and recipes.</p>
 </div>
-<div id="exercise-7" class="section level2">
-<h2><span class="header-section-number">8.5</span> Exercise</h2>
+<div id="exercise-7" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Exercise<a href="week-8-scatterplots-with-trend-lines.html#exercise-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Draw a scatterplot that shows the relationship between the participants’ age and their performance on the cognate translation task. How would you desribe this relationship?</p>
 <p>Now add a smoother (default settings) to this scatterplot.
 Does it capture the trend that you identified in the scatterplot?</p>
@@ -323,7 +356,6 @@ HTML report.</p>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -342,6 +374,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -362,6 +395,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section",
 "scroll_highlight": true

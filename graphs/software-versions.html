@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Software versions | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Software versions | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Tutorials for the graphing assignments." />
   
@@ -32,7 +31,8 @@
   
 <link rel="prev" href="common-error-sources-in-r.html"/>
 <link rel="next" href="references.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,22 +48,24 @@
 
 
 
-
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +85,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -116,6 +118,29 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 
@@ -133,13 +158,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tips</a></li>
-<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a><ul>
+<li class="chapter" data-level="1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html"><i class="fa fa-check"></i><b>1</b> Week 1: Installing and configuring R and RStudio</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#goals"><i class="fa fa-check"></i><b>1.1</b> Goals</a></li>
 <li class="chapter" data-level="1.2" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#software"><i class="fa fa-check"></i><b>1.2</b> Software</a></li>
 <li class="chapter" data-level="1.3" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#drawing-a-first-scatterplot"><i class="fa fa-check"></i><b>1.3</b> Drawing a first scatterplot</a></li>
 <li class="chapter" data-level="1.4" data-path="week-1-installing-and-configuring-r-and-rstudio.html"><a href="week-1-installing-and-configuring-r-and-rstudio.html#exercise"><i class="fa fa-check"></i><b>1.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a><ul>
+<li class="chapter" data-level="2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html"><i class="fa fa-check"></i><b>2</b> Week 2: Reading in data and drawing a histogram</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#goals-1"><i class="fa fa-check"></i><b>2.1</b> Goals</a></li>
 <li class="chapter" data-level="2.2" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#importing-csv-files-into-r"><i class="fa fa-check"></i><b>2.2</b> Importing CSV files into R</a></li>
 <li class="chapter" data-level="2.3" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram"><i class="fa fa-check"></i><b>2.3</b> Drawing a histogram</a></li>
@@ -147,28 +174,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme"><i class="fa fa-check"></i><b>2.5</b> Adjusting the colour scheme</a></li>
 <li class="chapter" data-level="2.6" data-path="week-2-reading-in-data-and-drawing-a-histogram.html"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#exercise-1"><i class="fa fa-check"></i><b>2.6</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a><ul>
+<li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
 <li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
 <li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.4</b> Exercise</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a><ul>
+<li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#goals-2"><i class="fa fa-check"></i><b>4.1</b> Goals</a></li>
 <li class="chapter" data-level="4.2" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#tutorial"><i class="fa fa-check"></i><b>4.2</b> Tutorial</a></li>
 <li class="chapter" data-level="4.3" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html#exercise-3"><i class="fa fa-check"></i><b>4.3</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a><ul>
+<li class="chapter" data-level="5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html"><i class="fa fa-check"></i><b>5</b> Week 5: Line charts</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#goals-3"><i class="fa fa-check"></i><b>5.1</b> Goals</a></li>
 <li class="chapter" data-level="5.2" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#tutorial-1"><i class="fa fa-check"></i><b>5.2</b> Tutorial</a></li>
 <li class="chapter" data-level="5.3" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#about-facetting"><i class="fa fa-check"></i><b>5.3</b> About facetting</a></li>
 <li class="chapter" data-level="5.4" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#for-those-interested"><i class="fa fa-check"></i><b>5.4</b> For those interested</a></li>
 <li class="chapter" data-level="5.5" data-path="week-5-line-charts.html"><a href="week-5-line-charts.html#exercise-4"><i class="fa fa-check"></i><b>5.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a><ul>
+<li class="chapter" data-level="6" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html"><i class="fa fa-check"></i><b>6</b> Week 6: Dotplots</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#goals-4"><i class="fa fa-check"></i><b>6.1</b> Goals</a></li>
 <li class="chapter" data-level="6.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#pie-charts-bar-charts-and-dotplots"><i class="fa fa-check"></i><b>6.2</b> Pie charts, bar charts, and dotplots</a></li>
-<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a><ul>
+<li class="chapter" data-level="6.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#tutorial-2"><i class="fa fa-check"></i><b>6.3</b> Tutorial</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-first-attempt"><i class="fa fa-check"></i><b>6.3.1</b> A first attempt</a></li>
 <li class="chapter" data-level="6.3.2" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#highlight-differences-between-different-categories-of-stimuli"><i class="fa fa-check"></i><b>6.3.2</b> Highlight differences between different categories of stimuli</a></li>
 <li class="chapter" data-level="6.3.3" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#a-final-attempt"><i class="fa fa-check"></i><b>6.3.3</b> A final attempt</a></li>
@@ -177,13 +210,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.4" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#for-other-kinds-of-data"><i class="fa fa-check"></i><b>6.4</b> For other kinds of data</a></li>
 <li class="chapter" data-level="6.5" data-path="week-6-dotplots.html"><a href="week-6-dotplots.html#exercise-5"><i class="fa fa-check"></i><b>6.5</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a><ul>
+<li class="chapter" data-level="7" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html"><i class="fa fa-check"></i><b>7</b> Week 7: Scatterplots</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#goals-5"><i class="fa fa-check"></i><b>7.1</b> Goals</a></li>
 <li class="chapter" data-level="7.2" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#summarising-datasets"><i class="fa fa-check"></i><b>7.2</b> Summarising datasets</a></li>
 <li class="chapter" data-level="7.3" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#scatterplots"><i class="fa fa-check"></i><b>7.3</b> Scatterplots</a></li>
 <li class="chapter" data-level="7.4" data-path="week-7-scatterplots.html"><a href="week-7-scatterplots.html#exercise-6"><i class="fa fa-check"></i><b>7.4</b> Exercise</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a><ul>
+<li class="chapter" data-level="8" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html"><i class="fa fa-check"></i><b>8</b> Week 8: Scatterplots with trend lines</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#goal"><i class="fa fa-check"></i><b>8.1</b> Goal</a></li>
 <li class="chapter" data-level="8.2" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers"><i class="fa fa-check"></i><b>8.2</b> Drawing scatterplot smoothers</a></li>
 <li class="chapter" data-level="8.3" data-path="week-8-scatterplots-with-trend-lines.html"><a href="week-8-scatterplots-with-trend-lines.html#so-whats-a-scatterplot-smoother-anyway"><i class="fa fa-check"></i><b>8.3</b> So what’s a scatterplot smoother anyway?</a></li>
@@ -194,7 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10" data-path="week-10-second-graded-assignment.html"><a href="week-10-second-graded-assignment.html"><i class="fa fa-check"></i><b>10</b> Week 10: Second graded assignment</a></li>
 <li class="chapter" data-level="11" data-path="week-12-third-graded-assignment.html"><a href="week-12-third-graded-assignment.html"><i class="fa fa-check"></i><b>11</b> Week 12: Third graded assignment</a></li>
 <li class="chapter" data-level="" data-path="further-resources.html"><a href="further-resources.html"><i class="fa fa-check"></i>Further resources</a></li>
-<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a><ul>
+<li class="chapter" data-level="" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html"><i class="fa fa-check"></i>Common error sources in R</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-x-not-found"><i class="fa fa-check"></i><b>11.1</b> <code>object 'x' not found</code></a></li>
 <li class="chapter" data-level="11.2" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#could-not-find-function-x"><i class="fa fa-check"></i><b>11.2</b> <code>could not find function 'x'</code></a></li>
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
@@ -220,107 +256,118 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="software-versions" class="section level1 unnumbered">
-<h1>Software versions</h1>
+<div id="software-versions" class="section level1 unnumbered hasAnchor">
+<h1>Software versions<a href="software-versions.html#software-versions" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────
-##  setting  value                       
-##  version  R version 4.0.2 (2020-06-22)
-##  os       Ubuntu 18.04.4 LTS          
-##  system   x86_64, linux-gnu           
-##  ui       X11                         
-##  language (EN)                        
-##  collate  en_US.UTF-8                 
-##  ctype    en_US.UTF-8                 
-##  tz       Europe/Brussels             
-##  date     2020-07-28                  
+##  setting  value
+##  version  R version 4.2.0 (2022-04-22)
+##  os       Ubuntu 22.04 LTS
+##  system   x86_64, linux-gnu
+##  ui       X11
+##  language (EN)
+##  collate  en_US.UTF-8
+##  ctype    en_US.UTF-8
+##  tz       Europe/Zurich
+##  date     2022-06-28
+##  pandoc   2.18 @ /usr/lib/rstudio/bin/quarto/bin/tools/ (via rmarkdown)
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────
-##  package     * version date       lib source        
-##  assertthat    0.2.1   2019-03-21 [1] CRAN (R 4.0.0)
-##  backports     1.1.8   2020-06-17 [1] CRAN (R 4.0.0)
-##  blob          1.2.1   2020-01-20 [1] CRAN (R 4.0.0)
-##  bookdown      0.19    2020-05-15 [1] CRAN (R 4.0.0)
-##  broom         0.5.6   2020-04-20 [1] CRAN (R 4.0.0)
-##  callr         3.4.3   2020-03-28 [1] CRAN (R 4.0.0)
-##  cellranger    1.1.0   2016-07-27 [1] CRAN (R 4.0.0)
-##  cli           2.0.2   2020-02-28 [1] CRAN (R 4.0.0)
-##  colorspace    1.4-1   2019-03-18 [1] CRAN (R 4.0.0)
-##  cowplot       1.0.0   2019-07-11 [1] CRAN (R 4.0.0)
-##  crayon        1.3.4   2017-09-16 [1] CRAN (R 4.0.0)
-##  DBI           1.1.0   2019-12-15 [1] CRAN (R 4.0.0)
-##  dbplyr        1.4.4   2020-05-27 [1] CRAN (R 4.0.0)
-##  desc          1.2.0   2018-05-01 [1] CRAN (R 4.0.0)
-##  devtools      2.3.0   2020-04-10 [1] CRAN (R 4.0.0)
-##  digest        0.6.25  2020-02-23 [1] CRAN (R 4.0.0)
-##  dplyr       * 1.0.0   2020-05-29 [1] CRAN (R 4.0.0)
-##  ellipsis      0.3.1   2020-05-15 [1] CRAN (R 4.0.0)
-##  evaluate      0.14    2019-05-28 [1] CRAN (R 4.0.0)
-##  fansi         0.4.1   2020-01-08 [1] CRAN (R 4.0.0)
-##  farver        2.0.3   2020-01-16 [1] CRAN (R 4.0.0)
-##  forcats     * 0.5.0   2020-03-01 [1] CRAN (R 4.0.0)
-##  fs            1.4.1   2020-04-04 [1] CRAN (R 4.0.0)
-##  generics      0.0.2   2018-11-29 [1] CRAN (R 4.0.0)
-##  ggplot2     * 3.3.2   2020-06-19 [1] CRAN (R 4.0.0)
-##  glue          1.4.1   2020-05-13 [1] CRAN (R 4.0.0)
-##  gtable        0.3.0   2019-03-25 [1] CRAN (R 4.0.0)
-##  haven         2.3.0   2020-05-24 [1] CRAN (R 4.0.0)
-##  here        * 0.1     2017-05-28 [1] CRAN (R 4.0.0)
-##  highr         0.8     2019-03-20 [1] CRAN (R 4.0.0)
-##  hms           0.5.3   2020-01-08 [1] CRAN (R 4.0.0)
-##  htmltools     0.5.0   2020-06-16 [1] CRAN (R 4.0.0)
-##  httr          1.4.1   2019-08-05 [1] CRAN (R 4.0.0)
-##  jsonlite      1.6.1   2020-02-02 [1] CRAN (R 4.0.0)
-##  knitr         1.28    2020-02-06 [1] CRAN (R 4.0.0)
-##  labeling      0.3     2014-08-23 [1] CRAN (R 4.0.0)
-##  lattice       0.20-41 2020-04-02 [4] CRAN (R 4.0.0)
-##  lifecycle     0.2.0   2020-03-06 [1] CRAN (R 4.0.0)
-##  lubridate     1.7.8   2020-04-06 [1] CRAN (R 4.0.0)
-##  magrittr      1.5     2014-11-22 [1] CRAN (R 4.0.0)
-##  Matrix        1.2-18  2019-11-27 [4] CRAN (R 4.0.0)
-##  memoise       1.1.0   2017-04-21 [1] CRAN (R 4.0.0)
-##  mgcv          1.8-31  2019-11-09 [4] CRAN (R 4.0.0)
-##  modelr        0.1.8   2020-05-19 [1] CRAN (R 4.0.0)
-##  munsell       0.5.0   2018-06-12 [1] CRAN (R 4.0.0)
-##  nlme          3.1-147 2020-04-13 [4] CRAN (R 4.0.0)
-##  pillar        1.4.4   2020-05-05 [1] CRAN (R 4.0.0)
-##  pkgbuild      1.0.8   2020-05-07 [1] CRAN (R 4.0.0)
-##  pkgconfig     2.0.3   2019-09-22 [1] CRAN (R 4.0.0)
-##  pkgload       1.1.0   2020-05-29 [1] CRAN (R 4.0.0)
-##  prettyunits   1.1.1   2020-01-24 [1] CRAN (R 4.0.0)
-##  processx      3.4.2   2020-02-09 [1] CRAN (R 4.0.0)
-##  ps            1.3.3   2020-05-08 [1] CRAN (R 4.0.0)
-##  purrr       * 0.3.4   2020-04-17 [1] CRAN (R 4.0.0)
-##  R6            2.4.1   2019-11-12 [1] CRAN (R 4.0.0)
-##  Rcpp          1.0.4.6 2020-04-09 [1] CRAN (R 4.0.0)
-##  readr       * 1.3.1   2018-12-21 [1] CRAN (R 4.0.0)
-##  readxl        1.3.1   2019-03-13 [1] CRAN (R 4.0.0)
-##  remotes       2.1.1   2020-02-15 [1] CRAN (R 4.0.0)
-##  reprex        0.3.0   2019-05-16 [1] CRAN (R 4.0.0)
-##  rlang         0.4.6   2020-05-02 [1] CRAN (R 4.0.0)
-##  rmarkdown     2.2     2020-05-31 [1] CRAN (R 4.0.0)
-##  rprojroot     1.3-2   2018-01-03 [1] CRAN (R 4.0.0)
-##  rstudioapi    0.11    2020-02-07 [1] CRAN (R 4.0.0)
-##  rvest         0.3.5   2019-11-08 [1] CRAN (R 4.0.0)
-##  scales        1.1.1   2020-05-11 [1] CRAN (R 4.0.0)
-##  sessioninfo   1.1.1   2018-11-05 [1] CRAN (R 4.0.0)
-##  stringi       1.4.6   2020-02-17 [1] CRAN (R 4.0.0)
-##  stringr     * 1.4.0   2019-02-10 [1] CRAN (R 4.0.0)
-##  testthat      2.3.2   2020-03-02 [1] CRAN (R 4.0.0)
-##  tibble      * 3.0.1   2020-04-20 [1] CRAN (R 4.0.0)
-##  tidyr       * 1.1.0   2020-05-20 [1] CRAN (R 4.0.0)
-##  tidyselect    1.1.0   2020-05-11 [1] CRAN (R 4.0.0)
-##  usethis       1.6.1   2020-04-29 [1] CRAN (R 4.0.0)
-##  utf8          1.1.4   2018-05-24 [1] CRAN (R 4.0.0)
-##  vctrs         0.3.1   2020-06-05 [1] CRAN (R 4.0.0)
-##  withr         2.2.0   2020-04-20 [1] CRAN (R 4.0.0)
-##  xfun          0.14    2020-05-20 [1] CRAN (R 4.0.0)
-##  xml2          1.3.2   2020-04-23 [1] CRAN (R 4.0.0)
-##  yaml          2.2.1   2020-02-01 [1] CRAN (R 4.0.0)
+##  package     * version date (UTC) lib source
+##  assertthat    0.2.1   2019-03-21 [1] CRAN (R 4.2.0)
+##  backports     1.4.1   2021-12-13 [1] CRAN (R 4.2.0)
+##  bit           4.0.4   2020-08-04 [1] CRAN (R 4.2.0)
+##  bit64         4.0.5   2020-08-30 [1] CRAN (R 4.2.0)
+##  bookdown      0.27    2022-06-14 [1] CRAN (R 4.2.0)
+##  brio          1.1.3   2021-11-30 [2] CRAN (R 4.2.0)
+##  broom         0.8.0   2022-04-13 [1] CRAN (R 4.2.0)
+##  bslib         0.3.1   2021-10-06 [1] CRAN (R 4.2.0)
+##  cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+##  callr         3.7.0   2021-04-20 [2] CRAN (R 4.2.0)
+##  cellranger    1.1.0   2016-07-27 [1] CRAN (R 4.2.0)
+##  cli           3.3.0   2022-04-25 [2] CRAN (R 4.2.0)
+##  colorspace    2.0-3   2022-02-21 [1] CRAN (R 4.2.0)
+##  crayon        1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
+##  DBI           1.1.3   2022-06-18 [1] CRAN (R 4.2.0)
+##  dbplyr        2.2.1   2022-06-27 [1] CRAN (R 4.2.0)
+##  desc          1.4.1   2022-03-06 [2] CRAN (R 4.2.0)
+##  devtools      2.4.3   2021-11-30 [1] CRAN (R 4.2.0)
+##  digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+##  dplyr       * 1.0.9   2022-04-28 [1] CRAN (R 4.2.0)
+##  ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+##  evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+##  fansi         1.0.3   2022-03-24 [2] CRAN (R 4.2.0)
+##  farver        2.1.0   2021-02-28 [1] CRAN (R 4.2.0)
+##  fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+##  forcats     * 0.5.1   2021-01-27 [1] CRAN (R 4.2.0)
+##  fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+##  generics      0.1.2   2022-01-31 [1] CRAN (R 4.2.0)
+##  ggplot2     * 3.3.6   2022-05-03 [1] CRAN (R 4.2.0)
+##  glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+##  gridExtra     2.3     2017-09-09 [1] CRAN (R 4.2.0)
+##  gtable        0.3.0   2019-03-25 [1] CRAN (R 4.2.0)
+##  haven         2.5.0   2022-04-15 [1] CRAN (R 4.2.0)
+##  here        * 1.0.1   2020-12-13 [1] CRAN (R 4.2.0)
+##  highr         0.9     2021-04-16 [2] CRAN (R 4.2.0)
+##  hms           1.1.1   2021-09-26 [1] CRAN (R 4.2.0)
+##  htmltools     0.5.2   2021-08-25 [1] CRAN (R 4.2.0)
+##  httr          1.4.3   2022-05-04 [2] CRAN (R 4.2.0)
+##  jquerylib     0.1.4   2021-04-26 [1] CRAN (R 4.2.0)
+##  jsonlite      1.8.0   2022-02-22 [2] CRAN (R 4.2.0)
+##  knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+##  labeling      0.4.2   2020-10-20 [1] CRAN (R 4.2.0)
+##  lattice       0.20-45 2021-09-22 [4] CRAN (R 4.2.0)
+##  lifecycle     1.0.1   2021-09-24 [2] CRAN (R 4.2.0)
+##  lubridate     1.8.0   2021-10-07 [1] CRAN (R 4.2.0)
+##  magrittr      2.0.1   2020-11-17 [2] CRAN (R 4.0.2)
+##  Matrix        1.4-1   2022-03-23 [4] CRAN (R 4.2.0)
+##  memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+##  mgcv          1.8-40  2022-03-29 [4] CRAN (R 4.2.0)
+##  modelr        0.1.8   2020-05-19 [1] CRAN (R 4.2.0)
+##  munsell       0.5.0   2018-06-12 [1] CRAN (R 4.2.0)
+##  nlme          3.1-157 2022-03-25 [4] CRAN (R 4.2.0)
+##  pillar        1.7.0   2022-02-01 [2] CRAN (R 4.2.0)
+##  pkgbuild      1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
+##  pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+##  pkgload       1.2.4   2021-11-30 [2] CRAN (R 4.2.0)
+##  prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+##  processx      3.5.3   2022-03-25 [2] CRAN (R 4.2.0)
+##  ps            1.7.0   2022-04-23 [2] CRAN (R 4.2.0)
+##  purrr       * 0.3.4   2020-04-17 [2] CRAN (R 4.2.0)
+##  R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+##  readr       * 2.1.2   2022-01-30 [1] CRAN (R 4.2.0)
+##  readxl        1.4.0   2022-03-28 [1] CRAN (R 4.2.0)
+##  remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+##  reprex        2.0.1   2021-08-05 [1] CRAN (R 4.2.0)
+##  rlang         1.0.2   2022-03-04 [2] CRAN (R 4.2.0)
+##  rmarkdown     2.14    2022-04-25 [1] CRAN (R 4.2.0)
+##  rprojroot     2.0.3   2022-04-02 [2] CRAN (R 4.2.0)
+##  rstudioapi    0.13    2020-11-12 [2] CRAN (R 4.2.0)
+##  rvest         1.0.2   2021-10-16 [1] CRAN (R 4.2.0)
+##  sass          0.4.1   2022-03-23 [1] CRAN (R 4.2.0)
+##  scales        1.2.0   2022-04-13 [1] CRAN (R 4.2.0)
+##  sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+##  stringi       1.7.6   2021-11-29 [2] CRAN (R 4.2.0)
+##  stringr     * 1.4.0   2019-02-10 [2] CRAN (R 4.2.0)
+##  testthat      3.1.4   2022-04-26 [2] CRAN (R 4.2.0)
+##  tibble      * 3.1.7   2022-05-03 [2] CRAN (R 4.2.0)
+##  tidyr       * 1.2.0   2022-02-01 [1] CRAN (R 4.2.0)
+##  tidyselect    1.1.2   2022-02-21 [1] CRAN (R 4.2.0)
+##  tzdb          0.3.0   2022-03-28 [1] CRAN (R 4.2.0)
+##  usethis       2.1.5   2021-12-09 [2] CRAN (R 4.2.0)
+##  utf8          1.2.2   2021-07-24 [2] CRAN (R 4.2.0)
+##  vctrs         0.4.1   2022-04-13 [2] CRAN (R 4.2.0)
+##  vroom         1.5.7   2021-11-30 [1] CRAN (R 4.2.0)
+##  withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+##  xfun          0.31    2022-05-10 [2] CRAN (R 4.2.0)
+##  xml2          1.3.3   2021-11-30 [2] CRAN (R 4.2.0)
+##  yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
 ## 
-## [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.0
-## [2] /usr/local/lib/R/site-library
-## [3] /usr/lib/R/site-library
-## [4] /usr/lib/R/library</code></pre>
+##  [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.2
+##  [2] /usr/local/lib/R/site-library
+##  [3] /usr/lib/R/site-library
+##  [4] /usr/lib/R/library
+## 
+## ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </div>
             </section>
 
@@ -332,7 +379,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -351,6 +397,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -371,6 +418,10 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "section",
 "scroll_highlight": true
