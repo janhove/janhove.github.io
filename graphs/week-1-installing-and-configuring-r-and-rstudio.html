@@ -263,7 +263,7 @@ div.csl-indent {
 <h2><span class="header-section-number">1.1</span> Goals<a href="week-1-installing-and-configuring-r-and-rstudio.html#goals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>You’ll install the software you’ll need for this part of the class: <code>R</code>, <code>RStudio</code>, and <code>tidyverse/ggplot2</code>.</li>
-<li>You’ll tinker with the <code>R</code> and <code>RStudio</code> setting.</li>
+<li>You’ll tinker with the <code>R</code> and <code>RStudio</code> settings.</li>
 <li>You’ll draw and save your first graph, a scatterplot, to see if everything is working as it should be.</li>
 </ol>
 </div>
@@ -282,7 +282,7 @@ Figure 1.1: RStudio. <em>Top left</em>: Script editor. This is where you can ent
 </p>
 </div>
 <ol start="4" style="list-style-type: decimal">
-<li><p>Go to <code>Tools &gt; Global Options... &gt; General.</code> Untick <code>Restore .RData into workspace at startup</code> and set <code>Save workspace to .RData on exit</code> to <code>Never</code>. This will help ensure that when other people run the same code as you, the results will be the same, too.</p></li>
+<li><p>Go to <code>Tools &gt; Global Options... &gt; General.</code> Untick <code>Restore .RData into workspace at startup</code> and set <code>Save workspace to .RData on exit</code> to <code>Never</code>. This way, you’ll start with a clean slate each time you restart <code>R</code>, i.e., there won’t be any objects in the workspace from a previous session that could affect your computations in the current session. This, in turn, will help ensure that when other people run the same code as you, the results will be the same, too.</p></li>
 <li><p>Go to <code>Tools &gt; Global Options...&gt; Code &gt; Saving</code>. Set <code>Default text encoding</code> to <code>UTF-8</code>.</p></li>
 <li><p>Go to <code>Tools &gt; Global Options...&gt; Code &gt; Editing</code>. Tick <code>Use native pipe operator. |&gt;</code>.</p></li>
 <li><p>Enter the following line into the script editor (top left). Brackets, quotation marks, capitalisation, and the like all matter to computers, so pay attention to them.</p></li>
@@ -309,7 +309,7 @@ in a directory structure.</p></li>
 Navigate to somewhere on your computer where you want to create a new directory
 and call this directory (for instance, <code>quantmeth_plots</code>). You will use this
 directory to store the data and scripts that you’ll need for drawing the graphs
-in as well for saving the graphs themselves to.</p></li>
+in as well for saving the graphs themselves to. You don’t have to tick the other options.</p></li>
 <li><p>When you’re done, close RStudio. Navigate to the directory you’ve just created.
 You should find an <code>.Rproj</code> file there. Double-click it. If all is well, RStudio
 should fire up.</p></li>
