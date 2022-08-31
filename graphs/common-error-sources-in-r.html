@@ -236,6 +236,7 @@ div.csl-indent {
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
 <li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
 <li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+<li class="chapter" data-level="11.6" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-of-type-closure-is-not-subsettable"><i class="fa fa-check"></i><b>11.6</b> <code>object of type 'closure' is not subsettable</code></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -264,14 +265,14 @@ div.csl-indent {
 that hasn’t been loaded yet. This error
 is commonly caused by typos.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="common-error-sources-in-r.html#cb80-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
-<span id="cb80-2"><a href="common-error-sources-in-r.html#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(X)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="common-error-sources-in-r.html#cb81-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
+<span id="cb81-2"><a href="common-error-sources-in-r.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(X)</span></code></pre></div>
 <pre><code>## Error in mean(X): object &#39;X&#39; not found</code></pre>
 <p>You’ve created an object named <code>x</code>, but on the second line, you’re trying
 to call an object named <code>X</code> (capitalisation!).</p>
 <p>When in doubt, you can inspect the names of all objects currently loaded
 by running this command:</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="common-error-sources-in-r.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="common-error-sources-in-r.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>()</span></code></pre></div>
 </div>
 <div id="could-not-find-function-x" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> <code>could not find function 'x'</code><a href="common-error-sources-in-r.html#could-not-find-function-x" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -280,10 +281,10 @@ to load an extension package first. Check whether you’ve typed in its name
 correctly. If it’s a function from an extension package, check if that package
 has been loaded.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="common-error-sources-in-r.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
-<span id="cb83-2"><a href="common-error-sources-in-r.html#cb83-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> predictor,</span>
-<span id="cb83-3"><a href="common-error-sources-in-r.html#cb83-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> outcome)) <span class="sc">+</span></span>
-<span id="cb83-4"><a href="common-error-sources-in-r.html#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="common-error-sources-in-r.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
+<span id="cb84-2"><a href="common-error-sources-in-r.html#cb84-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> predictor,</span>
+<span id="cb84-3"><a href="common-error-sources-in-r.html#cb84-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb84-4"><a href="common-error-sources-in-r.html#cb84-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Error in FUN(X[[i]], ...): object &#39;predictor&#39; not found</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <p>You need to load <code>tidyverse</code> (or <code>ggplot2</code>) before you can use the
@@ -293,21 +294,21 @@ has been loaded.</p>
 <h2><span class="header-section-number">11.3</span> <code>there is no package called 'x'</code><a href="common-error-sources-in-r.html#there-is-no-package-called-x" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>You’re trying to load an extension package that hasn’t been installed yet.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="common-error-sources-in-r.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggjoy)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="common-error-sources-in-r.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggjoy)</span></code></pre></div>
 <pre><code>## Error in library(ggjoy): there is no package called &#39;ggjoy&#39;</code></pre>
 <p>Install the package first:</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="common-error-sources-in-r.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.package</span>(<span class="st">&quot;ggjoy&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="common-error-sources-in-r.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.package</span>(<span class="st">&quot;ggjoy&quot;</span>)</span></code></pre></div>
 </div>
 <div id="unexpected-symbol" class="section level2 hasAnchor" number="11.4">
 <h2><span class="header-section-number">11.4</span> <code>unexpected symbol</code><a href="common-error-sources-in-r.html#unexpected-symbol" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Check if you’ve forgotton a comma or bracket somewhere, or if you’ve used
 a comma or bracket that shouldn’t be there.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="common-error-sources-in-r.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb88-2"><a href="common-error-sources-in-r.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris</span>
-<span id="cb88-3"><a href="common-error-sources-in-r.html#cb88-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
-<span id="cb88-4"><a href="common-error-sources-in-r.html#cb88-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length)) <span class="sc">+</span></span>
-<span id="cb88-5"><a href="common-error-sources-in-r.html#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="common-error-sources-in-r.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb89-2"><a href="common-error-sources-in-r.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris</span>
+<span id="cb89-3"><a href="common-error-sources-in-r.html#cb89-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
+<span id="cb89-4"><a href="common-error-sources-in-r.html#cb89-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length)) <span class="sc">+</span></span>
+<span id="cb89-5"><a href="common-error-sources-in-r.html#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Error: &lt;text&gt;:3:8: unexpected symbol
 ## 2: ggplot(data = iris
 ## 3:        aes
@@ -315,19 +316,19 @@ a comma or bracket that shouldn’t be there.</p>
 <p>This error is difficult to spot because the error message isn’t too helpful:
 There is a missing comma at the end of line 2, after <code>iris</code>.</p>
 <p>Example:</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="common-error-sources-in-r.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris)</span>
-<span id="cb90-2"><a href="common-error-sources-in-r.html#cb90-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
-<span id="cb90-3"><a href="common-error-sources-in-r.html#cb90-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length)<span class="er">)</span> <span class="sc">+</span></span>
-<span id="cb90-4"><a href="common-error-sources-in-r.html#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="common-error-sources-in-r.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris)</span>
+<span id="cb91-2"><a href="common-error-sources-in-r.html#cb91-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
+<span id="cb91-3"><a href="common-error-sources-in-r.html#cb91-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length)<span class="er">)</span> <span class="sc">+</span></span>
+<span id="cb91-4"><a href="common-error-sources-in-r.html#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Error: &lt;text&gt;:3:29: unexpected &#39;)&#39;
 ## 2:        aes(x = Sepal.Width,
 ## 3:            y = Sepal.Length))
 ##                                ^</code></pre>
 <p>The bracket after <code>iris</code> should be a comma.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="common-error-sources-in-r.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
-<span id="cb92-2"><a href="common-error-sources-in-r.html#cb92-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
-<span id="cb92-3"><a href="common-error-sources-in-r.html#cb92-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length))<span class="er">)</span> <span class="sc">+</span></span>
-<span id="cb92-4"><a href="common-error-sources-in-r.html#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="common-error-sources-in-r.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
+<span id="cb93-2"><a href="common-error-sources-in-r.html#cb93-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
+<span id="cb93-3"><a href="common-error-sources-in-r.html#cb93-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length))<span class="er">)</span> <span class="sc">+</span></span>
+<span id="cb93-4"><a href="common-error-sources-in-r.html#cb93-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## Error: &lt;text&gt;:3:30: unexpected &#39;)&#39;
 ## 2:        aes(x = Sepal.Width,
 ## 3:            y = Sepal.Length)))
@@ -354,15 +355,34 @@ the command <code>aes(</code>, but you need a second bracket to close
 the command <code>ggplot(</code>.</p>
 <p>Here is another example of code that doesn’t produce an error
 but that doesn’t produce the desired graphic either:</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="common-error-sources-in-r.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
-<span id="cb94-2"><a href="common-error-sources-in-r.html#cb94-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
-<span id="cb94-3"><a href="common-error-sources-in-r.html#cb94-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length))</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="common-error-sources-in-r.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> iris,</span>
+<span id="cb95-2"><a href="common-error-sources-in-r.html#cb95-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Width,</span>
+<span id="cb95-3"><a href="common-error-sources-in-r.html#cb95-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Sepal.Length))</span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="common-error-sources-in-r.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="common-error-sources-in-r.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>()</span></code></pre></div>
 <pre><code>## geom_point: na.rm = FALSE
 ## stat_identity: na.rm = FALSE
 ## position_identity</code></pre>
 <p>Reason: the <code>+</code> on line 3 is missing.</p>
+</div>
+<div id="object-of-type-closure-is-not-subsettable" class="section level2 hasAnchor" number="11.6">
+<h2><span class="header-section-number">11.6</span> <code>object of type 'closure' is not subsettable</code><a href="common-error-sources-in-r.html#object-of-type-closure-is-not-subsettable" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ah, the quintessential R error message. It can be generated
+in a number of ways, but you’re probably accidentally treating
+a <em>function</em> as a <em>variable</em>. Here’s an example: Let’s say you
+want to compute the mean of the numbers 200 and 800. One
+way to do so is like so:</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="common-error-sources-in-r.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">800</span>))</span></code></pre></div>
+<pre><code>## [1] 500</code></pre>
+<p>However, if you’ve accidentally used square brackets, the error
+pops up:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="common-error-sources-in-r.html#cb100-1" aria-hidden="true" tabindex="-1"></a>mean[<span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">800</span>)]</span></code></pre></div>
+<pre><code>## Error in mean[c(200, 800)]: object of type &#39;closure&#39; is not subsettable</code></pre>
+<p>What you’re actually doing with the square brackets is reading
+out two values of <code>mean</code>, namely the 200th and 800th value it’s holding.
+However, <code>mean</code> doesn’t hold any values; it’s a function, not a variable.</p>
+<p>To fix the problem, go through your code and check if you haven’t mixed up
+square and round brackets.</p>
 </div>
 </div>
             </section>

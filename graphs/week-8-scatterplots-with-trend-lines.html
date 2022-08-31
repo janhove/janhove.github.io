@@ -236,6 +236,7 @@ div.csl-indent {
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
 <li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
 <li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+<li class="chapter" data-level="11.6" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-of-type-closure-is-not-subsettable"><i class="fa fa-check"></i><b>11.6</b> <code>object of type 'closure' is not subsettable</code></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -265,14 +266,14 @@ two variables using scatterplot smoothers.</p>
 </div>
 <div id="drawing-scatterplot-smoothers" class="section level2 hasAnchor" number="8.2">
 <h2><span class="header-section-number">8.2</span> Drawing scatterplot smoothers<a href="week-8-scatterplots-with-trend-lines.html#drawing-scatterplot-smoothers" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="week-8-scatterplots-with-trend-lines.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
-<span id="cb72-2"><a href="week-8-scatterplots-with-trend-lines.html#cb72-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
-<span id="cb72-3"><a href="week-8-scatterplots-with-trend-lines.html#cb72-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
-<span id="cb72-4"><a href="week-8-scatterplots-with-trend-lines.html#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb72-5"><a href="week-8-scatterplots-with-trend-lines.html#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="co"># add smoother</span></span>
-<span id="cb72-6"><a href="week-8-scatterplots-with-trend-lines.html#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
-<span id="cb72-7"><a href="week-8-scatterplots-with-trend-lines.html#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
-<span id="cb72-8"><a href="week-8-scatterplots-with-trend-lines.html#cb72-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="week-8-scatterplots-with-trend-lines.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
+<span id="cb73-2"><a href="week-8-scatterplots-with-trend-lines.html#cb73-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
+<span id="cb73-3"><a href="week-8-scatterplots-with-trend-lines.html#cb73-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
+<span id="cb73-4"><a href="week-8-scatterplots-with-trend-lines.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb73-5"><a href="week-8-scatterplots-with-trend-lines.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> <span class="co"># add smoother</span></span>
+<span id="cb73-6"><a href="week-8-scatterplots-with-trend-lines.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-7"><a href="week-8-scatterplots-with-trend-lines.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-8"><a href="week-8-scatterplots-with-trend-lines.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
@@ -285,14 +286,14 @@ Of course, you can change the colour of the line to suit
 your personal taste, and you can turn off the grey ribbon (<code>se = FALSE</code>; <code>se</code> is short for ‘standard error’, which is unfortunate – a standard error and a confidence band aren’t the same thing).
 We’re going to turn off the confidence band because it’s bound to be misinterpreted
 anyway.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="week-8-scatterplots-with-trend-lines.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
-<span id="cb76-2"><a href="week-8-scatterplots-with-trend-lines.html#cb76-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
-<span id="cb76-3"><a href="week-8-scatterplots-with-trend-lines.html#cb76-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
-<span id="cb76-4"><a href="week-8-scatterplots-with-trend-lines.html#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb76-5"><a href="week-8-scatterplots-with-trend-lines.html#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb76-6"><a href="week-8-scatterplots-with-trend-lines.html#cb76-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
-<span id="cb76-7"><a href="week-8-scatterplots-with-trend-lines.html#cb76-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
-<span id="cb76-8"><a href="week-8-scatterplots-with-trend-lines.html#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="week-8-scatterplots-with-trend-lines.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">dat =</span> per_part,</span>
+<span id="cb77-2"><a href="week-8-scatterplots-with-trend-lines.html#cb77-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> English.Total, </span>
+<span id="cb77-3"><a href="week-8-scatterplots-with-trend-lines.html#cb77-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> number_correct)) <span class="sc">+</span></span>
+<span id="cb77-4"><a href="week-8-scatterplots-with-trend-lines.html#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb77-5"><a href="week-8-scatterplots-with-trend-lines.html#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-6"><a href="week-8-scatterplots-with-trend-lines.html#cb77-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-7"><a href="week-8-scatterplots-with-trend-lines.html#cb77-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-8"><a href="week-8-scatterplots-with-trend-lines.html#cb77-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning: Removed 6 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 6 rows containing missing values (geom_point).</code></pre>
@@ -337,7 +338,7 @@ blindly applying formulae and recipes.</p>
 </div>
 <div id="exercise-7" class="section level2 hasAnchor" number="8.5">
 <h2><span class="header-section-number">8.5</span> Exercise<a href="week-8-scatterplots-with-trend-lines.html#exercise-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Draw a scatterplot that shows the relationship between the participants’ age and their performance on the cognate translation task. How would you desribe this relationship?</p>
+<p>Draw a scatterplot that shows the relationship between the participants’ age and their performance on the cognate translation task. How would you describe this relationship?</p>
 <p>Now add a smoother (default settings) to this scatterplot.
 Does it capture the trend that you identified in the scatterplot?</p>
 <p>Now fiddle with the <code>span</code> parameter (0.1, 0.2, 0.3 etc.)</p>

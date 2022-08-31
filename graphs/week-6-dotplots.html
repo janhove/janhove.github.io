@@ -236,6 +236,7 @@ div.csl-indent {
 <li class="chapter" data-level="11.3" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#there-is-no-package-called-x"><i class="fa fa-check"></i><b>11.3</b> <code>there is no package called 'x'</code></a></li>
 <li class="chapter" data-level="11.4" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#unexpected-symbol"><i class="fa fa-check"></i><b>11.4</b> <code>unexpected symbol</code></a></li>
 <li class="chapter" data-level="11.5" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#it-doesnt-work-and-there-isnt-even-an-error-message"><i class="fa fa-check"></i><b>11.5</b> It doesn’t work and there isn’t even an error message</a></li>
+<li class="chapter" data-level="11.6" data-path="common-error-sources-in-r.html"><a href="common-error-sources-in-r.html#object-of-type-closure-is-not-subsettable"><i class="fa fa-check"></i><b>11.6</b> <code>object of type 'closure' is not subsettable</code></a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="software-versions.html"><a href="software-versions.html"><i class="fa fa-check"></i>Software versions</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -317,7 +318,8 @@ masculine.
 One of the research questions was if Belgian and Dutch participants
 were more likely to choose the neuter article <em>das</em> if the German word’s
 Dutch cognate is neuter than when it has common gender.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
-<p>Read in this dataset in <code>R</code>.</p>
+<p>Read in this dataset in <code>R</code>:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="week-6-dotplots.html#cb44-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;GermanArticleChoices.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 88 Columns: 6
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -327,7 +329,7 @@ Dutch cognate is neuter than when it has common gender.<a href="#fn4" class="foo
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>The first few rows should look as follows:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="week-6-dotplots.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="week-6-dotplots.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 6
 ##   Stimulus Country         NeuterResponses DutchCognate GermanGender DutchGender
 ##   &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;      
@@ -354,11 +356,11 @@ The code and comments show how to build this dot plot:</p>
 and adding your <em>own</em> comments than by copy-pasting them. For
 this reason, I added a couple of typos and left out a couple of
 commas and brackets – all for you to find and fix, enjoy!</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="week-6-dotplots.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,                   </span>
-<span id="cb47-2"><a href="week-6-dotplots.html#cb47-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuteResponses, </span>
-<span id="cb47-3"><a href="week-6-dotplots.html#cb47-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus,       </span>
-<span id="cb47-4"><a href="week-6-dotplots.html#cb47-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span> </span>
-<span id="cb47-5"><a href="week-6-dotplots.html#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()                 </span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="week-6-dotplots.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,                   </span>
+<span id="cb48-2"><a href="week-6-dotplots.html#cb48-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuteResponses, </span>
+<span id="cb48-3"><a href="week-6-dotplots.html#cb48-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus,       </span>
+<span id="cb48-4"><a href="week-6-dotplots.html#cb48-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span> </span>
+<span id="cb48-5"><a href="week-6-dotplots.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()                 </span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 </div>
 <div id="highlight-differences-between-different-categories-of-stimuli" class="section level3 hasAnchor" number="6.3.2">
@@ -371,14 +373,14 @@ those with common-gender cognates in different boxes (<em>facetting</em>,
 see the tutorial on line charts).
 (To see what <code>scales = "free_y"</code> and <code>space = "free_y"</code> accomplish,
 leave these parameters out of the call, i.e., using just <code>facet_grid(DutchGender ~.)</code>.)</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="week-6-dotplots.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
-<span id="cb48-2"><a href="week-6-dotplots.html#cb48-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuterResponses,</span>
-<span id="cb48-3"><a href="week-6-dotplots.html#cb48-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus </span>
-<span id="cb48-4"><a href="week-6-dotplots.html#cb48-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span> </span>
-<span id="cb48-5"><a href="week-6-dotplots.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb48-6"><a href="week-6-dotplots.html#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(DutchGender),   <span class="co"># split up vertically by Dutch gender</span></span>
-<span id="cb48-7"><a href="week-6-dotplots.html#cb48-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>,</span>
-<span id="cb48-8"><a href="week-6-dotplots.html#cb48-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">space =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="week-6-dotplots.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
+<span id="cb49-2"><a href="week-6-dotplots.html#cb49-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuterResponses,</span>
+<span id="cb49-3"><a href="week-6-dotplots.html#cb49-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus </span>
+<span id="cb49-4"><a href="week-6-dotplots.html#cb49-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span> </span>
+<span id="cb49-5"><a href="week-6-dotplots.html#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb49-6"><a href="week-6-dotplots.html#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(DutchGender),   <span class="co"># split up vertically by Dutch gender</span></span>
+<span id="cb49-7"><a href="week-6-dotplots.html#cb49-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>,</span>
+<span id="cb49-8"><a href="week-6-dotplots.html#cb49-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">space =</span> <span class="st">&quot;free_y&quot;</span>)</span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <p>This graph shows pretty clearly that both Belgian and Dutch
 speakers of Dutch pick <em>das</em> more often if the German word
@@ -403,15 +405,15 @@ to the stimuli’s German gender.
 To highlight this, we can split up the graph not only by
 the words’ Dutch gender, but also by their German gender.
 And we still have to label the axes!</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="week-6-dotplots.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
-<span id="cb49-2"><a href="week-6-dotplots.html#cb49-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuterResponses, </span>
-<span id="cb49-3"><a href="week-6-dotplots.html#cb49-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus,</span>
-<span id="cb49-4"><a href="week-6-dotplots.html#cb49-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
-<span id="cb49-5"><a href="week-6-dotplots.html#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span>
-<span id="cb49-6"><a href="week-6-dotplots.html#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(DutchGender, GermanGender), <span class="co"># split up by Dutch and German gender</span></span>
-<span id="cb49-7"><a href="week-6-dotplots.html#cb49-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>, <span class="at">space =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span></span>
-<span id="cb49-8"><a href="week-6-dotplots.html#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Proportion &#39;das&#39;&quot;</span>) <span class="sc">+</span> <span class="co"># axis label for x</span></span>
-<span id="cb49-9"><a href="week-6-dotplots.html#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>)                   <span class="co"># the y axis is self-explanatory</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="week-6-dotplots.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dat,</span>
+<span id="cb50-2"><a href="week-6-dotplots.html#cb50-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> NeuterResponses, </span>
+<span id="cb50-3"><a href="week-6-dotplots.html#cb50-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Stimulus,</span>
+<span id="cb50-4"><a href="week-6-dotplots.html#cb50-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
+<span id="cb50-5"><a href="week-6-dotplots.html#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() </span>
+<span id="cb50-6"><a href="week-6-dotplots.html#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(DutchGender, GermanGender), <span class="co"># split up by Dutch and German gender</span></span>
+<span id="cb50-7"><a href="week-6-dotplots.html#cb50-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>, <span class="at">space =</span> <span class="st">&quot;free_y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb50-8"><a href="week-6-dotplots.html#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Proportion &#39;das&#39;&quot;</span>) <span class="sc">+</span> <span class="co"># axis label for x</span></span>
+<span id="cb50-9"><a href="week-6-dotplots.html#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>)                   <span class="co"># the y axis is self-explanatory</span></span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>The upper three boxes show feminine, masculine and neuter
 German words with common-gender cognates; the lower three boxes
