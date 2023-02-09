@@ -115,7 +115,7 @@ Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.45
 <p>Jan Vanhove and Raphael Berthele. 2017. Chapter 6: Testing the interdependence of languages (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 97-118. Multilingual Matters.</p>
 
 <p>Jan Vanhove. 2017. <a href = "https://dx.doi.org/10.1111/lang.12230">The influence of Standard and substandard Dutch on gender assignment in second language German</a>. 
-<i>Language Learning</i>. 67(2). 431&ndash;460.<br />
+<i>Language Learning</i>. 67(2). 431&ndash;460. <a href = "https://folia.unifr.ch/unifr/documents/305168">Preprint</a>.<br />
 Preregistration, elicitation materials, data and R code available from the <a href = "https://osf.io/5ahzj/">Open Science Framework</a>.</p>
 
 <p>Jan Vanhove and Raphael Berthele. 2017. <a href = "https://doi.org/10.1515/iral-2017-0007">Interactions between formal distance and participant-related variables in receptive multilingualism</a>. 
