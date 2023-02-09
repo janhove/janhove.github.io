@@ -47,7 +47,8 @@ function levenshtein(a::String, b::String)
   for row in 2:(length(a) + 1)
     for col in 2:(length(b) + 1)
       distances[row, col] = min(
-        distances[row - 1, col - 1] + Int(a[row - 1] != b[col - 1] ? 1 : 0)
+        distances[row - 1, col - 1] + 
+          Int(a[row - 1] != b[col - 1] ? 1 : 0)
         , distances[row, col - 1] + 1
         , distances[row - 1, col] + 1
       )
@@ -173,14 +174,19 @@ function lev_alignment(a::String, b::String)
 
   while (row > 1 && col > 1)
     if lev_matrix[row - 1, col - 1] == lev_matrix[row, col] &&
-    lev_matrix[row - 1, col - 1] <= min(lev_matrix[row - 1, col], lev_matrix[row, col - 1])
+        lev_matrix[row - 1, col - 1] <= min(
+          lev_matrix[row - 1, col]
+          , lev_matrix[row, col - 1]
+          )
       row = row - 1
       col = col - 1
       pushfirst!(source, a[row])
       pushfirst!(target, b[col])
       pushfirst!(operations, ' ')
     else 
-      if lev_matrix[row - 1, col] <= min(lev_matrix[row - 1, col - 1], lev_matrix[row, col - 1])
+      if lev_matrix[row - 1, col] <= min(
+          lev_matrix[row - 1, col - 1]
+          , lev_matrix[row, col - 1])
         row = row - 1
         pushfirst!(source, a[row])
         pushfirst!(target, ' ')
