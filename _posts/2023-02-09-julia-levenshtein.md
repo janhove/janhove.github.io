@@ -38,23 +38,23 @@ separately as well.
 
 {% highlight julia %}
 function levenshtein(a::String, b::String)
-	# Initialise table
-	distances = zeros(Int, length(a) + 1, length(b) + 1)
-	distances[:, 1] = 0:length(a)
-	distances[1, :] = 0:length(b)
+  # Initialise table
+  distances = zeros(Int, length(a) + 1, length(b) + 1)
+  distances[:, 1] = 0:length(a)
+  distances[1, :] = 0:length(b)
 
-	# Levenshtein logic
-	for row in 2:(length(a) + 1)
-		for col in 2:(length(b) + 1)
-			distances[row, col] = min(
-				distances[row - 1, col - 1] + Int(a[row - 1] != b[col - 1] ? 1 : 0)
-				, distances[row, col - 1] + 1
-				, distances[row - 1, col] + 1
-			)
-		end
-	end
+  # Levenshtein logic
+  for row in 2:(length(a) + 1)
+    for col in 2:(length(b) + 1)
+      distances[row, col] = min(
+        distances[row - 1, col - 1] + Int(a[row - 1] != b[col - 1] ? 1 : 0)
+        , distances[row, col - 1] + 1
+        , distances[row - 1, col] + 1
+      )
+    end
+  end
 
-	return distances, distances[length(a) + 1, length(b) + 1]
+  return distances, distances[length(a) + 1, length(b) + 1]
 end
 {% endhighlight %}
 
@@ -162,65 +162,65 @@ isn't uniquely defined.)
 
 {% highlight julia %}
 function lev_alignment(a::String, b::String)
-	source = Vector{Char}()
-	target = Vector{Char}()
-	operations = Vector{Char}()
-	
-	lev_matrix = levenshtein(a, b)[1]
-	
-	row = size(lev_matrix, 1)
-	col = size(lev_matrix, 2)
+  source = Vector{Char}()
+  target = Vector{Char}()
+  operations = Vector{Char}()
+  
+  lev_matrix = levenshtein(a, b)[1]
+  
+  row = size(lev_matrix, 1)
+  col = size(lev_matrix, 2)
 
-	while (row > 1 && col > 1)
-		if lev_matrix[row - 1, col - 1] == lev_matrix[row, col] &&
-		lev_matrix[row - 1, col - 1] <= min(lev_matrix[row - 1, col], lev_matrix[row, col - 1])
-			row = row - 1
-			col = col - 1
-			pushfirst!(source, a[row])
-			pushfirst!(target, b[col])
-			pushfirst!(operations, ' ')
-		else 
-			if lev_matrix[row - 1, col] <= min(lev_matrix[row - 1, col - 1], lev_matrix[row, col - 1])
-				row = row - 1
-				pushfirst!(source, a[row])
-				pushfirst!(target, ' ')
-				pushfirst!(operations, 'D')
-			elseif lev_matrix[row, col - 1] <= lev_matrix[row - 1, col - 1]
-				col = col - 1
-				pushfirst!(source, ' ')
-				pushfirst!(target, b[col])
-				pushfirst!(operations, 'I')
-			else
-				row = row - 1
-				col = col - 1
-				pushfirst!(source, a[row])
-				pushfirst!(target, b[col])
-				pushfirst!(operations, 'S')
-			end
-		end
-	end
+  while (row > 1 && col > 1)
+    if lev_matrix[row - 1, col - 1] == lev_matrix[row, col] &&
+    lev_matrix[row - 1, col - 1] <= min(lev_matrix[row - 1, col], lev_matrix[row, col - 1])
+      row = row - 1
+      col = col - 1
+      pushfirst!(source, a[row])
+      pushfirst!(target, b[col])
+      pushfirst!(operations, ' ')
+    else 
+      if lev_matrix[row - 1, col] <= min(lev_matrix[row - 1, col - 1], lev_matrix[row, col - 1])
+        row = row - 1
+        pushfirst!(source, a[row])
+        pushfirst!(target, ' ')
+        pushfirst!(operations, 'D')
+      elseif lev_matrix[row, col - 1] <= lev_matrix[row - 1, col - 1]
+        col = col - 1
+        pushfirst!(source, ' ')
+        pushfirst!(target, b[col])
+        pushfirst!(operations, 'I')
+      else
+        row = row - 1
+        col = col - 1
+        pushfirst!(source, a[row])
+        pushfirst!(target, b[col])
+        pushfirst!(operations, 'S')
+      end
+    end
+  end
 
-	# If first column reached, move up.
-	while (row > 1)
-		row = row - 1
-		pushfirst!(source, a[row])
-		pushfirst!(target, ' ')
-		pushfirst!(operations, 'D')
-	end
+  # If first column reached, move up.
+  while (row > 1)
+    row = row - 1
+    pushfirst!(source, a[row])
+    pushfirst!(target, ' ')
+    pushfirst!(operations, 'D')
+  end
 
-	# If first row reached, move left.
-	while (col > 1)
-		col = col - 1
-		pushfirst!(source, ' ')
-		pushfirst!(target, b[col])
-		pushfirst!(operations, 'I')
-	end
-	
-	return vcat(
-		reshape(source, (1, :))
-		, reshape(target, (1, :))
-		, reshape(operations, (1, :))
-	)
+  # If first row reached, move left.
+  while (col > 1)
+    col = col - 1
+    pushfirst!(source, ' ')
+    pushfirst!(target, b[col])
+    pushfirst!(operations, 'I')
+  end
+  
+  return vcat(
+    reshape(source, (1, :))
+    , reshape(target, (1, :))
+    , reshape(operations, (1, :))
+  )
 end
 {% endhighlight %}
 
