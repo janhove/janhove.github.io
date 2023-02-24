@@ -59,6 +59,7 @@ Under the null hypothesis of no discriminatory ability,
 the number of correctly identified cups in any one draw ($X$) follows a 
 [hypergeometric distribution](https://en.wikipedia.org/wiki/Hypergeometric_distribution)
 with parameters $N = 8$ (total), $K = 4$ (successes) and $n = 4$ (draws), i.e.,
+
 $$X \sim \textrm{Hypergeometric}(8, 4, 4).$$
 
 In any given round, the subject fails the test if she only identifies
@@ -86,7 +87,9 @@ in the third round with probability $pq^2$. Etc. etc.
 The probability that she will fail somewhere in the experiment if the null
 hypothesis is true, then,
 is given by
+
 $$\sum_{i = 1}^{\infty}pq^{i-1} = \sum_{i = 0}^{\infty}pq^i = \frac{p}{1-q},$$
+
 where the first equality is just a matter of shifting the index
 and the second equality holds because the expression is a [geometric series](https://en.wikipedia.org/wiki/Geometric_series).
 
