@@ -129,7 +129,6 @@ a changed _copy_ of the dataset like R would:
 {% highlight julia %}
 # changes d!
 add_breakpoint(d, 12);
-print(d);
 {% endhighlight %}
 
 Since we don't know what the best breakpoint is,
