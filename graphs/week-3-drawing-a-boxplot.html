@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Week 3: Drawing a boxplot | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Week 3: Drawing a boxplot | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -118,6 +118,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -177,10 +181,11 @@ div.csl-indent {
 <li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
-<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
-<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
-<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#what-are-boxplots"><i class="fa fa-check"></i><b>3.2</b> What are boxplots?</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.3</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.4</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.5</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.6" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.6</b> Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
 <ul>
@@ -270,7 +275,7 @@ div.csl-indent {
 <li>Download the file <code>VowelChoices_ij.csv</code> from
 Moodle to the <code>data</code> subdirectory of your R project directory.
 This file contains a part of the results
-of a learning experiment <span class="citation">(<a href="#ref-Vanhove2016" role="doc-biblioref">Vanhove 2016</a>)</span>
+of a learning experiment <span class="citation">(<a href="#ref-Vanhove2016">Vanhove 2016</a>)</span>
 in which 80 participants were assigned to one
 of two learning conditions
 (<code>LearningCondition</code>).
@@ -289,11 +294,34 @@ learners in the different conditions.</li>
 <li>Inspect the dataset in R to check that it contains 80 rows and 3 labelled columns (<code>Subject</code>, <code>LearningCondition</code>, <code>PropCorrect</code>).</li>
 </ol>
 </div>
-<div id="drawing-boxplots" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Drawing boxplots<a href="week-3-drawing-a-boxplot.html#drawing-boxplots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>See <span class="citation">Johnson (<a href="#ref-Johnson2013" role="doc-biblioref">2013</a>)</span> for an explanation of boxplots.
-Here we’ll draw basic boxplots in order to compare
-two parts of a dataset. But you can also use
+<div id="what-are-boxplots" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> What are boxplots?<a href="week-3-drawing-a-boxplot.html#what-are-boxplots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Below you see a basic boxplot of the vocabulary test scores of the
+eighty participants in <span class="citation">(<a href="#ref-Vanhove2016">Vanhove 2016</a>)</span>.
+The median score is highlighted by a thick line.
+The 25th and 75th percentiles are highlighted by thinner lines and together
+form a box. The difference between the 75th and 25th percentile is
+called the <strong>inter-quartile range (IQR)</strong>.
+The data points that don’t fall in the box, that is, the data points that don’t
+make up the middle 50% of the data, are represented by a line protruding from
+the upper part of the box and by a line protruding from the lower part of the box.
+However, data points whose distance to the box exceeds 1.5 times the inter-quartile
+range are plotted separately. If such data points exist, the lines protruding from
+the box only extend up to the lowest / highest data point whose distance to the
+box is lower than 1.5 times the IQR.</p>
+<p>From the boxplot below, we can glean that the IQR is <span class="math inline">\(34 - 31 = 3\)</span>.
+The highest data point has a value of 38. Since <span class="math inline">\(38 &lt; 34 + 1.5 \times 3 = 38.5\)</span>,
+this data point is captured by the line protruding from the upper part of the box.
+The lowest data point has a value of 25. Since <span class="math inline">\(25 &lt; 31 - 1.5 \times 3 = 26.5\)</span>,
+it lies too far from the box to be captured by the line protruding from the lower
+part of the box, so it gets drawn separately.</p>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+</div>
+<div id="drawing-boxplots" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Drawing boxplots<a href="week-3-drawing-a-boxplot.html#drawing-boxplots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can draw boxplots in order to compare the distribution of a variable
+in two groups.
+But you can also use
 boxplots to compare more than two groups.
 Next week we’ll add the individual data points to
 these boxplots which can make them more informative still.</p>
@@ -306,51 +334,52 @@ You already know how the first three lines work;
 the fourth specifies that the data should be plotted
 using boxplots.</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="week-3-drawing-a-boxplot.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Boxplot PropCorrect vs. LearningCondition</span></span>
-<span id="cb26-2"><a href="week-3-drawing-a-boxplot.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,              </span>
-<span id="cb26-3"><a href="week-3-drawing-a-boxplot.html#cb26-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
-<span id="cb26-4"><a href="week-3-drawing-a-boxplot.html#cb26-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
-<span id="cb26-5"><a href="week-3-drawing-a-boxplot.html#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()                  <span class="co"># summarise data with boxplots</span></span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="week-3-drawing-a-boxplot.html#cb24-1" tabindex="-1"></a><span class="co"># Boxplot PropCorrect vs. LearningCondition</span></span>
+<span id="cb24-2"><a href="week-3-drawing-a-boxplot.html#cb24-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,              </span>
+<span id="cb24-3"><a href="week-3-drawing-a-boxplot.html#cb24-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
+<span id="cb24-4"><a href="week-3-drawing-a-boxplot.html#cb24-4" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
+<span id="cb24-5"><a href="week-3-drawing-a-boxplot.html#cb24-5" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()                  <span class="co"># summarise data with boxplots</span></span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
-<li>Label the <em>x</em>-axis as “Learning condition” and the <em>y</em>-axis as “Proportion correct answers”. I don’t provide the commands for doing so; you already know them.</li>
+<li>Label the <em>x</em>-axis as “Learning condition” and the <em>y</em>-axis as “Proportion correct answers”. I don’t provide the commands for doing so; you already know them from last week.</li>
 </ol>
 </div>
-<div id="adjusting-the-appearance-of-plots" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Adjusting the appearance of plots<a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="adjusting-the-appearance-of-plots" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Adjusting the appearance of plots<a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>By default, <code>ggplot2</code> (the part of the <code>tidyverse</code> that takes care of plotting) produces plots with a grey background
 (which doesn’t seem to please anyone save for its developer).
 This can be changed by appending the command <code>theme_bw()</code> (<em>black and white</em>)
 to the <code>ggplot</code> call:</li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="week-3-drawing-a-boxplot.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,           </span>
-<span id="cb27-2"><a href="week-3-drawing-a-boxplot.html#cb27-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
-<span id="cb27-3"><a href="week-3-drawing-a-boxplot.html#cb27-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
-<span id="cb27-4"><a href="week-3-drawing-a-boxplot.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>               </span>
-<span id="cb27-5"><a href="week-3-drawing-a-boxplot.html#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span>          </span>
-<span id="cb27-6"><a href="week-3-drawing-a-boxplot.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb27-7"><a href="week-3-drawing-a-boxplot.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<p>For other options, see <a href="http://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">http://ggplot2.tidyverse.org/reference/ggtheme.html</a>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="week-3-drawing-a-boxplot.html#cb25-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,           </span>
+<span id="cb25-2"><a href="week-3-drawing-a-boxplot.html#cb25-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
+<span id="cb25-3"><a href="week-3-drawing-a-boxplot.html#cb25-3" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
+<span id="cb25-4"><a href="week-3-drawing-a-boxplot.html#cb25-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>               </span>
+<span id="cb25-5"><a href="week-3-drawing-a-boxplot.html#cb25-5" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span>          </span>
+<span id="cb25-6"><a href="week-3-drawing-a-boxplot.html#cb25-6" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb25-7"><a href="week-3-drawing-a-boxplot.html#cb25-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>For other options, see <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">https://ggplot2.tidyverse.org/reference/ggtheme.html</a>.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>To change the font size, insert a number between the brackets of the <code>theme_bw()</code> command. Finding a suitable font size is a matter of trial and error.</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="week-3-drawing-a-boxplot.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,           </span>
-<span id="cb28-2"><a href="week-3-drawing-a-boxplot.html#cb28-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
-<span id="cb28-3"><a href="week-3-drawing-a-boxplot.html#cb28-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
-<span id="cb28-4"><a href="week-3-drawing-a-boxplot.html#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>               </span>
-<span id="cb28-5"><a href="week-3-drawing-a-boxplot.html#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span>          </span>
-<span id="cb28-6"><a href="week-3-drawing-a-boxplot.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb28-7"><a href="week-3-drawing-a-boxplot.html#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">15</span>)</span></code></pre></div>
-<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="week-3-drawing-a-boxplot.html#cb26-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_box,           </span>
+<span id="cb26-2"><a href="week-3-drawing-a-boxplot.html#cb26-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> LearningCondition, </span>
+<span id="cb26-3"><a href="week-3-drawing-a-boxplot.html#cb26-3" tabindex="-1"></a>           <span class="at">y =</span> PropCorrect)) <span class="sc">+</span>    </span>
+<span id="cb26-4"><a href="week-3-drawing-a-boxplot.html#cb26-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span>               </span>
+<span id="cb26-5"><a href="week-3-drawing-a-boxplot.html#cb26-5" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Learning condition&quot;</span>) <span class="sc">+</span>          </span>
+<span id="cb26-6"><a href="week-3-drawing-a-boxplot.html#cb26-6" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Proportion correct answers&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb26-7"><a href="week-3-drawing-a-boxplot.html#cb26-7" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="dv">15</span>)</span></code></pre></div>
+<p><img src="BookletMethodology_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li>When you’re happy with a plot, you can save it using <code>ggsave()</code>. You can set the width and height of the figure using the <code>width</code> and <code>height</code> parameters, e.g.,</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="week-3-drawing-a-boxplot.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;03_boxplot.png&quot;</span>), <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="week-3-drawing-a-boxplot.html#cb27-1" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;03_boxplot.png&quot;</span>), <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p>Per default, the width and height numbers are in inches. See the help page (<a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="uri">https://ggplot2.tidyverse.org/reference/ggsave.html</a>) on how to override this.</p>
 </div>
-<div id="computing-summaries" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Computing summaries<a href="week-3-drawing-a-boxplot.html#computing-summaries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="computing-summaries" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Computing summaries<a href="week-3-drawing-a-boxplot.html#computing-summaries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>While this is a tutorial on drawing graphs, it’s useful at this stage
 to know how to obtain some basic information about the datasets you’re
 working with. There are many ways to accomplish most things in <code>R</code>,
@@ -369,9 +398,9 @@ be read as follows:</p>
 <blockquote>
 <p><em>and compute the mean of <code>PropCorrect</code> and store it as <code>mean_PropCorrect</code>.</em></p>
 </blockquote>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="week-3-drawing-a-boxplot.html#cb30-1" aria-hidden="true" tabindex="-1"></a>d_box <span class="sc">|&gt;</span> </span>
-<span id="cb30-2"><a href="week-3-drawing-a-boxplot.html#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number =</span> <span class="fu">n</span>(),</span>
-<span id="cb30-3"><a href="week-3-drawing-a-boxplot.html#cb30-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_PropCorrect =</span> <span class="fu">mean</span>(PropCorrect))</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="week-3-drawing-a-boxplot.html#cb28-1" tabindex="-1"></a>d_box <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="week-3-drawing-a-boxplot.html#cb28-2" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number =</span> <span class="fu">n</span>(),</span>
+<span id="cb28-3"><a href="week-3-drawing-a-boxplot.html#cb28-3" tabindex="-1"></a>            <span class="at">mean_PropCorrect =</span> <span class="fu">mean</span>(PropCorrect))</span></code></pre></div>
 <pre><code>## # A tibble: 1 × 2
 ##   number mean_PropCorrect
 ##    &lt;int&gt;            &lt;dbl&gt;
@@ -390,20 +419,20 @@ as</p>
 <blockquote>
 <p><em>For each group created, create a summary containing the mean of the <code>PropCorrect</code> variable.</em></p>
 </blockquote>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="week-3-drawing-a-boxplot.html#cb32-1" aria-hidden="true" tabindex="-1"></a>d_box <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="week-3-drawing-a-boxplot.html#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(LearningCondition) <span class="sc">|&gt;</span> </span>
-<span id="cb32-3"><a href="week-3-drawing-a-boxplot.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_PropCorrect =</span> <span class="fu">mean</span>(PropCorrect))</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="week-3-drawing-a-boxplot.html#cb30-1" tabindex="-1"></a>d_box <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="week-3-drawing-a-boxplot.html#cb30-2" tabindex="-1"></a>  <span class="fu">group_by</span>(LearningCondition) <span class="sc">|&gt;</span> </span>
+<span id="cb30-3"><a href="week-3-drawing-a-boxplot.html#cb30-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_PropCorrect =</span> <span class="fu">mean</span>(PropCorrect))</span></code></pre></div>
 <pre><code>## # A tibble: 2 × 2
 ##   LearningCondition mean_PropCorrect
 ##   &lt;chr&gt;                        &lt;dbl&gt;
 ## 1 &lt;ij&gt; participants            0.436
 ## 2 &lt;oe&gt; participants            0.290</code></pre>
 <p>The word <em>THEN</em> is represented by a so-called pipe operator (|&gt;),
-a shortcut for which is ctrl+shift+m.</p>
+a shortcut for which is ctrl+shift+m on Windows/Linux and cmd + shift + m on Mac.</p>
 </div>
-<div id="exercise-2" class="section level2 hasAnchor" number="3.5">
-<h2><span class="header-section-number">3.5</span> Exercise<a href="week-3-drawing-a-boxplot.html#exercise-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The file <code>Vanhove2014_CognateProfile.csv</code> contains data from <span class="citation">Vanhove (<a href="#ref-Vanhove2014" role="doc-biblioref">2014</a>)</span>.
+<div id="exercise-2" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Exercise<a href="week-3-drawing-a-boxplot.html#exercise-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The file <code>Vanhove2014_CognateProfile.csv</code> contains data from <span class="citation">Vanhove (<a href="#ref-Vanhove2014">2014</a>)</span>.
 163 Swiss-Germans attempted to translate 45 written Swedish words, all of which
 had German, English and/or French cognates.
 To check which participants already had some minimal knowledge of Swedish,
@@ -416,34 +445,17 @@ For the subsequent analysis, it was important to know
 translations per participant; the column shows whether the participant
 in question was able to translate at least one profile word correctly (<code>yes</code> vs. <code>no</code>).</p>
 <ol style="list-style-type: decimal">
-<li>Read in the dataset into R.</li>
+<li>In a new script, read in the dataset into R.</li>
 <li>Compute the number of participants who were able to correctly translate at least one profile word.</li>
 <li>Use a boxplot to compare the number of correctly translated cognate words between participants that could translate at least one profile word correctly and those that couldn’t. Label your axes appropriately.</li>
 <li>Compile the HTML report.</li>
 <li>Submit both the boxplot and the HTML report.</li>
 </ol>
-<!-- ### Reading -->
-<!-- Text: Slavin et al. (2011). (REFERENCE) -->
-<!-- This text is pretty difficult, particularly as far as the analysis and the presentation of the results are concerned. The introductory and methodological paragraphs deal with some concepts that we’ve already discussed (particularly on p. 49) as well as with some procedures that are new to us. -->
-<!-- First try to read the entire text, but skip any spots you don’t understand for the time being. Then answer the following questions. -->
-<!-- 1. "[C]hildren's reading proficiency in their native language is a strong predictor of their ultimate English reading performance." (p. 48) What does this mean? -->
-<!-- 2. What do these terms mean? -->
-<!--     * matching (p. 49) -->
-<!--     * selection bias (p. 49 and p. 50) -->
-<!--     * teacher/school effects (p. 49) -->
-<!--     * within-school design (p. 51). (What would a between-school design look like?) -->
-<!-- 3. What is the independent variable (predictor) in this study? What are the dependent variables (outcomes)? -->
-<!-- 4. How were the pupils assigned to the groups? -->
-<!-- 5. Slavin et al. discuss in detail how many pupils couldn’t be tested in each group (TBE vs. SEI; Table 2) and whether the characteristics of these pupils differed between the groups (Table 3). Any ideas why they discuss this at all? -->
-<!-- 6. "Children were pretested … on the English Peabody Picture Vocabulary Test (PPVT) and its Spanish equivalent, the Test de Vocabulario en Imagenes Peabody (TVIP)." (p. 51) Why did the researchers conduct pretests? Try to find at least two reasons. -->
 
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Johnson2013" class="csl-entry">
-Johnson, Daniel Ezra. 2013. Descriptive statistics. In Robert J. Podesva &amp; Devyani Sharma (eds.), <em>Research methods in linguistics</em>, 288–315. Cambridge: Cambridge University Press.
-</div>
 <div id="ref-Vanhove2014" class="csl-entry">
 Vanhove, Jan. 2014. Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing. University of Fribourg PhD thesis. <a href="http://doc.rero.ch/record/210293">http://doc.rero.ch/record/210293</a>.
 </div>
@@ -518,7 +530,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

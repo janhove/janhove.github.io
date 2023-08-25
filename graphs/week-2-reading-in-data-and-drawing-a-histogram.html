@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
@@ -91,7 +91,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -104,7 +104,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -118,6 +118,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -177,10 +181,11 @@ div.csl-indent {
 <li class="chapter" data-level="3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html"><i class="fa fa-check"></i><b>3</b> Week 3: Drawing a boxplot</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#reading-in-data"><i class="fa fa-check"></i><b>3.1</b> Reading in data</a></li>
-<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.2</b> Drawing boxplots</a></li>
-<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.3</b> Adjusting the appearance of plots</a></li>
-<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.4</b> Computing summaries</a></li>
-<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.5</b> Exercise</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#what-are-boxplots"><i class="fa fa-check"></i><b>3.2</b> What are boxplots?</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#drawing-boxplots"><i class="fa fa-check"></i><b>3.3</b> Drawing boxplots</a></li>
+<li class="chapter" data-level="3.4" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#adjusting-the-appearance-of-plots"><i class="fa fa-check"></i><b>3.4</b> Adjusting the appearance of plots</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#computing-summaries"><i class="fa fa-check"></i><b>3.5</b> Computing summaries</a></li>
+<li class="chapter" data-level="3.6" data-path="week-3-drawing-a-boxplot.html"><a href="week-3-drawing-a-boxplot.html#exercise-2"><i class="fa fa-check"></i><b>3.6</b> Exercise</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="week-4-boxplots-deluxe.html"><a href="week-4-boxplots-deluxe.html"><i class="fa fa-check"></i><b>4</b> Week 4: Boxplots deluxe</a>
 <ul>
@@ -276,9 +281,9 @@ div.csl-indent {
 <li>Open the R project that you created last week, e.g., by double-clicking the <code>.Rproj</code> file.</li>
 <li>Create a new script (<code>File &gt; New File &gt; R Script</code>).</li>
 <li>Type the commands for loading the <code>tidyverse</code> and <code>here</code> packages in this script and run them. (See last week.) Note that you do not have to <em>reinstall</em> these packages; you just need to <em>load</em> them.</li>
-<li>Add and run the following command. It reads in the CSV file <code>Vanhove2015_Vpn.csv</code> stored in the <code>data</code> subdirectory and assigns its contents to a new object that can be referred to in R as <code>d_hist</code>. You can pick another name, but then you’ll have to make the necessary changes in the code that follows, too; I use <code>d_hist</code> because we’re working with a <em>d</em>ataset and we’re going to draw a <em>hist</em>ogram. The ‘assignment operator’ is an arrow made up from a less than sign (<code>&lt;</code>) and a dash (<code>-</code>). The output at the console is merely a message that tells you how the data were parsed: there is one column containing text (characters, <code>chr</code>) and four columns containing numeric information (in a double-precision floating-point format, hence <code>dbl</code> but that’s not relevant now).</li>
+<li>Add and run the following command. It reads in the CSV file <code>Vanhove2015_Vpn.csv</code> stored in the <code>data</code> subdirectory and assigns its contents to a new object that can be referred to in R as <code>d_hist</code>. You can pick another name, but then you’ll have to make the necessary changes in the code that follows, too; I use <code>d_hist</code> because we’re working with a <em>d</em>ataset and we’re going to draw a <em>hist</em>ogram. The ‘assignment operator’ is an arrow made up from a less than sign (<code>&lt;</code>) and a dash (<code>-</code>). (You can use the shortcurt alt + - on Windows/Linux or Option + - on Mac.) The output at the console is merely a message that tells you how the data were parsed: there is one column containing text (characters, <code>chr</code>) and four columns containing numeric information (in a double-precision floating-point format, hence <code>dbl</code> but that’s not relevant now).</li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb15-1" aria-hidden="true" tabindex="-1"></a>d_hist <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2015_Vpn.csv&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb13-1" tabindex="-1"></a>d_hist <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2015_Vpn.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 80 Columns: 6
 ## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
@@ -290,49 +295,49 @@ div.csl-indent {
 <ol start="8" style="list-style-type: decimal">
 <li>If you type in the name of the newly created object (viz., <code>d_hist</code>) to the R prompt, you’ll see part of the dataset displayed. If you want to inspect the whole dataset, use the following command:</li>
 </ol>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(d_hist)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb15-1" tabindex="-1"></a><span class="fu">view</span>(d_hist)</span></code></pre></div>
 <ol start="9" style="list-style-type: decimal">
 <li>If that worked, congratulations: You’ve successfully imported the data set. If not: Double-check your steps (including downloading the dataset). If it still doesn’t work, upload the dataset as you’ve downloaded it as well as the R commands that you used to Moodle along with any error messages or warnings.</li>
 </ol>
 </div>
 <div id="drawing-a-histogram" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Drawing a histogram<a href="week-2-reading-in-data-and-drawing-a-histogram.html#drawing-a-histogram" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>A histogram shows how a variable is distributed <span class="citation">(see <a href="#ref-Johnson2013" role="doc-biblioref">Johnson 2013</a>)</span>. Histograms are particularly useful to check if
-there are any ‘univariate’ outliers (i.e., values that lie far from the bulk of the data if you consider only this one variable) and to see if the variale seems to be distributed approximately uniformly, normally, bimodaly or more wonkily.</p>
+<p>A histogram shows how a variable is distributed <span class="citation">(see <a href="#ref-Johnson2013">Johnson 2013</a>)</span>. Histograms are particularly useful to check if
+there are any ‘univariate’ outliers (i.e., values that lie far from the bulk of the data if you consider only this one variable) and to see if the variale seems to be distributed approximately uniformly, normally, bimodally or more wonkily.</p>
 <p>Since you’ve already loaded the <code>tidyverse</code> and since you’ve already read in the data, we can start to draw some histograms.
 Like for last week’s scatterplot, we need to define the object and the variables we want to plot (lines 1–2). Instead of drawing points, we draw a histogram:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,       <span class="co"># specify data set</span></span>
-<span id="cb18-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span> <span class="co"># variable to be drawn</span></span>
-<span id="cb18-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()          <span class="co"># draw as histogram</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,       <span class="co"># specify data set</span></span>
+<span id="cb16-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span> <span class="co"># variable to be drawn</span></span>
+<span id="cb16-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()          <span class="co"># draw as histogram</span></span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>The histogram shows, among other things, that there are 8 individuals with an English vocabulary score just below 0.7 and 4 with a score just below 0.6. By default, 30 such <em>bins</em> are drawn, but as the warning indicates (‘Pick better value’), there’s nothing special about this number. For instance, you can adjust the desired bin width:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb20-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb20-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.2</span>) <span class="co"># binwidth of 0.2 points</span></span></code></pre></div>
+<p>The histogram shows, among other things, that there are 8 individuals with an English vocabulary score just below 0.7 and 4 with a score just below 0.6. By default, 30 such <em>bins</em> are drawn, but as the warning indicates (‘Pick better value’), there’s nothing special about this number. You can adjust the desired bin width:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb18-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.2</span>) <span class="co"># binwidth of 0.2 points</span></span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb21-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb21-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.1</span>) <span class="co"># binwidth of 0.1 points</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb19-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb19-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb19-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb19-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.1</span>) <span class="co"># binwidth of 0.1 points</span></span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb22-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb22-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>) <span class="co"># binwidth of 0.05 points</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb20-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb20-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>) <span class="co"># binwidth of 0.05 points</span></span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb23-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">30</span>) <span class="co"># binwidth of 1/30 points</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb21-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb21-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">30</span>) <span class="co"># binwidth of 1/30 points</span></span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>There aren’t any hard and fast rules for determining the optimal bin width. The default settings (1st plot) produce a histogram that seems to be a bit too fine-grained, whereas a bin width of 0.2 (2nd plot) results in too coarse a histogram. The other three histograms seem fine by me; I’d probably pick the 4th or 5th for a presentation or when writing a paper.</p>
 </div>
 <div id="labelling-axes" class="section level2 hasAnchor" number="2.4">
 <h2><span class="header-section-number">2.4</span> Labelling axes<a href="week-2-reading-in-data-and-drawing-a-histogram.html#labelling-axes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Use <code>xlab()</code> and <code>ylab()</code> to label axes. Don’t forget the quotation marks.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb24-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb24-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
-<span id="cb24-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb24-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb22-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-4" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb22-5" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>Important:</p>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-18"></span>
@@ -346,13 +351,13 @@ Figure 2.1: Source: <a href="https://xkcd.com/833/" class="uri">https://xkcd.com
 <h2><span class="header-section-number">2.5</span> Adjusting the colour scheme<a href="week-2-reading-in-data-and-drawing-a-histogram.html#adjusting-the-colour-scheme" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>I’ve added two parameters to the <code>geom_histogram()</code> call. You can change
 these settings yourself.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
-<span id="cb25-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
-<span id="cb25-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>,</span>
-<span id="cb25-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb25-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;darkgrey&quot;</span>) <span class="sc">+</span></span>
-<span id="cb25-6"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb25-7"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
+<span id="cb23-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>,</span>
+<span id="cb23-4"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-4" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb23-5"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-5" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;darkgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-6" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;English vocabulary score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb23-7" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Number of participants&quot;</span>)</span></code></pre></div>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="exercise-1" class="section level2 hasAnchor" number="2.6">
@@ -362,15 +367,6 @@ these settings yourself.</p>
 <li><p>Compile a HTML report.</p></li>
 <li><p>Hand in both the HTML report and the two figures via Moodle.</p></li>
 </ol>
-<!-- ### Reading: Descriptive statistics -->
-<!-- Text: Ludke et al. (2014). (REFERENCE) -->
-<!-- First read the entire text. As you're reading the results section, focus on the descriptive statistics and the graphs; we'll discuss the statistical tests in class where needed. Then answer the following questions or explain these terms in a manner that you find intelligible: -->
-<!-- 1. What is this study's most important research question or its most important aim? -->
-<!-- 2. Briefly describe this study's design (including the participants). Is this study a "true experiment"? -->
-<!-- 3. Which measures did the researchers take to maximally ensure the study's internal validity? Put differently, how did they try to ensure that any differences between the conditions could be attributed to differences between speaking, rhythmic speaking and singing rather than to other factor? -->
-<!-- 4. "Digital audio recordings were made during each experimental sessions." (p. 46, 2nd column, last paragraph) Why? -->
-<!-- 5. What does this mean: "Measures of participants’ mood, background experience, and abilities in music and language were also administered in order to check that the randomly assigned groups were matched for these factors." (p. 43, 2nd column, last paragraph) -->
-<!-- 6. What can you glean from Figure 2 (p. 48)? (In your own words, without referring to the running text.) -->
 
 </div>
 </div>
@@ -447,7 +443,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
