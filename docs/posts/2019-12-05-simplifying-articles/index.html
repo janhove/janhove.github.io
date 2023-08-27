@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2019-12-05">
+
+<title>Jan Vanhove :: Blog - Five suggestions for simplifying research reports</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#round-more" id="toc-round-more" class="nav-link active" data-scroll-target="#round-more">(1) Round more</a></li>
+  <li><a href="#show-the-main-results-graphically" id="toc-show-the-main-results-graphically" class="nav-link" data-scroll-target="#show-the-main-results-graphically">(2) Show the main results graphically</a></li>
+  <li><a href="#run-and-report-much-fewer-significance-tests" id="toc-run-and-report-much-fewer-significance-tests" class="nav-link" data-scroll-target="#run-and-report-much-fewer-significance-tests">(3) Run and report <em>much</em> fewer significance tests</a></li>
+  <li><a href="#details-that-someone-somewhere-might-interested-in-dont-belong-in-the-main-text" id="toc-details-that-someone-somewhere-might-interested-in-dont-belong-in-the-main-text" class="nav-link" data-scroll-target="#details-that-someone-somewhere-might-interested-in-dont-belong-in-the-main-text">(4) Details that someone, somewhere might interested in don’t belong in the main text</a></li>
+  <li><a href="#if-two-analyses-yield-essentially-the-same-results-report-the-simpler-one" id="toc-if-two-analyses-yield-essentially-the-same-results-report-the-simpler-one" class="nav-link" data-scroll-target="#if-two-analyses-yield-essentially-the-same-results-report-the-simpler-one">(5) If two analyses yield essentially the same results, report the simpler one</a>
+  <ul class="collapse">
+  <li><a href="#mixed-repeated-measures-anova-vs.-a-t-test" id="toc-mixed-repeated-measures-anova-vs.-a-t-test" class="nav-link" data-scroll-target="#mixed-repeated-measures-anova-vs.-a-t-test">‘Mixed’ repeated-measures ANOVA vs.&nbsp;a t-test</a></li>
+  <li><a href="#multilevel-models-vs.-cluster-level-analyses" id="toc-multilevel-models-vs.-cluster-level-analyses" class="nav-link" data-scroll-target="#multilevel-models-vs.-cluster-level-analyses">Multilevel models vs.&nbsp;cluster-level analyses</a></li>
+  <li><a href="#parametric-vs.-non-parametric-tests" id="toc-parametric-vs.-non-parametric-tests" class="nav-link" data-scroll-target="#parametric-vs.-non-parametric-tests">Parametric vs.&nbsp;non-parametric tests</a></li>
+  <li><a href="#ordinal-models-vs.-linear-models" id="toc-ordinal-models-vs.-linear-models" class="nav-link" data-scroll-target="#ordinal-models-vs.-linear-models">Ordinal models vs.&nbsp;linear models</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Five suggestions for simplifying research reports</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">simplicity</div>
+    <div class="quarto-category">silly tests</div>
+    <div class="quarto-category">graphics</div>
+    <div class="quarto-category">cluster-randomised experiments</div>
+    <div class="quarto-category">open science</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 5, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Whenever I’m looking for empirical research articles to discuss in my classes on second language acquisition, I’m struck by how needlessly complicated and unnecessarily long most articles in the field are. Here are some suggestions for reducing the numerical fluff in quantitative research reports.</p>
+<section id="round-more" class="level2">
+<h2 class="anchored" data-anchor-id="round-more">(1) Round more</h2>
+<p>Other than giving off an air of scientific exactitude, there is no reason for reporting the mean age of a sample of participants as “41.01 years” rather than as just “41 years”. Nothing hinges on the 88 hours implied by “.01 years”, and people systematically underreport their age anyway: I’d report my age as 33 years, not as 33.34 years. <a href="../2015-01-14-overaccuracy">Overprecise reporting</a> makes it harder to spot patterns in results (see Ehrenberg <a href="http://doi.org/10.2307/2344922">1977</a>, <a href="http://doi.org/10.2307/2683143">1981</a>). Moreover, it can give readers the impression that there is much more certainty about the findings than there really is if the overprecise numbers aren’t accompanied by a measure of uncertainty.</p>
+<p><strong>So round more.</strong> Average reaction times needn’t be reported to one-hundredth of a millisecond. Correlation coefficients rounded to two decimal places are probably overprecise enough already. Average responses on a 5-point scale are probably best reported to one decimal place rather than to two or—heaven forbid—three. Percentages rarely need to be reported to decimal places at all. There are exceptions to these suggestions. But they’re exceptions.</p>
+</section>
+<section id="show-the-main-results-graphically" class="level2">
+<h2 class="anchored" data-anchor-id="show-the-main-results-graphically">(2) Show the main results graphically</h2>
+<p>Some sort of a visualisation goes a long way in making the results of a study more understandable. Instead of detailed numerical descriptions, try to come up with one or a couple of graphs on the basis of which readers can answer the research questions themselves even if they don’t understand the ins and outs of the analysis. Depending on the data you’re working with, you could plot the raw data that went into the analyses or some summary statistics (e.g., a plot of group means or proportions) or draw model-based effect plots.</p>
+<p>Admittedly, drawing a good graph can be difficult and can cost a lot of time, but perhaps some of the tutorials I wrote are of some help:</p>
+<ul>
+<li><a href="../2016-06-02-drawing-a-scatterplot">Tutorial: Drawing a scatterplot</a></li>
+<li><a href="../2016-06-13-drawing-a-linechart">Tutorial: Drawing a line chart</a></li>
+<li><a href="../2016-06-21-drawing-a-boxplot">Tutorial: Drawing a boxplot</a></li>
+<li><a href="../2016-08-30-drawing-a-dotplot">Tutorial: Drawing a dot plot</a></li>
+<li><a href="../2017-04-23-visualising-models-1">Tutorial: Plotting regression models</a></li>
+<li><a href="../../visualise_uncertainty/">Visualising statistical uncertainty using model-based graphs</a></li>
+</ul>
+</section>
+<section id="run-and-report-much-fewer-significance-tests" class="level2">
+<h2 class="anchored" data-anchor-id="run-and-report-much-fewer-significance-tests">(3) Run and report <em>much</em> fewer significance tests</h2>
+<p>A sizable number of significance tests are run and reported as a matter of course, without there being any real scientific benefit to them. In fact, some of these tests are detrimental to the study’s main inferential results. But my main concern for the purposes of this blog post is that they make research reports all but impregnable to readers who haven’t yet learnt that, frankly, most numbers in an average research report are just fluff. Some tests are easy to do without. These include:</p>
+<ul>
+<li><a href="../2014-10-15-tautological-tests">tautological tests</a>, where researchers group participants, items, etc. based on some variable and then confirm that the groups differ with respect to said variable;</li>
+<li><a href="../2014-09-26-balance-tests">balance tests</a>, where researchers randomly assign participants to conditions and then check whether the different groups are ‘balanced’ with respect to some measured confound variables. Balance tests in studies without random assignment are less silly, but I’m yet to be convinced they’re useful.</li>
+</ul>
+<p>Some other tests are reported so routinely that may be more difficult to leave out, but they are merely clutter all the same. These tests include:</p>
+<ul>
+<li><a href="../2016-02-23-uninteresting-main-effects">significance tests for the main effects if it’s only the interaction that’s of interest</a>. When the research question concerns an interaction, it’s almost always necessary to include the main effects in the analysis. The statistical software will dutifully output significance tests for these main results. But if they’re not relevant to the research question, I don’t see why these main effects should then be discussed in the main text.</li>
+<li>significance tests for control variables. There may be excellent reasons for including control variables in the analysis: These may make the estimate for the effect of interest more precise. But they’re almost always not of scientific relevance. So again, I don’t see why the significance tests for control variables should be discussed in the main text.</li>
+</ul>
+<p>My own preference is to report this information in the supplementary materials or to make available the data and computer code so that readers who, for some reason, might be interested in it can run these significance tests themselves. A workable alternative would be to disregard APA guidelines and to report all of the significance tests in a table instead of in the main text and then to only discuss the <em>relevant</em> test in the main text.</p>
+</section>
+<section id="details-that-someone-somewhere-might-interested-in-dont-belong-in-the-main-text" class="level2">
+<h2 class="anchored" data-anchor-id="details-that-someone-somewhere-might-interested-in-dont-belong-in-the-main-text">(4) Details that someone, somewhere might interested in don’t belong in the main text</h2>
+<p>Try to resist the urge to include in the main text all information that isn’t directly relevant to your research question but that someone, somewhere might be interested in. Instead, report this information in the appendix or in the online supplementary materials. If you’re able to put your data and analysis script online, you can be skimpy on many details. Examples of this include:</p>
+<ul>
+<li>which optimiser you used when fitting models with mixed-effects models. The people that might care would have no problem identifying this piece of information from an R script that you put online.</li>
+<li>in a within-subjects design, what the correlation between the outcome in the different conditions is. This information could be useful for people who want to run a power analysis for their own study, but it’s unlikely to be relevant to your research question. If you put the data online, though, these people have access to this piece of information and you don’t have to befuddle your readers with it.</li>
+<li>full-fledged alternative analyses. For instance, you may have run a couple of alternative analyses (e.g., in- or excluding outliers) that yielded essentially identical results. One sentence and a reference to the appendix or supplementary materials should suffice; there’s no need to report the alternative analyses in full.</li>
+<li>standardised effect sizes. I’m not a fan of them, so I don’t report them. But meta-analysts should be able to compute them from the summary statistics or from the raw data provided in the supplementary materials.</li>
+</ul>
+</section>
+<section id="if-two-analyses-yield-essentially-the-same-results-report-the-simpler-one" class="level2">
+<h2 class="anchored" data-anchor-id="if-two-analyses-yield-essentially-the-same-results-report-the-simpler-one">(5) If two analyses yield essentially the same results, report the simpler one</h2>
+<p>Some analyses look complicated, but they always boil down to analyses that are fairly easy. In these cases, the complicated analysis has no added value. Other complicated analyses are arguably a priori more suitable than their more commonly used counterparts, but they often yield similar results. In these cases, I think it’s sensible to carry out both analyses, but only report the more complicated one in the main text if it produces substantially different results from the simpler one.</p>
+<section id="mixed-repeated-measures-anova-vs.-a-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="mixed-repeated-measures-anova-vs.-a-t-test">‘Mixed’ repeated-measures ANOVA vs.&nbsp;a t-test</h3>
+<p>One example of a complicated analysis that always yields the same result as a simpler analysis is repeated-measures ANOVA for analysing pretest/posttest experiments:</p>
+<blockquote class="blockquote">
+<p>“A repeated-measures ANOVA yielded a nonsignificant main effect of Condition (<span class="math inline">\(F(1, 48) &lt; 1\)</span>) but a significant main effect of Time (<span class="math inline">\(F(1, 48) = 154.6\)</span>, <span class="math inline">\(p &lt; 0.001\)</span>): In both groups, the posttest scores were higher than the pretest scores. In addition, the Condition × Time interaction was significant (<span class="math inline">\(F(1, 48) = 6.2\)</span>, <span class="math inline">\(p = 0.016\)</span>): The increase in reading scores relative to baseline was higher in the treatment than in the control group.”</p>
+</blockquote>
+<p>As I’ve written <a href="../2016-02-23-uninteresting-main-effects">before</a>, it’s only the interaction that’s of any interest here, and exactly the same p-value can be obtained using a simpler method:</p>
+<blockquote class="blockquote">
+<p>“We calculated the difference between the pretest and posttest performance for each participant. A two-sample t-test showed that the treatment group showed a higher increase in reading scores than the control group (<span class="math inline">\(t(48) = 2.49\)</span>, <span class="math inline">\(p = 0.016\)</span>).”</p>
+</blockquote>
+<p>Other ‘mixed’ repeated-measures ANOVAs can similarly be simplified. For instance, research on cognitive advantages of bilingualism often compares bilinguals with monolinguals on tasks such as the Simon or flanker task. These tasks consist of both congruent and incongruent trials, and the idea is that cognitive advantages of bilingualism would be reflected in a smaller effect of congruency in the bilingual than in the monolingual participants. The results of such a study are then often reported as follows:</p>
+<blockquote class="blockquote">
+<p>“A repeated-measures ANOVA showed a significant main effect of Congruency, with longer reaction times for incongruent than for congruent items (<span class="math inline">\(F(1, 58) = 14.3, p &lt; 0.001\)</span>). The main effect for Language Group did not reach significance, however (<span class="math inline">\(F(1, 58) = 1.4, p = 0.24\)</span>). The crucial interaction between Congruency and Language Group was significant, with bilingual participants showing a smaller Congruency effect than monolinguals (<span class="math inline">\(F(1, 58) = 5.8\)</span>, <span class="math inline">\(p = 0.02\)</span>).”</p>
+</blockquote>
+<p>If the question of interest is merely whether the Congruency effect is smaller in bilinguals than in monolinguals, the following analysis will yield the same inferential results but is easier to navigate through:</p>
+<blockquote class="blockquote">
+<p>“For each participant, we compute the difference between their mean reaction time on congruent and on incongruent items. On average, these differences were smaller for the bilingual than for the monolingual participants (<span class="math inline">\(t(58) = 2.4\)</span>, <span class="math inline">\(p = 0.02\)</span>).”</p>
+</blockquote>
+<p>If three or more groups are compared, a one-way ANOVA could be substituted for the t-test, which is still easier to report and navigate than a two-way RM-ANOVA that produces two significance tests that don’t answer the research question.</p>
+<p>To seasoned researchers, the difference the original write-ups and my suggestions may not seem like much. But novices—sensibly but incorrectly—assume that each reported significance test must have its role in a research paper. The two irrelevant significance tests detract them from the paper’s true objective. Additionally, novices are more likely to be familiar with t-tests than with repeated-measures ANOVA, so the simpler write-up may be considerably less daunting to them.</p>
+</section>
+<section id="multilevel-models-vs.-cluster-level-analyses" class="level3">
+<h3 class="anchored" data-anchor-id="multilevel-models-vs.-cluster-level-analyses">Multilevel models vs.&nbsp;cluster-level analyses</h3>
+<p>Cluster-randomised experiments are experiments in which pre-existing groups of participants are assigned in their entirety to the experimental conditions. Importantly, the fact that the participants weren’t all assigned to the condition independently of one another needs to be taken into account in the analysis since the inferences can otherwise be <a href="http://doi.org/10.14746/ssllt.2015.5.1.7">spectacularly anti-conservative</a>. A write-up of a cluster-randomised experiments could look as follows:</p>
+<blockquote class="blockquote">
+<p>“Fourteen classes with 18 pupils each participated in the experiment. Seven randomly picked classes were assigned in their entirety to the intervention condition, the others constituted the control condition. (…) To deal with the clusters in the data (pupils in classes), we fitted a multilevel model using the lme4 package for R (Bates et al.&nbsp;2015) with class as a random effect. p-values were computed using Satterthwaite’s degrees of freedom method as implemented in the lmerTest package (Kuznetsova et al.&nbsp;2017) and showed a significant intervention effect (<span class="math inline">\(t(12) = 2.3\)</span>, <span class="math inline">\(p = 0.04\)</span>).”</p>
+</blockquote>
+<p>Technically, this analysis is perfectly valid, but a novice may be too bamboozled by the specialised software and the sophisticated analyses to be motivated enough to follow along. Compare this to the following write-up:</p>
+<blockquote class="blockquote">
+<p>“Fourteen classes with 18 pupils each participated in the experiment. Seven randomly picked classes were assigned in their entirety to the intervention condition, the others constituted the control condition. (…) To deal with the clusters in the data (pupils in classes), we computed the mean outcome per class and submitted these means to a t-test comparing the intervention and the control classes. This revealed a significant intervention effect (<span class="math inline">\(t(12) = 2.3\)</span>, <span class="math inline">\(p = 0.04\)</span>).”</p>
+</blockquote>
+<p>Computing means is easy enough, as is running a t-test: The entire analysis could easily be run in the reader’s spreadsheet program of choice. Moreover, the result is exactly the same in this case. In fact, if the cluster sizes are all the same, the multilevel approach and the cluster-mean approach will always yield the exact same result.</p>
+<p>If the cluster sizes aren’t all the same, the results that both approaches yield won’t be exactly the same. As far as I know, there are no published comparisons of which approach is best in such cases, but my own <a href="../2019-10-28-cluster-covariates">simulations</a> indicate that both are equally powerful statistically. If that doesn’t put you at ease, you could run both analyses. If they yield approximately the same results, you could report the easier one in the main text and the more complicated one in the appendix; if they yield different results, you’d report the more complicated one in the main text and the simpler one in the appendix. In terms of p-values, you could define them to be “approximately the same” if they both fall into the same predefined bracket, e.g., “both <span class="math inline">\(p &lt; 0.01\)</span>” or “both <span class="math inline">\(0.01 &lt; p &lt; 0.05\)</span>” or “both <span class="math inline">\(p &gt; 0.05\)</span>”. Of course, what you shouldn’t do is to always just report the analysis that yielded the lowest p-value.</p>
+</section>
+<section id="parametric-vs.-non-parametric-tests" class="level3">
+<h3 class="anchored" data-anchor-id="parametric-vs.-non-parametric-tests">Parametric vs.&nbsp;non-parametric tests</h3>
+<p>I would follow the same procedure as above: If, for some reason, you’re convinced you should run a non-parametric test but it yields approximately the same results, report the results for the parametric test, which more readers will be familiar with, in the main text.</p>
+</section>
+<section id="ordinal-models-vs.-linear-models" class="level3">
+<h3 class="anchored" data-anchor-id="ordinal-models-vs.-linear-models">Ordinal models vs.&nbsp;linear models</h3>
+<p>Some people argued for the need to analyse Likert-type data using ordinal regression models rather than using linear models (including t-tests). I myself find it difficult to wrap my head around the different types of ordinal models, I don’t find the model visualisations intuitively understandable, and for some reason, my ordinal models don’t converge in a reasonable time. But that’s for some other blog post. My point is that, even though I accept that ordinal models represent a better default for dealing with Likert-type data, I find them much more complicated than linear models. I suspect that the same would go for any readership.</p>
+<p>At the same time, I also suspect that, in a great many cases, ordinal and linear models applied to the same data would point to the same answer to the research question. In those cases, I’d prefer for the linear model to be reported in the main text and the ordinal model in the appendix.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

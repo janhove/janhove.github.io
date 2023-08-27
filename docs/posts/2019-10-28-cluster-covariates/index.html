@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2019-11-28">
+
+<title>Jan Vanhove :: Blog - Adjusting for a covariate in cluster-randomised experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link active" data-scroll-target="#tldr">tl;dr</a></li>
+  <li><a href="#five-different-analytical-approaches" id="toc-five-different-analytical-approaches" class="nav-link" data-scroll-target="#five-different-analytical-approaches">Five different analytical approaches</a>
+  <ul class="collapse">
+  <li><a href="#approach-1-analyse-the-cluster-means-ignore-the-covariate" id="toc-approach-1-analyse-the-cluster-means-ignore-the-covariate" class="nav-link" data-scroll-target="#approach-1-analyse-the-cluster-means-ignore-the-covariate">Approach 1: Analyse the cluster means, ignore the covariate</a></li>
+  <li><a href="#approach-2-fit-a-multilevel-model-ignore-the-covariate" id="toc-approach-2-fit-a-multilevel-model-ignore-the-covariate" class="nav-link" data-scroll-target="#approach-2-fit-a-multilevel-model-ignore-the-covariate">Approach 2: Fit a multilevel model, ignore the covariate</a></li>
+  <li><a href="#approach-3-residualise-the-outcome-against-the-covariate-and-analyse-the-cluster-mean-residuals" id="toc-approach-3-residualise-the-outcome-against-the-covariate-and-analyse-the-cluster-mean-residuals" class="nav-link" data-scroll-target="#approach-3-residualise-the-outcome-against-the-covariate-and-analyse-the-cluster-mean-residuals">Approach 3: Residualise the outcome against the covariate and analyse the cluster mean residuals</a></li>
+  <li><a href="#approach-4-analyse-the-cluster-means-adjust-for-the-cluster-mean-covariate-values" id="toc-approach-4-analyse-the-cluster-means-adjust-for-the-cluster-mean-covariate-values" class="nav-link" data-scroll-target="#approach-4-analyse-the-cluster-means-adjust-for-the-cluster-mean-covariate-values">Approach 4: Analyse the cluster means, adjust for the cluster mean covariate values</a></li>
+  <li><a href="#approach-5-fit-a-multilevel-model-include-the-covariate" id="toc-approach-5-fit-a-multilevel-model-include-the-covariate" class="nav-link" data-scroll-target="#approach-5-fit-a-multilevel-model-include-the-covariate">Approach 5: Fit a multilevel model, include the covariate</a></li>
+  </ul></li>
+  <li><a href="#set-up-for-the-simulations" id="toc-set-up-for-the-simulations" class="nav-link" data-scroll-target="#set-up-for-the-simulations">Set-up for the simulations</a></li>
+  <li><a href="#scenario-1-typical-cluster-sizes-typical-intra-class-correlation" id="toc-scenario-1-typical-cluster-sizes-typical-intra-class-correlation" class="nav-link" data-scroll-target="#scenario-1-typical-cluster-sizes-typical-intra-class-correlation">Scenario 1: Typical cluster sizes, typical intra-class correlation</a></li>
+  <li><a href="#scenario-2-typical-cluster-sizes-low-intra-class-correlation" id="toc-scenario-2-typical-cluster-sizes-low-intra-class-correlation" class="nav-link" data-scroll-target="#scenario-2-typical-cluster-sizes-low-intra-class-correlation">Scenario 2: Typical cluster sizes, low intra-class correlation</a></li>
+  <li><a href="#scenario-3-wildly-different-cluster-sizes-typical-intra-class-correlation" id="toc-scenario-3-wildly-different-cluster-sizes-typical-intra-class-correlation" class="nav-link" data-scroll-target="#scenario-3-wildly-different-cluster-sizes-typical-intra-class-correlation">Scenario 3: Wildly different cluster sizes, typical intra-class correlation</a></li>
+  <li><a href="#scenario-4-wildly-different-cluster-sizes-low-intra-class-correlation" id="toc-scenario-4-wildly-different-cluster-sizes-low-intra-class-correlation" class="nav-link" data-scroll-target="#scenario-4-wildly-different-cluster-sizes-low-intra-class-correlation">Scenario 4: Wildly different cluster sizes, low intra-class correlation</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#how-about-fewer-clusters" id="toc-how-about-fewer-clusters" class="nav-link" data-scroll-target="#how-about-fewer-clusters">How about fewer clusters?</a></li>
+  <li><a href="#r-code-and-simulation-results" id="toc-r-code-and-simulation-results" class="nav-link" data-scroll-target="#r-code-and-simulation-results">R code and simulation results</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Adjusting for a covariate in cluster-randomised experiments</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">power</div>
+    <div class="quarto-category">significance</div>
+    <div class="quarto-category">simplicity</div>
+    <div class="quarto-category">mixed-effects models</div>
+    <div class="quarto-category">cluster-randomised experiments</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 28, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Cluster-randomised experiments are experiments in which groups of participants (e.g., classes) are assigned randomly but in their entirety to the experiments’ conditions. Crucially, the fact that entire groups of participants were randomly assigned to conditions - rather than each participant individually - should be taken into account in the analysis, as outlined in a <a href="../2015-09-17-cluster-randomised-experiments">previous blog post</a>. In this blog post, I use simulations to explore the strengths and weaknesses of different ways of analysing cluster-randomised experiments when a covariate (e.g., a pretest score) is available.</p>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<p>Cluster-randomised experiments in applied linguistics typically involve a fairly small number of clusters that are randomly assigned to conditions (e.g., perhaps 10 to 20 classes at best). The sizes of these clusters tend to be fairly similar (e.g., perhaps 15 to 25 pupils per class). The simulations indicate that cluster-randomised experiments with these characteristics are best analysed in a surprisingly simple way: Compute the mean outcome per cluster and run the analysis on the cluster means. If a covariate (e.g., pretest scores) is available, also compute the mean covariate value per cluster and add it to the analysis on the cluster means as a control variable.</p>
+</section>
+<section id="five-different-analytical-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="five-different-analytical-approaches">Five different analytical approaches</h2>
+<p>I’ll compare the strengths and weaknesses of five methods for analysing cluster-randomised experiments in which a covariate (e.g., pretest scores) are available. I’ll first create some data whose properties reflect those found in cluster-randomised experiments and then run the five analyses. If you have R, you can follow along with the commands below.</p>
+<p>The <code>tidyverse</code>, <code>lme4</code> and <code>lmerTest</code> packages can be installed using <code>install.packages(c("tidyverse", "lme4", "lmerTest"))</code>. For the <code>cannonball</code> package, see the <a href="https://github.com/janhove/cannonball">installation instructions</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cannonball) <span class="co"># for generating clustered data</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)       <span class="co"># fitting multilevel models</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)   <span class="co"># for p-values in multilevel models</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate clustered data; set seed for reproducibility</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">RNGversion</span>(<span class="st">"3.5.3"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2019-10-28</span>, <span class="at">kind =</span> <span class="st">"Mersenne-Twister"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>d_example <span class="ot">&lt;-</span> <span class="fu">clustered_data</span>(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_per_class =</span> <span class="fu">sample</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">25</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">ICC =</span> <span class="fl">0.15</span>, <span class="at">effect =</span> <span class="fl">0.2</span>, </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">reliability_post =</span> <span class="dv">1</span>, <span class="at">reliability_pre =</span> <span class="fl">0.7</span><span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can consult the help page for the <code>clustered_data()</code> command (type <code>?clustered_data</code> at the R prompt) for more information about these settings; here’s the summary:</p>
+<ul>
+<li><p>The dataset <code>d_example</code> now contains simulated data from 14 classes with between 15 and 25 pupils each (<code>n_per_class</code>).</p></li>
+<li><p>Before factoring in an effect of the intervention, the variance <em>between</em> the classes is 15% of the total variance of the outcome (<code>ICC</code>; <em>intra-class correlation</em>). The <code>clustered_data()</code> function generates outcome data that is normally distributed within classes with variance = 1, so the variance between the classes is 0.18. (<span class="math inline">\(\textrm{ICC} = 0.15 = \frac{\textrm{variance between}}{\textrm{variance between} + \textrm{variance within (= 1)}} \leftrightarrow \textrm{variance between} = \frac{0.15}{1-0.15} \approx 0.18\)</span>) ICCs in the 0.15–0.20 bracket are fairly typical in educational settings (Hedges &amp; Hedberg 2007; Schochet 2008).</p></li>
+<li><p>The simulated intervention <code>effect</code> was 0.2, meaning that 0.2 points were added to the outcome values for the pupils in the intervention classes.</p></li>
+<li><p>The <code>reliability_post</code> and <code>reliability_pre</code> parameters are useful for generating pretest data that are correlated with each other. By setting <code>reliability_post = 1</code> and <code>reliability_pre = 0.7^2</code>, pretest scores are generated that are correlated at <span class="math inline">\(\rho = 0.7\)</span> with the outcome.</p></li>
+</ul>
+<p><strong>Figures 1 and 2</strong> show what the simulated data look like.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_example,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(class, outcome, median), </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> outcome)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>)) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"class"</span>) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> condition, <span class="at">scales =</span> <span class="st">"free_x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 1.</strong> Simulated data for a cluster-randomised experiment in which seven classes were assigned to the control condition and seven to the intervention condition.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_example,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> pretest, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> outcome,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> condition,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> condition)) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">formula =</span> <span class="st">'y~x'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 2.</strong> Pretest vs.&nbsp;outcome scores in the simulated cluster-randomised experiment. The pretest could actually be <em>any</em> covariate that is predictive of the outcome.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s now analyse these data using five different approaches.</p>
+<section id="approach-1-analyse-the-cluster-means-ignore-the-covariate" class="level3">
+<h3 class="anchored" data-anchor-id="approach-1-analyse-the-cluster-means-ignore-the-covariate">Approach 1: Analyse the cluster means, ignore the covariate</h3>
+<p>In the first approach, the covariate is ignored entirely. The dependencies in the data (pupils in classes) are taken into account by computing the mean outcome per class; the class means are entirely independent of each other.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d_per_class <span class="ot">&lt;-</span> d_example <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class, condition) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_class =</span> <span class="fu">mean</span>(outcome),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Figure 3</strong> shows what this looks like.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 3.</strong> In Approach 1, the outcome is averaged per class, and it is these averages that are analysed in the statistical model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Then, these class means are compared, for instance by means of a two-sample t-test. This is identical to fitting a linear model with the class means as the outcome and the condition to which the class was assigned as the predictor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mean_class <span class="sc">~</span> condition, <span class="at">data =</span> d_per_class)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mean_class ~ condition, data = d_per_class)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.8311 -0.3386  0.0264  0.2692  0.8889 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)            -0.0478     0.1831   -0.26    0.798
+conditionintervention   0.4973     0.2590    1.92    0.079
+
+Residual standard error: 0.485 on 12 degrees of freedom
+Multiple R-squared:  0.235, Adjusted R-squared:  0.171 
+F-statistic: 3.69 on 1 and 12 DF,  p-value: 0.0789</code></pre>
+</div>
+</div>
+<p>The estimated intervention effect in this example is 0.50 ± 0.26, and the result of the significance test is t(12) = 1.92, p = 0.08. (You find the degrees of freedom for the t-test on the third line from the bottom.)</p>
+<p>Some researchers may object that this approach reduces the original data set of 280 observations to just the 14 class means and hence throws away vital information. Having reached a certain age, I’ll quote myself on this topic:</p>
+<blockquote class="blockquote">
+<p>“[R]esearchers may find it psychologically difficult to reduce a dataset to a fraction of its original size—if the analysis is carried out on ten cluster means, by bother recruiting several participants per cluster? However, larger clusters reduce the variance of the cluster means within each treatment group, which in turn makes the intervention effect stand out more clearly (Barcikowski, 1981). Put differently, cluster-level analyses are more powerful when the clusters are large compared to when they are small. That said, when given the choice between running an experiment on ten clusters with 50 observations each or on 50 clusters with ten observations each, the latter is vastly preferred due to its higher power (…).” (Vanhove 2015:145).</p>
+</blockquote>
+<p>The assumptions of this analysis are the same as for any general linear model, it’s just that they now concern the class means rather than the raw observations. Independence can be assumed if the experimental protocol was followed. Normality isn’t too important but seems reasonable given that we’re working with aggregated data. But homoskedasticity (i.e., equal variances) may occasionally be a problem: The variance of any given class mean will be inversely proportional to the size of the class, meaning that small classes will tend to have more extreme means. In this case, the classes are all of similar sizes, as is typical in experiments with school classes, so this shouldn’t pose too great a threat to the results. In the simulations below, I’ll also consider experiments with wildly differing class sizes.</p>
+</section>
+<section id="approach-2-fit-a-multilevel-model-ignore-the-covariate" class="level3">
+<h3 class="anchored" data-anchor-id="approach-2-fit-a-multilevel-model-ignore-the-covariate">Approach 2: Fit a multilevel model, ignore the covariate</h3>
+<p>In the second approach, too, the covariate is ignored completely. Instead of analysing the cluster means, the individual observations are analyses. The clustering is taken into account by fitting the class effects by means of random effects. Different methods for computing p-values for multilevel (or mixed-effects) models exist. In the output below as well as in the simulations, Satterthwaite’s method was used as it isn’t prohibitively expensive computationally and as it performs well on balanced data; see Luke (2017). If you load the <code>lmerTest</code> package, p-values computed using Satterthwaite degrees of freedom are added to the <code>lmer()</code> output.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(outcome <span class="sc">~</span> condition <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>class), <span class="at">data =</span> d_example)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: outcome ~ condition + (1 | class)
+   Data: d_example
+
+REML criterion at convergence: 833
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.6984 -0.5908  0.0535  0.6678  2.2562 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ class    (Intercept) 0.169    0.411   
+ Residual             1.064    1.031   
+Number of obs: 280, groups:  class, 14
+
+Fixed effects:
+                      Estimate Std. Error      df t value Pr(&gt;|t|)
+(Intercept)            -0.0614     0.1781 11.2342   -0.34    0.737
+conditionintervention   0.5100     0.2527 11.4011    2.02    0.068
+
+Correlation of Fixed Effects:
+            (Intr)
+cndtnntrvnt -0.705</code></pre>
+</div>
+</div>
+<p>The estimated intervention effect in this example is 0.51 ± 0.25, and the result of the significance test is t(11.4) = 2.02, p = 0.07. This is slightly different from but highly similar to the results for Approach 1. Both approaches will yield <em>identical</em> results if all clusters have the same size, so keep things simple if this is the case for your data (also see Murtaugh 2007).</p>
+<p>A possible advantage of this approach compared to Approach 1 is that it may be better able to cope with differences in class sizes. Disadvantages of Approach 2 are that the multilevel models may occasionally throw warnings and that it requires a certain number of clusters to be useful. Gelman and Hill (2007:247) point out that with fewer than five clusters, multilevel models will typically not be able to estimate the between-cluster variance. In fact, Hayes and Moulton (2009:223) suggest that multilevel modelling be used only from about 15 clusters <em>per condition</em> onwards.</p>
+</section>
+<section id="approach-3-residualise-the-outcome-against-the-covariate-and-analyse-the-cluster-mean-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="approach-3-residualise-the-outcome-against-the-covariate-and-analyse-the-cluster-mean-residuals">Approach 3: Residualise the outcome against the covariate and analyse the cluster mean residuals</h3>
+<p>The approach recommended by Hayes and Moulton (2009) for taking covariates into account in analyses of cluster-randomised designs is to first fit a model in which the outcome is regressed against the covariate. This model does <em>not</em> take the condition nor the clustering into account. The model residuals are then extracted:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>covariate_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> pretest, <span class="at">data =</span> d_example)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>d_example<span class="sc">$</span>residual <span class="ot">&lt;-</span> <span class="fu">resid</span>(covariate_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the next step, the residuals from this model are averaged per class:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>d_per_class <span class="ot">&lt;-</span> d_example <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class, condition) <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_residual =</span> <span class="fu">mean</span>(residual),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Figure 4</strong> shows what this looks like.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 4.</strong> In Approach 3, the outcome is first regressed against the covariate. The residuals of this regression are then averaged per class, and it is these averaged residuals that are analysed in the statistical model.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Then, similarly to Approach 1, these class means are analysed, e.g., in a general linear model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mean_residual <span class="sc">~</span> condition, <span class="at">data =</span> d_per_class)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mean_residual ~ condition, data = d_per_class)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.4615 -0.2164  0.0701  0.1637  0.4497 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)             -0.220      0.113   -1.96   0.0740
+conditionintervention    0.492      0.159    3.09   0.0094
+
+Residual standard error: 0.298 on 12 degrees of freedom
+Multiple R-squared:  0.443, Adjusted R-squared:  0.397 
+F-statistic: 9.55 on 1 and 12 DF,  p-value: 0.00936</code></pre>
+</div>
+</div>
+<p>The estimated intervention effect in this example is 0.49 ± 0.16, and the result of the significance test is t(12) = 3.09, p = 0.009. Note how in this example, the standard error for the intervention effect estimate is considerably reduced compared to the two approaches that ignore the covariate.</p>
+</section>
+<section id="approach-4-analyse-the-cluster-means-adjust-for-the-cluster-mean-covariate-values" class="level3">
+<h3 class="anchored" data-anchor-id="approach-4-analyse-the-cluster-means-adjust-for-the-cluster-mean-covariate-values">Approach 4: Analyse the cluster means, adjust for the cluster mean covariate values</h3>
+<p>In the fourth approach, both the outcome and the covariate are averaged per class, and the class mean covariates are entered into the general linear model on the class mean outcomes as a covariate:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>d_per_class <span class="ot">&lt;-</span> d_example <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class, condition) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_class =</span> <span class="fu">mean</span>(outcome),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_pretest =</span> <span class="fu">mean</span>(pretest),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Figure 5</strong> shows the data that are submitted to the statistical analysis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption"><strong>Figure 5.</strong> In Approach 4, both the outcome and the covariate are averaged per class. The averaged covariate is then used as a covariate in a statistical model with the averaged outcome as the dependent variable.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(mean_class <span class="sc">~</span> condition <span class="sc">+</span> mean_pretest, <span class="at">data =</span> d_per_class)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = mean_class ~ condition + mean_pretest, data = d_per_class)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-0.2885 -0.1814  0.0371  0.1027  0.5279 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)             0.0455     0.0889    0.51   0.6188
+conditionintervention   0.4870     0.1241    3.93   0.0024
+mean_pretest            0.8994     0.1399    6.43  4.9e-05
+
+Residual standard error: 0.232 on 11 degrees of freedom
+Multiple R-squared:  0.839, Adjusted R-squared:  0.81 
+F-statistic: 28.7 on 2 and 11 DF,  p-value: 4.32e-05</code></pre>
+</div>
+</div>
+<p>The estimated intervention effect in this example is 0.49 ± 0.12, and the result of the significance test is t(11) = 3.93, p = 0.0024. Note how in this example, too, the standard error is considerably lower than in the two approaches that ignore the covariate.</p>
+<p>Incidentally, the pretest effect that is reported in the output is entirely uninteresting: we included it in the analysis to reduce the residual variance, not because we have a research question concerning the pretest covariate.</p>
+<p>This approach may be particularly useful compared to the other approaches if some standardised measure of the pupils’ pre-intervention performance or general skill level is available but if teachers, parents or administrators are unwilling to share the individual results: You could try asking for just the average score per class instead, as this is all you need!</p>
+</section>
+<section id="approach-5-fit-a-multilevel-model-include-the-covariate" class="level3">
+<h3 class="anchored" data-anchor-id="approach-5-fit-a-multilevel-model-include-the-covariate">Approach 5: Fit a multilevel model, include the covariate</h3>
+<p>Finally, you could fit a multilevel model as in Approach 2, but with the covariate included.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>m5 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(outcome <span class="sc">~</span> condition <span class="sc">+</span> pretest <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>class), <span class="at">data =</span> d_example)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: outcome ~ condition + pretest + (1 | class)
+   Data: d_example
+
+REML criterion at convergence: 680
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.5381 -0.6974  0.0239  0.6771  2.7744 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ class    (Intercept) 0.0577   0.240   
+ Residual             0.6143   0.784   
+Number of obs: 280, groups:  class, 14
+
+Fixed effects:
+                      Estimate Std. Error       df t value Pr(&gt;|t|)
+(Intercept)            -0.0131     0.1122  10.8640   -0.12   0.9095
+conditionintervention   0.5054     0.1594  11.0897    3.17   0.0088
+pretest                 0.4628     0.0317 275.3617   14.62   &lt;2e-16
+
+Correlation of Fixed Effects:
+            (Intr) cndtnn
+cndtnntrvnt -0.703       
+pretest      0.033 -0.004</code></pre>
+</div>
+</div>
+<p>The estimated intervention effect in this example is 0.51 ± 0.16, and the result of the significance test is t(11.1) = 3.17, p = 0.009. Again the pretest effect is entirely uninteresting; just include it in the analysis but otherwise ignore it.</p>
+<p>So we have at least five ways of analysing data from cluster-randomised experiments when a covariate is available. Trying out several of them and then reporting the one that fits the narrative best is an excellent way of invalidating the inferential results, however, so I ran a simulation to find out which approach I should recommend to students and colleagues.</p>
+</section>
+</section>
+<section id="set-up-for-the-simulations" class="level2">
+<h2 class="anchored" data-anchor-id="set-up-for-the-simulations">Set-up for the simulations</h2>
+<p>While it stands to reason that an optimal analysis will take into account the participants’ pretest (or other covariate) scores, I have found no guidance on which approach works best. Quite possibly, different approaches work best in different circumstances, so I wrote a couple of simulations to get a handle on this.</p>
+<p>For the simulation I made use of the <code>clustered_data()</code> function in the <a href="https://github.com/janhove/cannonball"><code>cannonball</code></a> package. See the help page for details about this function (<code>?clustered_data</code>). The following parameters were varied:</p>
+<ul>
+<li><p>The number of participants either varied fairly little per class or varied a lot. For the simulations in which the class sizes were similar, the number of participants varied between 15 and 25 per class, which reflects typical school class sizes, and they were 14 classes in total. The homoskedasticity assumption is approximately met in these cases. For the simulations in which the class sizes differed more wildly, they were 10 classes, and the number of ‘pupils’ in these classes was 2, 4, 8, …, 1024. These clearly are untypical sizes for school classes, and the different class sizes induce substantial heteroskedasticity.</p></li>
+<li><p>The (unconditional) intra-class correlation was either 0.17 or 0.03. An intra-class correlation of 0.17 is typical of cluster-randomised experiments in educational settings (Hedges &amp; Hedberg 2007; Schochet 2008); an intra-class correlation of 0.03 is considerably lower than that but still enough to inflate Type-I errors considerably when it isn’t taken into account.</p></li>
+<li><p>A covariate was available that was either pretty strongly correlated to the pupils’ pre-intervention outcome (<span class="math inline">\(\rho = 0.7\)</span>) or fairly weakly correlated to it (<span class="math inline">\(\rho = 0.3\)</span>). The strong covariate may be thought of as a pretest score; the weak covariate could be a weak proxy of pre-intervention performance (perhaps some self-assessment).</p></li>
+<li><p>To check the Type-I error rate, the effect of the intervention was set to 0. To check the different methods’ power, the effect of the intervention was set to 0.4.</p></li>
+</ul>
+<p>For each combination of parameters, 10,000 datasets were generated and analysed using each of the five approaches outlined above. For the simulation code and the raw results, see the bottom of this page.</p>
+</section>
+<section id="scenario-1-typical-cluster-sizes-typical-intra-class-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-1-typical-cluster-sizes-typical-intra-class-correlation">Scenario 1: Typical cluster sizes, typical intra-class correlation</h2>
+<p>Let’s first take a look at how the analytical approaches compare in a typical cluster-randomised experiment in applied linguistics: The class sizes aren’t identical but fairly similar, and the intra-class correlation is 0.17.</p>
+<p>When there is no effect of the intervention, we should observe a significant difference in only 5% of cases. In other words, the Type-I error rate should be 0.05. As <strong>Figure 6</strong> shows, all five analytical approaches seem to have the advertised Type-I error rate of 0.05.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 6.</strong> Observed Type-I error rates for scenario 1 (typical cluster sizes, intra-class correlation of 0.17). If the true Type-I error rate is 0.05, there is a 95% probability that the observed Type-I error rate lies between the dashed horizontal lines. All five approaches seem to perform adequately in terms of their Type-I error rate.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>When there is an effect of the intervention, we should observe significant differences more often. As <strong>Figure 7</strong> shows, Approach 4 performs either on par with or considerably better than the alternative approaches.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 7.</strong> Observed power for scenario 1 (typical cluster sizes, intra-class correlation of 0.17). When the covariate is only weakly correlated with the (pre-intervention) outcome (<span class="math inline">\(\rho = 0.3\)</span>), the three approaches that consider it slightly outperform the two approaches that don’t, with little difference between these three approaches. If the correlation is stronger (<span class="math inline">\(\rho = 0.7\)</span>), the approach in which both the outcome and the covariate are averaged per class (Approach 4) performs considerably better than the alternatives.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In summary, for what I consider to be a typical cluster-randomised experiment in applied linguistics, Approach 4 seems to be the best way to analyse the data.</p>
+</section>
+<section id="scenario-2-typical-cluster-sizes-low-intra-class-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-2-typical-cluster-sizes-low-intra-class-correlation">Scenario 2: Typical cluster sizes, low intra-class correlation</h2>
+<p>In scenario 2, the class sizes are still typical of what is found in applied linguistics, but the intra-class correlation is lower (0.03). As <strong>Figure 8</strong> shows, Approach 5 (multilevel model with covariate) may be somewhat too conservative if the intra-correlation is low and the covariate is fairly strongly related to the outcome. In spite of this conservatism, it performs well power-wise, as shown in <strong>Figure 9</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 8.</strong> Observed Type-I error rates for scenario 2 (typical cluster sizes, intra-class correlation of 0.03). If the true Type-I error rate is 0.05, there is a 95% probability that the observed Type-I error rate lies between the dashed horizontal lines. The multilevel model that takes the covariate into account (Approach 5) may be slightly too conservative if the covariate is fairly strongly related to the outcome, but otherwise all five approaches seem to perform adequately in terms of their Type-I error rate.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 9.</strong> Observed power for scenario 2 (typical cluster sizes, intra-class correlation of 0.03). When the covariate is fairly strong (<span class="math inline">\(\rho = 0.7\)</span>), the three approaches that take the covariate into account perform roughly equally well; when the covariate is weaker (<span class="math inline">\(\rho = 0.3\)</span>), Approaches 3 and 5 perform slightly better than Approach 4.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="scenario-3-wildly-different-cluster-sizes-typical-intra-class-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-3-wildly-different-cluster-sizes-typical-intra-class-correlation">Scenario 3: Wildly different cluster sizes, typical intra-class correlation</h2>
+<p>Now let’s consider a more unrealistic scenario. The ICC is 0.17, as in scenario 1, but the classes aren’t all of approximately equal size, but instead we have one class of size 2, one class of size 4, up till one class of size 1024 (<span class="math inline">\(2^1, 2^2, 2^3, \dots, 2^{10}\)</span>). As <strong>Figures 10 and 11</strong> show, Approach 4 may be slightly too conservative in terms of its Type-I error rate in this setting, yet performs best power-wise.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 10.</strong> Observed Type-I error rates for scenario 3 (wildly different cluster sizes, intra-class correlation of 0.17). Approach 4 seems to be too conservative, especially when the covariate is fairly strongly related to the outcome. The other four approaches seem to be perform adequately in terms of their Type-I error rate.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 11.</strong> Observed power for scenario 3 (wildly different cluster sizes, intra-class correlation of 0.17). When the covariate is fairly strong (<span class="math inline">\(\rho = 0.7\)</span>), the three approaches that take the covariate into account perform roughly equally well; when the covariate is weaker (<span class="math inline">\(\rho = 0.3\)</span>), Approaches 3 and 5 perform slightly better than Approach 4.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="scenario-4-wildly-different-cluster-sizes-low-intra-class-correlation" class="level2">
+<h2 class="anchored" data-anchor-id="scenario-4-wildly-different-cluster-sizes-low-intra-class-correlation">Scenario 4: Wildly different cluster sizes, low intra-class correlation</h2>
+<p>In the fourth scenario, the cluster sizes again differ wildly, but the ICC is only 0.03. As <strong>Figure 12</strong> shows, the cluster-level analyses are all <em>too</em> conservative, whereas the multilevel approaches aren’t conservative <em>enough</em>. The observed power associated with each approach was correspondingly adjusted, see <strong>Figure 13</strong>. Even with its power properly adjusted, the multilevel model with a covariate (Approach 5) outperforms the other approaches when the correlation between outcome and covariate is fairly strong.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 12.</strong> Observed Type-I error rates for scenario 4 (wildly different cluster sizes, intra-class correlation of 0.03). The multilevel approaches (Approaches 2 and 5) seem to be both anticonservative; the cluster-level analyses (Approaches 1, 3 and 4) are too conservative.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 13.</strong> Since the observed Type-I error rate varied considerably between the five approaches in scenario 4 (see Figure 12), the observed power was adjusted for the approaches’ observed Type-I error rate. This figure shows, for datasets with an intervention effect, how often an approach returned a p-value that was lower than the 5th percentile p-value that the same approach returned when there was no intervention effect.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>In sum, for typical cluster-randomised experiments in applied linguistics (as simulated in scenarios 1 and perhaps 2), Approach 4 either considerably outperforms the other approaches or performs about equally well. Multilevel models only seem to have some added value when the cluster sizes are wildly different, the intra-class correlation is pretty low <em>and</em> the covariate is strongly related to the outcome. On balance, therefore, I think that it is reasonably for me to recommend students and colleagues to analyse cluster-randomised experiments using Approach 4.</p>
+<p>(Incidentally, if someone could explain to me <em>why</em> Approach 4 outperforms Approaches 3 and 5 in Scenario 1, that would be highly appreciated.)</p>
+<p>One strategy I definitely do <em>not</em> recommend is to try out several different approaches and then report the one that returns the lowest p-value. As <strong>Figure 14</strong> shows, different analyses ran on the same data can produce very different p-values. If you try out two or more approaches and always report the lowest p-value, your Type-I error rate will blow up (see Simmons et al.&nbsp;2011).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 14.</strong> <em>Left:</em> p-values for Approaches 4 (x-axis) and 5 (y-axis) ran on the same data when there is no intervention effect. <em>Right:</em> Same, but ran on data with an intervention effect.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="how-about-fewer-clusters" class="level2">
+<h2 class="anchored" data-anchor-id="how-about-fewer-clusters">How about fewer clusters?</h2>
+<p>In scenarios 1 and 2, fourteen classes participated in the experiment. I’ve rarely seen cluster-randomised experiments in applied linguistics with more than 20 classes, but cluster-randomised experiments with just a handful of classes (say 4 or 6) do occur. (Unfortunately, cluster-randomised experiments with just two classes also occur. But these can’t be analysed properly.) I therefore ran some additional simulations for experiments in which only 6 classes with between 15 and 25 pupils participated, with an ICC of 0.17, and in which the covariate was fairly strong, as would be typical in experiments with pretests.</p>
+<p>As <strong>Figure 15</strong> shows, all approaches perform well in terms of their Type-I error rate. Power-wise, <strong>Figure 16</strong> shows that Approach 4 pips Approaches 3 and 5, which in turn perform much better than Approaches 1 and 2. The default recommendation to use Approach 4 therefore also seems reasonable for cluster-randomised experiments with few clusters.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 15.</strong> Observed Type-I error rates for a cluster-randomised experiment with just 6 classes of similar size, an ICC of 0.17 and a fairly strong covariate (<span class="math inline">\(\rho = 0.7\)</span>). All approaches perform adequately in terms of their Type-I error.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 16.</strong> Observed power for a cluster-randomised experiment with just 6 classes of similar size, an ICC of 0.17 and a fairly strong covariate ($ ho = 0.7$). Approach 4 slighly outperforms Approaches 3 and 5, and all three perform markedly better than Approaches 1 and 2. Power is fairly dreadful overall, though this of course depends on the size of the intervention effect and the variability between and within classes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="r-code-and-simulation-results" class="level2">
+<h2 class="anchored" data-anchor-id="r-code-and-simulation-results">R code and simulation results</h2>
+<p>The R code for the simulations is available <a href="https://janhove.github.io/RCode/power_analysis_cluster.R">here</a>. The simulation output for scenarios 1 through 4 is available <a href="https://janhove.github.io/simulation_results/cluster_covariate_simulations.csv">here</a> (84.5 MB). The simulation output for experiments with only 6 classes is available <a href="https://janhove.github.io/simulation_results/cluster_covariate_simulations_few_clusters.csv">here</a> (11 MB). In the output, each row corresponds to one simulated dataset that was analysed in five different ways. Columns 1 through 5 contain the p-values associated with each analysis, columns 6 through 10 contain the estimates for the intervention effect that each analysis yields, columns 11 through 15 contain the corresponding standard errors, columns 16 through 25 contain the lower and upper bounds of the 95% confidence intervals, and the last four columns specify the simulation parameters.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Gelman, Andrew and Jennifer Hill. 2007. <em>Data analysis using regression and multilevel/hierarchical models.</em> Cambridge, UK: Cambridge University Press.</p>
+<p>Hayes, Richard J. and Lawrence H. Moulton. 2009. <em>Cluster randomised trials</em>. Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+<p>Hedges, Larry V. and E. C. Hedberg. 2007. <a href="https://doi.org/10.3102%2F0162373707299706">Intraclass correlation values for planning- group-randomized trials in education.</a> <em>Educational Evaluation and Policy Analysis</em> 29(1). 60-87.</p>
+<p>Luke, Steven G. 2017. <a href="https://doi.org/10.3758/s13428-016-0809-y">Evaluating significance in linear mixed-effects models in R.</a> <em>Behavioral Research Methods</em> 49. 1494–1502.</p>
+<p>Murtaugh, Paul A. 2007. <a href="https://doi.org/10.1890/0012-9658(2007)88%5B56:SACIED%5D2.0.CO;2">Simplicity and complexity in ecological data analysis.</a> <em>Ecology</em> 88(1). 56–62.</p>
+<p>Schochet, Peter Z. 2008. <a href="https://doi.org/10.3102%2F1076998607302714">Statistical power for random assignment evaluations of education programs.</a> <em>Journal of Educational and Behavioral Statistics</em> 33(1). 62-87.</p>
+<p>Simmons, Joseph P., Leif D. Nelson and Uri Simonsohn. 2011. <a href="https://doi.org/10.1177%2F0956797611417632">False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant.</a> <em>Psychological Science</em> 22(11). 1359-1366.</p>
+<p>Vanhove, Jan.&nbsp;2015. <a href="https://doi.org/10.14746/ssllt.2015.5.1.7">Analyzing randomized controlled interventions: Three notes for applied linguists.</a> <em>Studies in Second Language Learning and Teaching</em> 5. 135–152. Also see the <a href="http://pressto.amu.edu.pl/index.php/ssllt/article/view/5827/5895">correction note</a> for this paper.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

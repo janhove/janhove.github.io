@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2018-12-20">
+
+<title>Jan Vanhove :: Blog - Baby steps in Bayes: Recoding predictors and homing in on specific comparisons</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link active" data-scroll-target="#the-data">The data</a></li>
+  <li><a href="#a-multilevel-model-with-treatment-coding" id="toc-a-multilevel-model-with-treatment-coding" class="nav-link" data-scroll-target="#a-multilevel-model-with-treatment-coding">A multilevel model with treatment coding</a>
+  <ul class="collapse">
+  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model">Fitting the model</a></li>
+  <li><a href="#interpreting-the-parameter-estimates" id="toc-interpreting-the-parameter-estimates" class="nav-link" data-scroll-target="#interpreting-the-parameter-estimates">Interpreting the parameter estimates</a></li>
+  <li><a href="#plotting-the-fitted-values-and-the-uncertainty-about-them" id="toc-plotting-the-fitted-values-and-the-uncertainty-about-them" class="nav-link" data-scroll-target="#plotting-the-fitted-values-and-the-uncertainty-about-them">Plotting the fitted values and the uncertainty about them</a></li>
+  </ul></li>
+  <li><a href="#a-model-with-more-sensible-coding" id="toc-a-model-with-more-sensible-coding" class="nav-link" data-scroll-target="#a-model-with-more-sensible-coding">A model with more sensible coding</a>
+  <ul class="collapse">
+  <li><a href="#tailoring-the-coding-of-categorical-predictors-to-the-research-questions" id="toc-tailoring-the-coding-of-categorical-predictors-to-the-research-questions" class="nav-link" data-scroll-target="#tailoring-the-coding-of-categorical-predictors-to-the-research-questions">Tailoring the coding of categorical predictors to the research questions</a></li>
+  <li><a href="#refitting-the-model" id="toc-refitting-the-model" class="nav-link" data-scroll-target="#refitting-the-model">Refitting the model</a></li>
+  <li><a href="#interpreting-the-parameter-estimates-1" id="toc-interpreting-the-parameter-estimates-1" class="nav-link" data-scroll-target="#interpreting-the-parameter-estimates-1">Interpreting the parameter estimates</a></li>
+  <li><a href="#homing-in-on-specific-comparisons" id="toc-homing-in-on-specific-comparisons" class="nav-link" data-scroll-target="#homing-in-on-specific-comparisons">Homing in on specific comparisons</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources">Further resources</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session info</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Baby steps in Bayes: Recoding predictors and homing in on specific comparisons</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Bayesian statistics</div>
+    <div class="quarto-category">brms</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">graphics</div>
+    <div class="quarto-category">mixed-effects models</div>
+    <div class="quarto-category">contrast coding</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 20, 2018</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Interpreting models that take into account a host of possible interactions between predictor variables can be a pain, especially when some of the predictors contain more than two levels. In this post, I show how I went about fitting and then making sense of a multilevel model containing a three-way interaction between its categorical fixed-effect predictors. To this end, I used the <a href="https://github.com/paul-buerkner/brms"><code>brms</code></a> package, which makes it relatively easy to fit Bayesian models using a notation that hardly differs from the one used in the popular <code>lme4</code> package. I won’t discuss the Bayesian bit much here (I don’t think it’s too important), and I will instead cover the following points:</p>
+<ol type="1">
+<li>How to fit a multilevel model with <code>brms</code> using <code>R</code>’s default way of handling categorical predictors (treatment coding).</li>
+<li>How to interpret this model’s fixed parameter estimates.</li>
+<li>How to visualise the modelled effects.</li>
+<li>How to recode predictors to obtain more useful parameter estimates.</li>
+<li>How to extract information from the model to home in on specific comparisons.</li>
+</ol>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
+<p>For a longitudinal project, 328 children wrote narrative and argumentative texts in Portuguese at three points in time. About a third of the children hailed from Portugal, about a third were children of Portuguese heritage living in the French-speaking part of Switzerland, and about a third were children of Portuguese heritage living in the German-speaking part of Switzerland. Not all children wrote both kinds of texts at all three points in time, and 1,040 texts were retained for the analysis. For each text, we computed the Guiraud index, which is a function of the number of words (tokens) and the number of <em>different</em> words (types) in the texts. Higher values are assumed to reflect greater diversity in vocabulary use.</p>
+<p>If you want to know more about this project, check out Bonvin et al.&nbsp;(2018), Lambelet et al.&nbsp;(2017a,b) and Vanhove et al.&nbsp;(2019); you’ll find the references at the bottom of this page.</p>
+<p><strong>Update (2023-08-06):</strong> I ran all of the R code again with newer software versions when converting the format of this blog.</p>
+<p>Read in the data:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-2_5fd675094ea081642804e6ed87094a1c">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load tidyverse suite</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data from my webspace</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"http://homeweb.unifr.ch/VanhoveJ/Pub/Data/portuguese_guiraud.csv"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Need to code factors explicitly</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Group    <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>Group)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>TextType <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>TextType)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Time     <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>Time)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spc_tbl_ [1,040 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+ $ Group   : Factor w/ 3 levels "monolingual Portuguese",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Class   : chr [1:1040] "monolingual Portuguese_AI" "monolingual Portuguese_AI" "monolingual Portuguese_AI" "monolingual Portuguese_AI" ...
+ $ Child   : chr [1:1040] "monolingual Portuguese_AI_1" "monolingual Portuguese_AI_1" "monolingual Portuguese_AI_1" "monolingual Portuguese_AI_10" ...
+ $ Time    : Factor w/ 3 levels "T1","T2","T3": 1 1 2 1 1 3 3 1 3 1 ...
+ $ TextType: Factor w/ 2 levels "argumentative",..: 1 2 2 1 2 1 2 2 2 1 ...
+ $ Guiraud : num [1:1040] 4.73 5.83 3.9 4.22 4.57 ...
+ - attr(*, "spec")=
+  .. cols(
+  ..   Group = col_character(),
+  ..   Class = col_character(),
+  ..   Child = col_character(),
+  ..   Time = col_character(),
+  ..   TextType = col_character(),
+  ..   Guiraud = col_double()
+  .. )
+ - attr(*, "problems")=&lt;externalptr&gt; </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Group        Class              Child           Time    
+ monolingual Portuguese:360   Length:1040        Length:1040        T1:320  
+ Portuguese-French     :360   Class :character   Class :character   T2:340  
+ Portuguese-German     :320   Mode  :character   Mode  :character   T3:380  
+                                                                            
+                                                                            
+                                                                            
+          TextType      Guiraud    
+ argumentative:560   Min.   :2.32  
+ narrative    :480   1st Qu.:3.93  
+                     Median :4.64  
+                     Mean   :4.75  
+                     3rd Qu.:5.48  
+                     Max.   :8.43  </code></pre>
+</div>
+</div>
+<p>Let’s also plot the data. Incidentally, and contrary to popular belief, I don’t write <code>ggplot</code> code such as this from scratch. What you see is the result of drawing and redrawing (see comments).</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-3_4fc648f55fb3bf21c5ec379f9f91f622">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot Guiraud scores</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(d,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Time,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Guiraud,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           <span class="co"># reorder: sort the Groups by their median Guiraud value</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">reorder</span>(Group, Guiraud, median))) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I prefer empty (shape = 1) to filled circles (shape = 16).</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> TextType) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The legend name ("Group") seems superfluous, so suppress it;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the default colours contain red and green, which can be hard to</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  distinguish for some people.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">name =</span> <span class="fu">element_blank</span>(), <span class="at">type =</span> <span class="st">"qual"</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I prefer the black and white look to the default grey one.</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Put the legend at the bottom rather than on the right</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption"><strong>Figure 1.</strong> The texts’ Guiraud values by time of data collection, text type, and language background.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-multilevel-model-with-treatment-coding" class="level2">
+<h2 class="anchored" data-anchor-id="a-multilevel-model-with-treatment-coding">A multilevel model with treatment coding</h2>
+<p>Our data are nested: Each child wrote up to 6 texts, and the data were collected in classes, with each child belong to one class. It’s advisable to take such nesting into account since you may end up overestimating your degree of certainty about the results otherwise. I mostly use <code>lme4</code>’s <code>lmer()</code> and <code>glmer()</code> functions to handle such data, but as will become clearer in a minute, <code>brms</code>’s <code>brm()</code> function offers some distinct advantages. So let’s load that package:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_4864913cf7f8beec7fc61b15469bbb5b">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="fitting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fitting-the-model">Fitting the model</h3>
+<p>We’ll fit a model with a three-way fixed-effect interaction between <code>Time</code>, <code>TextType</code> and <code>Group</code> as well as with by-<code>Child</code> and by-<code>Class</code> random intercepts. In order to take into account the possibility that children vary in the development of their lexical diversity, we add a random slope of <code>Time</code> by <code>Child</code>, and in order to take into account the possibility that their lexical diversity varies by text type, we do the same for <code>TextType</code>. Similarly, we add by-<code>Class</code> random slopes for <code>Time</code> and <code>TextType</code>.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-5_ff84924836479965f5d4a231c1f63b23">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>m_default <span class="ot">&lt;-</span> <span class="fu">brm</span>(Guiraud <span class="sc">~</span> Time<span class="sc">*</span>TextType<span class="sc">*</span>Group <span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> TextType <span class="sc">+</span> Time<span class="sc">|</span>Class) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> TextType <span class="sc">+</span> Time<span class="sc">|</span>Child),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.95</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running /usr/lib/R/bin/R CMD SHLIB foo.c
+using C compiler: ‘gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0’
+gcc -I"/usr/share/R/include" -DNDEBUG   -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/Rcpp/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/unsupported"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/BH/include" -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/src/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppParallel/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -DBOOST_NO_AUTO_PTR  -include '/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1       -fpic  -g -O2 -ffile-prefix-map=/build/r-base-1upgAf/r-base-4.3.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c foo.c -o foo.o
+In file included from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Core:88,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Dense:1,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22,
+                 from &lt;command-line&gt;:
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name ‘namespace’
+  628 | namespace Eigen {
+      | ^~~~~~~~~
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:17: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  628 | namespace Eigen {
+      |                 ^
+In file included from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Dense:1,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22,
+                 from &lt;command-line&gt;:
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Core:96:10: fatal error: complex: No such file or directory
+   96 | #include &lt;complex&gt;
+      |          ^~~~~~~~~
+compilation terminated.
+make: *** [/usr/lib/R/etc/Makeconf:191: foo.o] Error 1</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-the-parameter-estimates" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-the-parameter-estimates">Interpreting the parameter estimates</h3>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-6_1bb13395fbaa8c7621406930e8f1e5c4">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_default)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: Guiraud ~ Time * TextType * Group + (1 + TextType + Time | Class) + (1 + TextType + Time | Child) 
+   Data: d (Number of observations: 1040) 
+  Draws: 4 chains, each with iter = 4000; warmup = 2000; thin = 1;
+         total post-warmup draws = 8000
+
+Group-Level Effects: 
+~Child (Number of levels: 328) 
+                                 Estimate Est.Error l-95% CI u-95% CI Rhat
+sd(Intercept)                        0.42      0.05     0.33     0.52 1.00
+sd(TextTypenarrative)                0.26      0.09     0.07     0.43 1.01
+sd(TimeT2)                           0.09      0.07     0.00     0.25 1.01
+sd(TimeT3)                           0.39      0.09     0.19     0.55 1.01
+cor(Intercept,TextTypenarrative)     0.23      0.28    -0.26     0.80 1.00
+cor(Intercept,TimeT2)               -0.10      0.41    -0.80     0.74 1.00
+cor(TextTypenarrative,TimeT2)        0.06      0.43    -0.77     0.82 1.00
+cor(Intercept,TimeT3)                0.16      0.24    -0.25     0.67 1.01
+cor(TextTypenarrative,TimeT3)       -0.06      0.30    -0.60     0.60 1.00
+cor(TimeT2,TimeT3)                   0.05      0.45    -0.79     0.83 1.04
+                                 Bulk_ESS Tail_ESS
+sd(Intercept)                        2748     4437
+sd(TextTypenarrative)                 462     1266
+sd(TimeT2)                           1314     2095
+sd(TimeT3)                            523      969
+cor(Intercept,TextTypenarrative)      697     1957
+cor(Intercept,TimeT2)                5842     5625
+cor(TextTypenarrative,TimeT2)        3522     4685
+cor(Intercept,TimeT3)                 474     1509
+cor(TextTypenarrative,TimeT3)         546      696
+cor(TimeT2,TimeT3)                    152      478
+
+~Class (Number of levels: 25) 
+                                 Estimate Est.Error l-95% CI u-95% CI Rhat
+sd(Intercept)                        0.16      0.08     0.01     0.33 1.00
+sd(TextTypenarrative)                0.24      0.08     0.09     0.42 1.00
+sd(TimeT2)                           0.11      0.07     0.00     0.28 1.00
+sd(TimeT3)                           0.10      0.07     0.00     0.28 1.00
+cor(Intercept,TextTypenarrative)    -0.13      0.37    -0.76     0.66 1.00
+cor(Intercept,TimeT2)               -0.09      0.42    -0.83     0.74 1.00
+cor(TextTypenarrative,TimeT2)        0.07      0.40    -0.72     0.78 1.00
+cor(Intercept,TimeT3)                0.11      0.43    -0.72     0.84 1.00
+cor(TextTypenarrative,TimeT3)       -0.14      0.42    -0.84     0.71 1.00
+cor(TimeT2,TimeT3)                   0.11      0.44    -0.76     0.85 1.00
+                                 Bulk_ESS Tail_ESS
+sd(Intercept)                        1094     1326
+sd(TextTypenarrative)                1827     1824
+sd(TimeT2)                           1983     2669
+sd(TimeT3)                           2187     2828
+cor(Intercept,TextTypenarrative)     1479     2428
+cor(Intercept,TimeT2)                4581     5429
+cor(TextTypenarrative,TimeT2)        5598     5821
+cor(Intercept,TimeT3)                5042     4693
+cor(TextTypenarrative,TimeT3)        5856     5884
+cor(TimeT2,TimeT3)                   4193     5326
+
+Population-Level Effects: 
+                                                Estimate Est.Error l-95% CI
+Intercept                                           5.25      0.13     4.99
+TimeT2                                              0.57      0.13     0.31
+TimeT3                                              0.91      0.14     0.64
+TextTypenarrative                                  -0.26      0.17    -0.60
+GroupPortugueseMFrench                             -1.06      0.17    -1.40
+GroupPortugueseMGerman                             -1.30      0.17    -1.63
+TimeT2:TextTypenarrative                           -0.24      0.16    -0.56
+TimeT3:TextTypenarrative                           -0.06      0.17    -0.39
+TimeT2:GroupPortugueseMFrench                      -0.55      0.18    -0.91
+TimeT3:GroupPortugueseMFrench                      -0.38      0.19    -0.74
+TimeT2:GroupPortugueseMGerman                      -0.64      0.19    -1.00
+TimeT3:GroupPortugueseMGerman                      -0.23      0.19    -0.60
+TextTypenarrative:GroupPortugueseMFrench            0.14      0.24    -0.32
+TextTypenarrative:GroupPortugueseMGerman            0.17      0.23    -0.29
+TimeT2:TextTypenarrative:GroupPortugueseMFrench     0.37      0.24    -0.11
+TimeT3:TextTypenarrative:GroupPortugueseMFrench     0.25      0.24    -0.23
+TimeT2:TextTypenarrative:GroupPortugueseMGerman     0.55      0.25     0.05
+TimeT3:TextTypenarrative:GroupPortugueseMGerman     0.27      0.25    -0.23
+                                                u-95% CI Rhat Bulk_ESS Tail_ESS
+Intercept                                           5.50 1.00     2481     3890
+TimeT2                                              0.83 1.00     2430     4080
+TimeT3                                              1.18 1.00     2750     4480
+TextTypenarrative                                   0.07 1.00     2323     3570
+GroupPortugueseMFrench                             -0.72 1.00     2655     3588
+GroupPortugueseMGerman                             -0.96 1.00     2574     4200
+TimeT2:TextTypenarrative                            0.08 1.00     2586     4743
+TimeT3:TextTypenarrative                            0.27 1.00     2454     4467
+TimeT2:GroupPortugueseMFrench                      -0.18 1.00     2706     3864
+TimeT3:GroupPortugueseMFrench                       0.00 1.00     3087     5057
+TimeT2:GroupPortugueseMGerman                      -0.28 1.00     2642     4234
+TimeT3:GroupPortugueseMGerman                       0.15 1.00     3000     4337
+TextTypenarrative:GroupPortugueseMFrench            0.62 1.00     2668     4283
+TextTypenarrative:GroupPortugueseMGerman            0.62 1.00     2537     4079
+TimeT2:TextTypenarrative:GroupPortugueseMFrench     0.84 1.00     2969     5155
+TimeT3:TextTypenarrative:GroupPortugueseMFrench     0.72 1.00     2858     4537
+TimeT2:TextTypenarrative:GroupPortugueseMGerman     1.03 1.00     2896     4577
+TimeT3:TextTypenarrative:GroupPortugueseMGerman     0.76 1.00     2666     4880
+
+Family Specific Parameters: 
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma     0.60      0.02     0.55     0.65 1.01      730     1692
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>The output looks pretty similar to what we’d obtain when using <code>lmer()</code>, but let’s review what these estimates actually refer to. By default, <code>R</code> uses treatment coding. This entails that the <code>Intercept</code> refers to a specific combination of factors: the combination of all reference levels. Again by default, the reference levels are chosen alphabetically:</p>
+<ul>
+<li><code>Time</code> consists of three levels (<code>T1</code>, <code>T2</code>, <code>T3</code>); for alphabetical reasons, <code>T1</code> is chosen as the default reference level.</li>
+<li><code>Group</code> also consists of three levels (<code>monolingual Portuguese</code>, <code>Portuguese-French</code>, <code>Portuguese-German</code>); <code>monolingual Portuguese</code> is chosen as the default level.</li>
+<li><code>TextType</code> consists of two levels (<code>argumentative</code>, <code>narrative</code>); <code>argumentative</code> is the default reference level.</li>
+</ul>
+<p>The <code>Intercept</code>, then, shows the modelled mean Guiraud value of <code>argumentative</code> texts written by <code>monolingual Portuguese</code> children at <code>T1</code>: 5.25.</p>
+<p>If you’re unsure which factor level was used as the reference level, you can use the <code>contrasts()</code> function. The reference level is the one in whose rows only zeroes occur.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-7_9b1fea8dfbc73a2e28ddeae1c52d8774">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       Portuguese-French Portuguese-German
+monolingual Portuguese                 0                 0
+Portuguese-French                      1                 0
+Portuguese-German                      0                 1</code></pre>
+</div>
+</div>
+<p>Crucially, all other estimated effects are computed with respect to this intercept. That is, <code>TimeT2</code> (0.57) shows the difference between T1 and T2 <em>for monolingual Portuguese children writing argumentative texts</em>. Similarly, <code>TimeT3</code> (0.91) shows the difference between <em>T1</em> and T3 for monolingual Portuguese children writing argumentative texts, and <code>TextTypenarrative</code> (-0.27) shows the difference between the mean Guiraud values of argumentative and narrative texts written by monolingual Portuguese children writing at T1. The texts written by the Portuguese-German and Portuguese-French bilinguals don’t enter into these estimates.</p>
+<p>Now, it’s possible to piece together the mean values associated with each combination of predictor values, but questions such as the following remain difficult to answer with just these estimates at hand:</p>
+<ul>
+<li>What’s the overall difference between T2 and T3 and its uncertainty?</li>
+<li>What’s the overall difference between the Guiraud values of texts written by Portuguese-French and Portuguese-German children and its uncertainty?</li>
+<li>…</li>
+</ul>
+<p>We’ll tackle these questions in a minute; for now, the point is merely that the estimated parameters above all refer to highly specific comparisons that may not be the most relevant.</p>
+</section>
+<section id="plotting-the-fitted-values-and-the-uncertainty-about-them" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-the-fitted-values-and-the-uncertainty-about-them">Plotting the fitted values and the uncertainty about them</h3>
+<p>When working with <code>brms</code>, it’s relatively easy to obtain the modelled average outcome value for each combination of the predictor variables as well as a measure of the uncertainty associated with them.</p>
+<p>First construct a small data frame containing the unique combinations of predictor variables in our dataset:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_a7cbaa858703c3ea9ad402af83a55405">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>d_pred <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Group, Time, TextType) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Group, Time, TextType)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>d_pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 18 × 3
+   Group                  Time  TextType     
+   &lt;fct&gt;                  &lt;fct&gt; &lt;fct&gt;        
+ 1 monolingual Portuguese T1    argumentative
+ 2 monolingual Portuguese T1    narrative    
+ 3 monolingual Portuguese T2    argumentative
+ 4 monolingual Portuguese T2    narrative    
+ 5 monolingual Portuguese T3    argumentative
+ 6 monolingual Portuguese T3    narrative    
+ 7 Portuguese-French      T1    argumentative
+ 8 Portuguese-French      T1    narrative    
+ 9 Portuguese-French      T2    argumentative
+10 Portuguese-French      T2    narrative    
+11 Portuguese-French      T3    argumentative
+12 Portuguese-French      T3    narrative    
+13 Portuguese-German      T1    argumentative
+14 Portuguese-German      T1    narrative    
+15 Portuguese-German      T2    argumentative
+16 Portuguese-German      T2    narrative    
+17 Portuguese-German      T3    argumentative
+18 Portuguese-German      T3    narrative    </code></pre>
+</div>
+</div>
+<p>If you feed the model (here: <code>m_default</code>) and the data frame we’ve just created (<code>d_pred</code>) to the <code>fitted()</code> function, it outputs the modelled mean estimate for each combination of predictor values (<code>Estimate</code>), the estimated error of this mean estimate (<code>Est.Error</code>), and a 95% uncertainty interval about the estimate (<code>Q2.5</code> and <code>Q97.5</code>). One more thing: The <code>re_formula = NA</code> line specifies that we do not want the variability associated with the by-<code>Class</code> and by-<code>Child</code> random effects to affect the estimates and their uncertainty. This is what I typically want.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-9_fd67894cf4d4aa9b936bc35120c8a60c">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  d_pred, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fitted</span>(m_default, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">newdata =</span> d_pred, </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">re_formula =</span> <span class="cn">NA</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Group Time      TextType Estimate Est.Error Q2.5 Q97.5
+1  monolingual Portuguese   T1 argumentative     5.25     0.128 4.99  5.50
+2  monolingual Portuguese   T1     narrative     4.99     0.172 4.65  5.33
+3  monolingual Portuguese   T2 argumentative     5.82     0.143 5.54  6.10
+4  monolingual Portuguese   T2     narrative     5.32     0.186 4.95  5.69
+5  monolingual Portuguese   T3 argumentative     6.16     0.157 5.85  6.47
+6  monolingual Portuguese   T3     narrative     5.84     0.189 5.47  6.23
+7       Portuguese-French   T1 argumentative     4.19     0.115 3.97  4.42
+8       Portuguese-French   T1     narrative     4.07     0.163 3.76  4.39
+9       Portuguese-French   T2 argumentative     4.21     0.123 3.97  4.46
+10      Portuguese-French   T2     narrative     4.21     0.156 3.91  4.53
+11      Portuguese-French   T3 argumentative     4.73     0.130 4.48  4.99
+12      Portuguese-French   T3     narrative     4.80     0.157 4.49  5.11
+13      Portuguese-German   T1 argumentative     3.95     0.109 3.73  4.17
+14      Portuguese-German   T1     narrative     3.86     0.148 3.56  4.15
+15      Portuguese-German   T2 argumentative     3.88     0.116 3.65  4.11
+16      Portuguese-German   T2     narrative     4.10     0.157 3.78  4.41
+17      Portuguese-German   T3 argumentative     4.64     0.127 4.38  4.89
+18      Portuguese-German   T3     narrative     4.76     0.147 4.47  5.04</code></pre>
+</div>
+</div>
+<p>So where do these estimates and uncertainty intervals come from? In the Bayesian approach, every model parameter hasn’t got just one estimate but an entire distribution of estimates. Moreover, everything that <em>depends</em> on model parameters also has an entire distribution of estimates associated with it. The mean modelled outcome values per cell depend on the model parameters, so they, too, have entire distributions associated with them. The <code>fitted()</code> function summarises these distributions for us: it returns their means as <code>Estimate</code>, their standard deviations as <code>Est.Error</code> and their 2.5th and 97.5 percentiles as <code>Q2.5</code> and <code>Q97.5</code>. If so inclined, you can generate these distributions yourself using the <code>posterior_linpred()</code> function:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_0fdb96bfca25f89d3a6cea85d87d533d">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>posterior_fit <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(m_default, <span class="at">newdata =</span> d_pred, <span class="at">re_formula =</span> <span class="cn">NA</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(posterior_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8000   18</code></pre>
+</div>
+</div>
+<p>This returns matrix of 4000 rows and 18 columns. 4000 is the number of ‘post-warmup samples’ (see the output of <code>summary(m_default)</code>; 18 is the number of combinations of predictor values in <code>d_pred</code>.</p>
+<p>The first <em>column</em> of <code>posterior_fit</code> contains the distribution associated with the first <em>row</em> in <code>d_pred</code>. If you compute its mean, standard deviation and 2.5th and 97.5th percentiles, you end up with the same numbers as above:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_5ec1671dc42cc6e295e6f4d48fa7de01">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior_fit[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(posterior_fit[, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.128</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(posterior_fit[, <span class="dv">1</span>], <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2.5% 97.5% 
+ 4.99  5.50 </code></pre>
+</div>
+</div>
+<p>Or similarly for the 10th row of <code>d_pred</code> (Portuguese-French, T2, narrative):</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_a1d11f116dbcb3508987521a47791bdd">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(posterior_fit[, <span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.21</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(posterior_fit[, <span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.156</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(posterior_fit[, <span class="dv">10</span>], <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 2.5% 97.5% 
+ 3.91  4.53 </code></pre>
+</div>
+</div>
+<p>At the moment, using <code>posterior_linpred()</code> has no added value, but it’s good to know where these numbers come from.</p>
+<p>Let’s draw a graph showing these modelled averages and the uncertainty about them. 95% uncertainty intervals are typically used, but they may instill dichotomous thinking. To highlight that such an interval highlights but two points on a continuum, I’m tempted to add 80% intervals as well:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_0fe81022f2eaa776eeb4b3ec8aece0c8">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain fitted values + uncertainty</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>fitted_values <span class="ot">&lt;-</span> <span class="fu">fitted</span>(m_default, <span class="at">newdata =</span> d_pred, <span class="at">re_formula =</span> <span class="cn">NA</span>, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># 95% interval: between 2.5th and 97.5th percentile</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># 80% interval: between 10th and 90th percentile</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.10</span>, <span class="fl">0.90</span>, <span class="fl">0.975</span>))</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine fitted values with predictor values</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>fitted_values <span class="ot">&lt;-</span> <span class="fu">cbind</span>(d_pred, fitted_values)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>fitted_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Group Time      TextType Estimate Est.Error Q2.5  Q10  Q90
+1  monolingual Portuguese   T1 argumentative     5.25     0.128 4.99 5.09 5.41
+2  monolingual Portuguese   T1     narrative     4.99     0.172 4.65 4.77 5.20
+3  monolingual Portuguese   T2 argumentative     5.82     0.143 5.54 5.64 6.00
+4  monolingual Portuguese   T2     narrative     5.32     0.186 4.95 5.09 5.55
+5  monolingual Portuguese   T3 argumentative     6.16     0.157 5.85 5.97 6.36
+6  monolingual Portuguese   T3     narrative     5.84     0.189 5.47 5.60 6.08
+7       Portuguese-French   T1 argumentative     4.19     0.115 3.97 4.04 4.33
+8       Portuguese-French   T1     narrative     4.07     0.163 3.76 3.86 4.28
+9       Portuguese-French   T2 argumentative     4.21     0.123 3.97 4.06 4.36
+10      Portuguese-French   T2     narrative     4.21     0.156 3.91 4.02 4.41
+11      Portuguese-French   T3 argumentative     4.73     0.130 4.48 4.56 4.89
+12      Portuguese-French   T3     narrative     4.80     0.157 4.49 4.60 5.00
+13      Portuguese-German   T1 argumentative     3.95     0.109 3.73 3.81 4.09
+14      Portuguese-German   T1     narrative     3.86     0.148 3.56 3.68 4.05
+15      Portuguese-German   T2 argumentative     3.88     0.116 3.65 3.73 4.03
+16      Portuguese-German   T2     narrative     4.10     0.157 3.78 3.90 4.30
+17      Portuguese-German   T3 argumentative     4.64     0.127 4.38 4.48 4.80
+18      Portuguese-German   T3     narrative     4.76     0.147 4.47 4.57 4.94
+   Q97.5
+1   5.50
+2   5.33
+3   6.10
+4   5.69
+5   6.47
+6   6.23
+7   4.42
+8   4.39
+9   4.46
+10  4.53
+11  4.99
+12  5.11
+13  4.17
+14  4.15
+15  4.11
+16  4.41
+17  4.89
+18  5.04</code></pre>
+</div>
+</div>
+<p>And now for the graph:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-15_d5c16483368064d50fcc566fa61112f2">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Move all points apart horizontally to reduce overlap</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>position_adjustment <span class="ot">&lt;-</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.3</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(fitted_values,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Time,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Estimate,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>           <span class="co"># Sort Groups from low to high</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> <span class="fu">reorder</span>(Group, Estimate),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">group =</span> Group)) <span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Move point apart:</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> position_adjustment) <span class="sc">+</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Move lines apart:</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">position =</span> position_adjustment) <span class="sc">+</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add 95% intervals; move them apart, too</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Q2<span class="fl">.5</span>, <span class="at">ymax =</span> Q97<span class="fl">.5</span>), <span class="at">linewidth =</span> <span class="fl">0.4</span>,</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">position =</span> position_adjustment) <span class="sc">+</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add 80% intervals; move them apart, too</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_linerange</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Q10, <span class="at">ymax =</span> Q90), <span class="at">linewidth =</span> <span class="fl">0.9</span>,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">position =</span> position_adjustment) <span class="sc">+</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> TextType) <span class="sc">+</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Override default colour</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">name =</span> <span class="fu">element_blank</span>(), <span class="at">type =</span> <span class="st">"qual"</span>) <span class="sc">+</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Modelled mean Guiraud"</span>) <span class="sc">+</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption"><strong>Figure 2.</strong> The modelled mean Guiraud values and their uncertainty (thick vertical lines: 80% interval; thin vertical lines: 95% interval).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a-model-with-more-sensible-coding" class="level2">
+<h2 class="anchored" data-anchor-id="a-model-with-more-sensible-coding">A model with more sensible coding</h2>
+<section id="tailoring-the-coding-of-categorical-predictors-to-the-research-questions" class="level3">
+<h3 class="anchored" data-anchor-id="tailoring-the-coding-of-categorical-predictors-to-the-research-questions">Tailoring the coding of categorical predictors to the research questions</h3>
+<p>The <code>summary()</code> output for <code>m_default</code> was difficult to interpret because treatment coding was used. However, we can override this default behaviour to end up with estimates that are more readily and more usefully interpretable.</p>
+<p>The first thing we can do is to override the default refence level. Figure 1 showed that the Guiraud values at T2 tend to be somewhere midway between those at T1 and T3, so we can make the intercept estimate more representative of the dataset as a whole by making T2 the reference level of <code>Time</code> rather than T1. A benefit of doing so is that we will now have two parameters, <code>TimeT1</code> and <code>TimeT3</code> that specify the difference between T1-T2 and T2-T3, respectively. In other words, the estimated parameters will directly reflect the progression from data collection to data collection. (Before, the parameter estimates specified the differences between T1-T2 and <em>T1</em>-T3, so a direct estimate for T2-T3 was lacking.)</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-16_a2504940a6c66eb5627601838fb5a227">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set T2 as default time; retain treatment coding</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Time <span class="ot">&lt;-</span> <span class="fu">relevel</span>(d<span class="sc">$</span>Time, <span class="st">"T2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Second, there’s no reason for preferring <code>argumentative</code> or <code>narrative</code> texts as the reference level. If we sum-code this predictor, the intercept reflects the <em>grand mean</em> of the argumentative and narrative texts (at T2), and the estimated parameter then specifies how far the mean Guiraud value of each text type is removed from this mean:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-17_eafd4019f30a243ed3cb50d5e54580c1">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum (or deviation) coding for TextType (2 levels)</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>TextType) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Similarly, there are a couple of reasonable ways to choose the reference level for <code>Group</code> when using treatment coding. But you can also sum-code this predictor so that the intercept reflects the grand mean of the Guiraud values of texts written by monolingual Portuguese and bilingual Portuguese-French and Portuguese-German kids (at T2).</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-18_1570e59fba86c6266e14bedc909a401b">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum (or deviation) coding for Group (3 levels)</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Group) <span class="ot">&lt;-</span> <span class="fu">contr.sum</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="refitting-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="refitting-the-model">Refitting the model</h3>
+<p>No difference here.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-19_13384626695bfca8622d4a1f6cb74950">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>m_recoded <span class="ot">&lt;-</span> <span class="fu">brm</span>(Guiraud <span class="sc">~</span> Time<span class="sc">*</span>TextType<span class="sc">*</span>Group <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> TextType <span class="sc">+</span> Time<span class="sc">|</span>Class) <span class="sc">+</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span> <span class="sc">+</span> TextType <span class="sc">+</span> Time<span class="sc">|</span>Child),</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">silent =</span> <span class="dv">2</span>,</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.95</span>),</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running /usr/lib/R/bin/R CMD SHLIB foo.c
+using C compiler: ‘gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0’
+gcc -I"/usr/share/R/include" -DNDEBUG   -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/Rcpp/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/unsupported"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/BH/include" -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/src/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppParallel/include/"  -I"/home/jan/R/x86_64-pc-linux-gnu-library/4.3/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -DBOOST_NO_AUTO_PTR  -include '/home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1       -fpic  -g -O2 -ffile-prefix-map=/build/r-base-1upgAf/r-base-4.3.1=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2  -c foo.c -o foo.o
+In file included from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Core:88,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Dense:1,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22,
+                 from &lt;command-line&gt;:
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:1: error: unknown type name ‘namespace’
+  628 | namespace Eigen {
+      | ^~~~~~~~~
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/src/Core/util/Macros.h:628:17: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘{’ token
+  628 | namespace Eigen {
+      |                 ^
+In file included from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Dense:1,
+                 from /home/jan/R/x86_64-pc-linux-gnu-library/4.3/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22,
+                 from &lt;command-line&gt;:
+/home/jan/R/x86_64-pc-linux-gnu-library/4.3/RcppEigen/include/Eigen/Core:96:10: fatal error: complex: No such file or directory
+   96 | #include &lt;complex&gt;
+      |          ^~~~~~~~~
+compilation terminated.
+make: *** [/usr/lib/R/etc/Makeconf:191: foo.o] Error 1</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-the-parameter-estimates-1" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-the-parameter-estimates-1">Interpreting the parameter estimates</h3>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-20_1a825d4f956f1fbec85b72c379e981eb">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_recoded)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Family: gaussian 
+  Links: mu = identity; sigma = identity 
+Formula: Guiraud ~ Time * TextType * Group + (1 + TextType + Time | Class) + (1 + TextType + Time | Child) 
+   Data: d (Number of observations: 1040) 
+  Draws: 4 chains, each with iter = 4000; warmup = 2000; thin = 1;
+         total post-warmup draws = 8000
+
+Group-Level Effects: 
+~Child (Number of levels: 328) 
+                         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+sd(Intercept)                0.47      0.04     0.38     0.55 1.00     2449
+sd(TextType1)                0.13      0.05     0.02     0.22 1.01      597
+sd(TimeT1)                   0.10      0.07     0.00     0.27 1.00     1114
+sd(TimeT3)                   0.38      0.09     0.19     0.55 1.01      616
+cor(Intercept,TextType1)    -0.47      0.22    -0.86    -0.00 1.00     2195
+cor(Intercept,TimeT1)       -0.03      0.39    -0.74     0.74 1.00     5843
+cor(TextType1,TimeT1)        0.03      0.43    -0.79     0.81 1.00     3610
+cor(Intercept,TimeT3)        0.14      0.22    -0.24     0.64 1.01      945
+cor(TextType1,TimeT3)        0.05      0.32    -0.65     0.64 1.01      412
+cor(TimeT1,TimeT3)          -0.07      0.42    -0.82     0.74 1.01      280
+                         Tail_ESS
+sd(Intercept)                4309
+sd(TextType1)                1011
+sd(TimeT1)                   1881
+sd(TimeT3)                   1077
+cor(Intercept,TextType1)     2927
+cor(Intercept,TimeT1)        5186
+cor(TextType1,TimeT1)        4759
+cor(Intercept,TimeT3)        1621
+cor(TextType1,TimeT3)         672
+cor(TimeT1,TimeT3)            823
+
+~Class (Number of levels: 25) 
+                         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+sd(Intercept)                0.18      0.08     0.03     0.34 1.00     1193
+sd(TextType1)                0.12      0.04     0.05     0.21 1.00     2767
+sd(TimeT1)                   0.10      0.07     0.00     0.27 1.00     2164
+sd(TimeT3)                   0.10      0.07     0.00     0.27 1.00     2111
+cor(Intercept,TextType1)    -0.19      0.35    -0.79     0.53 1.00     2478
+cor(Intercept,TimeT1)       -0.12      0.43    -0.85     0.74 1.00     5476
+cor(TextType1,TimeT1)       -0.02      0.42    -0.78     0.76 1.00     5773
+cor(Intercept,TimeT3)        0.04      0.43    -0.77     0.81 1.00     6506
+cor(TextType1,TimeT3)        0.15      0.41    -0.69     0.85 1.00     5899
+cor(TimeT1,TimeT3)           0.13      0.44    -0.76     0.86 1.00     4553
+                         Tail_ESS
+sd(Intercept)                1273
+sd(TextType1)                2274
+sd(TimeT1)                   3196
+sd(TimeT3)                   3346
+cor(Intercept,TextType1)     3033
+cor(Intercept,TimeT1)        5363
+cor(TextType1,TimeT1)        5650
+cor(Intercept,TimeT3)        5504
+cor(TextType1,TimeT3)        6160
+cor(TimeT1,TimeT3)           5721
+
+Population-Level Effects: 
+                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
+Intercept                   4.59      0.06     4.46     4.72 1.00     4216
+TimeT1                     -0.20      0.06    -0.32    -0.08 1.00     6096
+TimeT3                      0.56      0.06     0.44     0.69 1.00     5736
+TextType1                   0.05      0.05    -0.05     0.14 1.00     4230
+Group1                      0.98      0.09     0.78     1.16 1.00     3129
+Group2                     -0.38      0.09    -0.55    -0.20 1.00     2923
+TimeT1:TextType1            0.03      0.05    -0.07     0.13 1.00     6671
+TimeT3:TextType1           -0.02      0.05    -0.12     0.07 1.00     5945
+TimeT1:Group1              -0.24      0.08    -0.40    -0.07 1.00     5325
+TimeT3:Group1              -0.13      0.09    -0.31     0.05 1.00     5069
+TimeT1:Group2               0.12      0.09    -0.05     0.29 1.00     5178
+TimeT3:Group2              -0.01      0.09    -0.18     0.16 1.00     5133
+TextType1:Group1            0.21      0.07     0.07     0.34 1.00     3122
+TextType1:Group2           -0.04      0.07    -0.18     0.09 1.00     3293
+TimeT1:TextType1:Group1    -0.15      0.07    -0.29    -0.01 1.00     5085
+TimeT3:TextType1:Group1    -0.07      0.07    -0.20     0.07 1.00     5624
+TimeT1:TextType1:Group2     0.03      0.07    -0.12     0.17 1.00     5303
+TimeT3:TextType1:Group2    -0.01      0.07    -0.15     0.12 1.00     5218
+                        Tail_ESS
+Intercept                   4839
+TimeT1                      5507
+TimeT3                      5002
+TextType1                   5381
+Group1                      3741
+Group2                      4022
+TimeT1:TextType1            6505
+TimeT3:TextType1            5426
+TimeT1:Group1               5184
+TimeT3:Group1               5097
+TimeT1:Group2               5426
+TimeT3:Group2               5284
+TextType1:Group1            4089
+TextType1:Group2            4598
+TimeT1:TextType1:Group1     5711
+TimeT3:TextType1:Group1     6277
+TimeT1:TextType1:Group2     5777
+TimeT3:TextType1:Group2     5951
+
+Family Specific Parameters: 
+      Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+sigma     0.60      0.02     0.55     0.65 1.00      867     2169
+
+Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
+and Tail_ESS are effective sample size measures, and Rhat is the potential
+scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+</div>
+</div>
+<p>Now the <code>Intercept</code> reflects the grand mean of the Guiraud values for both argumentative and narrative texts for all three groups <strong>written at T2</strong>. The <code>TimeT1</code> estimate (-0.20) shows the difference between T1 and T2 averaged over all text types and all groups (0.20 points worse at T1); the <code>TimeT3</code> estimate (0.56) shows the difference between T2 and T3 averaged over all text types and all groups (0.56 points better at T3).</p>
+<p><code>TextType1</code> (0.05) shows that the mean Guiraud value of one text type (still written at T2!) averaged over all groups is 0.05 points higher than the grand mean; and by implication that the mean Guiraud value of the other text type is 0.05 lower than the grand mean. To find out which text type is which, use <code>contrasts()</code>:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-21_83b40e196a47af589ac9ad106e9eeccb">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>TextType)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              [,1]
+argumentative    1
+narrative       -1</code></pre>
+</div>
+</div>
+<p>Since <code>argumentative</code> is coded as 1, it’s the argumentative texts that have the higher Guiraud values at T2.</p>
+<p>Similarly, <code>Group1</code> (0.98) shows that one group has higher-than-average Guiraud values averaged across text types at T2, whereas <code>Group2</code> (-0.38) shows that another group has a mean Guiraud value that lies 0.38 points below the average at T2. By implication, the third group’s mean Guiraud value lies 0.60 points below average ((0.98-0.38-0.60)/3 = 0). To see which group is which, use <code>contrasts()</code>:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-22_1c67751db99cfa765a3a96e806a2a054">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       [,1] [,2]
+monolingual Portuguese    1    0
+Portuguese-French         0    1
+Portuguese-German        -1   -1</code></pre>
+</div>
+</div>
+<p><code>monolingual Portuguese</code> is ‘1’ for the purposes of <code>Group1</code>, <code>Portuguese-French</code> is <code>1</code> for the purposes of <code>Group2</code>, and <code>Portuguese-German</code> is the third group.</p>
+<p>We can double-check these numbers by generating the modelled mean values for each predictor value combination:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-23_87b0f9ad2fb35b7867cc325331d6865b">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>double_check <span class="ot">&lt;-</span> <span class="fu">cbind</span>(</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  d_pred, </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fitted</span>(m_recoded, </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">newdata =</span> d_pred, </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">re_formula =</span> <span class="cn">NA</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>double_check</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Group Time      TextType Estimate Est.Error Q2.5 Q97.5
+1  monolingual Portuguese   T1 argumentative     5.25     0.147 4.96  5.54
+2  monolingual Portuguese   T1     narrative     4.98     0.166 4.65  5.32
+3  monolingual Portuguese   T2 argumentative     5.82     0.142 5.54  6.10
+4  monolingual Portuguese   T2     narrative     5.31     0.159 4.99  5.62
+5  monolingual Portuguese   T3 argumentative     6.16     0.169 5.82  6.49
+6  monolingual Portuguese   T3     narrative     5.84     0.176 5.48  6.18
+7       Portuguese-French   T1 argumentative     4.19     0.128 3.94  4.45
+8       Portuguese-French   T1     narrative     4.06     0.163 3.75  4.38
+9       Portuguese-French   T2 argumentative     4.21     0.125 3.97  4.47
+10      Portuguese-French   T2     narrative     4.21     0.138 3.94  4.48
+11      Portuguese-French   T3 argumentative     4.73     0.135 4.47  5.00
+12      Portuguese-French   T3     narrative     4.80     0.152 4.49  5.10
+13      Portuguese-German   T1 argumentative     3.95     0.116 3.71  4.18
+14      Portuguese-German   T1     narrative     3.87     0.147 3.58  4.16
+15      Portuguese-German   T2 argumentative     3.88     0.115 3.65  4.10
+16      Portuguese-German   T2     narrative     4.11     0.148 3.81  4.40
+17      Portuguese-German   T3 argumentative     4.63     0.137 4.36  4.90
+18      Portuguese-German   T3     narrative     4.75     0.141 4.47  5.03</code></pre>
+</div>
+</div>
+<p>Some sanity checks:</p>
+<ol type="1">
+<li>Intercept = 4.59 = grand mean at T2:</li>
+</ol>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-25_4e79502911494be26c4bd4471759f9e3">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>double_check <span class="sc">|&gt;</span> </span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">==</span> <span class="st">"T2"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(Estimate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  mean_est
+1     4.59</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>TimeT3 = 0.56 = T2/T3 difference across texts and groups:</li>
+</ol>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-26_916450f4fed1370dfa15544560e383c8">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>double_check <span class="sc">|&gt;</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Time) <span class="sc">|&gt;</span> </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(Estimate)) <span class="sc">|&gt;</span> </span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(Time, mean_est) <span class="sc">|&gt;</span> </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">diff_T2T3 =</span> T3 <span class="sc">-</span> T2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  diff_T2T3
+      &lt;dbl&gt;
+1     0.562</code></pre>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Portuguese-German lies 0.60 below average at T2 across texts:</li>
+</ol>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-27_8831207deed123fc247baa038d3b12ff">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>double_check <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Time <span class="sc">==</span> <span class="st">"T2"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">|&gt;</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(Estimate)) <span class="sc">|&gt;</span> </span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff_mean =</span> mean_est <span class="sc">-</span> <span class="fu">mean</span>(mean_est))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  Group                  mean_est diff_mean
+  &lt;fct&gt;                     &lt;dbl&gt;     &lt;dbl&gt;
+1 monolingual Portuguese     5.56     0.975
+2 Portuguese-French          4.21    -0.378
+3 Portuguese-German          3.99    -0.597</code></pre>
+</div>
+</div>
+<p>I won’t plot the modelled averages and their uncertainty, because the result will be the same as before: Recoding the predictors in this way doesn’t affect the modelled averages per cell; it just makes the summary output easier to parse.</p>
+</section>
+<section id="homing-in-on-specific-comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="homing-in-on-specific-comparisons">Homing in on specific comparisons</h3>
+<p>Finally, let’s see how we can target some specific comparisons without having to refit the model several times. A specific comparison you might be interested in could be “How large is the difference in Guiraud scores for narrative texts written by Portuguese-French bilinguals between T1 and T2?” Or a more complicated one: “How large is the difference in the progression from T1 to T3 for argumentative texts between Portuguese-French and Portuguese-German children?”</p>
+<p>To answer such questions, we need to generate the distribution of the modelled averages per predictor value combination:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-28_09822324a6f81d887a6567fbe0f703a2">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>posterior_fit <span class="ot">&lt;-</span> <span class="fu">posterior_linpred</span>(m_recoded, <span class="at">newdata =</span> d_pred, <span class="at">re_formula =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="question-1-progression-t1-t2-for-narrative-texts-portuguese-french-bilinguals" class="level4">
+<h4 class="anchored" data-anchor-id="question-1-progression-t1-t2-for-narrative-texts-portuguese-french-bilinguals">Question 1: Progression T1-T2 for narrative texts, Portuguese-French bilinguals?</h4>
+<p>This question requires us to compare the modelled average for narrative texts written by Portuguese-French bilinguals at T2 to that of the narrative texts written by Portuguese-French bilinguals at T1. The first combination of predictor values can be found in row 10 in <code>d_pred</code>, so the corresponding estimates are in <em>column</em> 10 in <code>posterior_fit</code>. The second combination of predictor values can be found in row 8 in <code>d_pred</code>, so the corresponding estimates are in <em>column</em> 8 in <code>posterior_fit</code>.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-30_6a81140db864c1a211e46f0288ee6ef9">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">10</span>]</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>t1 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">8</span>]</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(t2, t1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now compute and plot the pairwise differences:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-31_a0f695d05777eaa7c860be1737b8896d">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">progression =</span> t2 <span class="sc">-</span> t1)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> progression)) <span class="sc">+</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption"><strong>Figure 3.</strong> Estimate of the progression in Guiraud values for narrative texts by Portuguese-French bilinguals from T1 to T2.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The mean progression is easily calculated:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-32_53aa11b4f23dc85a4703e9f7b3f3cedb">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>progression)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.148</code></pre>
+</div>
+</div>
+<p>The estimated error for this estimate is:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-33_1dcbf1505ddbc5f77fd1875e181e7f81">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(df<span class="sc">$</span>progression)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.149</code></pre>
+</div>
+</div>
+<p>And its 95% uncertainty interval is:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-34_c4e304205d36fe85b99c2e082f83a9b5">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>progression, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2.5%  97.5% 
+-0.152  0.436 </code></pre>
+</div>
+</div>
+<p>According to the model, there’s about a 84% chance that there’s indeed some progression going from T1 to T2.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-35_c8871a294c2f6bb52744ac00354c2350">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>progression <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.845</code></pre>
+</div>
+</div>
+</section>
+<section id="question-2-t1-t3-progression-for-argumentative-texts-portuguese-french-vs.-portuguese-german" class="level4">
+<h4 class="anchored" data-anchor-id="question-2-t1-t3-progression-for-argumentative-texts-portuguese-french-vs.-portuguese-german">Question 2: T1-T3 progression for argumentative texts, Portuguese-French vs.&nbsp;Portuguese-German?</h4>
+<p>This question requires us to take into consideration the modelled average for argumentative texts written by Portuguese-French bilinguals at T1, that for argumentative texts written by Portuguese-French bilinguals at T3, and the same for the texts written by Portuguese-German bilinguals. We need the following columns in <code>posterior_fit</code>:</p>
+<ul>
+<li>7 (Portuguese-French, T1, argumentative)</li>
+<li>11 (Portuguese-French, T3, argumentative)</li>
+<li>13 (Portuguese-German, T1, argumentative)</li>
+<li>17 (Portuguese-German, T3, argumentative)</li>
+</ul>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-36_8cf94067ed36194386f5483f98760439">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>fr_t1 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">7</span>]</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>fr_t3 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">11</span>]</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>gm_t1 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">13</span>]</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>gm_t3 <span class="ot">&lt;-</span> posterior_fit[, <span class="dv">17</span>]</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(fr_t1, fr_t3, gm_t1, gm_t3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We compute the progression for the Portuguese-French bilinguals and that for the Portuguese-German bilinguals. Then we compute the difference between these progressions:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-37_9c2f701682d5a3d9d460534f6ed3d25c">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prog_fr =</span> fr_t3 <span class="sc">-</span> fr_t1,</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">prog_gm =</span> gm_t3 <span class="sc">-</span> gm_t1,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">diff_prog =</span> prog_gm <span class="sc">-</span> prog_fr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The mean progression for the Portuguese-French bilinguals was 0.54 compared to 0.68 for the Portuguese-German bilinguals:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-38_1cf31ef6acd59931f51efa272cf83f11">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>prog_fr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.542</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>prog_gm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.684</code></pre>
+</div>
+</div>
+<p>The mean difference between these progressions, then, is 0.14 in favour of the Portuguese-German bilinguals:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-39_eae8a0f244d445280b43cd478c455eb5">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>diff_prog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.142</code></pre>
+</div>
+</div>
+<p>However, there is considerable uncertainty about this difference:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-40_e89eac3afecced7a8ef27d14132ebda0">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df,</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> diff_prog)) <span class="sc">+</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The probability that the Portuguese-German bilinguals make more progress than the Portuguese-French bilinguals is 77%, and according to the model, there’s a 95% chance its size is somewhere between -0.25 and 0.52 points.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-41_177c742d4e276b13a0483fb42eecf231">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(df<span class="sc">$</span>diff_prog <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.768</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(df<span class="sc">$</span>diff_prog, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2.5%  97.5% 
+-0.251  0.530 </code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>By investing some time in recoding your predictors, you can make the parameter estimates more relevant to your questions. Any specific comparisons you may be interested in can additionally be addressed by making use of the entire distribution of estimates. You can also use these estimate distributions to draw effect plots.</p>
+</section>
+<section id="further-resources" class="level2">
+<h2 class="anchored" data-anchor-id="further-resources">Further resources</h2>
+<ul>
+<li><a href="https://stats.idre.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables/">R Library Contrast Coding Systems for categorical variables</a></li>
+<li>Matthew Kay. 2018. <a href="https://mjskay.github.io/tidybayes/articles/tidy-brms.html">Extracting and visualizing tidy draws from brms models</a></li>
+<li>Daniel J. Schad, Sven Hohenstein, Shravan Vasishth and Reinhold Kliegl. 2018. <a href="https://arxiv.org/abs/1807.10451">How to capitalize on a priori contrasts in linear (mixed) models: A tutorial</a>.</li>
+<li>In simpler models, you can use bootstrapping to generate distributions of estimates. This would be possible for these data, too, but it would take a considerable amount of time.</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018. <a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz.</a> <em>Zeitschrift für Interkulturellen Fremdsprachenunterricht</em> 23(1). 135-148. Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.4578991">figshare</a>.</p>
+<p>Amelia Lambelet, Raphael Berthele, Magalie Desgrippes, Carlos Pestana and Jan Vanhove. 2017a. Chapter 2: Testing interdependence in Portuguese Heritage speakers in Switzerland: the HELASCOT project. In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp.&nbsp;26-33. Multilingual Matters.</p>
+<p>Amelia Lambelet, Magalie Desgrippes and Jan Vanhove. 2017b. Chapter 5: The development of argumentative and narrative writing skills in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp.&nbsp;83-96. Multilingual Matters.</p>
+<p>Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019. <a href="https://doi.org/10.17239/jowr-2019.10.03.04">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts.</a> <em>Journal of Writing Research</em>. Technical report, data (including texts), elicitation materials, and R code available from the <a href="https://osf.io/vw4pc/">Open Science Framework</a>.</p>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session info</h2>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-42_05ae42c6f95783d525ba5516fe6e7d77">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.2 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-06
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package        * version date (UTC) lib source
+ abind            1.4-5   2016-07-21 [1] CRAN (R 4.3.1)
+ backports        1.4.1   2021-12-13 [1] CRAN (R 4.3.0)
+ base64enc        0.1-3   2015-07-28 [1] CRAN (R 4.3.0)
+ bayesplot        1.10.0  2022-11-16 [1] CRAN (R 4.3.1)
+ bit              4.0.5   2022-11-15 [1] CRAN (R 4.3.0)
+ bit64            4.0.5   2020-08-30 [1] CRAN (R 4.3.0)
+ bridgesampling   1.1-2   2021-04-16 [1] CRAN (R 4.3.1)
+ brms           * 2.19.0  2023-03-14 [1] CRAN (R 4.3.1)
+ Brobdingnag      1.2-9   2022-10-19 [1] CRAN (R 4.3.1)
+ cachem           1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr            3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ checkmate        2.2.0   2023-04-27 [1] CRAN (R 4.3.1)
+ cli              3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ coda             0.19-4  2020-09-30 [1] CRAN (R 4.3.1)
+ codetools        0.2-19  2023-02-01 [4] CRAN (R 4.2.2)
+ colorspace       2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ colourpicker     1.2.0   2022-10-28 [1] CRAN (R 4.3.1)
+ crayon           1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ crosstalk        1.2.0   2021-11-04 [1] CRAN (R 4.3.1)
+ curl             4.3.2   2021-06-23 [2] CRAN (R 4.2.0)
+ devtools         2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest           0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ distributional   0.3.2   2023-03-22 [1] CRAN (R 4.3.1)
+ dplyr          * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ DT               0.28    2023-05-18 [1] CRAN (R 4.3.1)
+ dygraphs         1.1.1.6 2018-07-11 [1] CRAN (R 4.3.1)
+ ellipsis         0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate         0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi            1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ farver           2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
+ fastmap          1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ forcats        * 1.0.0   2023-01-29 [1] CRAN (R 4.3.0)
+ fs               1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics         0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2        * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue             1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gridExtra        2.3     2017-09-09 [1] CRAN (R 4.3.0)
+ gtable           0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ gtools           3.9.4   2022-11-27 [1] CRAN (R 4.3.1)
+ hms              1.1.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools        0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets      1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv           1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ igraph           1.5.0.1 2023-07-23 [1] CRAN (R 4.3.1)
+ inline           0.3.19  2021-05-31 [1] CRAN (R 4.3.1)
+ jsonlite         1.8.5   2023-06-05 [1] CRAN (R 4.3.0)
+ knitr            1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ labeling         0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
+ later            1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lattice          0.21-8  2023-04-05 [4] CRAN (R 4.3.0)
+ lifecycle        1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ loo              2.6.0   2023-03-31 [1] CRAN (R 4.3.1)
+ lubridate      * 1.9.2   2023-02-10 [1] CRAN (R 4.3.0)
+ magrittr         2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ markdown         1.7     2023-05-16 [1] CRAN (R 4.3.0)
+ Matrix           1.6-0   2023-07-08 [4] CRAN (R 4.3.1)
+ matrixStats      1.0.0   2023-06-02 [1] CRAN (R 4.3.1)
+ memoise          2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime             0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI           0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ munsell          0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ mvtnorm          1.2-2   2023-06-08 [1] CRAN (R 4.3.1)
+ nlme             3.1-162 2023-01-31 [4] CRAN (R 4.2.2)
+ pillar           1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild         1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig        2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload          1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ plyr             1.8.8   2022-11-11 [1] CRAN (R 4.3.1)
+ posterior        1.4.1   2023-03-14 [1] CRAN (R 4.3.1)
+ prettyunits      1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx         3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis          0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises         1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps               1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr          * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6               2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ RColorBrewer     1.1-3   2022-04-03 [1] CRAN (R 4.3.0)
+ Rcpp           * 1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ RcppParallel     5.1.7   2023-02-27 [1] CRAN (R 4.3.1)
+ readr          * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
+ remotes          2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ reshape2         1.4.4   2020-04-09 [1] CRAN (R 4.3.1)
+ rlang            1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown        2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstan            2.26.22 2023-08-01 [1] local
+ rstantools       2.3.1.1 2023-07-18 [1] CRAN (R 4.3.1)
+ rstudioapi       0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ scales           1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo      1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny            1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ shinyjs          2.1.0   2021-12-23 [1] CRAN (R 4.3.1)
+ shinystan        2.6.0   2022-03-03 [1] CRAN (R 4.3.1)
+ shinythemes      1.2.0   2021-01-25 [1] CRAN (R 4.3.1)
+ StanHeaders      2.26.27 2023-06-14 [1] CRAN (R 4.3.1)
+ stringi          1.7.6   2021-11-29 [2] CRAN (R 4.2.0)
+ stringr        * 1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ tensorA          0.36.2  2020-11-19 [1] CRAN (R 4.3.1)
+ threejs          0.3.3   2020-01-21 [1] CRAN (R 4.3.1)
+ tibble         * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyr          * 1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
+ tidyselect       1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ tidyverse      * 2.0.0   2023-02-22 [1] CRAN (R 4.3.1)
+ timechange       0.2.0   2023-01-11 [1] CRAN (R 4.3.0)
+ tzdb             0.4.0   2023-05-12 [1] CRAN (R 4.3.0)
+ urlchecker       1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis          2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8             1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ V8               4.3.0   2023-04-08 [1] CRAN (R 4.3.0)
+ vctrs            0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ vroom            1.6.3   2023-04-28 [1] CRAN (R 4.3.0)
+ withr            2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun             0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable           1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ xts              0.13.1  2023-04-16 [1] CRAN (R 4.3.1)
+ yaml             2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+ zoo              1.8-12  2023-04-13 [1] CRAN (R 4.3.1)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

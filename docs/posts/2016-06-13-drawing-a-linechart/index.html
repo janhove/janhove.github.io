@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2016-06-13">
+
+<title>Jan Vanhove :: Blog - Tutorial: Drawing a line chart</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#whats-a-linechart" id="toc-whats-a-linechart" class="nav-link active" data-scroll-target="#whats-a-linechart">What’s a linechart?</a></li>
+  <li><a href="#tutorial-drawing-a-linechart-in-ggplot2" id="toc-tutorial-drawing-a-linechart-in-ggplot2" class="nav-link" data-scroll-target="#tutorial-drawing-a-linechart-in-ggplot2">Tutorial: Drawing a linechart in ggplot2</a>
+  <ul class="collapse">
+  <li><a href="#what-youll-need" id="toc-what-youll-need" class="nav-link" data-scroll-target="#what-youll-need">What you’ll need</a></li>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link" data-scroll-target="#preliminaries">Preliminaries</a></li>
+  <li><a href="#summarising-a-data-frame" id="toc-summarising-a-data-frame" class="nav-link" data-scroll-target="#summarising-a-data-frame">Summarising a data frame</a></li>
+  <li><a href="#a-first-attempt-development-in-comprehension" id="toc-a-first-attempt-development-in-comprehension" class="nav-link" data-scroll-target="#a-first-attempt-development-in-comprehension">A first attempt: Development in comprehension</a></li>
+  <li><a href="#several-linecharts-in-one-plot" id="toc-several-linecharts-in-one-plot" class="nav-link" data-scroll-target="#several-linecharts-in-one-plot">Several linecharts in one plot</a></li>
+  <li><a href="#a-printer-friendly-version" id="toc-a-printer-friendly-version" class="nav-link" data-scroll-target="#a-printer-friendly-version">A printer-friendly version</a></li>
+  <li><a href="#with-customised-legends-and-labels" id="toc-with-customised-legends-and-labels" class="nav-link" data-scroll-target="#with-customised-legends-and-labels">With customised legends and labels</a></li>
+  </ul></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial: Drawing a line chart</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 13, 2016</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Graphs are incredibly useful both for understanding your own data and for communicating your insights to your audience. This is why the next few blog posts will consist of tutorials on how to draw four kinds of graphs that I find most useful: <a href="../2016-06-02-drawing-a-scatterplot"><strong>scatterplots</strong></a>, <strong>line charts</strong>, <strong>boxplots</strong> and some variations, and <strong>Cleveland dotplots</strong>. These tutorials are aimed primarily at the students in our MA programme. Today’s graph: the line chart.</p>
+<section id="whats-a-linechart" class="level2">
+<h2 class="anchored" data-anchor-id="whats-a-linechart">What’s a linechart?</h2>
+<p>A line chart is quite simply a graph in which data points that belong together are connected with a line. If you want to compare different groups, as we do below, you can use lines of different colours or different types to highlight differences between the groups.</p>
+<p>As an aside, line charts are often used to plot the development of a variable over time—the tutorial below is an example of this—and I used to think that linecharts should <em>only</em> be used when time was involved, that connecting data points using lines was somehow not kosher otherwise. But now I’m fine with using line charts even if time isn’t involved: the lines often highlight the patterns in the data much better than a handful of unconnected symbols do.</p>
+</section>
+<section id="tutorial-drawing-a-linechart-in-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="tutorial-drawing-a-linechart-in-ggplot2">Tutorial: Drawing a linechart in ggplot2</h2>
+<p>In this tutorial, you’ll learn how to draw a basic linechart and how you can tweak it. You’ll also learn how to quickly partition a dataset according to several variables and compute summary statistics within each part. For this, we’ll make use of the free statistical program R and the add-on packages <code>ggplot2</code>, <code>magrittr</code> and <code>dplyr</code>. Working with these programs and packages may be irksome at first if you’re used to pull-down menus, but the trouble is well worth it.</p>
+<p><strong>Update (2023-08-08):</strong> By now, the <code>ggplot2</code>, <code>magrittr</code> and <code>dplyr</code> packages have been integrated into the <code>tidyverse</code> suite. We’ll use that instead.</p>
+<section id="what-youll-need" class="level3">
+<h3 class="anchored" data-anchor-id="what-youll-need">What you’ll need</h3>
+<ul>
+<li>The <a href="http://r-project.org">free program R</a>.</li>
+<li>The graphical user interface <a href="http://rstudio.com">RStudio</a> – also free. Download and install R first and only then RStudio.</li>
+</ul>
+<p>I’m going to assume some familiarity with these programs. Specifically, I’ll assume that you know how to enter commands in RStudio and import datasets stored in the CSV file format. If you need help with this, see <a href="https://github.com/janhove/statintro">Chapter 3</a> of my introduction to statistics (in German) or Google <em>importing data R</em>.</p>
+<ul>
+<li>The <code>ggplot2</code>, <code>magrittr</code> and <code>dplyr</code> add-on packages for R. To install them, simply enter the following command at the prompt in RStudio.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"ggplot2"</span>, <span class="st">"magrittr"</span>, <span class="st">"dplyr"</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Update (2023-08-08): use 'install.packages("tidyverse")' instead.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>A dataset. For this tutorial, we’ll use a dataset on the acquisition of morphological cues to agency that my students compiled. It consists of the responses of 70 learners (<code>SubjectID</code>) who were assigned to one of three learning conditions (<code>BiasCondition</code>) – the details don’t matter much for our purposes. All learners completed three kinds of tasks (<code>Task</code>): understanding sentences in an unknown languages, judging the grammaticality of sentences in the same languages, and producing sentences in this language. These tasks occurred in <code>Block</code>s. The learners’ responses were tracked throughout the experiment (<code>ResponseCorrect</code>). <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/Data/Seminarprojekt2016.csv">Download</a> this dataset to your hard disk.</li>
+</ul>
+</section>
+<section id="preliminaries" class="level3">
+<h3 class="anchored" data-anchor-id="preliminaries">Preliminaries</h3>
+<p>In RStudio, read in the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>semproj <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.choose</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If the summary looks like this, you’re good to go.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(semproj)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                            SubjectID           BiasCondition      Block     
+ 0krwma8qskny4r4d1za1gqsp3hp78y4s:  96   RuleBasedInput:2496   Min.   :1.00  
+ 0pmm7rhegvxjttmjla7zyv0qrfwlv0a0:  96   StrongBias    :2112   1st Qu.:1.75  
+ 0qyn6np5fgyrmqjfbqjq68fcvs61y2gu:  96   WeakBias      :2112   Median :2.50  
+ 0uet846f755xvnm9ow9phkusz2zbhgac:  96                         Mean   :2.50  
+ 0vm3nrrqdd5mnbncnmon7sjp5f7fz4z8:  96                         3rd Qu.:3.25  
+ 12athefgbh4zetjy4y2tn2148p713c6x:  96                         Max.   :4.00  
+ (Other)                         :6144                                       
+ ResponseCorrect            Task     
+ no :1670        Comprehension:4480  
+ yes:5050        GJT          :1120  
+                 Production   :1120  
+                                     
+                                     
+                                     
+                                     </code></pre>
+</div>
+</div>
+<p>Now load the packages we’ll be using. You may get a message that some ‘objects are masked’, but that’s nothing to worry about.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="summarising-a-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="summarising-a-data-frame">Summarising a data frame</h3>
+<p>We want to compare how response accuracy develops block by block in the different experimental conditions. To that end, we need to calculate the proportion of correct responses by each learner in each block and for each task. The <code>dplyr</code> and <code>magrittr</code> packages make doing so easy.</p>
+<p>The following lines of code create a new data frame called <code>semproj_perParticipant</code> that was constructed by taking the dataset <code>semproj</code> (first line), grouping it by the variables <code>SubjectID</code>, <code>BiasCondition</code>, <code>Block</code> and <code>Task</code> (second line), and within each ‘cell’ calculating the proportion of entries in <code>ResponseCorrect</code> that read <code>"yes"</code> (third line).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>semproj_perParticipant <span class="ot">&lt;-</span> semproj <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SubjectID, BiasCondition, Block, Task) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">ProportionCorrect =</span> <span class="fu">mean</span>(ResponseCorrect <span class="sc">==</span> <span class="st">"yes"</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Type the name of the new data frame at the prompt. If you see something like this, everything’s fine.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>semproj_perParticipant</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 840 × 5
+   SubjectID                        BiasCondition Block Task   ProportionCorrect
+   &lt;fct&gt;                            &lt;fct&gt;         &lt;int&gt; &lt;fct&gt;              &lt;dbl&gt;
+ 1 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        1 Compr…             0.688
+ 2 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        1 GJT                0.5  
+ 3 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        1 Produ…             0    
+ 4 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        2 Compr…             0.375
+ 5 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        2 GJT                0.5  
+ 6 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        2 Produ…             0    
+ 7 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        3 Compr…             0.312
+ 8 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        3 GJT                0.5  
+ 9 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        3 Produ…             0    
+10 0krwma8qskny4r4d1za1gqsp3hp78y4s StrongBias        4 Compr…             0.75 
+# ℹ 830 more rows</code></pre>
+</div>
+</div>
+<p>Now that we’ve computed the proportion of correct responses by each participant for each block and task, we can compute the average proportion of correct responses per block and task according to the experimental condition the participants were assigned to. The code works similarly to before: a new data frame called <code>semproj_perCondition</code> is created by taking the <code>semproj_perParticipant</code> data frame we constructed above (1), grouping it by <code>BiasCondition</code>, <code>Block</code> and <code>Task</code> (2) and computing the mean proportion of correct responses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>semproj_perCondition <span class="ot">&lt;-</span> semproj_perParticipant <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(BiasCondition, Block, Task) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanProportionCorrect =</span> <span class="fu">mean</span>(ProportionCorrect),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The result should look like this—you can see that those in the ‘rule-based input’ learning condition score an average of 69% on the first comprehension block, 59% on the first grammaticality judgement task (GJT) block, and 13% on the first production block.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>semproj_perCondition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 4
+   BiasCondition  Block Task          MeanProportionCorrect
+   &lt;fct&gt;          &lt;int&gt; &lt;fct&gt;                         &lt;dbl&gt;
+ 1 RuleBasedInput     1 Comprehension                 0.692
+ 2 RuleBasedInput     1 GJT                           0.587
+ 3 RuleBasedInput     1 Production                    0.135
+ 4 RuleBasedInput     2 Comprehension                 0.846
+ 5 RuleBasedInput     2 GJT                           0.731
+ 6 RuleBasedInput     2 Production                    0.510
+ 7 RuleBasedInput     3 Comprehension                 0.880
+ 8 RuleBasedInput     3 GJT                           0.808
+ 9 RuleBasedInput     3 Production                    0.548
+10 RuleBasedInput     4 Comprehension                 0.897
+# ℹ 26 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="a-first-attempt-development-in-comprehension" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-attempt-development-in-comprehension">A first attempt: Development in comprehension</h3>
+<p>To start off with a simple example, let’s plot the mean proportion of correct responses in the four comprehension blocks for the three experimental conditions and connect them with a line.</p>
+<p>First, we create another new data frame that contains the averages for the comprehension task only. The new data frame <code>semproj_perCondition_Comprehension</code> is constructed by taking the data frame <code>semproj_perCondition</code> we constructed above and retaining (filtering) the rows for which the <code>Task</code> variable reads <code>Comprehension</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>semproj_perCondition_Comprehension <span class="ot">&lt;-</span> semproj_perCondition <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Task <span class="sc">==</span> <span class="st">"Comprehension"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>semproj_perCondition_Comprehension</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 4
+   BiasCondition  Block Task          MeanProportionCorrect
+   &lt;fct&gt;          &lt;int&gt; &lt;fct&gt;                         &lt;dbl&gt;
+ 1 RuleBasedInput     1 Comprehension                 0.692
+ 2 RuleBasedInput     2 Comprehension                 0.846
+ 3 RuleBasedInput     3 Comprehension                 0.880
+ 4 RuleBasedInput     4 Comprehension                 0.897
+ 5 StrongBias         1 Comprehension                 0.733
+ 6 StrongBias         2 Comprehension                 0.801
+ 7 StrongBias         3 Comprehension                 0.812
+ 8 StrongBias         4 Comprehension                 0.892
+ 9 WeakBias           1 Comprehension                 0.790
+10 WeakBias           2 Comprehension                 0.830
+11 WeakBias           3 Comprehension                 0.898
+12 WeakBias           4 Comprehension                 0.926</code></pre>
+</div>
+</div>
+<p>To plot these averages, use the following code. The first line specifies the data frame the graph should be based on, the second line specifies that <code>Block</code> (1-2-3-4) should go on the x-axis, the third that <code>MeanProportionCorrect</code> should go on the y-axis, and the fourth that the different experimental conditions should be rendered using different colours. The fifth line, finally, specifies that the data should be plotted as a line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> semproj_perCondition_Comprehension,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Block,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> MeanProportionCorrect,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> BiasCondition)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>This is decent enough for a start: it’s clear from this graph that, contrary to what we’d expected, those in the weak bias condition actually seem to perform better than the other participants, for instance. We could go on and draw similar graphs for the other two tasks—comprehension and production—but there’s a better option: draw them all at once so that the results can more easily be compared.</p>
+</section>
+<section id="several-linecharts-in-one-plot" class="level3">
+<h3 class="anchored" data-anchor-id="several-linecharts-in-one-plot">Several linecharts in one plot</h3>
+<p>For this plot, we use the <code>semproj_perCondition</code> data frame that contains the averages for all three tasks, split up by block and experimental condition. The code is otherwise the same as before, but I’ve added one additional line: <code>facet_wrap</code> splits up the data according to a variable (here <code>Task</code>) and plots a separate plot for each part. By default, the axes of the different subplots span the same range so that differences in overall performance can easily be compared between the three tasks. So not only is this quicker than drawing three separate graphs, it also saves (vertical) space <em>and</em> the side-by-side plots are easier to compare with one another than three separate plots would be.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> semproj_perCondition,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Block,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> MeanProportionCorrect,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> BiasCondition)) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Task)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="a-printer-friendly-version" class="level3">
+<h3 class="anchored" data-anchor-id="a-printer-friendly-version">A printer-friendly version</h3>
+<p>If you prefer a printer-friendly version, you can add the <code>theme_bw()</code> command to the ggplot call (10th line) and specify that the different experimental conditions should be distinguished using different linetypes (solid, dashed, dotted) rather than different colours (4th line). Since the difference between dashed and dotted lines may not be immediately obvious, it can be a good idea to also plot the averages using different symbols (lines 5 and 6).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> semproj_perCondition,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Block,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> MeanProportionCorrect,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> BiasCondition,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> BiasCondition)) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Task) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="with-customised-legends-and-labels" class="level3">
+<h3 class="anchored" data-anchor-id="with-customised-legends-and-labels">With customised legends and labels</h3>
+<p>The plot above is okay, but you can go the extra mile by customising the axis and legend labels rather than using the defaults—even if they are comprehensible, it just makes a better impression to do so:</p>
+<ol type="1">
+<li>The <code>xlab</code> and <code>ylab</code> commands change the names of the x- and y-axes. Note that <code>\n</code> starts a new line.</li>
+<li>With <code>scale_shape_manual</code>, I changed the <code>labels</code> of the legend for the different symbols. I also changed the symbols themselves (<code>values</code>) as I thought the default symbols were difficult to tell apart. The values 1, 2 and 3 work fine for this graph, I think, but you can try out different values (<a href="http://sape.inf.usi.ch/quick-reference/ggplot2/shape">handy list with symbol numbers</a>).</li>
+<li>If you customise the labels and symbols for the <code>shape</code> parameter, you need to do the same for the <code>linetype</code> parameters—otherwise, R gets confused. This is what I did in <code>scale_linetype_manual</code>. Note that the <code>labels</code> must occur in the same order as the labels in <code>scale_shape_manual</code>. (<a href="http://sape.inf.usi.ch/quick-reference/ggplot2/linetype">handy list with linetypes</a>)</li>
+<li>In both <code>scale_shape_manual</code> and <code>scale_linetype_manual</code>, I set <code>name</code> to <code>"Learning condition"</code>. This changes the title of the legend, and by using the same title twice, you tell R to combine the two legends into one.</li>
+<li>In <code>theme</code>, <code>legend_position</code> specifies where the legend should go (on top rather than on the right), and <code>legend_direction</code> whether the keys should be plotted next to (horizontal) or under (vertical) each other.</li>
+<li>The lines with <code>panel.grid</code> draw horizontal grid lines to facilitate the comparison between tasks and suppress any vertical grid lines ggplot may draw.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> semproj_perCondition,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Block,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> MeanProportionCorrect,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">linetype =</span> BiasCondition,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape =</span> BiasCondition)) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Experimental block"</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Mean proportion</span><span class="sc">\n</span><span class="st">of correct responses"</span>) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Task) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"rule-based"</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"strongly biased"</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"weakly biased"</span>),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">"Learning condition"</span>) <span class="sc">+</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"solid"</span>, <span class="st">"dotted"</span>, <span class="st">"dotdash"</span>),</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"rule-based"</span>,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"strongly biased"</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"weakly biased"</span>),</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">name =</span> <span class="st">"Learning condition"</span>) <span class="sc">+</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"grey65"</span>),</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.y =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"grey85"</span>, <span class="at">linewidth =</span> <span class="fl">0.2</span>),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor.x =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.2 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-08
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ colorspace    2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ dplyr       * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi         1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ farver        2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
+ fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.3.0)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics      0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gtable        0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ hms           1.1.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ labeling      0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ lubridate   * 1.9.2   2023-02-10 [1] CRAN (R 4.3.0)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ munsell       0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ pillar        1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr       * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ scales        1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr     * 1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyr       * 1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
+ tidyselect    1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ tidyverse   * 2.0.0   2023-02-22 [1] CRAN (R 4.3.1)
+ timechange    0.2.0   2023-01-11 [1] CRAN (R 4.3.0)
+ tzdb          0.4.0   2023-05-12 [1] CRAN (R 4.3.0)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8          1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

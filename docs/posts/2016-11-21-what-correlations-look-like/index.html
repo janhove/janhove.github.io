@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2016-11-21">
+
+<title>Jan Vanhove :: Blog - What data patterns can lie behind a correlation coefficient?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-briefest-of-introductions-to-correlation-coefficients" id="toc-the-briefest-of-introductions-to-correlation-coefficients" class="nav-link active" data-scroll-target="#the-briefest-of-introductions-to-correlation-coefficients">The briefest of introductions to correlation coefficients</a></li>
+  <li><a href="#one-correlation-coefficient-can-represent-any-number-of-patterns" id="toc-one-correlation-coefficient-can-represent-any-number-of-patterns" class="nav-link" data-scroll-target="#one-correlation-coefficient-can-represent-any-number-of-patterns">One correlation coefficient can represent any number of patterns</a></li>
+  <li><a href="#what-r-0.5-might-look-like" id="toc-what-r-0.5-might-look-like" class="nav-link" data-scroll-target="#what-r-0.5-might-look-like">What <em>r</em> = 0.5 might look like</a>
+  <ul class="collapse">
+  <li><a href="#some-comments" id="toc-some-comments" class="nav-link" data-scroll-target="#some-comments">Some comments</a></li>
+  </ul></li>
+  <li><a href="#what-r-0-might-look-like" id="toc-what-r-0-might-look-like" class="nav-link" data-scroll-target="#what-r-0-might-look-like">What <em>r</em> = 0 might look like</a>
+  <ul class="collapse">
+  <li><a href="#some-comments-1" id="toc-some-comments-1" class="nav-link" data-scroll-target="#some-comments-1">Some comments</a></li>
+  </ul></li>
+  <li><a href="#two-other-examples" id="toc-two-other-examples" class="nav-link" data-scroll-target="#two-other-examples">Two other examples</a>
+  <ul class="collapse">
+  <li><a href="#a-weak-positive-correlation-r-0.1" id="toc-a-weak-positive-correlation-r-0.1" class="nav-link" data-scroll-target="#a-weak-positive-correlation-r-0.1">A weak positive correlation: <em>r</em> = 0.1</a></li>
+  <li><a href="#a-strong-negative-correlation-r--0.9" id="toc-a-strong-negative-correlation-r--0.9" class="nav-link" data-scroll-target="#a-strong-negative-correlation-r--0.9">A strong negative correlation: <em>r</em> = -0.9</a></li>
+  </ul></li>
+  <li><a href="#storing-the-data" id="toc-storing-the-data" class="nav-link" data-scroll-target="#storing-the-data">Storing the data</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">What data patterns can lie behind a correlation coefficient?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 21, 2016</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>In this post, I want to, first, help you to improve your intuition of what data patterns correlation coefficients can represent and, second, hammer home the point that to sensibly interpret a correlation coefficient, you need the corresponding scatterplot.</p>
+<section id="the-briefest-of-introductions-to-correlation-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="the-briefest-of-introductions-to-correlation-coefficients">The briefest of introductions to correlation coefficients</h2>
+<p>If you haven’t dealt with correlation coefficients much, a correlation coefficient, abbreviated as <em>r</em>, is a number between -1 and 1 that captures the strength of the linear relationship between two numeric variables. For instance, say you’ve asked 30 people about their weight and body height and plot these 30 (weight, height)-pairs in a scatterplot.</p>
+<ul>
+<li><p>If all 30 data points fall perfectly on an increasing line, then the correlation between these two variables will be <em>r</em> = 1.</p></li>
+<li><p>If, however, the general shape of the (weight, height) relationship is an increasing one but the 30 data points don’t fall perfectly on a single line, then <em>r</em> will be somewhere between 0 and 1; the closer the data points are to a straight line, the closer to 1 <em>r</em> will be.</p></li>
+<li><p>If the relationship is a decreasing one, then <em>r</em> will lie between 0 and -1,</p></li>
+<li><p>and if there’s no linear relationship between weight and height at all, <em>r</em> will be 0.</p></li>
+</ul>
+<p>You’ll find plenty of examples below.</p>
+</section>
+<section id="one-correlation-coefficient-can-represent-any-number-of-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="one-correlation-coefficient-can-represent-any-number-of-patterns">One correlation coefficient can represent any number of patterns</h2>
+<p>Correlation coefficients are popular among researchers because they allow them to summarise the relationship between two variables in a single number. However, a given correlation coefficient can represent any number of patterns between two variables, and without more information (ideally in the form of a scatterplot), the researchers themselves and their readers have no way of knowing which one.</p>
+<p>To illustrate this, I’ve written an <code>R</code> function, <a href="http://janhove.github.io/RCode/plot_r.R"><code>plot_r()</code></a>, that takes as its input a correlation coefficient and a sample size and outputs 16 quite different scatterplots that are all characterised by the same correlation coefficient. Below I first show and comment on how scatterplots for correlation coefficients of 0.5 and 0 based on 50 pairs might look like. Then, for those of you who don’t use <code>R</code>, I provide scatterplots for a couple of other correlation coefficients so you can develop a sense of what the patterns underlying these correlation coefficients could look like.</p>
+</section>
+<section id="what-r-0.5-might-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-r-0.5-might-look-like">What <em>r</em> = 0.5 might look like</h2>
+<p>First, <code>source()</code> the <code>plot_r()</code> function or <a href="http://janhove.github.io/RCode/plot_r.R">download</a>. Then, in <code>R</code>, you can draw scatterplots corresponding to a correlation coefficient of <em>r</em> = 0.5 and 50 observations like this. (You’ll end up with a different set of scatterplots as the scatterplots are created randomly.)</p>
+<p><strong>Update (2023-08-08):</strong> The <code>plot_r()</code> function is now also part of the <code>cannonball</code> package for R, which you can download from <a href="https://github.com/janhove/cannonball">GitHub</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"http://janhove.github.io/RCode/plot_r.R"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.5</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<section id="some-comments" class="level3">
+<h3 class="anchored" data-anchor-id="some-comments">Some comments</h3>
+<section id="top-row" class="level4">
+<h4 class="anchored" data-anchor-id="top-row">Top row</h4>
+<p>I suspect that when people think of a relationship with a correlation coefficient of 0.5, they have something like plots (1) and (2) in their mind’s eye. For both plots, the underlying relationship between X and Y is linear, and the Y values are normally distributed about the best-fitting straight line. The minor difference between (1) and (2) is that for (1), X is normally distributed and for (2), X is uniformly distributed. These two plots represent the kind of relationship that <em>r</em> was meant to capture.</p>
+<p>Plot (3) differs from (1) and (2) in that the X variable is now sampled from a skewed distribution. In this case, most X values are comparatively low but one X value is fairly large; if you run the code yourself, you may find that there are no outlying values or that there are more than one. Such a distribution may occur occur when X represents, for instance, participants’ performance on a task that was too difficult (floor effect). In such a case, one or a couple of outlying but genuine X values may (not <em>will</em>) have ‘high leverage’, that is, they may unduly affect the correlation coefficient by pulling it up or down.</p>
+<p>The problem in (4) is similar to the one in (3), but now most X values are comparatively large and a handful are fairly low, perhaps because X represents participants’ performance on a task that was too easy (ceiling effects). Here, too, outlying points may have ‘high leverage’, i.e., they may unduly affect the correlation coefficient such that it doesn’t accurately characterise the bulk of the data.</p>
+</section>
+<section id="second-row" class="level4">
+<h4 class="anchored" data-anchor-id="second-row">Second row</h4>
+<p>Plots (5) and (6) are variations on the same theme as in plots (3) and (4): The Y values aren’t normally distributed about the regression line but are skewed. In such cases, too, some outlying but genuine Y values may (not <em>will</em>) have ‘high leverage’, i.e., they may pull the correlation coefficient up or down much more than ordinary data points.</p>
+<p>Plots (7) and (8) are two examples where the variability of the Y values about the straight line increases and decreases, respectively, as X becomes larger, though admittedly, it isn’t very clear in this example. This is known as heteroskedasticity. The main problems with blindly relying on correlation coefficients in the presence of heteroskedasticity, in my view, are that (a) ‘<em>r</em> = 0.5’ both _under_sells how well Y can be estimated from X for low (high) X values and _over_sells how well Y can be estimated from X for high (low) X values, and (b) by just reporting the correlation coefficient you gloss over an important aspect of the data. Additionally, heteroskedasticity may affect your inferential statistics.</p>
+</section>
+<section id="third-row" class="level4">
+<h4 class="anchored" data-anchor-id="third-row">Third row</h4>
+<p>Plot (9) illustrates that correlation coefficients express the strength of the <em>linear</em> relationship between two variables. If the relationship isn’t linear, they’re hardly informative. In this case, <em>r = 0.5</em> seriously understates the strength of the XY relationship, which happens to be non-linear (quadratic in this case). The same goes for (10), where <em>r = 0.5</em> understates the strength of the XY relationship and misses out on the cyclical nature of the relationship.</p>
+<p>Plots (11) and (12) illustrate how a single outlying point, e.g., due to a technical error, can produce misleading correlation coefficients. In (11), a single outlying data point produces the significant positive correlation; had only the 49 data points on the left been considered, a negative relationship would’ve been observed (the dashed red line). Blindly going by <em>r = 0.5</em> mischaracterises the bulk of the data. In (12), the relationship is considerably stronger than <em>r = 0.5</em> suggests for the bulk of the data (the dashed red line); the outlier pulls the correlation coefficient down. Plots (11) and (12) differ from plots (3) and (4) in that in plots (3) and (4), the X values were all sampled from the same–but skewed–distribution and are, as such, genuine data points; in plots (11) and (12), the outliers were caused by a different mechanism from the other data points (e.g., a coding error or a technical glitch).</p>
+</section>
+<section id="fourth-row" class="level4">
+<h4 class="anchored" data-anchor-id="fourth-row">Fourth row</h4>
+<p>In (13), the Y values are bimodally distributed about the regression line. This suggests that we have overlooked an important aspect of the data, such as grouping factor: perhaps the datapoints above the regression line were sampled from a different population than those below the regression line.</p>
+<p>The situation in plot (14) is similar to but considerably worse than the one in (13): The dataset contains two groups, but unlike in (13), the overall trend captured by <em>r = 0.5</em> betrays the fact that within each of these groups, the XY relationship is actually <em>negative</em>. Plot (14) will often, but not always, produce such a pattern, which is known as <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox">Simpson’s paradox</a>.</p>
+<p>Plot (15) depicts a situation where the researchers, rather than investigating the XY relationship along the entire X range, only investigated the cases with the most extreme X values. Sampling at the extremes inflates correlation coefficients (see <a href="../2015-02-05-standardised-vs-unstandardised-es">reason no. 2</a> why I don’t particularly like correlation coefficients to begin with). In other words, if you took a sample of 150 XY cases and only looked at the 50 most extreme X observations, you’d end up with a correlation coefficient that is very likely to be larger than the one you’d observe if you looked at all 150 cases.</p>
+<p>Plot (16), finally, is what I suspect many correlation coefficients actually represent. The X and Y data are lumpy, for instance, because they represent count data or responses to questionnaire data. I don’t think correlation coefficients for such patterns are deceptive per se, but we’re clearly talking about a different pattern than in plots (1) and (2).</p>
+</section>
+</section>
+</section>
+<section id="what-r-0-might-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-r-0-might-look-like">What <em>r</em> = 0 might look like</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<section id="some-comments-1" class="level3">
+<h3 class="anchored" data-anchor-id="some-comments-1">Some comments</h3>
+<p>The main point I want to make here is that <em>r = 0</em> doesn’t necessarily mean that there’s no XY relationship. This is clear from plots (9) and (10), which evince strong <em>non-linear</em> relationships. Plots (11) and (12) similarly underscore this point: There exists a strong relationship for the bulk of the data, but this trend is cancelled out by a single outlying data point. Occasionally, in plot (14), a trend present in two subgroups may not be visible in an aggregated analysis; this doesn’t seem to be the case in this example, though.</p>
+</section>
+</section>
+<section id="two-other-examples" class="level2">
+<h2 class="anchored" data-anchor-id="two-other-examples">Two other examples</h2>
+<section id="a-weak-positive-correlation-r-0.1" class="level3">
+<h3 class="anchored" data-anchor-id="a-weak-positive-correlation-r-0.1">A weak positive correlation: <em>r</em> = 0.1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.1</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="a-strong-negative-correlation-r--0.9" class="level3">
+<h3 class="anchored" data-anchor-id="a-strong-negative-correlation-r--0.9">A strong negative correlation: <em>r</em> = -0.9</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="sc">-</span><span class="fl">0.9</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="storing-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="storing-the-data">Storing the data</h2>
+<p>If you want to store the data underlying one or all of the plots, you can set the optional <code>showdata</code> parameter to either <code>all</code> or a number between 1 and 16 corresponding to one of the plots:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show data for plot 11 (not run)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.4</span>, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">showdata =</span> <span class="dv">11</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Show data for all plots (not run)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.8</span>, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">showdata =</span> <span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- ## Conclusions -->
+<p>I hope the <code>plot_r()</code> function helps you to develop a feel for what correlation coefficients may actually represent and that this post may convince more researchers to <strong>draw scatterplots</strong> before running any correlation analyses—or regression analyses, for that matter—and to actually <strong>show them</strong> when reporting correlations.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16 ucrt)
+ os       Windows 10 x64 (build 18363)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_United Kingdom.utf8
+ ctype    English_United Kingdom.utf8
+ tz       Europe/Zurich
+ date     2023-08-08
+ pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cachem        1.0.8   2023-05-01 [1] CRAN (R 4.3.1)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.1)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.33  2023-07-07 [1] CRAN (R 4.3.1)
+ ellipsis      0.3.2   2021-04-29 [1] CRAN (R 4.3.1)
+ evaluate      0.21    2023-05-05 [1] CRAN (R 4.3.1)
+ fastmap       1.1.1   2023-02-24 [1] CRAN (R 4.3.1)
+ fs            1.6.3   2023-07-20 [1] CRAN (R 4.3.1)
+ glue          1.6.2   2022-02-24 [1] CRAN (R 4.3.1)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.1)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ knitr         1.43    2023-05-25 [1] CRAN (R 4.3.1)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.1)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.1)
+ memoise       2.0.1   2021-11-26 [1] CRAN (R 4.3.1)
+ mime          0.12    2021-09-28 [1] CRAN (R 4.3.0)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [1] CRAN (R 4.3.1)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr         1.0.1   2023-01-10 [1] CRAN (R 4.3.1)
+ R6            2.5.1   2021-08-19 [1] CRAN (R 4.3.1)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ remotes       2.4.2.1 2023-07-18 [1] CRAN (R 4.3.1)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.1)
+ rmarkdown     2.23    2023-07-01 [1] CRAN (R 4.3.1)
+ rstudioapi    0.15.0  2023-07-07 [1] CRAN (R 4.3.1)
+ sessioninfo   1.2.2   2021-12-06 [1] CRAN (R 4.3.1)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.0)
+ stringr       1.5.0   2022-12-02 [1] CRAN (R 4.3.1)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.1)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.1)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.7   2023-01-23 [1] CRAN (R 4.3.0)
+
+ [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.3
+ [2] C:/Program Files/R/R-4.3.1/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

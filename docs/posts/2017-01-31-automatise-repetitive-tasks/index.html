@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2017-01-31">
+
+<title>Jan Vanhove :: Blog - Automatise repetitive tasks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#example-1-replacing-stylised-apostrophes-by-straight-apostrophes" id="toc-example-1-replacing-stylised-apostrophes-by-straight-apostrophes" class="nav-link active" data-scroll-target="#example-1-replacing-stylised-apostrophes-by-straight-apostrophes">Example 1: Replacing stylised apostrophes by straight apostrophes</a></li>
+  <li><a href="#example-2-concatenating-pairs-of-text-files-based-on-their-name" id="toc-example-2-concatenating-pairs-of-text-files-based-on-their-name" class="nav-link" data-scroll-target="#example-2-concatenating-pairs-of-text-files-based-on-their-name">Example 2: Concatenating pairs of text files based on their name</a></li>
+  <li><a href="#general-pointers" id="toc-general-pointers" class="nav-link" data-scroll-target="#general-pointers">General pointers</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Automatise repetitive tasks</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 31, 2017</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Research often involves many repetitive tasks. For a ongoing project, for instance, we needed to replace all stylised apostrophes (’) with straight apostrophes (’) in some 3,000 text files when preparing the texts for the next step. As another example, you may need to split up a bunch of files into different directories depending on, say, the character in the file name just before the extension. When done by hand, such tasks are as mind-numbing and time-consuming as they sound – perhaps you would do them on a Friday afternoon while listening to music or outsource them to a student assistant. My advice, though, is this: Try to automatise repetitive tasks.</p>
+<p>Doing repetitive tasks is what computers are for, so rather than spending several hours learning nothing, I suggest you spend that time writing a script or putting together a command line call that does the task for you. If you have little experience doing this, this will take time at first. In fact, I reckon I often spend roughly same amount of time trying to automatise menial tasks as it would have cost me to do them by hand. But in the not-so-long run, automatisation is a time-saver: Once you have a working script, you can tweak and reuse it. Additionally, while you’re figuring out how to automatise a menial chore, you’re actually learning something useful. The chores become more of a challenge and less mind-numbing. I’m going to present an example or two of what I mean and I will conclude by giving some general pointers.</p>
+<section id="example-1-replacing-stylised-apostrophes-by-straight-apostrophes" class="level2">
+<h2 class="anchored" data-anchor-id="example-1-replacing-stylised-apostrophes-by-straight-apostrophes">Example 1: Replacing stylised apostrophes by straight apostrophes</h2>
+<p>This is the example cited above: for an ongoing project, we needed to replace all stylised apostrophes (i.e., ’) with straight apostrophes (i.e., ‘) in some 3,000 text files. This task is so menial you shouldn’t even think about doing it by hand, i.e., by opening all 3,000 text files and using ‘Find and replace’. I work on Linux so I Googled something like “find and replace in all files Linux” and found a post on StackOverflow very much like <a href="http://stackoverflow.com/a/11392505">this one</a> that provided the basic solution: To replace occurrences of “foo” with “bar”” in all files in a directory, open a Linux terminal (command-line) and use</p>
+<pre>cd /path/to/your/folder
+sed -i 's/foo/bar/g' *
+</pre>
+<p>The first line navigates you to the directory containing the files you want to edit, so I needed to replace that by, say,</p>
+<pre>cd Documents/ProjectX/files
+</pre>
+<p>The second line is a <a href="http://www.grymoire.com/Unix/Sed.html">sed</a> command where I needed to replace ‘foo’ with a stylised apostrophe and ‘bar’ with a straight apostrophe. To get it to work, I needed to replace the outer single quotation marks by double quotation marks:</p>
+<pre>sed -i "s/’/'/g" *
+</pre>
+<p>I later learnt that the ‘-i’ means that the files are edited in place; removing the ‘-i’ shows the content of the files with all ’s changes to ‘s in the terminal, but doesn’t affect the files themselves. The ’g’ causes the command to replace all occurrences, not just the first one, and by using ’*’ at the end, the sed command is applied to all files in the directory.</p>
+<p>I don’t think this command will work out of the box on Windows, but that’s not the point (I’m sure you can easily find a similar solution for Windows). Rather, the point is that, given a choice between doing a repetitive task and trying to find an automatic solution, invest your time in the second.</p>
+<p>Incidentally, an alternative to using the command line for such tasks would be to use a program with a graphical user interface that allows you to find and replace strings in all files in a directory. The advantage to using the command line is that you can simply save the commands so that you have an unambiguous record of what steps you took when preparing materials or data.</p>
+</section>
+<section id="example-2-concatenating-pairs-of-text-files-based-on-their-name" class="level2">
+<h2 class="anchored" data-anchor-id="example-2-concatenating-pairs-of-text-files-based-on-their-name">Example 2: Concatenating pairs of text files based on their name</h2>
+<p>The files mentioned above contain short texts by children at different points in time. At each point in time, each child wrote two texts: a narrative and an argumentative one. For the purposes of an analysis, we needed to combine the narrative and argumentative text into one file for each child at each point in time.</p>
+<p>This task would again be mind-numbing, but helpfully, the files were named in such a way that this step could be automatised. Each file name started with a string that uniquely identified the child, followed by either ‘<em>narr</em>’ or ‘<em>arg</em>’ (narrative vs.&nbsp;argumentative text), followed by the point in time when the text was written and the file extension. By Googling something like “merge text files based on name”, I found another helpful StackOverflow <a href="http://unix.stackexchange.com/questions/123932/merging-text-files-based-on-their-filename">post</a>. I needed to tweak this a bit, and while I bet the solution below looks pig-ugly to people more knowledgeable about scripting, it does the job:</p>
+<pre># Merge text files based on name
+
+# Find all files in directory containing 'narr'
+FILESNARR=$(find . -type f -name '*narr*')
+# Find all files in directory containing 'arg'
+FILESARG=$(find . -type f -name '*arg*')
+
+# The following loops through all files with narr and arg found above.
+# It extracts the first part of the filename (child’s unique ID)
+# (filename1: up till 'narr' or 'arg')
+# as well as the second part (time of data collection + extension)
+# (filename2: after 'narr' or 'arg').
+# First, the contents of the narr files are written to a new file
+# called filename1_filename2 (i.e., unique ID_Time.txt).
+# Then, the contents of the arg files are appended to this file.
+
+# First write the narrative texts to file.
+for file in $FILESNARR; do
+ # take 'file', remove everything after and including _narr
+ filename1=${file%_narr_*}
+ # take 'file', remove everything before and including _narr
+ filename2=${file#*_narr_}
+ cat "$file" &gt;&gt; "${filename1}_${filename2}"
+done
+
+# Then add the argumentative texts to the same file.
+for file in $FILESARG; do
+ filename1=${file%_arg_*}
+ filename2=${file#*_arg_}
+ cat "$file" &gt;&gt; "${filename1}_${filename2}"
+done
+</pre>
+<p>Note that if we decided we would rather have the argumentative first and the narrative texts second, we just change the order of the last two blocks. It would also be easy to tweak this script so that we would have some filler text before or after each text, for instance. Copious comments increases the script’s reuse potential.</p>
+</section>
+<section id="general-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="general-pointers">General pointers</h2>
+<ol type="1">
+<li><p>I have found <a href="http://stackoverflow.com">StackOverflow</a> to be the most useful resource for finding commands such as those above.</p></li>
+<li><p>If you’re working with sound files and need to perform menial tasks on them, make use of <a href="http://www.fon.hum.uva.nl/praat/">Praat’s</a> scripting possibilities. You can find some very useful scripts at http://www.linguistics.ucla.edu/faciliti/facilities/acoustic/praat.html, and even if they don’t do what you need, you can use them to teach yourself how to script in Praat. (It’s pretty intuitive.)</p></li>
+<li><p>When the menial steps involve data that you need to preprocess or squeeze into the right format, don’t manually edit the original data files. Instead, do your data wrangling in your statistics program and use a script, not a graphical user interface. This way, any changes are documented and easily reversible.</p></li>
+<li><p>Double-check a couple of edited files to see if everything went according to plan.</p></li>
+<li><p>Most imporantly, <em>make a back-up of the files you want to edit</em>. Don’t run a command on batch of text files only to find out that all exclamation marks have been replaced by spaces rather than dots. You can’t click “undo previous” when working at the prompt.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

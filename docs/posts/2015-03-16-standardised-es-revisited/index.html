@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2015-03-16">
+
+<title>Jan Vanhove :: Blog - More on why I don’t like standardised effect sizes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-fictitious-example" id="toc-a-fictitious-example" class="nav-link active" data-scroll-target="#a-fictitious-example">A fictitious example</a></li>
+  <li><a href="#standardised-effect-sizes-and-optimising-research-design" id="toc-standardised-effect-sizes-and-optimising-research-design" class="nav-link" data-scroll-target="#standardised-effect-sizes-and-optimising-research-design">Standardised effect sizes and optimising research design</a></li>
+  <li><a href="#why-do-i-care" id="toc-why-do-i-care" class="nav-link" data-scroll-target="#why-do-i-care">Why do I care?</a>
+  <ul class="collapse">
+  <li><a href="#d-taints-comparisons-between-studies" id="toc-d-taints-comparisons-between-studies" class="nav-link" data-scroll-target="#d-taints-comparisons-between-studies"><em>d</em> taints comparisons between studies</a></li>
+  <li><a href="#ds-perverse-effect-on-power-computations" id="toc-ds-perverse-effect-on-power-computations" class="nav-link" data-scroll-target="#ds-perverse-effect-on-power-computations"><em>d</em>’s (perverse?) effect on power computations</a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">More on why I don’t like standardised effect sizes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 16, 2015</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>A couple of weeks ago, I outlined four reasons <a href="../2015-02-05-standardised-vs-unstandardised-es">why I don’t like standardised effect sizes</a> such as Cohen’s <em>d</em> or Pearson’s <em>r</em> and prefer raw effect sizes instead. In this post, I develop my argument a bit further and argue that reliance on standardised effect sizes can hinder comparisons between studies and that it may have a perverse effect on discussions related to statistical power.</p>
+<section id="a-fictitious-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-fictitious-example">A fictitious example</h2>
+<p>Let’s say two research teams want to investigate the effect of testosterone treatment in bats on the number of twists and turns the bats make per minute when they’re out hunting. Both teams take a random sample of 200 bats and randomly assign 100 of them to the testosterne treatment and 100 to the no-treatment group. The testosterone treatment is identical for both research teams. After treatment, the bats are observed hunting and the number of turns they make is tallied. Both teams adhere to the same definition of what a turn is.</p>
+<p>The first team notes that the testosterone treatment seemed to have led to an increase in the number of turns. In standardised effect sizes, the Cohen’s <em>d</em> (i.e.&nbsp;difference between the group means divided by the pooled standard deviation) of their treatment is 0.60 (95% CI: [0.30; 0.89]). The second research team similarly notes an testosterone-induced increase, but their Cohen’s <em>d</em> is more than twice as high: 1.26 (95% CI: [0.93; 1.60]). Even before the results get published, chiropterologists (yes, I had to look that up) are already vigorously debating the results and some are drafting up grant proposals to uncover what may lie behind this difference.</p>
+<p>Such enthusiasm would be premature, however. In actual fact, both research teams found the <em>exact same effect</em>. The <em>raw</em> testosterone-induced increase in number of twists and turns per minute was 4 in both the first experiment (95% CI: [2.1; 5.9]) and the second experiment (95% CI: [3.1; 4.9]). The second research team found a larger Cohen’s <em>d</em>, but as I’ll discuss below, this is an ‘artifact’ (for want of a better term) of their having collected more precise measures. When I recently <a href="https://twitter.com/janhove/status/576756147283234816">wrote</a> that standardised effect sizes can artificially inflate the estimated effect, this is what I meant. I’ll elaborate on this in what follows.</p>
+</section>
+<section id="standardised-effect-sizes-and-optimising-research-design" class="level2">
+<h2 class="anchored" data-anchor-id="standardised-effect-sizes-and-optimising-research-design">Standardised effect sizes and optimising research design</h2>
+<p>Cohen’s <em>d</em> and other standardised effect sizes express the effect in the sample (e.g.&nbsp;a difference between two group means) relative to the variability within the sample. Thus, standardised effect sizes are larger when the effect in the sample gets larger <em>or when the variability in the sample decreases</em>. The <em>same effect</em> (e.g.&nbsp;4 turns per minute, as in the example above) can be associated with a different Cohen’s <em>d</em> if the variability in the sample differs (SD = 6.7 vs.&nbsp;3.2 in this case).</p>
+<p>But isn’t the difference in variability between the two samples that Cohen’s <em>d</em> indirectly points to noteworthy? Doesn’t this suggest that the first team used a sample of bats that was much more variable with regard to the number of turns they took per minute?</p>
+<p>Well, no and no. Apart from the fact that the standard deviations do a much better job at highlighting this difference than Cohen’s <em>d</em> does, such difference is purely due to the differences in exactitude between the two teams. Both carried out perfectly valid and unbiased experiments, but the second did a much better job at eliminating extraneous variability.</p>
+<p>To elaborate: The population of bats at large differs with respect to their inclination to twist and turn when hunting. For the sake of this example, I’ve assumed that untreated bats take 78.1 turns per minute on average compared to 82.1 turns per minute for treated bats. Since everyone likes a bell-curve, we’ll say that the inclination to take twists and turns is normally distibuted with a standard deviation of 3.</p>
+<p>However, our estimates of an individual bat’s turning inclination will be tainted by <strong>measurement error</strong>: our instruments aren’t entirely accurate so there’s always at least some noise on our dependent measure. <a href="http://onlinestatbook.com/2/summarizing_distributions/variance_sum_law.html">Variances add up</a>, so measurement error contributes to variability in the measurements and hence affects Cohen’s <em>d</em> and other standardised effect sizes. But as long as measurement errors don’t exert a skew on the results, raw effect size measures are unaffected by them.</p>
+<p>Importantly, <strong>good experimental design</strong> seeks to minimise measurement error, e.g.&nbsp;by using more precise instruments or by taking repeated measures per unit and averaging them. This improves the study <strong>precision</strong> but shouldn’t affect the (expected value of the) <strong>point estimate</strong> of the effect in question.</p>
+<p>In the example above, the first research team video-taped each bat for one minute and let one rater who was blind to bats’ experimental treatment tally the number of turns taken by the bat in that one minute. This produced an <em>unbiased</em> but <em>imprecise</em> estimate of each bat’s turning inclination. The second research team taped each bat for three minutes, yielding a more stable estimate of the bats’ turning inclination. They then let ten blind raters tally the number of turns per bat. The raters’ scores were then averaged, reducing measurement error even further. This procedure, too, produces an <em>unbiased</em> but much more <em>precise</em> estimate of each bat’s turning inclination.</p>
+<p>The graph below shows the ‘true’ distribution of turns per minute in treated bats in black (mean = 82.1, sd = 3; no measurement error). The red graph shows how substantial but unbiased measurement error can affect the measurement: the distribution is more spread out. The blue graph shows how measurements with much less measurement error would be distributed.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As a result of higher measurement error, the data of control (dotted line) and treatment groups (solid lines) overlap to a much higher extent in the first experiment:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>than in the second one:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It is this difference in conspicuousness that Cohen’s <em>d</em> picks up on. But the effect itself, i.e.&nbsp;4 turns per minute, is the same in both cases.</p>
+<p>(I’ve focused on measurement error here, but standardised effect sizes are also affected by <a href="../2015-02-05-standardised-vs-unstandardised-es">other design features</a>.)</p>
+</section>
+<section id="why-do-i-care" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-i-care">Why do I care?</h2>
+<section id="d-taints-comparisons-between-studies" class="level3">
+<h3 class="anchored" data-anchor-id="d-taints-comparisons-between-studies"><em>d</em> taints comparisons between studies</h3>
+<p>As long as everyone in the field samples bats (or participants) from the same population, uses instruments with the same precision and uses them in the same way, results between studies can directly be compared using Cohen’s <em>d</em> as well as using raw effect sizes. (In which case standardisation is superfluous.) But presumably, different studies are conducted with different degrees of precision, and the research community hopefully adopts more precise instruments in the course of time. When the standard of precision isn’t associated with measurement bias, raw effect sizes are unbiased: the first team conducted a less sophisticated but nonetheless <em>valid</em> experiment. Cohen’s <em>d</em>, however, will tend to be larger for more sophisticated experiments.</p>
+<p>We can derive some feeling of justice from this, but it isn’t desirable. Studies conducted to differing exacting standards should still be comparable if they’re unbiased. By relying on Cohen’s <em>d</em>, we run the risk of seeing differences where there aren’t any (as in the example above) or finding similarities where there might in fact be differences (similar Cohen’s <em>d</em>, radically different raw effect sizes). Of course, in drawing conclusions from multiple studies, the findings of more exacting researchers should be weighted more, but this is because they report more precise esimates, not because they tend to find larger standardised effect sizes.</p>
+</section>
+<section id="ds-perverse-effect-on-power-computations" class="level3">
+<h3 class="anchored" data-anchor-id="ds-perverse-effect-on-power-computations"><em>d</em>’s (perverse?) effect on power computations</h3>
+<p>One genuine worry I have is that Cohen’s <em>d</em> or other standardised effect sizes have a perverse effect on our notion of <strong>statistical power</strong>. From where I’m standing, it seems as though just about every power computation either (a) takes a pre-specified Cohen’s <em>d</em> (say <em>d</em> = 0.4) as its starting point and calculates the number of participants needed to attain 80% power or (b) calculates how large an effect (again in Cohen’s <em>d</em>) is detectable with 80% power given the sample size.</p>
+<p>In my view, such an approach to computing power puts too much emphasis on sample size and too little on optimising the experimental design and refining measurements. In the example above, a power computation based on raw effect sizes would reveal that both studies had 80% power to detect an effect of <em>d</em> = 0.4. My point isn’t that this computation is <em>wrong</em>, but that it <em>misses the point</em>: A Cohen’s <em>d</em> of 0.4 corresponds to a substantially smaller effect in the second study than in the first (i.e.&nbsp;the second can detect smaller effects more easily than the first).</p>
+<p>To be clear: give me a large sample over a comparable small one any day. But not all large samples are created equal, and design features matter when assessing a study’s power.</p>
+</section>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping up</h2>
+<p>I have referred to standardised effect sizes myself when <a href="http://dx.doi.org/10.1371/journal.pone.0069172">arguing</a> that drawing conclusions from non-significant results on the basis of sample sizes of 7 participants is fundamentally unsound. But the more I think about standardised effect sizes, the less I’m convinced that they serve any useful role other than rhetoric that can’t be taken up with more aplomb by raw effect sizes. My view on this may be limited, however; if you have any examples where standardised effect sizes do play a meaningful role, do drop a line in the comments (which allows more than 140 characters).</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

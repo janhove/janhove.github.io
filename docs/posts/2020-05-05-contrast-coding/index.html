@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2020-05-23">
+
+<title>Jan Vanhove :: Blog - Tutorial: Obtaining directly interpretable regression coefficients by recoding categorical predictors</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#example-1-no-interactions-no-random-effects" id="toc-example-1-no-interactions-no-random-effects" class="nav-link active" data-scroll-target="#example-1-no-interactions-no-random-effects">Example 1: No interactions, no random effects</a></li>
+  <li><a href="#example-2-no-interactions-but-random-effects" id="toc-example-2-no-interactions-but-random-effects" class="nav-link" data-scroll-target="#example-2-no-interactions-but-random-effects">Example 2: No interactions, but random effects</a></li>
+  <li><a href="#example-3-interactions-and-random-effects" id="toc-example-3-interactions-and-random-effects" class="nav-link" data-scroll-target="#example-3-interactions-and-random-effects">Example 3: Interactions and random effects</a></li>
+  <li><a href="#what-if-it-doesnt-work" id="toc-what-if-it-doesnt-work" class="nav-link" data-scroll-target="#what-if-it-doesnt-work">What if it doesn’t work?</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial: Obtaining directly interpretable regression coefficients by recoding categorical predictors</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">contrast coding</div>
+    <div class="quarto-category">mixed-effects models</div>
+    <div class="quarto-category">multiple regression</div>
+    <div class="quarto-category">tutorial</div>
+    <div class="quarto-category">research questions</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 23, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The output of regression models is often difficult to parse, especially when categorical predictors and interactions between them are being modelled. The goal of this tutorial is to show you how you can obtain estimated coefficients that you can interpret directly in terms of your research question. I’ve learnt about this technique thanks to Schad et al.&nbsp;(2020), and I refer to them for a more detailed discussion. What I will do is go through three examples of increasing complexity that should enable you to apply the technique in your own analyses.</p>
+<!--more-->
+<section id="example-1-no-interactions-no-random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="example-1-no-interactions-no-random-effects">Example 1: No interactions, no random effects</h2>
+<p>Let’s start off nice but not too easy by analysing an experiment with three conditions and only one observation per participant.</p>
+<p>This dataset we’ll work with comes from a study by Vanhove (2019) and is available <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/Data/Vanhove2018.csv">here</a>. The details hardly matter, but there were three experimental conditions: <code>information</code>, <code>no information</code> and <code>strategy</code>. The <code>no information</code> condition serves as the baseline control condition, and the <code>information</code> and <code>strategy</code> conditions serve as the treatment conditions. The expectation was that the treatment conditions would outperform the control condition on the outcome variable (here: <code>ProportionCongruent</code>), and I was also interested in seeing if the <code>strategy</code> condition outperformed the <code>information</code> condition.</p>
+<p>The condition means already show that the participants in the <code>information</code> condition did not in fact outperform those in the <code>no information</code> condition, but neither that nor the small sample size should keep us from using these data for our example.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"http://homeweb.unifr.ch/VanhoveJ/Pub/Data/Vanhove2018.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d<span class="sc">$</span>Condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   information no information       strategy 
+            15             14             16 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(d<span class="sc">$</span>ProportionCongruent, d<span class="sc">$</span>Condition, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   information no information       strategy 
+         0.517          0.554          0.627 </code></pre>
+</div>
+</div>
+<p>If we fit the model directly, R will apply the default coding scheme to the categorical predictor (viz., treatment coding):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The newest version of R doesn't recode strings as factors automatically,</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># so code Condition as a factor for good measure.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>Condition)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>m_default <span class="ot">&lt;-</span> <span class="fu">lm</span>(ProportionCongruent <span class="sc">~</span> Condition, <span class="at">data =</span> d)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_default)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)               0.5172     0.0512  10.101 8.31e-13
+Conditionno information   0.0369     0.0737   0.501 6.19e-01
+Conditionstrategy         0.1099     0.0713   1.542 1.31e-01</code></pre>
+</div>
+</div>
+<p>By default, the <code>information</code> condition is chosen as the reference level because it’s first in the alphabet. That is, the 0.52 is the estimated mean for the <code>information</code> condition. The second estimate (0.04) is the difference between the mean for the <code>no information</code> condition and that of the reference level (<code>information</code>). Similarly, the third estimate (0.11) is the difference between the mean for the <code>strategy</code> condition and that of the reference level (<code>information</code>). These estimates are all correct, and they’re fairly easy to interpret once you’ve figured out what the reference level is. But if we want to, we can obtain estimated coefficients that map more directly onto the research questions by recoding the <code>Condition</code> variable manually.</p>
+<p><code>Condition</code> has three levels, and this means that we can obtain at most three estimated coefficients for it. It’s also possible to obtain fewer than the maximum, but this is not something I will go into here.</p>
+<p>The first step is to <strong>write out what you want the model’s intercept to represent</strong> as a null hypothesis. In this example, it makes sense that the intercept should the mean performance in the <code>no information</code> condition. Written as a null hypothesis, this becomes <span class="math inline">\(\mu_{\textrm{no info}} = 0\)</span>. This null hypothesis is a bit silly, but that’s not important here, just go with it; the equation is easy enough. Then, <strong>rearrange the equation such that the right-hand side reads 0.</strong> This is already the case here. Finally, <strong>add the factor’s remaining levels to the left-hand side of the equation, but multiplied by 0</strong>. You’re just adding 0s to the left-hand side of the equation, which doesn’t affect it. For clarity, I’ve made it clear that <span class="math inline">\(\mu_{\textrm{no info}} = 1\mu_{\textrm{no info}}\)</span>. The result looks like this:</p>
+<p><span class="math display">\[
+\mu_{\textrm{no info}} = 0 \\ \Leftrightarrow 0\mu_{\textrm{info}} + 1\mu_{\textrm{no info}} + 0\mu_{\textrm{strategy}} = 0
+\]</span></p>
+<p>Make sure that in the rearranged equation, the levels appear <em>in the same order</em> as they do in R. You can check the order of the levels using <code>levels()</code>. By default, the order is alphabetical. You can change the order of the factor levels, but then you’ll also need to change the order in which the coefficients appear in the rearranged equation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(d<span class="sc">$</span>Condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "information"    "no information" "strategy"      </code></pre>
+</div>
+</div>
+<p>The second step is to <strong>write out null hypotheses for the comparisons that you want the remaining coefficients to estimate</strong>. For the sake of the exercise, let’s say that I want the first remaining coefficient to estimate the difference between the mean of the control group (<span class="math inline">\(\mu_{\textrm{no info}}\)</span>) and the <em>mean of the means</em> of the two other groups (i.e., <span class="math inline">\(\frac{1}{2}(\mu_{\textrm{info}} + \mu_{\textrm{strategy}})\)</span>). First write this as a null hypothesis:</p>
+<p><span class="math display">\[
+\frac{1}{2}(\mu_{\textrm{info}} + \mu_{\textrm{strategy}}) = \mu_{\textrm{no info}}
+\]</span></p>
+<p>Note that I write the ‘focus’ of the comparison on the left-hand side and what it’s being compared to on the right-hand side. This will make the signs of the coefficients we later get easier to interpret. Then, bring all <span class="math inline">\(\mu\)</span> terms to the left-hand side:</p>
+<p><span class="math display">\[
+\frac{1}{2}(\mu_{\textrm{info}} + \mu_{\textrm{strategy}}) = \mu_{\textrm{no info}} \\ \Leftrightarrow \frac{1}{2}\mu_{\textrm{info}} + -1\mu_{\textrm{no info}} + \frac{1}{2}\mu_{\textrm{strategy}} = 0
+\]</span></p>
+<p>Do not multiply any terms in the equation, i.e., do <em>not</em> write <span class="math inline">\(1\mu_{\rm{info}} + -2\mu_{\rm{no\ info}} + 1\mu_{\rm{strategy}} = 0\)</span> so that you don’t have to work with fractions. The hypotheses you’ll test will be the same, but the output will be more confusing than if you just rearrange the coefficients but keep the fractions.</p>
+<p>For the final coefficient, let’s say that I want to estimate the difference in means between the <code>info</code> and <code>strategy</code> condition. Again, start from the corresponding null hypothesis (i.e., that these means are the same), and then bring all <span class="math inline">\(\mu\)</span>s to the left-hand side while adding the missing factor levels:</p>
+<p><span class="math display">\[
+\mu_{\textrm{strategy}} = \mu_{\textrm{info}} \\\Leftrightarrow -1\mu_{\textrm{info}} + 0\mu_{\textrm{no info}} + 1\mu_{\textrm{strategy}} = 0
+\]</span></p>
+<p>The third step is to put the coefficients of the rearranged equations into a <strong>hypothesis matrix</strong>. As you can see, each line in this matrix contains the coefficients belonging to the <span class="math inline">\(\mu\)</span> terms in the three equations above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Hm <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">H00 =</span> <span class="fu">c</span>(<span class="at">info =</span> <span class="dv">0</span>, <span class="at">no_info =</span> <span class="dv">1</span>, <span class="at">strategy =</span> <span class="dv">0</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">H01 =</span> <span class="fu">c</span>(<span class="at">info =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">no_info =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">strategy =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">H02 =</span> <span class="fu">c</span>(<span class="at">info =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">no_info =</span> <span class="dv">0</span>, <span class="at">strategy =</span> <span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fourth, convert this hypothesis matrix into a <strong>contrast matrix</strong> using the <code>ginv2()</code> function that Schad et al.&nbsp;(2020) provide:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ginv2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    MASS<span class="sc">::</span><span class="fu">fractions</span>(<span class="fu">provideDimnames</span>(MASS<span class="sc">::</span><span class="fu">ginv</span>(x), <span class="at">base =</span> <span class="fu">dimnames</span>(x)[<span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>]))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>Cm <span class="ot">&lt;-</span> <span class="fu">ginv2</span>(Hm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fifth, apply this contrast matrix, minus the first column (hence <code>-1</code>), as the coding scheme for <code>Condition</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Condition) <span class="ot">&lt;-</span> Cm[, <span class="sc">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And finally, fit the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>m_manual <span class="ot">&lt;-</span> <span class="fu">lm</span>(ProportionCongruent <span class="sc">~</span> Condition, <span class="at">data =</span> d)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_manual)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)     0.554     0.0530  10.455 2.92e-13
+ConditionH01    0.018     0.0639   0.282 7.79e-01
+ConditionH02    0.110     0.0713   1.542 1.31e-01</code></pre>
+</div>
+</div>
+<p>You can check this yourselves, but the intercept now shows the mean of the <code>no information</code> condition, the first term (<code>ConditionH01</code>) estimates the difference between the <code>no information</code> mean and the mean of the means of the other two condidition, and the second term (<code>ConditionH02</code>) estimates the difference between the <code>strategy</code> mean and the <code>information</code> mean.</p>
+</section>
+<section id="example-2-no-interactions-but-random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="example-2-no-interactions-but-random-effects">Example 2: No interactions, but random effects</h2>
+<p>For the second and third example, I’ll use data from Pestana et al.&nbsp;(2018), who measured the Portuguese reading skills of Portuguese children in Portugal, French-speaking Switzerland, and German-speaking Switzerland at three points in time. The data are available as part of the <a href="https://github.com/janhove/helascot"><code>helascot</code> package</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(helascot)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine data and only retain Portuguese test data</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> skills <span class="sc">%&gt;%</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(background, <span class="at">by =</span> <span class="st">"Subject"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(LanguageTested <span class="sc">==</span> <span class="st">"Portuguese"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Reading))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Code Time and LanguageGroup as factors</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Time <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>Time)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>LanguageGroup <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>LanguageGroup)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw graph</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Time, </span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Reading,</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> LanguageGroup)) <span class="sc">+</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>There are up to three observations per child (Time 1, 2 and 3), and the children are clustered in classes. We will take this into account during the analysis using random effects by child and by class.</p>
+<p>For the sake of this example, let’s say we’re interested in estimating the development of reading skills through time. The following model estimates the effect of <code>Time</code> and allows for this effect to vary between classes. Since there is only one data point per <code>Subject</code> per <code>Time</code>, no by-subject random slope for <code>Time</code> was estimated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m_default <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> Time <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>Time<span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_default)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value
+(Intercept)    0.532     0.0239   22.25
+Time2          0.104     0.0111    9.38
+Time3          0.194     0.0161   12.08</code></pre>
+</div>
+</div>
+<p>When using R’s default coding, the <code>(Intercept)</code> represents the average reading skill score at Time 1, the next coefficient estimates the different in reading skill scores between Time 2 and Time 1, and the third coefficient estimates the difference between Time 3 and Time 1. This is fine, but let’s say we wanted to estimate the difference between Time 3 and Time 2 directly. We can obtain this estimate by coding the predictors ourselves.</p>
+<p>In the equations below, the <span class="math inline">\(\mu\)</span>’s are in the same order as R knows them:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(d<span class="sc">$</span>Time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1" "2" "3"</code></pre>
+</div>
+</div>
+<p>The average performance at Time 1 is a reasonable choice for the intercept, so let’s stick with that. The silly null hypothesis is that <span class="math inline">\(\mu_{T1} = 0\)</span>, which we can elaborate with <span class="math inline">\(\mu_{T2}\)</span> and <span class="math inline">\(\mu_{T3}\)</span> as follows:</p>
+<p><span class="math display">\[
+\mu_{T1} = 0 \\ \Leftrightarrow 1\mu_{T1} + 0\mu_{T2} + 0\mu_{T3} = 0
+\]</span></p>
+<p>If we want the next coefficient to estimate the difference between the average reading skill scores at Time 2 and Time 1, we need the null hypothesis that these average reading skill scores are the same, i.e., <span class="math inline">\(\mu_{T2} = \mu_{T1}\)</span>. (Remember to put the ‘focus’ of the comparison on the left.) From there:</p>
+<p><span class="math display">\[
+\mu_{T2} = \mu_{T1} \\ \Leftrightarrow -1\mu_{T1} + 1\mu_{T2} + 0\mu_{T3} = 0
+\]</span></p>
+<p>Similarly, if we want the third coefficient to estimate the difference between the average reading skill scores at Time 3 and Time 2, we need the null hypothesis that these average reading skill scores are the same, i.e., <span class="math inline">\(\mu_{T3} = \mu_{T2}\)</span>:</p>
+<p><span class="math display">\[
+\mu_{T3} = \mu_{T2} \\ \Leftrightarrow 0\mu_{T1} + -1\mu_{T2} + 1\mu_{T3} = 0
+\]</span></p>
+<p>Put the coefficients in the hypothesis matrix, convert this hypothesis matrix to a contrast matrix, apply this contrast matrix to the factor <code>Time</code>, and refit the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put coefficients in hypothesis matrix</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Hm <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">H00 =</span> <span class="fu">c</span>(<span class="at">T1 =</span> <span class="dv">1</span>,  <span class="at">T2 =</span> <span class="dv">0</span>,  <span class="at">T3 =</span> <span class="dv">0</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">H01 =</span> <span class="fu">c</span>(<span class="at">T1 =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">T2 =</span> <span class="dv">1</span>,  <span class="at">T3 =</span> <span class="dv">0</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">H02 =</span> <span class="fu">c</span>(<span class="at">T1 =</span> <span class="dv">0</span>,  <span class="at">T2 =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">T3 =</span> <span class="dv">1</span>))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to contrast matrix</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>Cm <span class="ot">&lt;-</span> <span class="fu">ginv2</span>(Hm)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># I'm going to copy Time so we can reuse it in example 3:</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Time2 <span class="ot">&lt;-</span> d<span class="sc">$</span>Time</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply contrast matrix to factor</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Time2) <span class="ot">&lt;-</span> Cm[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Refit model</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>m_manual <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> Time2 <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>Time2<span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_manual)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value
+(Intercept)   0.5317     0.0239   22.25
+Time2H01      0.1040     0.0111    9.38
+Time2H02      0.0904     0.0137    6.59</code></pre>
+</div>
+</div>
+<p>As you can see, the third coefficient now estimates the difference between the average reading skill score at T3 and at T2. Compared to manually computing this difference from the first model’s output, the main advantage of coding the predictors yourself is that you also obtain a measure of the uncertainty about the estimate of interest (e.g., the standard error, or a confidence interval).</p>
+</section>
+<section id="example-3-interactions-and-random-effects" class="level2">
+<h2 class="anchored" data-anchor-id="example-3-interactions-and-random-effects">Example 3: Interactions and random effects</h2>
+<p>Finally, let’s take a look at interactions. Still working with the dataset from the second example, we can fit a model that contains an interaction between <code>Time</code> and <code>LanguageGroup</code>, i.e., that allows the effect of <code>Time</code> to differ between the three language groups. Since <code>Time</code> varies within <code>Class</code>, but <code>LanguageGroup</code> doesn’t, we can’t estimate a by-class random slope for <code>Language Group</code>. I’m going to ignore the warning about the singular fit here, because it isn’t related to the topic of the tutorial and I don’t have too many other datasets where interactions need to be modelled.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>m_default <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> Time<span class="sc">*</span>LanguageGroup <span class="sc">+</span> (<span class="dv">1</span><span class="sc">+</span>Time<span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_default)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                            Estimate Std. Error t value
+(Intercept)                                   0.5422     0.0233  23.281
+Time2                                         0.1159     0.0198   5.850
+Time3                                         0.1915     0.0279   6.859
+LanguageGroupBilingual group German          -0.0893     0.0316  -2.822
+LanguageGroupControl group Portuguese         0.1316     0.0373   3.532
+Time2:LanguageGroupBilingual group German    -0.0196     0.0272  -0.720
+Time3:LanguageGroupBilingual group German     0.0164     0.0373   0.440
+Time2:LanguageGroupControl group Portuguese  -0.0121     0.0309  -0.390
+Time3:LanguageGroupControl group Portuguese  -0.0287     0.0451  -0.636</code></pre>
+</div>
+</div>
+<p>I’m not going to go over the interpretation of all of these coefficients; the point is that they’re not too informative, but that we can obtain more useful estimates by recoding the predictors. To do that, I prefer to <strong>combine the combinations of the factors involved in the interaction into a single variable</strong>, which I’ll call <code>Cell</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine combinations of Time and Language group into 1 factor</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>Cell <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">paste</span>(d<span class="sc">$</span>Time, d<span class="sc">$</span>LanguageGroup))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(d<span class="sc">$</span>Cell)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  1 Bilingual group French   1 Bilingual group German 
+                       104                        104 
+1 Control group Portuguese   2 Bilingual group French 
+                        74                        105 
+  2 Bilingual group German 2 Control group Portuguese 
+                        97                         75 
+  3 Bilingual group French   3 Bilingual group German 
+                       105                         93 
+3 Control group Portuguese 
+                        69 </code></pre>
+</div>
+</div>
+<p>We will eventually need to refer to these cells in the same order as they’re known in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Order of the factor levels</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(d<span class="sc">$</span>Cell)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1 Bilingual group French"   "1 Bilingual group German"  
+[3] "1 Control group Portuguese" "2 Bilingual group French"  
+[5] "2 Bilingual group German"   "2 Control group Portuguese"
+[7] "3 Bilingual group French"   "3 Bilingual group German"  
+[9] "3 Control group Portuguese"</code></pre>
+</div>
+</div>
+<p>Let’s think about what we want our estimates to mean. I think it would make sense for the intercept to represent the mean reading skill score at Time 1 across the three language groups. Then, I’d like for the next coefficients to express the average progress (across language groups) from Time 1 to Time 2 and from Time 2 to Time 3. Next, I’d like to know, at each time point, what the average difference between the Portuguese and the bilingual (Swiss) children is, and what the average difference between the Portuguese-French and the Portuguese-German bilinguals is.</p>
+<p>Now, in what follows, you’re going to see some fairly long equations. They may look daunting, but they’re really easy: like before, we’re going to express what we want the coefficients to mean as null hypotheses. It’s just that this time we have to include nine <span class="math inline">\(\mu\)</span>’s per equation.</p>
+<ol type="1">
+<li>The intercept represents the grand mean of the Time 1 cells. The silly corresponding null hypothesis is that this grand mean is 0: <span class="math inline">\(\frac{1}{3}(\mu_{1,F} + \mu_{1,G} + \mu_{1,P}) = 0\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+\frac{1}{3}(\mu_{1,F} + \mu_{1,G} + \mu_{1,P}) = 0 \\\Leftrightarrow \frac{1}{3}\mu_{1,F} + \frac{1}{3}\mu_{1,G} + \frac{1}{3}\mu_{1,P} + 0\mu_{2,F} + 0\mu_{2,G} + 0\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="2" type="1">
+<li>The next term represents the difference between the grand mean of the Time 2 cells and that of the Time 1 cells:</li>
+</ol>
+<p><span class="math display">\[
+\frac{1}{3}(\mu_{2,F} + \mu_{2,G} + \mu_{2,P}) = \frac{1}{3}(\mu_{1,F} + \mu_{1,G} + \mu_{1,P}) \\\Leftrightarrow -\frac{1}{3}\mu_{1,F} + -\frac{1}{3}\mu_{1,G} + -\frac{1}{3}\mu_{1,P} + \frac{1}{3}\mu_{2,F} + \frac{1}{3}\mu_{2,G} + \frac{1}{3}\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="3" type="1">
+<li>The third term represents the difference between the grand mean of the Time 3 cells and that of the Time 2 cells:</li>
+</ol>
+<p><span class="math display">\[
+\frac{1}{3}(\mu_{3,F} + \mu_{3,G} + \mu_{3,P}) = \frac{1}{3}(\mu_{2,F} + \mu_{2,G} + \mu_{2,P}) \\\Leftrightarrow 0\mu_{1,F} + 0\mu_{1,G} + 0\mu_{1,P} + -\frac{1}{3}\mu_{2,F} + -\frac{1}{3}\mu_{2,G} + -\frac{1}{3}\mu_{2,P} + \frac{1}{3}\mu_{3,F} + \frac{1}{3}\mu_{3,G} + \frac{1}{3}\mu_{3,P} = 0
+\]</span></p>
+<p>Now for comparisons between the language groups at each point in time. For each time, I want a term testing if the Portuguese on the one hand and the French- and German-speaking pupils on the other hand perform the same as well as one if the French- and German-speaking pupils differ amongst themselves.</p>
+<ol start="4" type="1">
+<li>The fourth term represents the difference between the mean of the Portuguese scores at Time 1 and the grand mean of the two bilingual groups’ performance at Time 1:</li>
+</ol>
+<p><span class="math display">\[
+\mu_{1,P} = \frac{1}{2}(\mu_{1,F} + \mu_{1,G}) \\\Leftrightarrow -\frac{1}{2}\mu_{1,F} + -\frac{1}{2}\mu_{1,G} + 1\mu_{1,P} + 0\mu_{2,F} + 0\mu_{2,G} + 0\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="5" type="1">
+<li>The fifth term represents the difference between the two bilingual groups at Time 1:</li>
+</ol>
+<p><span class="math display">\[
+\mu_{1,F} =\mu_{1,G} \\\Leftrightarrow 1\mu_{1,F} + -1\mu_{1,G} + 0\mu_{1,P} + 0\mu_{2,F} + 0\mu_{2,G} + 0\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="6" type="1">
+<li>Same as the fourth term, but for Time 2.</li>
+</ol>
+<p><span class="math display">\[
+\mu_{2,P} = \frac{1}{2}(\mu_{2,F} + \mu_{2,G}) \\\Leftrightarrow 0\mu_{1,F} + 0\mu_{1,G} + 0\mu_{1,P} + -\frac{1}{2}\mu_{2,F} + -\frac{1}{2}\mu_{2,G} + 1\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="7" type="1">
+<li>Same as the fifth term, but for Time 2.</li>
+</ol>
+<p><span class="math display">\[
+\mu_{2,F} =\mu_{2,G} \\\Leftrightarrow 0\mu_{1,F} + 0\mu_{1,G} + 0\mu_{1,P} + 1\mu_{2,F} + -1\mu_{2,G} + 0\mu_{2,P} + 0\mu_{3,F} + 0\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<ol start="8" type="1">
+<li>Same as the fourth and sixth terms, but for Time 3.</li>
+</ol>
+<p><span class="math display">\[
+\mu_{3,P} = \frac{1}{2}(\mu_{3,F} + \mu_{3,G}) \\\Leftrightarrow 0\mu_{1,F} + 0\mu_{1,G} + 0\mu_{1,P} + 0\mu_{2,F} + 0\mu_{2,G} + 0\mu_{2,P} + -\frac{1}{2}\mu_{3,F} + -\frac{1}{2}\mu_{3,G} + 1\mu_{3,P} = 0
+\]</span></p>
+<ol start="9" type="1">
+<li>Same as the fifth and seventh terms, but for Time 3.</li>
+</ol>
+<p><span class="math display">\[
+\mu_{3,F} =\mu_{3,G} \\\Leftrightarrow 0\mu_{1,F} + 0\mu_{1,G} + 0\mu_{1,P} + 0\mu_{2,F} + 0\mu_{2,G} + 0\mu_{2,P} + 1\mu_{3,F} + -1\mu_{3,G} + 0\mu_{3,P} = 0
+\]</span></p>
+<p>Put all of these coefficients into a large hypothesis matrix and convert it to a contrast matrix:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Hm <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="at">GM_T1     =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">G1 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">P1 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">0</span>,    <span class="at">G2 =</span> <span class="dv">0</span>,    <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">T2vT1     =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">G1 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">P1 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">G2 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">P2 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">T3vT2     =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">0</span>,    <span class="at">G1 =</span> <span class="dv">0</span>,    <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">G2 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="at">P2 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">G3 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,  <span class="at">P3 =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>),</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">T1_PtvsBi =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">G1 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">P1 =</span> <span class="dv">1</span>,    </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">0</span>,    <span class="at">G2 =</span> <span class="dv">0</span>,    <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">T1_FrvsGe =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">1</span>,    <span class="at">G1 =</span> <span class="sc">-</span><span class="dv">1</span>,   <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">0</span>,    <span class="at">G2 =</span> <span class="dv">0</span>,    <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">T2_PtvsBi =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">0</span>,    <span class="at">G1 =</span> <span class="dv">0</span>,    <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">G2 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">P2 =</span> <span class="dv">1</span>,    </span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">T2_FrvsGe =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">0</span>,    <span class="at">G1 =</span> <span class="dv">0</span>,    <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">1</span>,    <span class="at">G2 =</span> <span class="sc">-</span><span class="dv">1</span>,   <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">0</span>,    <span class="at">G3 =</span> <span class="dv">0</span>,    <span class="at">P3 =</span> <span class="dv">0</span>),</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">T3_PtvsBi =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">0</span>,    <span class="at">G1 =</span> <span class="dv">0</span>,    <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">0</span>,    <span class="at">G2 =</span> <span class="dv">0</span>,    <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">G3 =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">P3 =</span> <span class="dv">1</span>),</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">T3_FrvsGe =</span> <span class="fu">c</span>(<span class="at">F1 =</span> <span class="dv">0</span>,    <span class="at">G1 =</span> <span class="dv">0</span>,    <span class="at">P1 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F2 =</span> <span class="dv">0</span>,    <span class="at">G2 =</span> <span class="dv">0</span>,    <span class="at">P2 =</span> <span class="dv">0</span>,    </span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>                          <span class="at">F3 =</span> <span class="dv">1</span>,    <span class="at">G3 =</span> <span class="sc">-</span><span class="dv">1</span>,   <span class="at">P3 =</span> <span class="dv">0</span>))</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>Cm <span class="ot">&lt;-</span> <span class="fu">ginv2</span>(Hm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Apply the contrasts to the <code>Cell</code> variable and fit the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(d<span class="sc">$</span>Cell) <span class="ot">&lt;-</span> Cm[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>m_manual <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> Cell <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_manual)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate Std. Error t value
+(Intercept)     0.5586    0.01200   46.56
+CellT2vT1       0.1032    0.00975   10.58
+CellT3vT2       0.0812    0.00992    8.19
+CellT1_PtvsBi   0.1758    0.02725    6.45
+CellT1_FrvsGe   0.0818    0.02715    3.01
+CellT2_PtvsBi   0.1763    0.02723    6.48
+CellT2_FrvsGe   0.1052    0.02733    3.85
+CellT3_PtvsBi   0.1412    0.02765    5.11
+CellT3_FrvsGe   0.0794    0.02748    2.89</code></pre>
+</div>
+</div>
+<p>The coefficients mean exactly what it says on the tin. There is just one problem: I didn’t include a random slope that capture the varying effect of <code>Time</code> by <code>Class</code> yet. Adding a by-class random slope for <code>Cell</code> wouldn’t work: you’d end up estimating an enormous matrix of random effects since <code>Cell</code> has nine levels. Instead, we’ll have to first refit the model using the dummy variables in the contrast matrix of <code>Cell</code> as separate variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the dummy variables in the contrast matrix of Cell</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># to the dataset as separate variables</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>contrast_matrix <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(Cm[, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">Cell =</span> <span class="fu">levels</span>(d<span class="sc">$</span>Cell))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">merge</span>(d, contrast_matrix, <span class="at">by =</span> <span class="st">"Cell"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Refit the model using these separate dummy variables</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>m_manual <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> T2vT1 <span class="sc">+</span> T3vT2 <span class="sc">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                   T1_PtvsBi <span class="sc">+</span> T1_FrvsGe <span class="sc">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>                   T2_PtvsBi <span class="sc">+</span> T2_FrvsGe <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>                   T3_PtvsBi <span class="sc">+</span> T3_FrvsGe <span class="sc">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span><span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_manual)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value
+(Intercept)   0.5586    0.01200   46.56
+T2vT1         0.1032    0.00975   10.58
+T3vT2         0.0812    0.00992    8.19
+T1_PtvsBi     0.1758    0.02725    6.45
+T1_FrvsGe     0.0818    0.02715    3.01
+T2_PtvsBi     0.1763    0.02723    6.48
+T2_FrvsGe     0.1052    0.02733    3.85
+T3_PtvsBi     0.1412    0.02765    5.11
+T3_FrvsGe     0.0794    0.02748    2.89</code></pre>
+</div>
+</div>
+<p>The output is exactly the same as above. Now we need to think about which of these estimates can actually vary by <code>Class</code>. If you think about the way we coded these predictors, <code>T2vsT1</code> and <code>T3vT2</code> capture the effect of <code>Time</code>, whereas the other predictors capture the effects of <code>LanguageGroup</code> at different times. The effect of <code>Time</code> can vary according to <code>Class</code>, but the effects of <code>LanguageGroup</code> can’t (each <code>Class</code> belonged to only one <code>LanguageGroup</code>). So if we want random slopes of <code>Time</code> by <code>Class</code>, we need to let the effects of <code>T2vT1</code> and <code>T3vT2</code> vary by class:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>m_manual <span class="ot">&lt;-</span> <span class="fu">lmer</span>(Reading <span class="sc">~</span> T2vT1 <span class="sc">+</span> T3vT2 <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                   T1_PtvsBi <span class="sc">+</span> T1_FrvsGe <span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                   T2_PtvsBi <span class="sc">+</span> T2_FrvsGe <span class="sc">+</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                   T3_PtvsBi <span class="sc">+</span> T3_FrvsGe <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                   (<span class="dv">1</span><span class="sc">+</span>T2vT1<span class="sc">+</span>T3vT2<span class="sc">|</span>Class) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Subject), <span class="at">data =</span> d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>boundary (singular) fit: see help('isSingular')</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_manual)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value
+(Intercept)   0.5563     0.0143   38.84
+T2vT1         0.1054     0.0120    8.77
+T3vT2         0.0820     0.0142    5.79
+T1_PtvsBi     0.1762     0.0331    5.32
+T1_FrvsGe     0.0893     0.0316    2.82
+T2_PtvsBi     0.1740     0.0315    5.52
+T2_FrvsGe     0.1088     0.0306    3.55
+T3_PtvsBi     0.1393     0.0275    5.07
+T3_FrvsGe     0.0729     0.0272    2.68</code></pre>
+</div>
+</div>
+<p>The warning isn’t relevant to the purposes of this tutorial. As a sanity check, we can compare the predictions of <code>m_manual</code> and <code>m_default</code> to confirm that <code>m_manual</code> is the same model as <code>m_default</code>, just with parameter estimates that are easier to interpret:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (I don't know why I need to specify 'newdata'...)</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>predict_default <span class="ot">&lt;-</span> <span class="fu">predict</span>(m_default, <span class="at">newdata =</span> d)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>predict_manual <span class="ot">&lt;-</span> <span class="fu">predict</span>(m_manual, <span class="at">newdata =</span> d)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(predict_manual <span class="sc">~</span> predict_default, d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p>Both models make the same predictions, and the predictions align reasonably well with the data observed:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d,</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Time, </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> predict_manual,</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> LanguageGroup)) <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Model predictions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="what-if-it-doesnt-work" class="level2">
+<h2 class="anchored" data-anchor-id="what-if-it-doesnt-work">What if it doesn’t work?</h2>
+<p>If, having specified your own hypothesis matrix, some lines in the regression output contain <code>NA</code>, the reason is probably that some of the rows in your hypothesis matrix are combinations of some of the other rows. In essence, you’re asking the model to answer the same question twice, so it only answers it once. Reformulating the hypotheses will usually work.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Berthele, Raphael and Amelia Lambelet (eds.). 2018. <em>Heritage and school language literacy development in migrant children: Interdependence or independence?</em> Multilingual Matters.</p>
+<p>Pestana, Carlos, Amelia Lambelet and Jan Vanhove. 2018. Reading comprehension development in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (Eds.), <em>Heritage language and school language literacy development in migrant children: Interdependence or independence?</em> (pp.&nbsp;58-82). Bristol, UK: Multilingual Matters. <a href="http://doi.org/10.21832/BERTHE9047" class="uri">http://doi.org/10.21832/BERTHE9047</a></p>
+<p>Schad, Daniel J., Shravan Vasishth, Sven Hohenstein and Reinhold Kliegl. 2020. How to capitalize on a priori contrasts in linear (mixed) models: A tutorial. <em>Journal of Memory and Language</em> 110. <a href="https://doi.org/10.1016/j.jml.2019.104038" class="uri">https://doi.org/10.1016/j.jml.2019.104038</a></p>
+<p>Vanhove, Jan.&nbsp;2019. Metalinguistic knowledge about the native language and language transfer in gender assignment. <em>Studies in Second Language Learning and Teaching</em> 9(2). 397-419. <a href="https://doi.org/10.14746/ssllt.2019.9.2.7" class="uri">https://doi.org/10.14746/ssllt.2019.9.2.7</a></p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<p>Please note that I reran the code on this page on August 6, 2023.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.2 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-06
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ boot          1.3-28  2021-05-03 [4] CRAN (R 4.2.0)
+ cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ colorspace    2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ dplyr       * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi         1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ farver        2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
+ fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.3.0)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics      0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gtable        0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ helascot    * 1.0.0   2023-08-02 [1] Github (janhove/helascot@4cf3c1b)
+ hms           1.1.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ labeling      0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lattice       0.21-8  2023-04-05 [4] CRAN (R 4.3.0)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ lme4        * 1.1-34  2023-07-04 [1] CRAN (R 4.3.1)
+ lubridate   * 1.9.2   2023-02-10 [1] CRAN (R 4.3.0)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ MASS          7.3-60  2023-05-04 [4] CRAN (R 4.3.1)
+ Matrix      * 1.6-0   2023-07-08 [4] CRAN (R 4.3.1)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ minqa         1.2.5   2022-10-19 [1] CRAN (R 4.3.1)
+ munsell       0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ nlme          3.1-162 2023-01-31 [4] CRAN (R 4.2.2)
+ nloptr        2.0.3   2022-05-26 [1] CRAN (R 4.3.1)
+ pillar        1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr       * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ scales        1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr     * 1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyr       * 1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
+ tidyselect    1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ tidyverse   * 2.0.0   2023-02-22 [1] CRAN (R 4.3.1)
+ timechange    0.2.0   2023-01-11 [1] CRAN (R 4.3.0)
+ tzdb          0.4.0   2023-05-12 [1] CRAN (R 4.3.0)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8          1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
