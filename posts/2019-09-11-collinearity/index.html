@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2019-09-11">
+
+<title>Jan Vanhove :: Blog - Collinearity isn’t a disease that needs curing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#whats-collinearity" id="toc-whats-collinearity" class="nav-link active" data-scroll-target="#whats-collinearity">What’s collinearity?</a></li>
+  <li><a href="#whats-the-consequence-of-collinearity" id="toc-whats-the-consequence-of-collinearity" class="nav-link" data-scroll-target="#whats-the-consequence-of-collinearity">What’s the consequence of collinearity?</a></li>
+  <li><a href="#but-is-collinearity-a-problem" id="toc-but-is-collinearity-a-problem" class="nav-link" data-scroll-target="#but-is-collinearity-a-problem">But is collinearity a <em>problem</em>?</a>
+  <ul class="collapse">
+  <li><a href="#collinearity-decreases-statistical-power." id="toc-collinearity-decreases-statistical-power." class="nav-link" data-scroll-target="#collinearity-decreases-statistical-power.">‘Collinearity decreases statistical power.’</a></li>
+  <li><a href="#none-of-the-predictors-is-significant-but-the-overall-model-fit-is." id="toc-none-of-the-predictors-is-significant-but-the-overall-model-fit-is." class="nav-link" data-scroll-target="#none-of-the-predictors-is-significant-but-the-overall-model-fit-is.">‘None of the predictors is significant but the overall model fit is.’</a></li>
+  <li><a href="#collinearity-means-that-you-cant-take-model-coefficients-at-face-value." id="toc-collinearity-means-that-you-cant-take-model-coefficients-at-face-value." class="nav-link" data-scroll-target="#collinearity-means-that-you-cant-take-model-coefficients-at-face-value.">‘Collinearity means that you can’t take model coefficients at face value.’</a></li>
+  </ul></li>
+  <li><a href="#collinearity-doesnt-require-a-statistical-solution" id="toc-collinearity-doesnt-require-a-statistical-solution" class="nav-link" data-scroll-target="#collinearity-doesnt-require-a-statistical-solution">Collinearity doesn’t require a statistical solution</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">tl;dr</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#r-code" id="toc-r-code" class="nav-link" data-scroll-target="#r-code">R code</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Collinearity isn’t a disease that needs curing</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">multiple regression</div>
+    <div class="quarto-category">assumptions</div>
+    <div class="quarto-category">collinearity</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 11, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Every now and again, some worried student or collaborator asks me whether they’re “allowed” to fit a regression model in which some of the predictors are fairly strongly correlated with one another. Happily, most Swiss cantons have a laissez-faire policy with regard to fitting models with correlated predictors, so the answer to this question is “yes”. Such an answer doesn’t always set the student or collaborator at ease, so below you find my more elaborate answer.</p>
+<section id="whats-collinearity" class="level2">
+<h2 class="anchored" data-anchor-id="whats-collinearity">What’s collinearity?</h2>
+<p>Collinearity (or ‘multicollinearity’) means that a substantial amount of information contained in some of the predictors included in a statistical model can be pieced together as a linear function of some of the other predictors in the model. That’s a mouthful, so let’s look at some examples.</p>
+<p>The easiest case is when you have a multiple regression model with two predictors. These predictors can be continuous or categorical; in what follows, I’ll stick to continuous predictors. I’ve created four datasets with two continuous predictors to illustrate collinearity and its consequences. You find the <code>R</code> code reproduce all analyses at the bottom of this page.</p>
+<p>The <code>outcome</code> in each dataset was created using the following equation:</p>
+<p><span class="math display">\[\textrm{outcome}_i = 0.4\times\textrm{predictor1}_i + 1.9\times\textrm{predictor2}_i + \varepsilon_i\]</span></p>
+<p>where the residuals (<span class="math inline">\(\varepsilon_i\)</span>) were drawn from a normal distribution with a standard deviation of 3.5.</p>
+<p><span class="math display">\[\varepsilon_i \sim N(0, 3.5^2)\]</span></p>
+<p>The four datasets are presented in <strong>Figures 1 through 4</strong>. Beginning analysts may be surprised to see that I consider a situation where two predictors are correlated at r = 0.50 to be a case of <em>weak</em> rather than moderate or strong collinearity. But in fact, the consequences of having two predictors correlate at r = 0.50 (rather than at r = 0.00) are negligible. <strong>Figure 4</strong> highlights the <em>linear</em> part in collinearity: while the two predictors in this figure are perfectly related, there is no <em>linear</em> relationship between them whatsoever. Datasets such as the one in Figure 4 are not affected by any of the <em>statistical</em> consequences of collinearity, but they’re useful to illustrate a point I want to make below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 1.</strong> A dataset with a strong degree of collinearity between the two predictors (r = 0.98).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 2.</strong> A dataset with a weak degree of collinearity between the two predictors (r = 0.50).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 3.</strong> A dataset in which the two predictors are entirely orthogonal and unrelated (r = 0.00).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 4.</strong> A dataset with two orthogonal (r = 0.00) but perfectly related predictors: <code>predictor1</code> is a sinusoid transformation of <code>predictor2</code>. In other words, you can predict <code>predictor1</code> perfectly if you know <code>predictor2</code>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you fit multiple regressions on these four datasets, you obtain the estimates that are shown in <strong>Figure 5</strong> along with their 90% confidence intervals.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 5.</strong> Estimated coefficients and their 90% confidence intervals for the models fitted to the four datasets.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="whats-the-consequence-of-collinearity" class="level2">
+<h2 class="anchored" data-anchor-id="whats-the-consequence-of-collinearity">What’s the consequence of collinearity?</h2>
+<p>In essence, collinearity has one <strong>statistical</strong> consequence: Estimates of regression coefficients that are affected by collinearity vary more from sample to sample than estimates of regression coefficients that aren’t affected by collinearity; see <strong>Figure 6</strong> below. As Figure 6 also illustrates, collinearity doesn’t bias the coefficient estimates: On average, the estimated coefficients equal the parameter’s true value both when there is no and very strong collinearity. It’s just that the estimates vary much more around this average when there is strong collinearity.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption"><strong>Figure 6.</strong> I simulated samples of 50 observations from a distribution in which the two predictors were completely orthogonal (r = 0.00) and from a distribution in which they were highly correlated (r = 0.98). In all cases, both predictors were independently related to the outcome: <span class="math inline">\(\textrm{outcome}_i = 0.4\times\textrm{predictor1}_i + 1.9\times\textrm{predictor2}_i + \varepsilon_i\)</span>. On each simulated sample, I ran a multiple regression model, and I then extracted the estimated model coefficients. This figure shows the estimated coefficients for the first predictor. While the estimates vary more when the predictors are strongly correlated than when they’re not, the estimates are unbiased in either case: On average, they equal the true population parameter (dashed red line).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Crucially, and happily, this greater variability is reflected in the standard errors and confidence intervals around these estimates: The standard errors are automatically wider when the estimated coefficients are affected by collinearity and the confidence intervals retain their nominal coverage rates (i.e., 95% of the 95% confidence intervals will contain the true parameter value). So the statistical consequence of collinearity is automatically taken care of in the model’s output and requires no additional computations on the part of the analyst. This is illustrated in Figure 5 above: The confidence intervals for the two predictors’ estimated coefficients are considerably wider when these are affected by strong collinearity.</p>
+<p>The greater variability in the estimates, the larger standard errors, and the wider confidence intervals all reflect a relative lack of information in the sample:</p>
+<blockquote class="blockquote">
+<p>Collinearity is at base a problem about information. If two factors are highly correlated, researchers do not have ready access to much information about conditions of the dependent variables when only one of the factors actually varies and the other does not. If we are faced with this problem, there are really only three fundamental solutions: (1) find or create (e.g.&nbsp;via an experimental design) circumstances where there is reduced collinearity; (2) get more data (i.e.&nbsp;increase the N size), so that there is a greater quantity of information about rare instances where there is some divergence between the collinear variables; or (3) add a variable or variables to the model, with some degree of independence from the other independent variables, that explain(s) more of the variance of Y, so that there is more information about that which is being modeled. (<a href="https://www.ncbi.nlm.nih.gov/pubmed/23017962">York 2012:1384</a>)</p>
+</blockquote>
+</section>
+<section id="but-is-collinearity-a-problem" class="level2">
+<h2 class="anchored" data-anchor-id="but-is-collinearity-a-problem">But is collinearity a <em>problem</em>?</h2>
+<p>For the most part, I think that collinearity is a problem for statistical analyses in the same way that Belgium’s lack of mountains is detrimental to the country’s chances of hosting the Winter Olympics: It’s an unfortunate fact of life, but not something that has to be solved. Running another study, obtaining more data or reducing the error variance are all sensible suggestions, but if you have to work with the data you have, the model output will appropriately reflect the degree of uncertainty in the estimates.</p>
+<p>So I don’t consider collinearity a problem. What <em>is</em> the case, however, is that collinearity highlights problems with the way many people think about statistical models and inferential statistics. Let’s look at a couple of these.</p>
+<section id="collinearity-decreases-statistical-power." class="level3">
+<h3 class="anchored" data-anchor-id="collinearity-decreases-statistical-power.">‘Collinearity decreases statistical power.’</h3>
+<p>You may have heared that collinearity decreases statistical power, i.e., the chances of obtaining statistically significant coefficient estimates if their parameter value isn’t zero. This is true, but the lower statistical power is a direct result of the larger standard errors, which appropriately reflect the greater sampling variability of the estimates. This is only a <em>problem</em> if you interpret “lack of statistical significance” as “zero effect”. But then the problem doesn’t lie with collinearity but with the <a href="https://www2.psych.ubc.ca/~schaller/528Readings/Schmidt1996.pdf#page=12">false belief</a> that non-significant estimates correspond to zero effects. It’s just that this false belief is even more likely than usual to lead you astray when your predictors are collinear. If instead of focusing soly on the p-value, you take into account both the estimate <em>and</em> its uncertainty interval, there is no problem.</p>
+<p>Incidentally, I think it’s somewhat misleading to say that collinearity <em>decreases</em> statistical power or <em>increases</em> standard errors. It’s true that relative to situations in which there is less or no collinearity and all other things are equal, the standard errors are larger and statistical power is lower when there is stronger collinearity. But I don’t see how you can <em>reduce</em> collinearity but keep all other things equal outside of a computer simulation. In the real world, collinearity isn’t an unfolding process that can be nipped in the bud without bringing about other changes in the research design, the sampling procedure or the statistical model and its interpretation.</p>
+</section>
+<section id="none-of-the-predictors-is-significant-but-the-overall-model-fit-is." class="level3">
+<h3 class="anchored" data-anchor-id="none-of-the-predictors-is-significant-but-the-overall-model-fit-is.">‘None of the predictors is significant but the overall model fit is.’</h3>
+<p>With collinear predictors, you may end up with a statistical model for which the <span class="math inline">\(F\)</span>-test of overall model fit is highly significant but that doesn’t contain a single significant predictor. This is illustrated in <strong>Table 1</strong>: The overall model fit for the dataset with strong collinearity (see Figure 1) is highly significant, but as shown in Figure 5, neither predictor has an estimated coefficient that’s significantly different from zero.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Table 1. R²- and p-values for the overall model fit for the multiple regression models on the four datasets. Even though neither predictor has a significant estimated coefficient in the 'strong' dataset (shown in Figure 1), the overall fit is highly significant.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Dataset</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">R²</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p-value of overall fit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">strong</td>
+<td style="text-align: right;">0.255</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">weak</td>
+<td style="text-align: right;">0.220</td>
+<td style="text-align: right;">0.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">none</td>
+<td style="text-align: right;">0.201</td>
+<td style="text-align: right;">0.005</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nonlinear</td>
+<td style="text-align: right;">0.293</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>If this seems paradoxical, you need to keep in mind that the tests for the individual coefficient estimates and the test for the overall model fit seek to answer different questions, so there’s no contradiction if they yield different answers. To elaborate, the test for the overall model fit asks if all predictors jointly earn their keep in the model; the tests for the individual coefficients ask whether these are different from zero. With collinear predictors, it’s possible that the answer to the first question is “yes” and the answer to the second is “don’t know”. The reason for this is that with collinear predictors, either predictor could act as the stand-in of the other so that, as far as the model is concerned, either coefficient could well be zero, provided the other isn’t. But due to the lack of information in the collinear sample, it’s not sure which, if any, is zero.</p>
+<p>So again, there is no real problem: The tests answer different questions, so they may yield different answers. It’s just that when you have collinear predictors, this tends to happen more often than when you don’t.</p>
+</section>
+<section id="collinearity-means-that-you-cant-take-model-coefficients-at-face-value." class="level3">
+<h3 class="anchored" data-anchor-id="collinearity-means-that-you-cant-take-model-coefficients-at-face-value.">‘Collinearity means that you can’t take model coefficients at face value.’</h3>
+<p>It’s sometimes said that collinearity makes it more difficult to interpret estimated model coefficients. Crucially, the appropriate interpretation of an estimated regression coefficient is always the same, regardless of the degree of collinearity: According to the model, what would the difference in the mean outcome be if you took two large groups of observations that differed by one unit in the focal predictor <em>but whose other predictor values are the same</em>. The interpretational difficulties that become obvious when there is collinearity aren’t caused by the collinearity itself but with mental shortcuts that people take when interpreting regression models.</p>
+<p>For instance, you may obtain a coefficient estimate in a multiple regression model that you interpret to mean that older children perform more poorly on an L2 writing task than do younger children. (For the non-linguists: L2 = second or foreign language.) This may be counterintuitive, and you may indeed find that, in fact, in your sample older children actually outperform younger ones. You could chalk this one up to collinearity, but the problem really is related to a faulty mental shortcut you took when interpreting your model: You forgot to take into account the “<em>but whose other predictor values are the same</em>” clause. If your model also included measures of the children’s previous exposure to the L2, their motivation to learn the L2, and their L2 vocabulary knowledge, then what the estimated coefficient means is emphatically <em>not</em> that, according to the model, older children perform on average more poorly on a writing task than younger children. It’s that, according to the model, older children will perform more poorly than younger children <em>with the same values on the previous exposure, motivation, and vocabulary knowledge measures</em>. This is pretty much the whole point of fitting multiple regression models. But if, on reflection, this isn’t what you’re actually interested in, then you should fit a different model. For instance, if you’re interested in the overall difference between younger and older children regardless of their previous exposure, motivation and vocabulary knowledge, don’t include these variables as predictors.</p>
+<p>Another interpretational difficulty emerges if you recast the interpretation of the estimate as follows: According to the model, what would the difference in the mean outcome be if you <em>increased</em> the focal predictor by one unit but keep the other predictor values constant. The difference between this interpretation and the one that I offered earlier is that we’ve moved from a purely descriptive one both a causal and an interventionist one (viz., the idea that one could <em>change</em> some predictor values while keeping the others constant and that this would have an effect on the mean outcome). In the face of strong collinearity, it becomes clear that this interventionist interpretation may be wishful thinking: It may be impossible to change values in one predictor without also changing values in the predictors that are collinear with it. But the problem here again isn’t the collinearity but the mental shortcut in the interpretation.</p>
+<p>In fact, you can run into the same difficulties when you apply the interventionist mental shortcut in the absence of collinearity: In the dataset shown in Figure 4, it’s impossible to change the second predictor without also changing the first since the first was defined as a function of the second. Yet the two variables aren’t collinear. Another example would be if you wanted to model quality ratings of texts in terms of the number of words in the text (“tokens”), the number of unique words in the text (“types”), and the type/token ratio. The model will output estimated coefficients for the three predictors, but as an analyst you should realise that it’s impossible to find two texts differing in the number of tokens but having both the same number of types and the same type/token ratio: If you change the number of tokens and keep constant the number of types, the type/token ratio changes, too.</p>
+<p>A final mental shortcut that is laid bare in the presence of collinearity is conflating a measured variable with the theoretical construct that this variable is assumed to capture. The literature on lexical diversity offers a case in point. The type/token ratio (TTR) discussed in the previous paragraph is one of several possible measures of a text’s lexical diversity. If you take a collection of texts, you’re pretty much guaranteed to find that their type/token ratios are negatively correlated with their lengths. That is, longer texts tend to have lower TTR values. This correlation is known as the “text-length problem” and has led researchers to abandon the use of TTR, even though the relationship isn’t <em>that</em> strong (see <strong>Figure 7</strong> for an example).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 7.</strong> The type/token ratio tends to be negatively correlated with text length (here: log-10 number of tokens). This is known as the text length problem in research on lexical diversity. But the problem isn’t that the type/token ratio is collinear with text length; it’s that the type/token ratio also measures something it isn’t supposed to measure and consequently is a poor measure of what it is supposed to measure, viz., lexical diversity. The diversity rating shown are based on human judgements of the texts’ lexical diversity. (Data from the French corpus published by Vanhove et al.&nbsp;(2019).)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>However, the reason why researchers have abandoned the use of TTR is <em>not</em> collinearity per se. Rather, it is that TTR is a poor measure of what it’s supposed to capture, viz., the lexical diversity displayed in a text. Specifically, because of the <a href="https://en.wikipedia.org/wiki/George_Kingsley_Zipf">statistical properties of language</a>, the TTR is pretty much bound to conflate a text’s lexical diversity with its length. The negative correlation between TTR and text length isn’t much of a problem for statistical modelling; it’s a symptom of a more fundamental problem: A measure of lexical diversity shouldn’t as a matter of fact be related to text length. The fact that TTR does shows that it’s a poor measure of lexical diversity.</p>
+<p>To be clear: It’s not necessarily a problem that measures of lexical diversity correlate with text length since it’s possible that the lexical diversity of longer texts is greater than that of shorter texts or vice versa. The problem with TTR is that it <em>necessarily</em> correlates with text length, even if the the texts’ lexical diversity can be assumed to be constant. For instance, if you take increasingly longer snippets of texts from the same book, you’ll find that the TTR goes down, but that doesn’t mean that the writer’s vocabulary skills went down in the process of writing the book. More generally, if your predictors correlate strongly when they’re not supposed to, the problem you have needn’t be collinearity but may instead be that in trying to capture one construct, you’ve also captured the one represented by the other predictor.</p>
+<p><strong>In sum, the interpretational challenges encountered when predictors are collinear aren’t caused by the collinearity itself but by mental shortcuts that may lead researchers astray even in the absence of collinearity.</strong></p>
+</section>
+</section>
+<section id="collinearity-doesnt-require-a-statistical-solution" class="level2">
+<h2 class="anchored" data-anchor-id="collinearity-doesnt-require-a-statistical-solution">Collinearity doesn’t require a statistical solution</h2>
+<blockquote class="blockquote">
+<p>Statistical “solutions,” such as residualization that are often used to address collinearity problems do not, in fact, address the fundamental issue, a limited quantity of information, but rather <strong>serve to obfuscate it</strong>. It is perhaps obvious to point out, but nonetheless important in light of the widespread confusion on the matter, that no statistical procedure can actually produce more information than exists in the data. (<a href="https://www.ncbi.nlm.nih.gov/pubmed/23017962">York 2012:1384</a>, my emphasis)</p>
+</blockquote>
+<p>Quite right. Apart from the non-solution that York (2012) mentioned (residualisation), other common statistical “solutions” to collinearity include dropping predictors, averaging collinear predictors, and resorting to different estimation methods such as ridge regression. Since this blog post is long enough as it is, I’ll comment on these only briefly. Further suggested articles are <a href="https://doi.org/10.1007/s11135-006-9018-6">O’Brien (2007)</a> and <a href="https://doi.org/10.1016/j.jml.2013.12.003">Wurm and Fisicaro (2014)</a>.</p>
+<ul>
+<li>Dropping predictors: I don’t mind this “solution”, but the problem it solves isn’t collinearity but rather that the previous model was misspecified. This is obviously only a solution to the extent that the new model is capable of answering the researchers’ question since, crucially, estimated coefficients from different models don’t have the same meaning (see the previous section). Something to be particularly aware of is that by dropping one of the collinear predictors, you bias the estimates of the other predictors as shown in <strong>Figure 8</strong>.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="864"></p>
+<figcaption class="figure-caption"><strong>Figure 8.</strong> Dropping a collinear predictor biases the estimate for the predictor retained as well as its meaning.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Averaging predictors: Again, I don’t mind this solution per se, but please be aware that your model now answers a different question.</p></li>
+<li><p>Ridge regression and other forms of deliberately biased estimation: Ridge regression and its cousins try to reduce the sample-to-sample variability in the regression estimates by deliberately biasing them. The result is, quite naturally, that you end up with biased estimates: The estimates for the weaker predictor will tend to be biased upwards (see <strong>Figure 9</strong>), and those for the stronger predictor will be biased downwards. Moreover, the usefulness of standard errors and confidence intervals for ridge regression and the like is contested, see <a href="https://cran.r-project.org/web/packages/penalized/vignettes/penalized.pdf">Goeman et al.&nbsp;(2018, p.&nbsp;18)</a>.</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="912"></p>
+<figcaption class="figure-caption"><strong>Figure 9.</strong> Ridge regression is a form of biased estimation, so naturally the estimates it yields are biased.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<ol type="1">
+<li>Collinearity is a form of lack of information that is appropriately reflected in the output of your statistical model.</li>
+<li>When collinearity is associated with interpretational difficulties, these difficulties aren’t caused by the collinearity itself. Rather, they reveal that the model was poorly specified (in that it answers a question different to the one of interest), that the analyst overly focuses on significance rather than estimates and the uncertainty about them or that the analyst took a mental shortcut in interpreting the model that could’ve also led them astray in the absence of collinearity.</li>
+<li>If you do decide to “deal with” collinearity, make sure you can still answer the question of interest.</li>
+</ol>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Goeman, Jelle, Rosa Meijer and Nimisha Chaturvedi. 2018. <a href="https://cran.r-project.org/web/packages/penalized/vignettes/penalized.pdf">L1 and L2 penalized regression models.</a></p>
+<p>O’Brien, Robert M. 2007. <a href="https://doi.org/10.1007/s11135-006-9018-6">A caution regarding rules of thumb of variance inflation factors.</a> <em>Quality &amp; Quantity</em> 41. 673-690.</p>
+<p>Vanhove, Jan, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019. <a href="https://doi.org/10.17239/jowr-2019.10.03.04">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts using text-based indices.</a> <em>Journal of Writing Research</em> 10(3). 499-525.</p>
+<p>Wurm, Lee H. and Sebastiano A. Fisicaro. 2014. <a href="https://doi.org/10.1016/j.jml.2013.12.003">What residualizing predictors in regression analyses does (and what it does not do).</a> <em>Journal of Memory and Language</em> 72. 37-48.</p>
+<p>York, Richard. 2012. <a href="https://www.ncbi.nlm.nih.gov/pubmed/23017962">Residualization is not the answer: Rethinking how to address multicollinearity.</a> <em>Social Science Research</em> 41. 1379-1386.</p>
+</section>
+<section id="r-code" class="level2">
+<h2 class="anchored" data-anchor-id="r-code">R code</h2>
+<p>This code still ran correctly on August 6, 2023.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the four generated datasets</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>strong <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://janhove.github.io/datasets/strong_collinearity.csv"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>weak <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://janhove.github.io/datasets/weak_collinearity.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>none <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://janhove.github.io/datasets/no_collinearity.csv"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>nonlinear <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://janhove.github.io/datasets/nonlinearity.csv"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the custom function for drawing scatterplot matrices, </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># then drew Figures 1-4</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://janhove.github.io/RCode/scatterplot_matrix.R"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot_matrix</span>(strong[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot_matrix</span>(weak[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot_matrix</span>(none[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot_matrix</span>(nonlinear[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit multiple regression models</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>strong.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor1 <span class="sc">+</span> predictor2, <span class="at">data =</span> strong)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>weak.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor1 <span class="sc">+</span> predictor2, <span class="at">data =</span> weak)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>none.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor1 <span class="sc">+</span> predictor2, <span class="at">data =</span> none)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>nonlinear.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor1 <span class="sc">+</span> predictor2, <span class="at">data =</span> nonlinear)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract estimates + 90% CIs</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>strong_out <span class="ot">&lt;-</span> <span class="fu">tidy</span>(strong.lm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dataset =</span> <span class="st">"strong"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>weak_out <span class="ot">&lt;-</span> <span class="fu">tidy</span>(weak.lm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dataset =</span> <span class="st">"weak"</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>none_out <span class="ot">&lt;-</span> <span class="fu">tidy</span>(none.lm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dataset =</span> <span class="st">"none"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>nonlinear_out <span class="ot">&lt;-</span> <span class="fu">tidy</span>(nonlinear.lm, <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dataset =</span> <span class="st">"nonlinear"</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>outputs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(strong_out, weak_out, none_out, nonlinear_out)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw Figure 5</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>dummy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">term =</span> <span class="fu">unique</span>(outputs<span class="sc">$</span>term), <span class="at">prm =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>, <span class="fl">1.9</span>))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>outputs <span class="sc">|&gt;</span> </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(dataset, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"nonlinear"</span>, <span class="st">"none"</span>, </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                                            <span class="st">"weak"</span>, <span class="st">"strong"</span>)),</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>             <span class="at">y =</span> estimate,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>             <span class="at">ymin =</span> conf.low,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>             <span class="at">ymax =</span> conf.high)) <span class="sc">+</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> term) <span class="sc">+</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">data =</span> dummy, <span class="fu">aes</span>(<span class="at">yintercept =</span> prm),</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"estimated coefficient with 90% confidence interval"</span>) <span class="sc">+</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"dataset"</span>) <span class="sc">+</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Function for simulating effect of collinearity on estimates</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>collinearity <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n_sim =</span> <span class="dv">1000</span>, <span class="at">n_sample =</span> <span class="dv">50</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                         <span class="at">rho =</span> <span class="fl">0.90</span>,</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>                         <span class="at">coefs =</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">1.9</span>),</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sd_error =</span> <span class="fl">3.5</span>) {</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This function generates two correlated</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="co"># predictors and an outcome. It then</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># runs regression models (including ridge regression) </span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># on these variables and outputs the estimated</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># regression coefficients for the predictors.</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># It does this a large number of times (n_sim).</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Package for LASSO/ridge regression</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span>(<span class="st">"glmnet"</span>)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  estimates <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">8</span>, <span class="at">nrow =</span> n_sim)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_sim) {</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate correlated predictors</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    predictors <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> n_sample,</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>      <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>      <span class="at">Sigma =</span> <span class="fu">rbind</span>(</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(<span class="dv">1</span>, rho),</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(rho, <span class="dv">1</span>)</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate outcome</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    outcome <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(coefs <span class="sc">%*%</span> <span class="fu">t</span>(predictors) <span class="sc">+</span> <span class="fu">rnorm</span>(n_sample, <span class="at">sd =</span> sd_error))</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run multiple regression model</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    multiple_regression <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictors[, <span class="dv">1</span>] <span class="sc">+</span> predictors[, <span class="dv">2</span>])</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run single regression models</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>    simple_first <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictors[, <span class="dv">1</span>])</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    simple_second <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictors[, <span class="dv">2</span>])</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ridge regression</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>    lambda_seq <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="at">by =</span> <span class="sc">-</span><span class="fl">0.1</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>    cv_output <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(predictors, outcome, <span class="at">nfolds =</span> <span class="dv">10</span>,</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>                           <span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">lambda =</span> lambda_seq)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>    best_lambda <span class="ot">&lt;-</span> cv_output<span class="sc">$</span>lambda.min</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>    ridge_model <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(predictors, outcome, <span class="at">alpha =</span> <span class="dv">0</span>,</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>                          <span class="at">lambda =</span> best_lambda)</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save regression coefficients</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    estimated_coefficients <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(multiple_regression)[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>],</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summary</span>(multiple_regression)<span class="sc">$</span>coefficients[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">2</span>],</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(simple_first)[<span class="dv">2</span>],</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(simple_second)[<span class="dv">2</span>],</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>      <span class="fu">coef</span>(ridge_model)[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>                                </span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>    estimates[i, ] <span class="ot">&lt;-</span> estimated_coefficients</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    <span class="at">multiple_est_pred1 =</span> estimates[, <span class="dv">1</span>],</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    <span class="at">multiple_est_pred2 =</span> estimates[, <span class="dv">2</span>],</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    <span class="at">multiple_se_pred1 =</span> estimates[, <span class="dv">3</span>],</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="at">multiple_se_pred2 =</span> estimates[, <span class="dv">4</span>],</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>    <span class="at">simple_est_pred1 =</span> estimates[, <span class="dv">5</span>],</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    <span class="at">simple_est_pred2 =</span> estimates[, <span class="dv">6</span>],</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">ridge_est_pred1 =</span> estimates[, <span class="dv">7</span>],</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>    <span class="at">ridge_est_pred2 =</span> estimates[, <span class="dv">8</span>]</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>  results</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate effects of strong collinearity</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>strong_coll <span class="ot">&lt;-</span> <span class="fu">collinearity</span>(<span class="at">rho =</span> <span class="fl">0.98</span>)</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate effect of perfect orthogonality (zero collinearity)</span></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>no_coll <span class="ot">&lt;-</span> <span class="fu">collinearity</span>(<span class="at">rho =</span> <span class="dv">0</span>)</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>strong_coll<span class="sc">$</span>Collinearity <span class="ot">&lt;-</span> <span class="st">"strong collinearity</span><span class="sc">\n</span><span class="st">(r = 0.98)"</span></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>no_coll<span class="sc">$</span>Collinearity <span class="ot">&lt;-</span> <span class="st">"no collinearity</span><span class="sc">\n</span><span class="st">(r = 0.00)"</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>all_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(strong_coll, no_coll)</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure 6</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_data,</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> multiple_est_pred1,</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fu">after_stat</span>(density))) <span class="sc">+</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Collinearity) <span class="sc">+</span></span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.4</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"estimated regression coefficient for first predictor</span><span class="sc">\n</span><span class="st">in multiple regression models"</span>)</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a><span class="co"># Table 1</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="fu">list</span>(strong.lm, weak.lm, none.lm, nonlinear.lm), glance) <span class="sc">|&gt;</span> </span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Dataset =</span> <span class="fu">c</span>(<span class="st">"strong"</span>, <span class="st">"weak"</span>, <span class="st">"none"</span>, <span class="st">"nonlinear"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Dataset, <span class="st">`</span><span class="at">R²</span><span class="st">`</span> <span class="ot">=</span> r.squared, <span class="st">`</span><span class="at">p-value of overall fit</span><span class="st">`</span> <span class="ot">=</span> p.value) <span class="sc">|&gt;</span> </span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="st">"html"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="at">full_width =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure 7</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>lexdiv <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://janhove.github.io/datasets/LexicalDiversityFrench.csv"</span>)</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://janhove.github.io/datasets/meanRatingPerText_French.csv"</span>)</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>ratings<span class="sc">$</span>Text <span class="ot">&lt;-</span> <span class="fu">substr</span>(ratings<span class="sc">$</span>Text, <span class="dv">15</span>, <span class="fu">nchar</span>(ratings<span class="sc">$</span>Text))</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">left_join</span>(ratings, lexdiv, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Text"</span> <span class="ot">=</span> <span class="st">"textName"</span>))</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot_matrix</span>(d <span class="sc">|&gt;</span> <span class="fu">select</span>(meanRating, TTR, nTokens) <span class="sc">|&gt;</span> </span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">mutate</span>(<span class="at">sqrt_nTokens =</span> <span class="fu">log10</span>(nTokens)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">select</span>(<span class="sc">-</span>nTokens),</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>                <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"mean diversity rating"</span>,</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"type/token ratio"</span>,</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"log10 tokens"</span>))</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure 8</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_data,</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> simple_est_pred1,</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fu">after_stat</span>(density))) <span class="sc">+</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Collinearity) <span class="sc">+</span></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.4</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"estimated regression coefficient for first predictor</span><span class="sc">\n</span><span class="st">in simple regression models"</span>)</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="co"># Figure 9</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_data,</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> ridge_est_pred1,</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> <span class="fu">after_stat</span>(density))) <span class="sc">+</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Collinearity) <span class="sc">+</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">0.4</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"estimated regression coefficient for first predictor</span><span class="sc">\n</span><span class="st">in ridge regression models"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<p>Please note that I reran the code on this page on August 6, 2023.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.2 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-06
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ backports     1.4.1   2021-12-13 [1] CRAN (R 4.3.0)
+ bit           4.0.5   2022-11-15 [1] CRAN (R 4.3.0)
+ bit64         4.0.5   2020-08-30 [1] CRAN (R 4.3.0)
+ broom       * 1.0.5   2023-06-09 [1] CRAN (R 4.3.0)
+ cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ colorspace    2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ dplyr       * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi         1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ farver        2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
+ fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.3.0)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics      0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gtable        0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ highr         0.9     2021-04-16 [2] CRAN (R 4.2.0)
+ hms           1.1.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ httr          1.4.6   2023-05-08 [1] CRAN (R 4.3.0)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ kableExtra    1.3.4   2021-02-20 [1] CRAN (R 4.3.1)
+ knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ labeling      0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ lubridate   * 1.9.2   2023-02-10 [1] CRAN (R 4.3.0)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ munsell       0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ pillar        1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr       * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ rvest         1.0.3   2022-08-19 [1] CRAN (R 4.3.0)
+ scales        1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr     * 1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ svglite       2.1.1   2023-01-10 [1] CRAN (R 4.3.1)
+ systemfonts   1.0.4   2022-02-11 [1] CRAN (R 4.3.0)
+ tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyr       * 1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
+ tidyselect    1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ tidyverse   * 2.0.0   2023-02-22 [1] CRAN (R 4.3.1)
+ timechange    0.2.0   2023-01-11 [1] CRAN (R 4.3.0)
+ tzdb          0.4.0   2023-05-12 [1] CRAN (R 4.3.0)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8          1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ viridisLite   0.4.2   2023-05-02 [1] CRAN (R 4.3.0)
+ vroom         1.6.3   2023-04-28 [1] CRAN (R 4.3.0)
+ webshot       0.5.5   2023-06-26 [1] CRAN (R 4.3.1)
+ withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xml2          1.3.3   2021-11-30 [2] CRAN (R 4.2.0)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

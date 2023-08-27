@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2014-09-12">
+
+<title>Jan Vanhove :: Blog - A purely graphical explanation of p-values</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-graphical-t-test-anova" id="toc-a-graphical-t-test-anova" class="nav-link active" data-scroll-target="#a-graphical-t-test-anova">A graphical <em>t</em>-test / ANOVA</a></li>
+  <li><a href="#a-graphical-correlation-test" id="toc-a-graphical-correlation-test" class="nav-link" data-scroll-target="#a-graphical-correlation-test">A graphical correlation test</a></li>
+  <li><a href="#concluding-remarks" id="toc-concluding-remarks" class="nav-link" data-scroll-target="#concluding-remarks">Concluding remarks</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">A purely graphical explanation of p-values</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 12, 2014</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><em>p</em>-values are confusing creatures–not just to students taking their first statistics course but to seasoned researchers, too. To fully understand how <em>p</em>-values are calculated, you need to know a good deal of mathematical and statistical concepts (e.g.&nbsp;probability distributions, standard deviations, the central limit theorem, null hypotheses), and these take a while to settle in. But to explain the <em>meaning</em> of <em>p</em>-values, I think we can get by without such sophistication. So here you have it, a purely graphical explanation of <em>p</em>-values.</p>
+<section id="a-graphical-t-test-anova" class="level2">
+<h2 class="anchored" data-anchor-id="a-graphical-t-test-anova">A graphical <em>t</em>-test / ANOVA</h2>
+<p>The statistical tests you’re most likely to run into are the two-sample <em>t</em>-test and its big brother, analysis of variance (ANOVA). These tests are used to establish whether the difference between two or more group averages are due to chance or whether their is some underlying system to them.</p>
+<p>For this example, I use data from my Ph.D.&nbsp;project. The goal of this analysis (not of my thesis, though) is to establish whether men and women differ in their ability to understand spoken words in an unknown but related foreign language. The following R code reads in the data, tabulates the number of men and women (<code>table()</code>) and shows the distribution of the participants’ scores on the listening test (<code>hist()</code>). To reproduce this analysis, you’ll need to install R, which is freely available from <a href="http://r-project.org/">http://r-project.org/</a>–and while you’re at it, download a graphical user interface like <a href="http://rstudio.com/">RStudio</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"http://janhove.github.io/datasets/sinergia.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dat<span class="sc">$</span>Sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+female   male 
+    90     73 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(dat<span class="sc">$</span>Spoken, <span class="at">main=</span><span class="st">"Histogram"</span>, <span class="at">xlab=</span><span class="st">"Score"</span>, <span class="at">col=</span><span class="st">"lightblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To establish whether men and women differ ‘significantly’ from one another, we’d usually plot the data, run a <em>t</em>-test, and check the reported <em>p</em>-value, but an alternative approach is discussed by <a href="http://ieeexplore.ieee.org/xpls/icp.jsp?arnumber=5613434">Wickham and colleagues</a>.</p>
+<p>The <strong>basic idea</strong> is as follows. If there is a systematic relationship between two variables (e.g.&nbsp;a difference in group averages), then we ought to be able to tell the <em>real</em> dataset from <em>fake</em> datasets that were randomly generated without an underlying systematic relationship. To generate fake but ‘realistic’ datasets, we can permute the real data, i.e., randomly switch the datapoints between the groups. Then, we organise a line-up (like in the movies!) with the real dataset hidden among several fake datasets. If we can distinguish the real dataset from the fake ones, we have some evidence that there is some degree of system in the real data that is not present in the fake data.</p>
+<p>This procedure is implemented in the <code>nullabor</code> package for R, which relies on the <code>ggplot2</code> package. Make sure you have these two packages installed on your machine (<code>install.packages()</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the # before the two next lines to install the ggplot2 and nullabor packages.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("nullabor")</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nullabor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The following code plots the listening scores for all participants according to whether they’re male or female, but the real dataset is hidden among 19 fake (permuted) datasets. The crosshairs mark the means for each sex in each dataset. Can you pick out the real dataset? (The code to generate this plot is somewhat complicated but is of no consequence to the argument; don’t lose yourself in it.)</p>
+<p><strong>Update (2023-08-25):</strong> Compared to the original blog post, I replaced the <code>fun.y</code> argument, which is now deprecated, by <code>fun</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(Sex, Spoken)) <span class="sc">%+%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">"Spoken"</span>), dat) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30</span>)) <span class="sc">+</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="co">#geom_boxplot(outlier.shape = NA, na.rm = TRUE) +</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">col=</span>Sex),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">w=</span><span class="fl">0.3</span>, <span class="at">h =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">geom =</span> <span class="st">"point"</span>, </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">shape =</span> <span class="dv">10</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">guides</span>(<span class="at">colour =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span> .sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 5g")</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Most sample means are pretty similar, but not entirely identical, to each other. Due to the randomness inherent in generating permutations, some differences between the sample means for men and women are in fact expected. This is known as <strong>sampling error</strong>. If men’s and women’s listening scores didn’t differ systematically from one another, we wouldn’t be able to pick out the real dataset with <strong>above-chance accuracy</strong>, i.e., we would only have a 1 in 20 (5%) chance of picking the right answer.</p>
+<p>If there were some systematic difference between the two groups, however, we would be able to beat those odds. Eye-balling these plots, I’d say that Panel 16 stands out in that the difference between men and women is larger than in the other panels. Using the encrypted code provided above, we can check whether this hunch is correct:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">decrypt</span>(<span class="st">"sFZM ldbd 32 PN43b3N2 5g"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "True data in position  16"</code></pre>
+</div>
+</div>
+<p>It is. If there were no systematic difference between the two groups (``if the null hypothesis were correct’‘, in statistics parlance), I’d only have had a 1-in-20 chance of picking the right answer, yet I managed to do so. Put differently, it’s pretty unlikely (5%) to observe this noticeable a difference between the two groups if no systematic pattern existed, and from this we’d usually conclude that there <em>is</em> some systematic pattern. This, in effect, is what is expressed by’<em>p</em> = 0.05’. To establish ‘<em>p</em> = 0.01’ using this procedure, you’d have to be able to pick out the actual dataset when it’s hidden among 99 fake datasets – but that wouldn’t work now since you already know how it looks.</p>
+<p>A cautionary note, though: While we’ve established with some confidence that women have differerent (higher) listening scores from men, we’ve not demonstrated that it’s the sex difference that <em>causes</em> this difference. In this study, the men were on average somewhat older than the women, for instance.</p>
+</section>
+<section id="a-graphical-correlation-test" class="level2">
+<h2 class="anchored" data-anchor-id="a-graphical-correlation-test">A graphical correlation test</h2>
+<p>The graphical test can also be applied to the relationship between two continuous variables. Usually, we’d compute a correlation test or fit a regression model to get a <em>p</em>-value for such a situation.</p>
+<p>The following plot shows the relationship between a measure of intelligence (‘Raven’) and the participants’ performance on a reading task. The real dataset is again hidden among 19 fake datasets that were generated without an underlying pattern. Can you spot the real dataset?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(Raven, Written)) <span class="sc">%+%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">"Raven"</span>), dat, <span class="at">n =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span> .sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 ua")</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>q</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>You might be able to spot the real dataset, but I had to peek at the right answer to know it was Panel 7. In this case, I wasn’t able to beat the odds since the real data look too similar to the fake data, suggesting that ‘no systematic pattern’ is a more parsimonious relationship.</p>
+<p>Compare this to the following plot, which shows the participants’ reading scores in function of their English skills.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dat, <span class="fu">aes</span>(English, Written)) <span class="sc">%+%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">"English"</span>), dat, <span class="at">n =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span> .sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 uJ")</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>If you picked Panel 8 because its discernible positive trend, you’d be right. A statistical test would likely yield a <em>p</em>-value lower than 0.05. In fact, in this case, you’d probably be able to pick out the real data from among a much larger number of fake datasets.</p>
+</section>
+<section id="concluding-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="concluding-remarks">Concluding remarks</h2>
+<p>Obviously there’s some subjectivity inherent in this type of analysis, and the procedure breaks down when you already know the shape of the actual data. To increase its reliability, you could try to enlist the help of a panel of independent judges who are not involved in the research project. That said, the goal of this post was to clarify what enigmatic phrases like ‘<em>p</em> &lt; 0.05’ express: the degree of unusualness of the data at hand compared to data with no underlying systematic pattern.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.3 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-25
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ class         7.3-22  2023-05-03 [4] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ cluster       2.1.4   2022-08-22 [4] CRAN (R 4.2.1)
+ colorspace    2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ DEoptimR      1.1-0   2023-07-12 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ diptest       0.76-0  2021-05-04 [1] CRAN (R 4.3.1)
+ dplyr         1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi         1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ farver        2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
+ fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ flexmix       2.3-19  2023-03-16 [1] CRAN (R 4.3.1)
+ fpc           2.2-10  2023-01-07 [1] CRAN (R 4.3.1)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics      0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gtable        0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ kernlab       0.9-32  2023-01-31 [1] CRAN (R 4.3.1)
+ knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ labeling      0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lattice       0.21-8  2023-04-05 [4] CRAN (R 4.3.0)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ MASS          7.3-60  2023-05-04 [4] CRAN (R 4.3.1)
+ mclust        6.0.0   2022-10-31 [1] CRAN (R 4.3.1)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ modeltools    0.2-23  2020-03-05 [1] CRAN (R 4.3.1)
+ moments       0.14.1  2022-05-02 [1] CRAN (R 4.3.1)
+ munsell       0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ nnet          7.3-19  2023-05-03 [4] CRAN (R 4.3.1)
+ nullabor    * 0.3.9   2020-02-25 [1] CRAN (R 4.3.1)
+ pillar        1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prabclus      2.3-2   2020-01-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr         1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ robustbase    0.99-0  2023-06-16 [1] CRAN (R 4.3.1)
+ rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ scales        1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr       1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ tibble        3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyr         1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
+ tidyselect    1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8          1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

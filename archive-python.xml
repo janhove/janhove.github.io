@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Jan Vanhove :: Blog</title>
+<link>https://janhove.github.io/archive.html#category=Python</link>
+<atom:link href="https://janhove.github.io/archive-python.xml" rel="self" type="application/rss+xml"/>
+<description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
+<generator>quarto-1.3.433</generator>
+<lastBuildDate>Sun, 27 Aug 2023 08:25:17 GMT</lastBuildDate>
+</channel>
+</rss>

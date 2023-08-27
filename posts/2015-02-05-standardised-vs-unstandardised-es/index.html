@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2015-02-05">
+
+<title>Jan Vanhove :: Blog - Why I don’t like standardised effect sizes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#reason-no.-1-unstandardised-effect-sizes-are-often-interpretable" id="toc-reason-no.-1-unstandardised-effect-sizes-are-often-interpretable" class="nav-link active" data-scroll-target="#reason-no.-1-unstandardised-effect-sizes-are-often-interpretable">Reason No.&nbsp;1: Unstandardised effect sizes <i>are</i> often interpretable</a></li>
+  <li><a href="#reason-no.-2-standardised-effect-sizes-are-more-sensitive-to-the-research-design-and-thats-a-bad-thing" id="toc-reason-no.-2-standardised-effect-sizes-are-more-sensitive-to-the-research-design-and-thats-a-bad-thing" class="nav-link" data-scroll-target="#reason-no.-2-standardised-effect-sizes-are-more-sensitive-to-the-research-design-and-thats-a-bad-thing">Reason No.&nbsp;2: Standardised effect sizes are more sensitive to the research design (and that’s a bad thing)</a></li>
+  <li><a href="#reason-no.-3-apples-and-oranges" id="toc-reason-no.-3-apples-and-oranges" class="nav-link" data-scroll-target="#reason-no.-3-apples-and-oranges">Reason No.&nbsp;3: Apples and oranges</a></li>
+  <li><a href="#reason-no.-4-what-about-more-complex-models" id="toc-reason-no.-4-what-about-more-complex-models" class="nav-link" data-scroll-target="#reason-no.-4-what-about-more-complex-models">Reason No.&nbsp;4: What about more complex models?</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">tl;dr</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why I don’t like standardised effect sizes</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 5, 2015</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>With researchers (thankfully) increasingly realising that <em>p</em>-values are only poorly related to the strength of the effects that they study, standardised effect sizes such as Cohen’s <em>d</em> or Pearson’s <em>r</em> are reported more and more frequently. In this blog post, I give four reasons why I don’t like such standardised effect size measures and why I prefer unstandardised effect sizes instead.</p>
+<p>As a brief refresher, <strong>unstandardised effect sizes</strong> express the patterns found in the data in the units in which they were measured. For instance, if you say that there is a 7-centimetre mean difference in body length between two groups in your sample, that’s an unstandardised effect size. Similarly, if you say that lexical decision times slow down by 4 milliseconds a year, that’s an unstandardised effect size, too.</p>
+<p><strong>Standardised effect sizes</strong>, by contrast, express these patterns by scaling the differences or trends by a measure of the variability within the sample. For instance, a 7-centimetre difference can be expressed as a difference of 0.6 standard deviations if the within-group standard deviation of body length is 12 centimetres (7/12 = 0.6). This standardised effect size measure is known as Cohen’s <em>d</em>. Similarly, 4-ms per year decrease in lexical decision times can correspond to a Pearson’s <em>r</em> of 0.27, of 0.05 and of 0.81 (among many other possibilities), depending on the variability in the participants’ ages and reaction times; Pearson’s <em>r</em> is a standardised effect size as well.</p>
+<p>With that under our belts, here are the four reasons why I prefer unstandardised over standardised effect sizes.</p>
+<section id="reason-no.-1-unstandardised-effect-sizes-are-often-interpretable" class="level2">
+<h2 class="anchored" data-anchor-id="reason-no.-1-unstandardised-effect-sizes-are-often-interpretable">Reason No.&nbsp;1: Unstandardised effect sizes <i>are</i> often interpretable</h2>
+<p>Advocates of standardised effect sizes often point out that much research in the social sciences makes use of variables that were measured on arbitrary scales such as responses to questionnaire items. Say, for instance, that two researchers want to investigate attitude differences between two populations. One researcher makes use of a 5-point Likert scale and finds a 1-point difference between her two samples, whereas the other researcher makes use of a 13-point Likert scale and finds a 2-point difference. These results can be hard to compare: the 2-point difference isn’t necessarily larger than the 1-point difference in any real terms. By scaling these differences relative to the variability in their respective samples, the two researchers can express their findings in a common metric (e.g.&nbsp;between-group difference divided by within-group variability) and more directly compare their results. (When dividing between-group differences by within-group differences, the measurement units cancel out; standardised effect sizes are therefore also called ‘dimensionless’.)</p>
+<p>I’ll admit that, in this situation, standardised effect sizes might serve a useful purpose (though see Reason No.&nbsp;2 for a caveat). But, at least in the articles I read, it’s usually relatively straightforward to compare the raw effect sizes with one another. For instance, I can readily appreciate what a reaction time difference of 70 ms means in the context of a lexical decision task. In fact, it’s often easy enough to appreciate what a one-point difference on a 5-point Likert scale means (e.g.&nbsp;a shift from ‘no opinion’ to ‘tend to agree’), and what a two-point difference on a 7-point Likert scale means (e.g.&nbsp;a shift from ‘disagree slightly’ to ‘agree slightly’) if the response options have been appropriately labelled.</p>
+<p>Similarly, when assessing the bivariate relationship between two variables, raw effect sizes (e.g.&nbsp;regression coefficients) are often straigthforward to interpret. Personally, I find an effect size statement like ‘response latencies slowed down by 4 milliseconds a year’ more meaningful than ‘response latencies were positively correlated with age (Pearson’s <em>r</em> = 0.17)’. Sure, the Pearson correlation coefficient provides information as to how much of the response time variance is ‘accounted for’ by age (in this example: 0.17² = 3%), but this is as much an indication about the research design than about the effect being studied—which brings us seamlessly to Reason No.&nbsp;2.</p>
+</section>
+<section id="reason-no.-2-standardised-effect-sizes-are-more-sensitive-to-the-research-design-and-thats-a-bad-thing" class="level2">
+<h2 class="anchored" data-anchor-id="reason-no.-2-standardised-effect-sizes-are-more-sensitive-to-the-research-design-and-thats-a-bad-thing">Reason No.&nbsp;2: Standardised effect sizes are more sensitive to the research design (and that’s a bad thing)</h2>
+<p>Compared to unstandardised effect sizes, standardised effect sizes are too sensitive to the way in which the data were collected. When computing standardised effect sizes such as Cohen’s <em>d</em>, we need to divide the between-group mean difference by the within-group standard deviation. So, if we reduce the within-group standard deviation, we’ll get a higher Cohen’s <em>d</em> value, even if the between-group mean difference itself is unaffected.</p>
+<p>Reducing within-group differences is one of the primary goals of good experimental design. For instance, better measurement instruments will yield a smaller within-group standard deviation since the amount of measurement error is reduced. Similarly, taking multiple measurements of each participants and averaging them will produce a smaller within-group standard deviation and hence a higher Cohen’s <em>d</em>. But the between-group difference itself, <em>which is what we’re really interested in</em>, won’t be (<em>shouldn’t be</em>) affected by such improvements in the experimental design. (The same holds for Pearson’s <em>r</em>.) In this case, higher standardised effect sizes reflect better design, <em>not</em> larger effects. Unstandardised effect sizes, by contrast, aren’t affected by such improvements in the experimental design, though their standard errors are, appropriately reflecting the higher degree of accuracy.</p>
+<p>Standardised effect sizes aren’t only sensitive to differences in measurement error, but also to differences in the sampling strategy. By way of example, let’s say that we want to characterise the (linear) relationship between two variables. To do this, we have the choice between two strategies:</p>
+<ul>
+<li>the costly route of sampling 100 participants randomly from the population and measuring Variables 1 and 2;</li>
+<li>the cheaper route of screening 100 participants drawn randomly from the population, measure them on Variable 1 and invite the 20 participants with the highest and the 20 participants with the lowest Variable 1 scores to the lab in order to run the costly test that yields Variable 2 (‘extreme group’ approach).</li>
+</ul>
+<p>Does the difference in sampling strategy affect our estimate about the relationship between the two variables? I wrote a simulation with 10,000 runs to find out (<a href="../../downloads/SimulationEffectSizes.R">R code</a>).</p>
+<p>In the panel on the left, I plotted the effect of random sampling vs.&nbsp;an extreme group approach on Pearson’s <em>r</em>. Most dots lie above the bisector, indicating that the extreme group approach yields standardised effect sizes that are higher than the random sampling approach. (In this case, the average Pearson’s <em>r</em> for the random sampling approach is 0.38, whereas it’s 0.52 for the extreme group approach.) The panel on the right shows the effect of different sampling strategies on the regression (‘beta’) coefficient, or better, the lack of such an effect. (The average beta coefficient is 0.22 for both approaches.)</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_7153da21d10c6cc4cdbb50c7d9756589">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>Non-random sampling doesn’t necessarily boost the standardised effect size: restricting the analysis to the participants who are in the top-30% with respect to Variable 1 decreases Pearson’s <em>r</em> (left panel) on average from 0.37 to 0.21. (This might sound pretty similar to restricting the analysis to university-educated participants…) But it doesn’t affect the regression coefficients (right panel; 0.22 for both approaches). (The dots don’t lie along the bisector due to the differences in sample size that aren’t compensated for by extreme group sampling, but the point is that there are about as many dots above the bisector as there are below.)</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-2_806cf1dacd793e6a08f3c41ce2b17801">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>The upshot is that <strong>research design affects standardised effect sizes even if the effect itself doesn’t change</strong>: the relationships we sought to characterise were the same in all cases. But if we had based our conclusions on the relative effect sizes, we could’ve been tempted to try to explain ‘differences’ between results in terms of hidden interactions and the like. By looking at the unstandardised effect sizes, it becomes clear that there is no conflict between the findings in the first place.</p>
+<p>(Note that I’m not arguing in favour of extreme-group approaches, though it’s a given that as psychologists or linguists, we rarely if ever can make use of random sampling.)</p>
+</section>
+<section id="reason-no.-3-apples-and-oranges" class="level2">
+<h2 class="anchored" data-anchor-id="reason-no.-3-apples-and-oranges">Reason No.&nbsp;3: Apples and oranges</h2>
+<p>In his 1992 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.218.4295&amp;rep=rep1&amp;type=pdf">Power Primer</a>, Jacob Cohen tentatively suggested that correlation coefficients of 0.10, 0.30 and 0.50 could be considered small, medium and large effect sizes, respectively. Cohen derived this yardstick from the distribution of effect sizes in the psychological literature up till then.</p>
+<p>A useful complement to this article is <a href="http://dx.doi.org/10.1111/lang.12079">Plonsky and Oswald’s recent review in <em>Language Learning</em></a>. In it, they analyse the distribution of effect sizes in second language research and recommend that correlation coefficients of 0.25, 0.40 and 0.60 be considered small, medium and large in L2 research. But what I found more interesting than the results they report is their speculation about ‘Domain maturity and changes over time’:</p>
+<blockquote class="blockquote">
+<p>There is no reason to assume that effects in any particular domain would remain static over time. … A first scenario in which effect sizes might change over time involves a trajectory of research outcomes for a particular domain in which methodological adjustments or improvements lead to larger [standardised, JV] effect sizes over time … an alternate and somewhat opposite pattern of effects may also play out in a body of empirical literature characterized by theoretical developments and maturation taking place over time. Early research in a given area is often characterized by strong manipulations that set out to determine whether an effect exists and thereby determine whether the claims of a particular and usually novel hypothesis merit further attention. Such experiments would tend to yield larger effect sizes (…) Subsequently, after an effect is found, research efforts may shift to the generalizability of an effect across samples, settings, tasks, and so forth …</p>
+</blockquote>
+<p>So when comparing a Pearson’s <em>r</em> of 0.5 with one of 0.2 and labelling the first ‘medium-strong’ and the latter ‘small’, what are we really comparing? Real effect size, methodological rigour, theoretical sophistication or the fact that there’s less low-hanging fruit as time goes on?</p>
+<p>A related point is that these yardsticks have become (or tend to become) gospel, much like the sacred 0.05 significance threshold. I hope I’m mistaken in this, but my impression is that most researchers doing power analyses out there just plug in a ‘medium’ or ‘large’ Cohen’s <em>d</em> or Pearson’s <em>r</em> and jot down the minimum sample size that the software returns. Perhaps it’s more useful to think about how sources of extraneous variance can be brought under control in order to increase power (tighter design, more accurate measures, including covariates), rather than assuming that whatever yardstick out there also applies to one’s own study.</p>
+</section>
+<section id="reason-no.-4-what-about-more-complex-models" class="level2">
+<h2 class="anchored" data-anchor-id="reason-no.-4-what-about-more-complex-models">Reason No.&nbsp;4: What about more complex models?</h2>
+<p>All discussions and tutorials on standardised effect sizes that I’ve come across assume that you have a comparatively easy statistical model: if you run a t-test, compute Cohen’s <em>d</em>; report η² if you run an ANOVA; report Pearson’s <em>r</em> if you have two continuous variables; report R² if you run a multiple regression model etc.</p>
+<p>But these concepts translate poorly to the statistical tools that I need to make use of. For instance, there is no unambiguous counterpart of R² in logistic regression models nor in mixed-effect regressions. When I report on such models in research papers, I usually include a footnote to this effect in order to fend off the inevitable (and understandable) remark that effect sizes need to be reported. Up till now, this has done the trick for me, but Dale Barr (of <a href="http://idiom.ucsd.edu/~rlevy/papers/barr-etal-2013-jml.pdf">mixed-effect model fame</a>) seems to have had more difficulties in this department:</p>
+<blockquote class="blockquote">
+<p>
+Tell them how to compute a dimensionless effect size measure for cross classified multilevel data, oh editor, or don’t make it a requirement
+</p>
+<p>— Dale Barr (<span class="citation" data-cites="dalejbarr">@dalejbarr</span>) <a href="https://twitter.com/dalejbarr/status/562970172156575747">February 4, 2015</a></p>
+</blockquote>
+</section>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<p>Unstandardised effect sizes do their job just fine.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

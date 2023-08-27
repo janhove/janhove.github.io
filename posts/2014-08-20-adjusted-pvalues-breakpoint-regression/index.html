@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2014-08-20">
+
+<title>Jan Vanhove :: Blog - Calibrating p-values in ‘flexible’ piecewise regression models</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#piecewise-regression" id="toc-piecewise-regression" class="nav-link active" data-scroll-target="#piecewise-regression">Piecewise regression</a></li>
+  <li><a href="#the-problem-increased-type-i-error-rates" id="toc-the-problem-increased-type-i-error-rates" class="nav-link" data-scroll-target="#the-problem-increased-type-i-error-rates">The problem: increased Type-I error rates</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The data</a></li>
+  <li><a href="#computing-adjusted-p-values" id="toc-computing-adjusted-p-values" class="nav-link" data-scroll-target="#computing-adjusted-p-values">Computing adjusted <em>p</em>-values</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Calibrating p-values in ‘flexible’ piecewise regression models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 20, 2014</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Last year, I published an <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0069172">article</a> in which I critiqued the statistical tools used to assess the hypothesis that ultimate second-language (L2) proficiency is non-linearly related to the age of onset of L2 acquisition. Rather than using ANOVAs or correlation coefficient comparisons, I argued, breakpoint (or piecewise) regression should be used. But unless the breakpoint is specified in advance, such models are demonstrably anti-conservative. Here I outline a simulation-based approach for calibrating the <em>p</em>-values of such models to take their anti-conservatism into account.</p>
+<section id="piecewise-regression" class="level2">
+<h2 class="anchored" data-anchor-id="piecewise-regression">Piecewise regression</h2>
+<p>Piecewise (or breakpoint) regression is a pretty self-descriptive term: it’s a regression model with an elbow in the function. For instance, in the graph below, the function relating <em>x</em> to <em>y</em> flattens for <em>x</em> values higher than 0.5.</p>
+<p><img src="../../figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-1.png" class="img-fluid"></p>
+<p>What is important here is that the analyst has to specify at which <em>x</em> point the regression curve is allowed to change slopes – in the graph above, I had to specify the breakpoint parameter myself (see my <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0069172">article</a> on how this can be done).</p>
+</section>
+<section id="the-problem-increased-type-i-error-rates" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-increased-type-i-error-rates">The problem: increased Type-I error rates</h2>
+<p>Language researchers may be familiar with piecewise regression thanks to Harald Baayen’s excellent <a href="http://www.cambridge.org/us/academic/subjects/languages-linguistics/grammar-and-syntax/analyzing-linguistic-data-practical-introduction-statistics-using-r"><em>Analyzing linguistic data</em></a>, in which he illustrates a method to automate the selection of the breakpoint. Briefly, this method consists of looping through all possible breakpoints and fitting a piecewise regression model for each of them. Then, the best-fitting model is retained.</p>
+<p>In my article on analyses in critical period research, I too adopted this procedure in order to illustrate that the data in the two studies that I scrutinised were not characterised by the predicted non-linearities. What I may have underemphasised in that article, however, is that this breakpoint selection procedure yields a <strong>higher-than-nominal Type-I error rate</strong> of finding a non-linearity. In plain language, looping through several possible breakpoints increases your risk of finding non-linearities when in fact none exist.</p>
+<p>The intuition behind this is probably (hopefully) dealt with in every introductory statistics course. If you run a two-samples <em>t</em>-test with an alpha level of 0.05, you accept a 5% risk to find a significant difference between the two groups even if the populations do not differ. If you run five <em>t</em>-tests on unrelated data, each with an alpha level of 0.05, the risk of finding a non-existing difference is still 5% for each test considered individually – but the global risk (‘familywise Type-I error rate’) is now about 23%:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.05</span>)<span class="sc">^</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2262191</code></pre>
+</div>
+</div>
+<p>Similarly, if you loop through, say, 5 possible breakpoints to establish whether a non-linearity exists using piecewise regression, your Type-I error rate goes up. But it won’t be as high as 23% since you’re not conducting the same analysis on unrelated data. It’d be nice if we could calibrate the <em>p</em>-values from a piecewise regression model that suffers from this multiple comparison problem, but I wouldn’t know how to go about it analytically. Instead, I suggest a <strong>simulation-based approach</strong>. But first, let’s make the problem a bit more concrete by turning to the actual datasets.</p>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
+<p>In my CPH article, I re-analysed two datasets from <a href="http://dx.doi.org/10.1017/S0142716410000056">DeKeyser et al.&nbsp;(2010)</a>. The specifics of these two datasets aren’t too important for our present purposes, so I’ll skip them. The two datasets are available <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010Israel.csv">here</a> (Israel data) and <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010NorthAmerica.csv">here</a> (North America data); the following plots show the relationship between the AOA (age of onset of L2 acquisition) and GJT (a measure of L2 proficiency) variables in both datasets.</p>
+<p><img src="../../figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-3.png" class="img-fluid"></p>
+<p>Piecewise regressions carried out using the a priori cut-off AOA values specified by DeKeyser et al.&nbsp;(AOA = 18) did not yield significant improvements over straightforward linear models ( <em>p</em> = 0.98 and 0.07 for the Israel and North America data, respectively). In a second series of analyses, I determined the optimal breakpoints following the approach suggested by Baayen. For the Israel data, the optimal breakpoint was located at AOA 6 but a piecewise model still failed to yield a significant improvement over a linear model ( <em>p</em> = 0.62). For the North America data, fitting a breakpoint at AOA 16 did yield such an improvement ( <em>p</em> = 0.047).</p>
+<p>As I looped through several breakpoints (from AOA 5 till 19), however, these <em>p</em>-values will be anti-conservative.</p>
+</section>
+<section id="computing-adjusted-p-values" class="level2">
+<h2 class="anchored" data-anchor-id="computing-adjusted-p-values">Computing adjusted <em>p</em>-values</h2>
+<p>As always, a <em>p</em>-value is supposed to express the probability of finding a significant result <em>if the null hypothesis were true</em>. When fitting piecewise regressions, the <strong>null hypothesis</strong> is that the relationship between the two variables is <strong>linear</strong>. We don’t know precisely how a linear relationship between our two variables looks like under the null hypothesis (intercept, slope and dispersion parameters) but a reasonable starting point is to <strong>fit a linear model</strong> to the data we have and take its parameters as the population parameters. After all, they’re our best guess. We’re then going to <strong>simulate new datasets</strong> based on this model.</p>
+<p>By way of illustration, the following R code reads in the Israel data and uses it to create 9 linear AOA-GJT relationships with similar properties.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in Israel data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010Israel.csv"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit linear model</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(GJT <span class="sc">~</span> AOA, <span class="at">data =</span> dat)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grid for 9 plots</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">oma=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="co"># room for title</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">bty=</span><span class="st">"l"</span>, <span class="at">las=</span><span class="st">"1"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw 9 plots with simulated data</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">9</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">plot</span>(dat<span class="sc">$</span>AOA, <span class="fu">unlist</span>(<span class="fu">simulate</span>(mod)),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">xlab=</span><span class="st">"AOA"</span>, <span class="at">ylab=</span><span class="st">"simulated GJT"</span>))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main=</span><span class="st">"9 simulated datasets"</span>, <span class="at">outer=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>As you can see, some of the simulated GJT values lie outside the range of the original GJT data. DeKeyser et al.&nbsp;used a test that consisted of 204 yes/no items, so values higher than 204 are impossible whereas a score of 102 corresponds to random guessing. Our regression model doesn’t know that 102 and 204 represent the de facto limits of the GJT variable, and while we could try to use <a href="http://en.wikipedia.org/wiki/Tobit_model#Variations_of_the_Tobit_model">censored regression models</a> to deal with that, I’m just going to tell R to set values higher than 204 to 204 and values lower than 102 to 102. The following function, <code>generateBreakpointData.fnc</code>, does just that and, while we’re at it, rounds off the simulated values to integers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>straight.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(GJT <span class="sc">~</span> AOA, dat)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>AOAvals <span class="ot">&lt;-</span> dat<span class="sc">$</span>AOA</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>generateBreakpointData.fnc <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">AOA =</span> AOAvals) {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  UA <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">unlist</span>(<span class="fu">simulate</span>(straight.lm)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  UA[UA<span class="sc">&gt;</span><span class="dv">204</span>] <span class="ot">&lt;-</span> <span class="dv">204</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  UA[UA<span class="sc">&lt;</span><span class="dv">102</span>] <span class="ot">&lt;-</span> <span class="dv">102</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">AOA =</span> AOA,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">UA =</span> UA))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we’re going to <strong>fit a piecewise model with a specified breakpoint to the simulated data</strong>. Here, the breakpoint is at AOA 12.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fitBreakpoint.fnc <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">Data =</span> Data,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">Breakpoint =</span> <span class="dv">12</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  with.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(UA <span class="sc">~</span> AOA <span class="sc">+</span> <span class="fu">I</span>(<span class="fu">pmax</span>(AOA<span class="sc">-</span>Breakpoint, <span class="dv">0</span>)), Data)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="fu">anova</span>(with.lm)<span class="sc">$</span><span class="st">'Pr(&gt;F)'</span>[<span class="dv">2</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  dev <span class="ot">&lt;-</span> <span class="fu">deviance</span>(with.lm)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">data.frame</span>(<span class="at">pval =</span> pval,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">dev =</span> dev))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s the outcome of running the two commands after each other:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010Israel.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>straight.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(GJT <span class="sc">~</span> AOA, dat)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>AOAvals <span class="ot">&lt;-</span> dat<span class="sc">$</span>AOA</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Data <span class="ot">&lt;-</span> <span class="fu">generateBreakpointData.fnc</span>(<span class="at">AOA =</span> AOAvals)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fitBreakpoint.fnc</span>(<span class="at">Data =</span> Data, <span class="at">Breakpoint =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       pval      dev
+1 0.3074955 11913.35</code></pre>
+</div>
+</div>
+<p>The values that are returned are the <em>p</em>-value of the test whether the slope is different before from after the breakpoint and the model’s deviance (i.e.&nbsp;lack of fit).</p>
+<p>Next, we’re going to <strong>loop through all possible breakpoints</strong> while jotting down the <em>p</em>-values and deviances. I say ‘loop’, but in R you really want to <a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">vectorise</a> your repeated calculations as much as possible. This is what the <code>mapply</code> line below does. The <code>generateFitBreakpoint.fnc</code> (among other programming-related stuff, I’m terrible at naming functions) takes two arguments, the lowest considered breakpoint value and the higher considered breakpoint value, and returns the <em>p</em>-value associated with the optimal breakpoint model as well as the location of said breakpoint.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>generateFitBreakpoint.fnc <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">MinBreakpoint =</span> <span class="fu">min</span>(AOAvals) <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">MaxBreakpoint =</span> <span class="dv">19</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  Data <span class="ot">&lt;-</span> <span class="fu">generateBreakpointData.fnc</span>()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  Results <span class="ot">&lt;-</span> <span class="fu">mapply</span>(fitBreakpoint.fnc,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">Breakpoint =</span> MinBreakpoint<span class="sc">:</span>MaxBreakpoint,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">MoreArgs=</span><span class="fu">list</span>(<span class="at">Data =</span> Data))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  Summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Breakpoint =</span> MinBreakpoint<span class="sc">:</span>MaxBreakpoint,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">PValues =</span> <span class="fu">unlist</span>(Results[<span class="st">'pval'</span>,]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">Deviances =</span> <span class="fu">unlist</span>(Results[<span class="st">'dev'</span>,]))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  BestP <span class="ot">=</span> Summary<span class="sc">$</span>PValues[<span class="fu">which.min</span>(Summary<span class="sc">$</span>Deviances)]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  BestBP <span class="ot">=</span> Summary<span class="sc">$</span>Breakpoint[<span class="fu">which.min</span>(Summary<span class="sc">$</span>Deviances)]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">OptimalBP =</span> BestBP,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">OptimalP =</span> BestP))</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>All that is left to do now is to repeat that process a couple of thousand times and inspect the distribution of the recorded <em>p</em>-values. The code below simulates 10,000 datasets based on DeKeyser et al.’s Israel data, loops through each of them to determine the individual best-fitting breakpoint models (possible breakpoints between AOA 5 and 19) and saves the associated <em>p</em>-values.</p>
+<p>(I ran this code on a Linux terminal. It may not work on other systems, in which case you can let me know.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load 'parallel' package for faster computing.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribute the job among a couple of CPU cores</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Supply the other cores with the information necessary </span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">clusterExport</span>(cl, <span class="fu">c</span>(<span class="st">"dat"</span>, <span class="st">"straight.lm"</span>, <span class="st">"AOAvals"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"generateBreakpointData.fnc"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"fitBreakpoint.fnc"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"generateFitBreakpoint.fnc"</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run 10000 times</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>ReplicateResults <span class="ot">&lt;-</span> <span class="fu">parSapply</span>(cl, <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>                              <span class="cf">function</span>(i, ...) <span class="fu">generateFitBreakpoint.fnc</span>())</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to disk</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ReplicateResults, <span class="st">"breakpointsimulationIsrael.csv"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>If the null hypothesis is true, <em>p</em>-values should be distributed uniformly between 0 and 1. As the following graph shows, however, by looping through several possible breakpoints, the <em>p</em>-value distribution is skewed towards 0. Out of 10,000 datasets simulated under the null, 1350 produced a significant but spurious non-linearity – more than double the nominal Type-I error rate of 5%.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set graphical parameters</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">bty=</span><span class="st">"l"</span>, <span class="at">las=</span><span class="st">"1"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data (and transpose for clarity's sake)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>resIsr <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">read.csv</span>(<span class="st">"breakpointsimulationIsrael.csv"</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw histogram of p-values</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(resIsr[,<span class="dv">2</span>], <span class="at">col=</span><span class="st">"lightblue"</span>, <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">0.05</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"p value"</span>, <span class="at">ylab=</span><span class="st">"Frequency"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Distribution of p-values under the null</span><span class="sc">\n</span><span class="st">(Israel data)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(resIsr[,<span class="dv">2</span>] <span class="sc">&lt;=</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+ 8650  1350 </code></pre>
+</div>
+</div>
+<p>To calibrate the observed <em>p</em>-value against this skewed distribution, we just look up the proportion of <em>p</em>-values generated under the null equal to or lower than the observed <em>p</em>-value. I observed a <em>p</em>-value of 0.62 after looping through breakpoints from AOA 5 till 19. 0.62 lies in the 95.6th quantile of the simulated <em>p</em>-value distribution (i.e.&nbsp;about 95% of <em>p</em>-values are lower than 0.62), so the calibrated <em>p</em>-value is 0.96 rather than 0.62:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ecdf</span>(resIsr[,<span class="dv">2</span>]),</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"observed p-value"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"cumulative probability"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Cumulative probability of p-values under the null</span><span class="sc">\n</span><span class="st">(Israel data)"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.62</span>, <span class="at">col=</span><span class="st">"lightblue"</span>, <span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(resIsr[,<span class="dv">2</span>] <span class="sc">&lt;=</span> <span class="fl">0.62</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+  436  9564 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">sum</span>(resIsr[,<span class="dv">2</span>]<span class="sc">&lt;=</span><span class="fl">0.62</span>)<span class="sc">/</span><span class="dv">10000</span>, <span class="at">col=</span><span class="st">"lightblue"</span>, <span class="at">lwd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I’ll skip the code for simulating the <em>p</em>-value distribution for the North America analyses (just read in the other dataset and go through the same steps) and get straight to the simulated distribution:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>For the North America data, the estimated Type-I error rate is about 10.4%, which is pretty similar to the one for the Israel data. (Not surprisingly, since the linear models for both datasets are remarkably similar.) The observed <em>p</em>-value of 0.047 lies in the 9.8th quantile of the simulated distribution, so the calibrated <em>p</em>-value is 0.098 rather than 0.047.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<blockquote class="blockquote">
+<p>Looping through different breakpoints increases the Type-I error rate of piecewise regression models.<br>
+The observed <em>p</em>-values can be calibrated against the distribution of <em>p</em>-values under the simulated null.</p>
+</blockquote>
+<p>The distribution of simulated <em>p</em>-values will <strong>vary</strong> from <strong>dataset</strong> to dataset and will depend on the <strong>range of breakpoints considered</strong> (the smaller the range, the smaller the skew). Lastly, multiple comparison problem <strong>doesn’t only apply when following the automatised procedure</strong> suggested by Baayen: even if you look at the data first and then decide which breakpoint to fit, your <em>p</em>-values will be off if you don’t take into account on which breakpoints you <em>could</em> have decided had the data come out differently (see <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf">Gelman and Loken</a> for a treatment of a more general version of this problem).</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.3 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-25
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr         1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr       1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

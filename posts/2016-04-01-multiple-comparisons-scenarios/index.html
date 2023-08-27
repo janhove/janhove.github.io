@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2016-04-01">
+
+<title>Jan Vanhove :: Blog - On correcting for multiple comparisons: Five scenarios</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-multiple-comparisons-problem" id="toc-the-multiple-comparisons-problem" class="nav-link active" data-scroll-target="#the-multiple-comparisons-problem">The multiple comparisons problem</a></li>
+  <li><a href="#five-scenarios" id="toc-five-scenarios" class="nav-link" data-scroll-target="#five-scenarios">Five scenarios</a>
+  <ul class="collapse">
+  <li><a href="#scenario-1-differences-exist." id="toc-scenario-1-differences-exist." class="nav-link" data-scroll-target="#scenario-1-differences-exist.">Scenario 1: ‘Differences exist’.</a></li>
+  <li><a href="#scenario-2-one-comparison-is-critical." id="toc-scenario-2-one-comparison-is-critical." class="nav-link" data-scroll-target="#scenario-2-one-comparison-is-critical.">Scenario 2: One comparison is critical.</a></li>
+  <li><a href="#scenario-3-different-theories-are-subjected-to-one-different-test-each." id="toc-scenario-3-different-theories-are-subjected-to-one-different-test-each." class="nav-link" data-scroll-target="#scenario-3-different-theories-are-subjected-to-one-different-test-each.">Scenario 3: Different theories are subjected to one different test each.</a></li>
+  <li><a href="#scenario-4-theory-survives-if-any-out-of-a-number-of-possible-tests-is-positive." id="toc-scenario-4-theory-survives-if-any-out-of-a-number-of-possible-tests-is-positive." class="nav-link" data-scroll-target="#scenario-4-theory-survives-if-any-out-of-a-number-of-possible-tests-is-positive.">Scenario 4: Theory survives if any out of a number of possible tests is positive.</a></li>
+  <li><a href="#scenario-5-several-specific-positive-tests-are-needed-to-corroborate-theory." id="toc-scenario-5-several-specific-positive-tests-are-needed-to-corroborate-theory." class="nav-link" data-scroll-target="#scenario-5-several-specific-positive-tests-are-needed-to-corroborate-theory.">Scenario 5: Several specific positive tests are needed to corroborate theory.</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">On correcting for multiple comparisons: Five scenarios</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 1, 2016</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Daniël Lakens recently <a href="http://daniellakens.blogspot.ch/2016/02/why-you-dont-need-to-adjust-you-alpha.html">blogged</a> about a topic that crops up every now and then: Do you need to correct your <em>p</em>-values when you’ve run several significance tests? The blog post is worth a read, and I feel this quote sums it up well:</p>
+<blockquote class="blockquote">
+<p>We … need to make a statement about which tests relate to a single theoretical inference, which depends on the theoretical question. I believe many of the problems researchers have in deciding how to correct for multiple comparisons is actually a problem in deciding what their theoretical question is.</p>
+</blockquote>
+<p>I think so, too, which is why in this blog post, I present five scenarios and discuss how I feel about correcting for multiple comparisons in each of them.</p>
+<section id="the-multiple-comparisons-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-multiple-comparisons-problem">The multiple comparisons problem</h2>
+<p>In case the phrase “multiple comparisons” doesn’t ring a bell, I’ll give a rundown of what’s involved. If you run a significance test, you accept a 5% risk of finding a significant result if, in fact, no real pattern exists. This is referred to as a “Type-I error”, a “false positive” or a “false alarm”. The 5% figure itself is a matter of convention: you could decide to accept a lower risk of finding something that doesn’t exist, but then there’s a lower chance of finding true relationships.</p>
+<p>But let’s say you run two significance tests (on unrelated data). For each of the tests, you still accept a 5% risk of finding a false positive. That is, if no real relationship existed in the data, your first test has a 5% chance of returning a positive result, and so does your second test. But if you consider the two tests simultaneously, your chances of <em>any</em> test returning a positive result wouldn’t be 5% but 9.75%: in 5% of cases, the first test will be positive; in the remaining 95% of cases, the second test will sometimes be positive. The graph below shows how the total (“familywise”) Type-I error rate increases as the number of tests increases.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="384"></p>
+</div>
+</div>
+<p>This increase in overall Type-I error rate is a problem if you run several tests, find any positive result, and interpret that result as though your chance of finding it by accident were 5%. There exist several approaches to solve this “multiple comparisons” problem which involve recalibrating the Type-I error rate of each single test so that the overall Type-I error rate is lowered to 5%. In what follows, I’m not going to discuss these approaches, as I will instead argue that the multiple comparisons problem can often be avoided.</p>
+</section>
+<section id="five-scenarios" class="level2">
+<h2 class="anchored" data-anchor-id="five-scenarios">Five scenarios</h2>
+<p>I’m going to discuss five scenarios and examine whether they present a multiple comparisons problem. The scenarios are not exhausitive, but they should cover a fair range of situations in which researchers are in doubt as to whether they should correct for multiple comparisons. For all five scenarios, I’ll make a couple of crucial assumptions, all of which are variations on the same theme:</p>
+<ol type="1">
+<li>No selective reporting. Whichever tests you set out to run were ran and are reported.</li>
+<li>No data snooping. All tests you ran were decided on before seeing the data; you’ve not looked at interesting patterns in the data and then decided to formally test for their existence using those same data. <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf">More subtly</a>, you didn’t base your decisions about removing outliers, combining variables etc. on the data at hand.</li>
+<li>No post-hoc hypothesising passed off for a priori predictions (<a href="http://www.ncbi.nlm.nih.gov/pubmed/15647155">HARKing</a>). What you report to have been your prediction before you collected the data actually <em>was</em> your prediction before seeing the data.</li>
+</ol>
+<p>What this boils down to is that you had a specific idea of what to test in your study, then tested it, and then reported what you tested. You may think that all of these assumptions hold true for your own research, but if you try to <a href="https://www.theguardian.com/science/blog/2013/jun/05/trust-in-science-study-pre-registration">pre-register</a> your next study, you may be surprised at how many decisions you take only after seeing the data first (I was!).</p>
+<section id="scenario-1-differences-exist." class="level3">
+<h3 class="anchored" data-anchor-id="scenario-1-differences-exist.">Scenario 1: ‘Differences exist’.</h3>
+<p><strong>Scenario:</strong> You want to investigate whether the font a text is written in affects readers’ comprehension of the text. You devise a reading comprehension task and prepare six versions of the target text: one is printed in Arial, one in Times, one in Courier, one in Helvetica, one in Gentium, and one in LM mono. You have no particular expectation about which fonts will hamper readers’ understanding of the text and which fonts will enhance it. Participants are randomly assigned to one of the six versions, and the outcome measure is their performance on the comprehension task.</p>
+<p><strong>Comment:</strong> With one outcome (dependent) variable and a predictor (independent) variable with six levels, you could run 15 t-tests: Arial vs.&nbsp;Times, Arial vs.&nbsp;Courier, Times vs.&nbsp;Courier etc. In that case, multiple comparisons would be a problem. But the problem is easily avoided if you analyse the data in <em>one</em> model, though the choice of the model could be a matter of discussion:</p>
+<ul>
+<li>If your precise research question is “Is readers’ comprehension of a text different depending on whether the text is written in Arial, Times, Courier, Helvetica, Gentium or LM mono?”, then a simple one-way ANOVA with text font as the independent variable gives you a single F-test that you can use to answer your research question. Since you run one significance test to answer one research question, no multiple comparisons are involved.</li>
+<li>If your precise research question is “Is readers’ comprehension of a text different depending on the font the text is written in?”, and your choice of fonts in the experiment is just a selection of possible fonts, then it seems more appropriate to model text font as a random effect. You could then test if the random effect for text font represents a significant improvement over a null model (<a href="https://www.crcpress.com/Extending-the-Linear-Model-with-R-Generalized-Linear-Mixed-Effects-and/Faraway/9781584884248">Faraway</a> recommends parametric bootstrapping for this), and you’d again have one significance test for one research question, and no multiple comparisons.</li>
+</ul>
+<p>In both cases, the multiple comparisons problem disappears once you align the significance test with your research question.</p>
+<p>Incidentally, this scenario concerned mean differences between groups, but a similar logic applies when you’re interested in correlations between variables. If you collect, say, five variables and your research question is “Are any of these variables correlated with one another?”, then you could run 10 bivariate correlation tests. In this case, a correction for multiple comparisons would be necessary. But it may be better to tailor the test to the research question and <a href="http://www.inside-r.org/packages/cran/psych/docs/cortest">test for all correlations simultaneously</a>.</p>
+</section>
+<section id="scenario-2-one-comparison-is-critical." class="level3">
+<h3 class="anchored" data-anchor-id="scenario-2-one-comparison-is-critical.">Scenario 2: One comparison is critical.</h3>
+<p><strong>Scenario:</strong> You want to investigate whether a moderate intake of alcohol boosts learners’ fluency in the L2. Participants are randomly assigned to one of three groups and drink a pint of (real) beer, alcohol-free beer or water. They then describe a video clip in the L2, and the number of syllables per minute is counted for each participant.</p>
+<p><strong>Comment:</strong> In principle, three comparisons could be carried out (beer vs.&nbsp;alcohol-free, beer vs.&nbsp;water, alcohol-free vs.&nbsp;water), and at first blush one might want to correct for multiple comparisons. However, the <em>alcohol-free vs.&nbsp;water</em> comparison is irrelevant for the research question (which concerns the intake of actual alcohol). Furthermore, the <em>beer vs.&nbsp;water</em> comparison is a much less stringent test of the researcher’s hypothesis than the <em>beer vs.&nbsp;alcohol-free</em> comparison as it confounds ‘intake of alcohol’ with ‘assumed intake of alcohol’ such that differences between the <em>beer</em> and <em>water</em> groups could come about due to a placebo effect.</p>
+<p>For these reasons, I don’t think correcting for multiple comparisons is necessary here as – again – no multiple comparisons are needed for testing the researcher’s hypothesis: comparing the <em>beer</em> and <em>alcohol-free</em> groups suffices. The additional <em>alcohol-free</em> vs.&nbsp;<em>water</em> comparison would be useful to test for the <em>different</em> hypothesis that assumed intake of alcohol influences L2 fluency, but I don’t think this should affect the way the first hypothesis should be tested.</p>
+</section>
+<section id="scenario-3-different-theories-are-subjected-to-one-different-test-each." class="level3">
+<h3 class="anchored" data-anchor-id="scenario-3-different-theories-are-subjected-to-one-different-test-each.">Scenario 3: Different theories are subjected to one different test each.</h3>
+<p><strong>Scenario:</strong> Same as Scenario 2, only this time you’re interested in the effects on fluency of (a) actual intake of alcohol and (b) perceived intake of alcohol.</p>
+<p><strong>Comment:</strong> Out of the three possible tests (beer vs.&nbsp;alcohol-free, beer vs.&nbsp;water, alcohol-free vs.&nbsp;water), only two are relevant. The <em>beer</em> vs.&nbsp;<em>alcohol-free</em> comparison addresses the first research question; the <em>alcohol-free</em> vs.&nbsp;<em>water</em> comparison addresses the second one. If you find a positive result for the first comparison, you’d tentatively conclude that the actual intake of alcohol affected fluency. If you find a positive result for the second comparison, you’d tentatively conclude that the perceived intake of alcohol affected fluency. No correction for multiple comparisons is needed as you have one significance test for each research question.</p>
+</section>
+<section id="scenario-4-theory-survives-if-any-out-of-a-number-of-possible-tests-is-positive." class="level3">
+<h3 class="anchored" data-anchor-id="scenario-4-theory-survives-if-any-out-of-a-number-of-possible-tests-is-positive.">Scenario 4: Theory survives if any out of a number of possible tests is positive.</h3>
+<p><strong>Scenario:</strong> A variation on Scenario 2. You want to investigate whether a moderate intake of alcohol affects learners’ L2 behaviour. The theory behind the study predicts that a moderate of intake of alcohol does affect learners’ L2 behavior, but nothing more specific than that. Participants are randomly assigned to one of two groups and drink a pint of (real) or alcohol-free beer. They then describe a video clip in the L2. You measure several outcome variables:</p>
+<ul>
+<li>fluency: the number of syllables per minute is counted for each participant;</li>
+<li>lexical diversity: the number of different words divided by total number of words;</li>
+<li>syntactic complexity: the number of clauses per <a href="https://en.wikipedia.org/wiki/T-unit">T-unit</a>.</li>
+</ul>
+<p><strong>Comment:</strong> The first thing to note is that the research question is pretty vague as the theory behind it is rather non-committal. With this vague a theory, multiple comparisons are an issue if you’d run three separate tests and conclude from any one positive result that your theory had been vindicated. In such cases, it may be more appropriate to try to align the significance test with the vague theory and analyse fluency, lexical diversity and syntactic complexity in one multivariate model instead.</p>
+<p>Another possibility may be to try to adopt (a) more precise theory (theories) before the start of the study, but this would put us either in Scenario 3 (separate theories) or in Scenario 5 (one theory).</p>
+</section>
+<section id="scenario-5-several-specific-positive-tests-are-needed-to-corroborate-theory." class="level3">
+<h3 class="anchored" data-anchor-id="scenario-5-several-specific-positive-tests-are-needed-to-corroborate-theory.">Scenario 5: Several specific positive tests are needed to corroborate theory.</h3>
+<p><strong>Scenario:</strong> The opposite of Scenario 4. You have a theory that predicts that a moderate intake of alcohol affects learners’ L2 production in terms of fluency, lexical diversity <em>and</em> syntactic complexity. Participants are randomly assigned to one of two groups and drink a pint of (real) or alcohol-free beer. They then describe a video clip in the L2, and you measure the same three outcome variables as above.</p>
+<p><strong>Comment:</strong> This time, the theory behind the study is considerably more specific and makes three testable predictions. If you’d only conclude the theory had been vindicated if <em>all three</em> predictions panned out, you’d be shooting yourself in the foot power-wise if you corrected for multiple comparisons. I’m not sure how I’d deal with such a scenario (it hasn’t really come up so far), but I’d probably take the bus to the library of our Statistics Department and take it from there.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this blog post, I’ve tried to argue that correcting for multiple comparisons may not always be necessary if the way in which the data will be analysed and the theoretical inferences that will be drawn from the results are clearly specified in advance and all analyses are reported. In such cases, the challenge is to align the significance test used with the theory. Once selective reporting and analytical and theoretical flexibility are thrown into the mix, things are different. But in such cases, it would seem to me that multiple comparison procedures are of limited use as the number of actual and implicit comparisons may be impossible to determine.</p>
+<p>One reason I blog is to help me organise my thoughts about topics such as these, so I’m looking forward to your comments.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
