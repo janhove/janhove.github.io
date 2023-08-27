@@ -283,11 +283,11 @@ INR  IR PNR  PR SYM
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stimuli)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  ID Category  Set
-1  1      PNR    B
-2  2      PNR    B
-3  3      PNR    B
-4  4      PNR &lt;NA&gt;
-5  5      PNR    C
+1  1      PNR    A
+2  2      PNR &lt;NA&gt;
+3  3      PNR    C
+4  4      PNR    C
+5  5      PNR    A
 6  6      PNR    D</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> Set <span class="sc">+</span> Category, stimuli)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -618,14 +618,14 @@ FALSE1 FALSE2 FALSE3  TRUE1  TRUE2  TRUE3
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
  version  R version 4.3.1 (2023-06-16)
- os       Ubuntu 22.04.2 LTS
+ os       Ubuntu 22.04.3 LTS
  system   x86_64, linux-gnu
  ui       X11
  language en_US
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Europe/Zurich
- date     2023-08-07
+ date     2023-08-27
  pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────

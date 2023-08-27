@@ -6496,12 +6496,1379 @@ font-style: inherit;">session_info</span>()</span></code></pre></div>
 
 
  ]]></description>
-  <category>breakpoint regression</category>
+  <category>R</category>
+  <category>piecewise regression</category>
   <category>non-linearities</category>
   <category>Bayesian statistics</category>
   <category>Stan</category>
   <guid>https://janhove.github.io/posts/2018-07-27-bayesian-two-breakpoint-model/index.html</guid>
-  <pubDate>Sun, 28 Oct 2018 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 26 Jul 2018 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Baby steps in Bayes: Piecewise regression</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Inspired by Richard McElreath’s excellent book <em>Statistical rethinking: A Bayesian course with examples in R and Stan</em>, I’ve started dabbling in Bayesian statistics. In essence, Bayesian statistics is an approach to statistical inference in which the analyst specifies a generative model for the data (i.e., an equation that describes the factors they suspect gave rise to the data) as well as (possibly vague) relevant information or beliefs that are external to the data proper. This information or these beliefs are then adjusted in light of the data observed.</p>
+<p>I’m hardly an expert in Bayesian statistics (or the more commonly encountered ‘orthodox’ or ‘frequentist’ statistics, for that matter), but I’d like to understand it better – not only conceptually, but also in terms of how the statistical model should be specified. While quite a few statisticians and methodologists tout Bayesian statistics for a variety of reasons, my interest is primarily piqued by the prospect of being able to tackle problems that would be impossible or at least awkward to tackle with the tools I’m pretty comfortable with at the moment.</p>
+<p>In order to gain some familiarity with Bayesian statistics, I plan to set myself a couple of problems and track my efforts in solving them here in a <em>Dear diary</em> fashion. Perhaps someone else finds them useful, too.</p>
+<p>The first problem that I’ll tackle is fitting a regression model in which the relationship between the predictor and the outcome may contain a breakpoint at one unknown predictor value. One domain in which such models are useful is in testing hypotheses that claim that the relationship between the age of onset of second language acquisition (AOA) and the level of ultimate attainment in that second language flattens after a certain age (typically puberty). It’s possible to fit frequentist breakpoint models, but estimating the breakpoint age is a bit cumbersome (see blog post <a href="../2014-08-20-adjusted-pvalues-breakpoint-regression"><em>Calibrating p-values in ‘flexible’ piecewise regression models</em></a>). But in a Bayesian approach, it should be possible to estimate both the regression parameters as well as the breakpoint itself in the same model. That’s what I’ll try here.</p>
+<section id="software" class="level2">
+<h2 class="anchored" data-anchor-id="software">Software</h2>
+<p>Apart from R, you’ll need RStan. Follow the installation instructions on RStan’s <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">GitHub page</a>.</p>
+<p>Once you’ve installed RStan, fire up a new R session and run these commands.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_3c8370e7d47616681fde281647049b0c">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load rstan package</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(rstan)</span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Avoid unnecessary recompiling</span></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rstan_options</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">auto_write =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># optional: Distribute work over multiple CPU cores</span></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">options</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mc.cores =</span> parallel<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">detectCores</span>())</span></code></pre></div>
+</div>
+</section>
+<section id="simulating-some-data" class="level2">
+<h2 class="anchored" data-anchor-id="simulating-some-data">Simulating some data</h2>
+<p>I’ll analyse some real data in a minute. But I think it’s useful to analyse some data I know the true data generating mechanism of first in order to make sure that the model works as intended. The commands below generate data with properties comparable to the real data I’ll analyse in a bit.</p>
+<p>The first graph below shows the mean outcome value (‘GJT’, i.e., L2 grammaticality judgement task result) depending on the age of onset of acquisition. As you can see, there’s a bend in the function at age 10.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-2_c3ca601d014784ad46a087450cbfee71">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set random seed (today's date)</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">RNGversion</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"3.5.3"</span>)</span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2018-07-04</span>)</span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 80 data points</span></span>
+<span id="cb2-6">n <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate 'age of acquisition' data (integers between 1 and 50)</span></span>
+<span id="cb2-9">AOA <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> n, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set breakpoint at some plausible age</span></span>
+<span id="cb2-12">BP <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span></span>
+<span id="cb2-13"></span>
+<span id="cb2-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate average values on GJT (~ 'grammar test') outcome</span></span>
+<span id="cb2-15">meanGJT <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(AOA <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> BP,</span>
+<span id="cb2-16">                  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">176</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (AOA <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> BP),</span>
+<span id="cb2-17">                  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">176</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (AOA <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> BP))</span>
+<span id="cb2-18"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(AOA, meanGJT, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Underlying function"</span>)</span>
+<span id="cb2-19"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">segments</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0 =</span> BP, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y1 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">176</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-20"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">segments</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x0 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x1 =</span> BP, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y0 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">176</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption"><strong>Figure 1.</strong> In the simulated data, the underlying relationship between AOA and GJT has a steeper slope for AOA values below 10 than for AOA values over 10.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the second graph, some random normal error has been added to these mean values; it is the data in this figure that I’ll analyse first.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-3_e56959e9f5232934d0c647bd2128652b">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate observed values</span></span>
+<span id="cb3-2">error <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb3-3">obsGJT <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> n, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> meanGJT, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> error)</span>
+<span id="cb3-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(AOA, obsGJT, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Observed data"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption class="figure-caption">&gt; <strong>Figure 2.</strong> Interindividual differences obfuscate the nonlinear relationship and the true position of the breakpoint age somewhat.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="specifying-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="specifying-the-model">Specifying the model</h2>
+<p>While there exist some (truly excellent) front-end interfaces for fitting Bayesian models (e.g., <a href="https://github.com/paul-buerkner/brms">brms</a>), I’ll specify the model in RStan proper. This is considerably more involved than writing out a model using R’s <code>lm()</code> function, but this added complexity buys you something in terms of flexibility.</p>
+<p>A Stan model specification has three required blocks.</p>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data"><code>data</code></h3>
+<p>This is where you specify what the input data looks like. Below I specified that the model should accept two variables (<code>GJT</code> and <code>AOA</code>) both with the same number of observations (<code>N</code>). Unlike <code>lm()</code>, <code>stan()</code> accepts non-rectangular data (e.g., variables with different lengths), so you need to prespecify the number of observations per variable.</p>
+</section>
+<section id="parameters" class="level3">
+<h3 class="anchored" data-anchor-id="parameters"><code>parameters</code></h3>
+<p>The model parameters you want to estimate. A breakpoint regression model has five parameters:</p>
+<ul>
+<li>The breakpoint. I constrained the breakpoint to be between 1 and 20 since breakpoints beyond that range are inconsistent with any proposed theory;</li>
+<li>the slope of the regression before the breakpoint;</li>
+<li>the slope of the regression after the breakpoint;</li>
+<li>a constant term (‘intercept’), most easily written as the expected outcome value at the breakpoint;</li>
+<li>the standard deviation of the normal error. Standard deviations are always positive; this constraint is set by including <code>&lt;lower = 0&gt;</code> in the declaration. (Incidentally, the error term doesn’t have to be normal.)</li>
+</ul>
+</section>
+<section id="model" class="level3">
+<h3 class="anchored" data-anchor-id="model"><code>model</code></h3>
+<p>This is where you specify how the parameters and the data relate to each other. The assumed (and for the simulated data: correct) data generating mechanism is that the observed GJT values were drawn from a normal distribution whose mean depends on the participant’s AOA (see <code>transformed parameters</code> below) and the breakpoint and which has the same standard deviation everywhere.</p>
+<p>You also have to provide so-called prior distributions for any parameters. These encode the information or beliefs you have about the parameters which you didn’t need the data for. I set the following priors:</p>
+<ul>
+<li>A truncated normal prior for the breakpoint centred at 12 and with a standard deviation of 6. The prior is truncated at 1 and at 20; this was specified in the <code>parameters</code> block. This prior essentially encodes that, for all I know, the breakpoint occurs somewhere between the ages of 1 and 20 and is slightly more likely to occur around age 10 to 14 and around ages 2 or 19. I tried specifying a uniform prior, but that didn’t work.</li>
+<li>Normal priors centred around 0 and with standard deviations of 5 for both slope parameters. What this means is that I think it’s highly unlikely that these slopes are incredibly steep (say, a 100-point increase or decrease per additional AOA). These priors aren’t particularly informative, though: According to them, negative and positive slopes are equally likely. If you have a sufficient amount of data, such priors only have a minimal effect on the results. But when you don’t have this luxury, even such slightly informative priors may be better than none at all for keeping the inferences within reasonable bounds.</li>
+<li>A normal prior centred around 150 with a standard deviation of 25 for the intercept. This essentially means that I expect the average outcome at the breakpoint to lie somewhere between 100 and 200. For the real data I’ll analyse later, this assumption is reasonable enough since the data were pretty much guaranteed to be bound between 102 and 204.</li>
+<li>A half-normal prior starting at 0 with a standard deviation of 20 for the standard deviation of the residuals. The <em>normal</em> part is specified in this prior, the <em>half</em> part results from the constraint set in the <code>parameters</code> block. A half-normal distribution starting at 0 with a standard deviation of 20 in essence encodes the belief that the residual error will probably have a standard deviation of less than 2*20 = 40, with smaller values being more likely than large ones. If you don’t set a prior for this parameter (or any other parameter, for that matter), a uniform prior spanning to infinity is assumed. So even when you don’t specify a prior, you’re using one.</li>
+</ul>
+<p>I also added two optional blocks:</p>
+</section>
+<section id="transformed-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="transformed-parameters"><code>transformed parameters</code></h3>
+<p>This block specifies derivations of model parameters, be it because they’re the actual object of inference or just because it simplifies the notation. I specified two derived parameters.</p>
+<ul>
+<li><code>conditional_mean</code> describes the outcome of the regression equation without the error term for each observation:
+<ul>
+<li>If the participant’s AOA is <em>before</em> the breakpoint, <code>conditional_mean</code> = <code>intercept</code> + <code>slope1</code> * <code>AOA</code>.</li>
+<li>If the participant’s AOA is <em>after</em> the breakpoint, <code>conditional_mean</code> = <code>intercept</code> + <code>slope2</code> * <code>AOA</code>.</li>
+</ul></li>
+<li><code>slope_difference</code> is just the difference between the slope after and the slope before the breakpoint.</li>
+</ul>
+</section>
+<section id="generated-quantities" class="level3">
+<h3 class="anchored" data-anchor-id="generated-quantities"><code>generated quantities</code></h3>
+<p>Here you can specify some model outputs. I specified three such outputs:</p>
+<ul>
+<li><code>sim_GJT</code>: Using the <code>normal_rng()</code> function, I simulate new GJT data from the model for each AOA observation in the original dataset. If the model is approximately accurate, the actually observed data should look fairly similar to these simulated data points. I’ll check this later.</li>
+<li><code>log_lik</code>: I won’t discuss this in this post.</li>
+<li><code>sim_conditional_mean</code>: For each AOA between 1 and 50 (hence: a vector of length 50), I’ll ask the model to output what it thinks is the conditional GJT mean. This will be useful for drawing effect plots.</li>
+</ul>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_f67a7fce4a23de2bc2d0a7267c0b7962">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">bp_code <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span></span>
+<span id="cb4-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">// You need to specify the kind of input data, incl. number of observations.</span></span>
+<span id="cb4-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">data { </span></span>
+<span id="cb4-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  int&lt;lower=1&gt; N;  // total number of observations (integer); at least 1</span></span>
+<span id="cb4-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real GJT[N];     // outcome variable with N elements (real-valued)</span></span>
+<span id="cb4-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real AOA[N];     // predictor variable with N elements (real-valued)</span></span>
+<span id="cb4-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-8"></span>
+<span id="cb4-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">// the parameters to be estimated from the data</span></span>
+<span id="cb4-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">parameters { </span></span>
+<span id="cb4-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real intercept;                 // = predicted outcome at breakpoint</span></span>
+<span id="cb4-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real slope_before;              // slope before the breakpoint</span></span>
+<span id="cb4-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real slope_after;               // slope after the breakpoint</span></span>
+<span id="cb4-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real&lt;lower = 1, upper = 20&gt; bp; // the breakpoint age, with some constraints</span></span>
+<span id="cb4-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real&lt;lower = 0&gt; error;          // standard deviation of residuals</span></span>
+<span id="cb4-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">                                  //  (always positive, hence &lt;lower = 0&gt;)</span></span>
+<span id="cb4-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">} </span></span>
+<span id="cb4-18"></span>
+<span id="cb4-19"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">// Functions of estimated parameters.</span></span>
+<span id="cb4-20"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">transformed parameters{</span></span>
+<span id="cb4-21"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  vector[N] conditional_mean; // the estimated average GJT for each AOA observation</span></span>
+<span id="cb4-22"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  real slope_difference;      // the difference between slope_after and slope_before</span></span>
+<span id="cb4-23"></span>
+<span id="cb4-24"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  slope_difference = slope_after - slope_before;  </span></span>
+<span id="cb4-25"></span>
+<span id="cb4-26"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // conditional_mean depends on whether AOA is before or after bp</span></span>
+<span id="cb4-27"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  for (i in 1:N) {</span></span>
+<span id="cb4-28"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    if (AOA[i] &lt; bp) {</span></span>
+<span id="cb4-29"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      conditional_mean[i] = intercept + slope_before * (AOA[i] - bp);</span></span>
+<span id="cb4-30"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    } else {</span></span>
+<span id="cb4-31"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      conditional_mean[i] = intercept + slope_after * (AOA[i] - bp);</span></span>
+<span id="cb4-32"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    }</span></span>
+<span id="cb4-33"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb4-34"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-35"></span>
+<span id="cb4-36"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">// The model itself specifies how the data are expected to have</span></span>
+<span id="cb4-37"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">// been generated and what the prior expectations for the model parameters are.</span></span>
+<span id="cb4-38"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">model {</span></span>
+<span id="cb4-39"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // Set priors</span></span>
+<span id="cb4-40"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  intercept ~ normal(150, 25);  // Average GJT at breakpoint</span></span>
+<span id="cb4-41"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  slope_before ~ normal(0, 5);  // Slope before breakpoint</span></span>
+<span id="cb4-42"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  slope_after ~ normal(0, 5);   // Slope after breakpoint</span></span>
+<span id="cb4-43"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  bp ~ normal(12, 6);           // Breakpoint age, pretty wide, but somewhere in childhood/puberty</span></span>
+<span id="cb4-44"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  error ~ normal(0, 20);        // Residual error, likely between 0 and 2*20</span></span>
+<span id="cb4-45"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  </span></span>
+<span id="cb4-46"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // How the data are expected to have been generated:</span></span>
+<span id="cb4-47"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // normal distribution with mu = conditional_mean and </span></span>
+<span id="cb4-48"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // std = error, estimated from data.</span></span>
+<span id="cb4-49"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  for (i in 1:N) {</span></span>
+<span id="cb4-50"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    GJT[i] ~ normal(conditional_mean[i], error);</span></span>
+<span id="cb4-51"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb4-52"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-53"></span>
+<span id="cb4-54"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">generated quantities {</span></span>
+<span id="cb4-55"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  vector[N] sim_GJT;               // Simulate new data using estimated parameters.</span></span>
+<span id="cb4-56"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  vector[N] log_lik;               // Useful for model comparisons; not done here.</span></span>
+<span id="cb4-57"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  vector[50] sim_conditional_mean; // Useful for plotting.</span></span>
+<span id="cb4-58"></span>
+<span id="cb4-59"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  // Compute conditional means for AOAs between 1 and 50.</span></span>
+<span id="cb4-60"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  for (i in 1:50) {</span></span>
+<span id="cb4-61"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    if (i &lt; bp) {</span></span>
+<span id="cb4-62"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      sim_conditional_mean[i] = intercept + slope_before * (i - bp);</span></span>
+<span id="cb4-63"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    } else {</span></span>
+<span id="cb4-64"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      sim_conditional_mean[i] = intercept + slope_after * (i - bp);</span></span>
+<span id="cb4-65"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    }</span></span>
+<span id="cb4-66"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb4-67"></span>
+<span id="cb4-68"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  for (i in 1:N) {</span></span>
+<span id="cb4-69"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    sim_GJT[i] = normal_rng(conditional_mean[i], error);</span></span>
+<span id="cb4-70"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    log_lik[i] = normal_lpdf(GJT[i] | conditional_mean[i], error);</span></span>
+<span id="cb4-71"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb4-72"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-73"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span></span></code></pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="running-the-model">Running the model</h2>
+<p>To fit the model, first put the input data in a list. Then supply this list and the model code to the <code>stan()</code> function. The <code>stan()</code> function prints a lot of output to the console, which I didn’t reproduce here. Unless you receive genuine warnings or error (i.e., red text), everything’s fine.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-5_a687a4e236e6a42b87a5bc59f45725f2">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">data_list <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb5-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">AOA =</span> AOA,</span>
+<span id="cb5-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GJT =</span> obsGJT,</span>
+<span id="cb5-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">N =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(AOA)</span>
+<span id="cb5-5">)</span>
+<span id="cb5-6">fit_bp_sim <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stan</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">model_code =</span> bp_code, </span>
+<span id="cb5-7">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> data_list,</span>
+<span id="cb5-8">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">iter =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8000</span>)</span></code></pre></div>
+</div>
+</section>
+<section id="inspecting-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="inspecting-the-model">Inspecting the model</h2>
+<section id="model-summary" class="level3">
+<h3 class="anchored" data-anchor-id="model-summary">Model summary</h3>
+<p>A summary with the parameter estimates and their uncertainties can be generated using the <code>print()</code> function.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-6_6d14aea95073b5d2ca32eddf99f1ef97">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(fit_bp_sim,</span>
+<span id="cb6-2">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">par =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"intercept"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bp"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_before"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_after"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_difference"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"error"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inference for Stan model: anon_model.
+4 chains, each with iter=8000; warmup=4000; thin=1; 
+post-warmup draws per chain=4000, total post-warmup draws=16000.
+
+                   mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff
+intercept        175.41    0.02 1.36 172.99 174.53 175.32 176.20 178.36  4271
+bp                10.31    0.03 2.32   5.73   8.91  10.33  11.69  15.11  4639
+slope_before      -1.21    0.01 0.36  -1.97  -1.35  -1.16  -1.00  -0.74  3927
+slope_after       -0.38    0.00 0.03  -0.44  -0.40  -0.38  -0.36  -0.32  6081
+slope_difference   0.83    0.01 0.36   0.34   0.62   0.78   0.97   1.57  4119
+error              2.92    0.00 0.24   2.49   2.75   2.90   3.07   3.44  8623
+                 Rhat
+intercept           1
+bp                  1
+slope_before        1
+slope_after         1
+slope_difference    1
+error               1
+
+Samples were drawn using NUTS(diag_e) at Sun Aug  6 15:33:51 2023.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+</div>
+</div>
+<p>For each parameter, the <code>mean</code> column contains the mean estimate of that parameter, whereas the <code>50%</code> column contains its median estimate. The <code>sd</code> column shows the standard deviation of the parameter estimates; this corresponds to the parameter estimate’s standard error. The <code>2.5%</code>, <code>25%</code>, <code>75%</code> and <code>97.5%</code> columns contain the respective percentiles of the distribution of the parameter estimates. So the average estimated breakpoint (<code>bp</code>) occurs somewhere between age 10 and 11, with 95% of the estimates contained in an interval between roughly 6 and 15 years. Similarly, the average estimated slope before the breakpoint is about -1.2 with a 95% ‘credibility’ interval from -1.98 to -0.75, and so on. The parameter estimates, then, are neatly centred around their true values, suggesting that the model does what it’s supposed to do.</p>
+</section>
+<section id="posterior-predictive-checks" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-predictive-checks">Posterior predictive checks</h3>
+<p>If the model is any good, data simulated from it should be pretty similar to the data actually observed. In the <code>generated quantities</code> block, I let the model output such simulated data (<code>sim_GJT</code>). Using the <code>shinystan</code> package, we can perform some ‘posterior predictive checks’:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-7_69edbe7b25d0710185c67de9dfac4478">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">shinystan<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">launch_shinystan</span>(fit_bp_sim)</span></code></pre></div>
+</div>
+<p>Click ‘Diagnose’ &gt; ‘PPcheck’. Under ‘Select y (vector of observations)’, pick <code>obsGJT</code> (the simulated data analysed above). Under ‘Parameter/generated quantity from model’, pick <code>sim_GJT</code> (the additional simulated data generated in the model code). Then click on ‘Distributions of observed data vs replications’ and ‘Distributions of test statistics’ to check if the properties of the simulated data correspond to those of the real data.</p>
+<p>You can also take this a step further and check whether the model is able to generate scatterplots similar to the one in Figure 2. If the following doesn’t make any immediate sense, please refer to the blog post <a href="../2018-04-25-graphical-model-checking"><em>Checking model assumptions without getting paranoid</em></a>, because the logic is pretty similar.</p>
+<p>First extract some vectors of simulated data from the model output:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_7a4c7237d94e8ac2bfbfdaa65466507e">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># rstan's 'extract' is likely to conflict with another function</span></span>
+<span id="cb9-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># called 'extract', so specify the package, too.</span></span>
+<span id="cb9-3">simulated_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> rstan<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">extract</span>(fit_bp_sim)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sim_GJT</span>
+<span id="cb9-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># simulated_data is a matrix with 4000 rows and 80 columns.</span></span>
+<span id="cb9-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For the plot, I select 8 rows at random:</span></span>
+<span id="cb9-6">simulated_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> simulated_data[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), ]</span></code></pre></div>
+</div>
+<p>Then plot both the observed vectors and the simulated vectors:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-9_6cec63be8111f75826c31d46b75bb8d8">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">par</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mfrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>))</span>
+<span id="cb10-2"></span>
+<span id="cb10-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plot the observed data</span></span>
+<span id="cb10-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA, data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>GJT,</span>
+<span id="cb10-5">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AOA"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GJT"</span>,</span>
+<span id="cb10-6">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"observed"</span>)</span>
+<span id="cb10-7"></span>
+<span id="cb10-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plot the simulated data</span></span>
+<span id="cb10-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) {</span>
+<span id="cb10-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA, simulated_data[i, ],</span>
+<span id="cb10-11">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AOA"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GJT"</span>,</span>
+<span id="cb10-12">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"simulated"</span>)</span>
+<span id="cb10-13">}</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption class="figure-caption"><strong>Figure 3.</strong> The actual input data (top left) and eight simulated datasets. If the simulated datasets are highly similar to the actual data, the model was able to learn the relevant patterns in the data.</figcaption>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">par</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mfrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+</div>
+<p>The simulated data look pretty much identical to the observed data, again demonstrating that the model is doing a pretty good job of learning the patterns in the data. This isn’t surprising, since I knew how the data were generated and constructed the model correspondingly. But it’s reassuring.</p>
+<p>(Incidentally, I’m sure it’s possible to generate lineups more similar to the ones in that <a href="../2018-04-25-graphical-model-checking">previous blog post</a>, but this blog post is long as it is already.)</p>
+</section>
+<section id="effect-plot" class="level3">
+<h3 class="anchored" data-anchor-id="effect-plot">Effect plot</h3>
+<p>To visualise the model, you can draw an effect plot showing the average estimated relationship between AOA and GJT as well as the uncertainty about this relationship. To this end, I had the model output vectors of the fitted conditional means for AOAs 1 through 50 (<code>sim_conditional_mean</code>). With the commands below, I extract these vectors and then compute their mean values as well as some percentiles at each AOA.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_3bb385c402405b797a6d8f8192c063a8">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">sim_conditional_means <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> rstan<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">extract</span>(fit_bp_sim)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sim_conditional_mean</span>
+<span id="cb12-2">df_sim_cond_means <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb12-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">AOA =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,</span>
+<span id="cb12-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">meanGJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, mean),</span>
+<span id="cb12-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lo80GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.10</span>),</span>
+<span id="cb12-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hi80GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.90</span>),</span>
+<span id="cb12-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lo95GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.025</span>),</span>
+<span id="cb12-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hi95GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.975</span>)</span>
+<span id="cb12-9">)</span>
+<span id="cb12-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(df_sim_cond_means)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  AOA  meanGJT  lo80GJT  hi80GJT  lo95GJT  hi95GJT
+1   1 186.0867 184.3968 187.7745 183.4985 188.7348
+2   2 184.8770 183.4161 186.3232 182.6086 187.1155
+3   3 183.6743 182.4180 184.9381 181.6091 185.5990
+4   4 182.4817 181.3312 183.6296 180.4895 184.1939
+5   5 181.2997 180.1643 182.4048 179.2258 182.9274
+6   6 180.1329 178.9212 181.2531 177.9611 181.7475</code></pre>
+</div>
+</div>
+<p>These mean values and percentiles can then be plotted as follows; the black line shows the average regression line, the light grey ribbon its 95% credibility region, and the dark grey ribbon its 80% credibility region.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_2096b9556bc5ea04f4e028c8e42c7603">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb14-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(df_sim_cond_means,</span>
+<span id="cb14-3">       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> AOA,</span>
+<span id="cb14-4">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> meanGJT)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> lo95GJT,</span>
+<span id="cb14-6">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> hi95GJT),</span>
+<span id="cb14-7">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lightgrey"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> lo80GJT,</span>
+<span id="cb14-9">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> hi80GJT),</span>
+<span id="cb14-10">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkgrey"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption class="figure-caption"><strong>Figure 4.</strong> The modelled relationship between AOA and GJT for the made-up data with 80% and 95% credibility regions. The bend around AOA = 10 is noticeable but it smoothed out due to the uncertainty about the precise position of the breakpoint.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="and-now-for-real" class="level2">
+<h2 class="anchored" data-anchor-id="and-now-for-real">And now for real</h2>
+<p>Let’s now analyse some real data using the same model. These data stem from a study by <a href="https://doi.org/10.1017/S0142716410000056">DeKeyser et al.&nbsp;(2010)</a>.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_b9b743b74da3e9587b8120f334e72f04">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">d <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010NorthAmerica.csv"</span>)</span>
+<span id="cb15-2">data_list <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb15-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">AOA =</span> d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA,</span>
+<span id="cb15-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">GJT =</span> d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>GJT,</span>
+<span id="cb15-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">N =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(d)</span>
+<span id="cb15-6">)</span>
+<span id="cb15-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA, data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>GJT)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption"><strong>Figure 5.</strong> AOA–GJT relationship as observed in DeKeyser et al.’s (2010) North America study.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s fit the model:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_26f93522399ab73abe9c1853bc8aad13">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">fit_bp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stan</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">model_code =</span> bp_code, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> data_list, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">iter =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8000</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">refresh =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div>
+</div>
+<p>And output summary statistics:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_2420e220fa4120b5d28ed0fdee43a7b9">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(fit_bp,</span>
+<span id="cb17-2">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">par =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"intercept"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bp"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_before"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_after"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"slope_difference"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"error"</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inference for Stan model: anon_model.
+4 chains, each with iter=8000; warmup=4000; thin=1; 
+post-warmup draws per chain=4000, total post-warmup draws=16000.
+
+                   mean se_mean   sd   2.5%    25%    50%    75%  97.5% n_eff
+intercept        172.27    0.13 7.40 159.77 166.71 171.41 177.45 187.49  3385
+bp                12.50    0.07 4.30   3.32   9.40  13.29  15.82  19.25  3436
+slope_before      -2.83    0.04 2.38  -7.65  -3.85  -2.85  -1.98   3.29  3759
+slope_after       -1.13    0.00 0.13  -1.37  -1.22  -1.13  -1.04  -0.86  5177
+slope_difference   1.70    0.04 2.41  -4.45   0.83   1.76   2.77   6.51  3739
+error             16.38    0.01 1.37  13.94  15.42  16.30  17.24  19.32  8827
+                 Rhat
+intercept           1
+bp                  1
+slope_before        1
+slope_after         1
+slope_difference    1
+error               1
+
+Samples were drawn using NUTS(diag_e) at Sun Aug  6 15:35:52 2023.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+</div>
+</div>
+<p>The model doesn’t seem to have learnt a whole lot about the position of the breakpoint: the 95% credibility interval ranges from age 3 till age 19. Furthermore, it doesn’t really seem to know about what happens at this breakpoint: the 95% CrI for the difference between the <em>after</em> and the <em>before</em> slopes ranges from about -5.1 till 6.4.</p>
+<p>We ought to perform some posterior predictive checks to make sure the model makes sense, though:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-15_d9c9aef7bfba365078103e7a133ae002">
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># rstan's 'extract' is likely to conflict with another function</span></span>
+<span id="cb19-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># called 'extract', so specify the package, too.</span></span>
+<span id="cb19-3">simulated_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> rstan<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">extract</span>(fit_bp)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sim_GJT</span>
+<span id="cb19-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># simulated_data is a matrix with 4000 rows and 80 columns.</span></span>
+<span id="cb19-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For the plot, I select 8 rows at random:</span></span>
+<span id="cb19-6">simulated_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> simulated_data[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4000</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), ]</span></code></pre></div>
+</div>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-16_4006629f75c73ad4e3b1aae0763ead0c">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">par</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mfrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>))</span>
+<span id="cb20-2"></span>
+<span id="cb20-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plot the observed data</span></span>
+<span id="cb20-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA, data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>GJT,</span>
+<span id="cb20-5">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AOA"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GJT"</span>,</span>
+<span id="cb20-6">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"observed"</span>)</span>
+<span id="cb20-7"></span>
+<span id="cb20-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plot the simulated data</span></span>
+<span id="cb20-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) {</span>
+<span id="cb20-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(data_list<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>AOA, simulated_data[i, ],</span>
+<span id="cb20-11">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AOA"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GJT"</span>,</span>
+<span id="cb20-12">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"simulated"</span>)</span>
+<span id="cb20-13">}</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption class="figure-caption">&gt; <strong>Figure 6.</strong> The actual input data (top left) and eight simulated datasets. Some patterns in the simulated data couldn’t have occurred in the actual dataset: the maximum possible GJT result was 204, yet a couple of datasets contain values above that. This is something that may be worth taking into account in a more refined model, but baby steps.</figcaption>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">par</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mfrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span></code></pre></div>
+</div>
+<p>Figure 6 suggests that it may be possible to improve the model since the simulated data display some patterns that would have been impossible to observe in the actual study (viz., GJT values larger than 204). But this should suffice for now.</p>
+<p>As a final step, we can draw an effect plot as before:</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-17_3b78d2ba8bbce5af5aad704142821c48">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1">sim_conditional_means <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">extract</span>(fit_bp)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>sim_conditional_mean</span>
+<span id="cb22-2">df_sim_cond_means <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(</span>
+<span id="cb22-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">AOA =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>,</span>
+<span id="cb22-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">meanGJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, mean),</span>
+<span id="cb22-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lo80GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.10</span>),</span>
+<span id="cb22-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hi80GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.90</span>),</span>
+<span id="cb22-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lo95GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.025</span>),</span>
+<span id="cb22-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hi95GJT =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply</span>(sim_conditional_means, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, quantile, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.975</span>)</span>
+<span id="cb22-9">)</span></code></pre></div>
+</div>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-18_7f503efea85de1df47239d701091ea49">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(df_sim_cond_means,</span>
+<span id="cb23-2">       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> AOA,</span>
+<span id="cb23-3">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> meanGJT)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb23-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> lo95GJT,</span>
+<span id="cb23-5">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> hi95GJT),</span>
+<span id="cb23-6">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lightgrey"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb23-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_ribbon</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> lo80GJT,</span>
+<span id="cb23-8">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> hi80GJT),</span>
+<span id="cb23-9">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkgrey"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb23-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>()</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption class="figure-caption"><strong>Figure 7.</strong> Effect plot for the piecewise regression model applied to DeKeyser et al.’s (2010) North America data. There is substantial uncertainty about whether the regression line should indeed contain a breakpoint.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Given the uncertainty about the position of the breakpoint and what happens to the regression line at that breakpoint, it would make sense to fit a linear regression model to these data and then estimate how much allowing for a breakpoint actually buys us in terms of fit to the data. This is why I had the model generate <code>log_lik</code> values, too, but I’ll discuss those another time.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<p>Please note that I reran the code on this page on August 6, 2023.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-19_cccf19116477280919f0cc5cd4e34363">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">session_info</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.3.1 (2023-06-16)
+ os       Ubuntu 22.04.2 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2023-08-06
+ pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package      * version date (UTC) lib source
+ cachem         1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
+ callr          3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
+ cli            3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
+ codetools      0.2-19  2023-02-01 [4] CRAN (R 4.2.2)
+ colorspace     2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
+ crayon         1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
+ curl           5.0.1   2023-06-07 [1] CRAN (R 4.3.1)
+ devtools       2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
+ digest         0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
+ dplyr          1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
+ ellipsis       0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate       0.15    2022-02-18 [2] CRAN (R 4.2.0)
+ fansi          1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
+ fastmap        1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
+ fs             1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics       0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
+ ggplot2      * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
+ glue           1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gridExtra      2.3     2017-09-09 [1] CRAN (R 4.3.0)
+ gtable         0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
+ htmltools      0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
+ htmlwidgets    1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
+ httpuv         1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
+ inline         0.3.19  2021-05-31 [1] CRAN (R 4.3.1)
+ jsonlite       1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
+ knitr          1.39    2022-04-26 [2] CRAN (R 4.2.0)
+ later          1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
+ lifecycle      1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
+ loo            2.6.0   2023-03-31 [1] CRAN (R 4.3.1)
+ magrittr       2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
+ matrixStats    1.0.0   2023-06-02 [1] CRAN (R 4.3.1)
+ memoise        2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime           0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI         0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
+ munsell        0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
+ pillar         1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
+ pkgbuild       1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
+ pkgconfig      2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload        1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
+ prettyunits    1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx       3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
+ profvis        0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
+ promises       1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
+ ps             1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
+ purrr          1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
+ R6             2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp           1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
+ RcppParallel   5.1.7   2023-02-27 [1] CRAN (R 4.3.1)
+ remotes        2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang          1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
+ rmarkdown      2.21    2023-03-26 [1] CRAN (R 4.3.0)
+ rstan        * 2.26.22 2023-08-01 [1] local
+ rstudioapi     0.14    2022-08-22 [1] CRAN (R 4.3.0)
+ scales         1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
+ sessioninfo    1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny          1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
+ StanHeaders  * 2.26.27 2023-06-14 [1] CRAN (R 4.3.1)
+ stringi        1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
+ stringr        1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
+ tibble         3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
+ tidyselect     1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
+ urlchecker     1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
+ usethis        2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
+ utf8           1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
+ V8             4.3.0   2023-04-08 [1] CRAN (R 4.3.0)
+ vctrs          0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
+ withr          2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
+ xfun           0.39    2023-04-20 [1] CRAN (R 4.3.0)
+ xtable         1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
+ yaml           2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <category>Stan</category>
+  <category>piecewise regression</category>
+  <category>non-linearities</category>
+  <category>Bayesian statistics</category>
+  <guid>https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index.html</guid>
+  <pubDate>Tue, 03 Jul 2018 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
