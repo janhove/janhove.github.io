@@ -211,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
 <p>I mostly deal with binary dependent variables – whether a word was translated correctly (yes or no), for instance. When each participant contributes only a single datapoint, binary data can be analysed using logistic regression models. More often than not, however, participants are asked to translate several words, i.e.&nbsp;several datapoints are available per participant. This ‘clustering’ needs to be taken into account in the analysis, which is where logistic mixed-effects models come in (see <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2613284/">Jaeger 2008</a> for a rundown).</p>
-<p>For a new experiment I’m planning, it’d be useful to know whether I should collect <strong>between-subjects variables</strong> (the participants’ language skills) that are likely to account for inter-individual differences in translation performance but that don’t interest me as such. What interests me instead is the effect of the learning condition, to which the participants will be assigned randomly. Nonetheless, as the <a href="%7B%%20post_url%202015-07-17-covariate-adjustment-logistic-regression%20%%7D">previous</a> post shows, accounting for important if uninteresting covariates could be beneficial in terms of power and the accuracy of the estimated treatment effect.</p>
+<p>For a new experiment I’m planning, it’d be useful to know whether I should collect <strong>between-subjects variables</strong> (the participants’ language skills) that are likely to account for inter-individual differences in translation performance but that don’t interest me as such. What interests me instead is the effect of the learning condition, to which the participants will be assigned randomly. Nonetheless, as the <a href="../2015-07-17-covariate-adjustment-logistic-regression">previous</a> post shows, accounting for important if uninteresting covariates could be beneficial in terms of power and the accuracy of the estimated treatment effect.</p>
 <p>However, when analysing an earlier <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf">experiment</a>, I noticed that including covariates did not really affect the estimate of the treatment effect nor its standard error. Since collecting these variables will lengthen the data collection sessions, it’d be useful to know whether the additional time and effort are actually worth it from a statistical point of view. I didn’t find much in the way of readable literature that addresses this questions, so I ran some simulations to find out.</p>
 </section>
 <section id="set-up" class="level2">
@@ -469,7 +469,7 @@ The technical detals of the simulation are available <a href="https://github.com
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Europe/Zurich
- date     2023-08-27
+ date     2023-09-02
  pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
