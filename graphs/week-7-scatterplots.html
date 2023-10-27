@@ -289,7 +289,7 @@ expressing its formal similarity to its French, German or English cognate).</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="week-7-scatterplots.html#cb49-1" tabindex="-1"></a><span class="co"># Read in data</span></span>
 <span id="cb49-2"><a href="week-7-scatterplots.html#cb49-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2014_Translations.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 16300 Columns: 15
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ──────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (5): Stimulus, Mode, Translation, Sex, Status
 ## dbl (10): Subject, Trial, Correct, Age, NrLang, DS.Total, WST.Right, Raven.R...
@@ -538,7 +538,8 @@ this graph into two panels: one for written words, and one for spoken words.</p>
 <span id="cb69-13"><a href="week-7-scatterplots.html#cb69-13" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;(and a caption)&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 2 rows containing missing values (`geom_point()`).</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-64-1.png" width="432" /></p>
-<p>(The warning concerns two missing values in the <code>WST</code> variable.)</p>
+<p>(The warning concerns missing values in the <code>WST</code> variable. Inspect the dataset
+to find for how many participants the <code>WST</code> score is missing!)</p>
 <p>As we’ll discuss in class, scatterplots are the <em>indispensable</em>
 first (and sometimes final) step when analysing
 the relationship between two continuous variables.</p>
@@ -556,7 +557,7 @@ the variable representing L1 skills along the <em>x</em> axis.</p>
 the participants’ score on the English-language test and the
 number of correct translations.
 How many participants’ data are shown?</p>
-<p>Hand in both the graph and the compiled HTML report.
+<p>Hand in the compiled HTML report.
 Mention the number of participants whose data are shown in the R code.</p>
 
 </div>
