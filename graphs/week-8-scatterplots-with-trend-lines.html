@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Week 8: Scatterplots with trend lines | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
@@ -279,9 +279,12 @@ two variables using scatterplot smoothers.</p>
 <span id="cb71-6"><a href="week-8-scatterplots-with-trend-lines.html#cb71-6" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
 <span id="cb71-7"><a href="week-8-scatterplots-with-trend-lines.html#cb71-7" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
 <span id="cb71-8"><a href="week-8-scatterplots-with-trend-lines.html#cb71-8" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 6 rows containing non-finite values (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 6 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula
+## = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 6 rows containing non-finite outside the
+## scale range (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 6 rows containing missing values or values
+## outside the scale range (`geom_point()`).</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-65-1.png" width="480" /></p>
 <p>The blue line is the smoother;
 the grey ribbon around it is known as a (95%) confidence band
@@ -299,9 +302,12 @@ anyway.</p>
 <span id="cb75-6"><a href="week-8-scatterplots-with-trend-lines.html#cb75-6" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Result English test&quot;</span>) <span class="sc">+</span></span>
 <span id="cb75-7"><a href="week-8-scatterplots-with-trend-lines.html#cb75-7" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Numer of correct translations&quot;</span>) <span class="sc">+</span></span>
 <span id="cb75-8"><a href="week-8-scatterplots-with-trend-lines.html#cb75-8" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">cols =</span> <span class="fu">vars</span>(Mode))</span></code></pre></div>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula = &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning: Removed 6 rows containing non-finite values (`stat_smooth()`).</code></pre>
-<pre><code>## Warning: Removed 6 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula
+## = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 6 rows containing non-finite outside the
+## scale range (`stat_smooth()`).</code></pre>
+<pre><code>## Warning: Removed 6 rows containing missing values or values
+## outside the scale range (`geom_point()`).</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-66-1.png" width="480" /></p>
 </div>
 <div id="so-whats-a-scatterplot-smoother-anyway" class="section level2 hasAnchor" number="8.3">

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7 Week 7: Scatterplots | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7 Week 7: Scatterplots | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
@@ -289,7 +289,7 @@ expressing its formal similarity to its French, German or English cognate).</p>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="week-7-scatterplots.html#cb49-1" tabindex="-1"></a><span class="co"># Read in data</span></span>
 <span id="cb49-2"><a href="week-7-scatterplots.html#cb49-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2014_Translations.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 16300 Columns: 15
-## ── Column specification ──────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (5): Stimulus, Mode, Translation, Sex, Status
 ## dbl (10): Subject, Trial, Correct, Age, NrLang, DS.Total, WST.Right, Raven.R...
@@ -420,8 +420,8 @@ It’d be more useful to split this figure up by modality:</p>
 <span id="cb58-5"><a href="week-7-scatterplots.html#cb58-5" tabindex="-1"></a>  <span class="co"># group by Subject and Mode</span></span>
 <span id="cb58-6"><a href="week-7-scatterplots.html#cb58-6" tabindex="-1"></a>  <span class="fu">group_by</span>(Subject, Mode) <span class="sc">|&gt;</span> </span>
 <span id="cb58-7"><a href="week-7-scatterplots.html#cb58-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">number_correct =</span> <span class="fu">sum</span>(Correct))</span></code></pre></div>
-<pre><code>## `summarise()` has grouped output by &#39;Subject&#39;. You can override using the
-## `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Subject&#39;. You
+## can override using the `.groups` argument.</code></pre>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="week-7-scatterplots.html#cb60-1" tabindex="-1"></a>per_part2</span></code></pre></div>
 <pre><code>## # A tibble: 326 × 3
 ## # Groups:   Subject [163]
@@ -536,7 +536,8 @@ this graph into two panels: one for written words, and one for spoken words.</p>
 <span id="cb69-11"><a href="week-7-scatterplots.html#cb69-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;A title of your choice&quot;</span>,</span>
 <span id="cb69-12"><a href="week-7-scatterplots.html#cb69-12" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;(and perhaps even a subtitle)&quot;</span>,</span>
 <span id="cb69-13"><a href="week-7-scatterplots.html#cb69-13" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;(and a caption)&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: Removed 2 rows containing missing values (`geom_point()`).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values
+## outside the scale range (`geom_point()`).</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-64-1.png" width="432" /></p>
 <p>(The warning concerns missing values in the <code>WST</code> variable. Inspect the dataset
 to find for how many participants the <code>WST</code> score is missing!)</p>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots</title>
   <meta name="description" content="Tutorials for the graphing assignments." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Week 2: Reading in data and drawing a histogram | Quantitative Methodology: Drawing plots" />
   <meta property="og:type" content="book" />
@@ -285,7 +285,7 @@ div.csl-indent {
 </ol>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb13-1" tabindex="-1"></a>d_hist <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Vanhove2015_Vpn.csv&quot;</span>))</span></code></pre></div>
 <pre><code>## Rows: 80 Columns: 6
-## ── Column specification ──────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): Geschlecht
 ## dbl (5): VPN, Wortschatz, Englisch, Französisch, Alter
@@ -309,7 +309,8 @@ Like for last week’s scatterplot, we need to define the object and the variabl
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,       <span class="co"># specify data set</span></span>
 <span id="cb16-2"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-2" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Englisch)) <span class="sc">+</span> <span class="co"># variable to be drawn</span></span>
 <span id="cb16-3"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb16-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()          <span class="co"># draw as histogram</span></span></code></pre></div>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value
+## with `binwidth`.</code></pre>
 <p><img src="BookletMethodology_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>The histogram shows, among other things, that there are 8 individuals with an English vocabulary score just below 0.7 and 4 with a score just below 0.6. By default, 30 such <em>bins</em> are drawn, but as the warning indicates (‘Pick better value’), there’s nothing special about this number. You can adjust the desired bin width:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="week-2-reading-in-data-and-drawing-a-histogram.html#cb18-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> d_hist,</span>
