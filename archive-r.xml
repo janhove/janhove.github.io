@@ -425,7 +425,7 @@ font-style: inherit;">$</span>probability)</span></code></pre></div>
 </div>
 </div>
 <p>Assuming <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">, the resulting <img src="https://latex.codecogs.com/png.latex?p">-value is hence <img src="https://latex.codecogs.com/png.latex?0.043">. We repeat this procedure for different candidate values of <img src="https://latex.codecogs.com/png.latex?%5Cpi">. The <img src="https://latex.codecogs.com/png.latex?p">-value of Boschloo’s test is then the maximum of the resulting <img src="https://latex.codecogs.com/png.latex?p">-values. In this specific example, the maximum <img src="https://latex.codecogs.com/png.latex?p">-value is <img src="https://latex.codecogs.com/png.latex?p%20=%200.0495">, which is obtained for <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.68">; see Figure&nbsp;3.</p>
-<div class="cell">
+<div class="cell preview-image">
 <div class="cell-output-display">
 <div id="fig-boschloo" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
