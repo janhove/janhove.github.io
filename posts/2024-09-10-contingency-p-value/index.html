@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2024-09-10">
+
+<title>Jan Vanhove :: Blog - Exact significance tests for 2 × 2 tables</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove :: Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html" rel="" target="">
+ <span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html" rel="" target="">
+ <span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html" rel="" target="">
+ <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#preliminaries" id="toc-preliminaries" class="nav-link active" data-scroll-target="#preliminaries">Preliminaries</a>
+  <ul class="collapse">
+  <li><a href="#two-by-two-contingency-tables" id="toc-two-by-two-contingency-tables" class="nav-link" data-scroll-target="#two-by-two-contingency-tables">Two-by-two contingency tables</a></li>
+  <li><a href="#exact-and-approximate-tests" id="toc-exact-and-approximate-tests" class="nav-link" data-scroll-target="#exact-and-approximate-tests">Exact and approximate tests</a></li>
+  </ul></li>
+  <li><a href="#contingency-tables-with-both-marginals-fixed" id="toc-contingency-tables-with-both-marginals-fixed" class="nav-link" data-scroll-target="#contingency-tables-with-both-marginals-fixed">Contingency tables with both marginals fixed</a></li>
+  <li><a href="#contingency-tables-with-one-marginal-fixed" id="toc-contingency-tables-with-one-marginal-fixed" class="nav-link" data-scroll-target="#contingency-tables-with-one-marginal-fixed">Contingency tables with one marginal fixed</a></li>
+  <li><a href="#contingency-tables-with-only-the-total-sum-fixed" id="toc-contingency-tables-with-only-the-total-sum-fixed" class="nav-link" data-scroll-target="#contingency-tables-with-only-the-total-sum-fixed">Contingency tables with only the total sum fixed</a>
+  <ul class="collapse">
+  <li><a href="#observational-studies" id="toc-observational-studies" class="nav-link" data-scroll-target="#observational-studies">Observational studies</a></li>
+  <li><a href="#experiments-with-simple-randomisation" id="toc-experiments-with-simple-randomisation" class="nav-link" data-scroll-target="#experiments-with-simple-randomisation">Experiments with simple randomisation</a></li>
+  </ul></li>
+  <li><a href="#contingency-tables-with-nothing-fixed" id="toc-contingency-tables-with-nothing-fixed" class="nav-link" data-scroll-target="#contingency-tables-with-nothing-fixed">Contingency tables with nothing fixed</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exact significance tests for 2 × 2 tables</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">significance</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 10, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Two-by-two contingency tables look so simple that you’d be forgiven for thinking they’re straightforward to analyse. A glance at the statistical literature on the analysis of contingency tables, however, reveals a plethora of techniques and controversies surrounding them that will quickly disabuse you of this notion (see, for instance, Fagerland et al.&nbsp;2017). In this blog post, I discuss a handful of different study designs that give rise to two-by-two tables and present a few exact significance tests that can be applied to these tables. A more exhaustive overview can be found in Fagerland et al.&nbsp;(2017).</p>
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<section id="two-by-two-contingency-tables" class="level3">
+<h3 class="anchored" data-anchor-id="two-by-two-contingency-tables">Two-by-two contingency tables</h3>
+<p>Two-by-two contingency tables arise when cross-tabulate obserations that have two binary properties (<span class="math inline">\(X\)</span>: <span class="math inline">\(x_1\)</span> vs.&nbsp;<span class="math inline">\(x_2\)</span>; <span class="math inline">\(Y\)</span>: <span class="math inline">\(y_1\)</span> vs.&nbsp;<span class="math inline">\(y_2\)</span>). The number of obervations for which <span class="math inline">\(X = x_1\)</span> and <span class="math inline">\(Y = y_1\)</span> is referred to as <span class="math inline">\(n_{11}\)</span>, and similarly for the other combinations of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> values. We further define the row totals <span class="math inline">\(n_{1+} := n_{11} + n_{12}\)</span> and <span class="math inline">\(n_{2+} := n_{21} + n_{22}\)</span> as well as the column totals <span class="math inline">\(n_{+1} := n_{11} + n_{21}\)</span> and <span class="math inline">\(n_{+2} := n_{12} + n_{22}\)</span>. We call the total number of observations <span class="math inline">\(n_{++}\)</span>.</p>
+<span class="math display">\[\begin{array}{l|c|c||c}
+  &amp; Y = y_1 &amp; Y = y_2 &amp; \textrm{Row total} \\
+  \hline
+  X = x_1 &amp; n_{11} &amp; n_{12} &amp; n_{1+} \\
+  X = x_2 &amp; n_{21} &amp; n_{22} &amp; n_{2+} \\
+  \hline
+  \textrm{Column total} &amp; n_{+1} &amp; n_{+2} &amp; n_{++} \\
+\end{array}\]</span>
+</section>
+<section id="exact-and-approximate-tests" class="level3">
+<h3 class="anchored" data-anchor-id="exact-and-approximate-tests">Exact and approximate tests</h3>
+<p>This blog post is about <strong>exact significance tests</strong>. An exact test has the following defining property: If the null hypothesis is true, the <span class="math inline">\(p\)</span>-value that the test yields is a random variable <span class="math inline">\(P\)</span> with the property that <span class="math display">\[\mathbb{P}(P \leq \alpha) \leq \alpha\]</span> for each <span class="math inline">\(\alpha \in (0, 1)\)</span>. This means that, if the null hypothesis is true, there is at most a 5% probability that the test will yield a <span class="math inline">\(p\)</span>-value of 0.05 or below. Similarly, if the null hypothesis is true, there is at most a 20% probability that the test will yield a <span class="math inline">\(p\)</span>-value of 0.20 or below, and so for all values between 0 and 1. Ideally, <span class="math inline">\(\mathbb{P}(P \leq \alpha)\)</span> should be close to, but no larger than, <span class="math inline">\(\alpha\)</span>: If <span class="math inline">\(\mathbb{P}(P \leq \alpha)\)</span> tends to be considerably lower than <span class="math inline">\(\alpha\)</span>, i.e., if the test is <strong>conservative</strong>, this will negatively affect the test’s power.</p>
+<p>Tests that aren’t exact can still be <strong>approximate</strong>. A possible problem with approximate tests is that their justification depends on results derived for large samples; for smaller samples, <span class="math inline">\(\mathbb{P}(P \leq \alpha)\)</span> may be substantially larger than <span class="math inline">\(\alpha\)</span>. The best-known approximate test used for the analysis of two-by-two contingency tables is Pearson’s <span class="math inline">\(\chi^2\)</span>-test.</p>
+</section>
+</section>
+<section id="contingency-tables-with-both-marginals-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-both-marginals-fixed">Contingency tables with both marginals fixed</h2>
+<p>Two-by-two contingency tables can be the result of different research designs – some fairly common, others exceedingly rare.</p>
+<p><strong>Example 1</strong> (Fisher’s exact test, one-sided)<strong>.</strong> Say we want to establish if a learner of English is able to tell the /æ/ phoneme in <em>bat</em> and the /ɛ/ phoneme in <em>bet</em> apart. To this end, we make 35 recordings, 21 of which contain the word <em>bet</em> and 14 contain the word <em>bat</em>. The learner is then asked to identify those 21 audio files that he thinks are recordings of <em>bet</em>; the remaining 14 audio files are suspected recordings of <em>bat</em>. The results are summarised in the following contingency table:</p>
+<span class="math display">\[\begin{array}{l|cc}
+  &amp; \textrm{Categorised as \textit{bet}} &amp; \textrm{Categorised as \textit{bat}}  \\
+  \hline
+  \textrm{Is \textit{bet}} &amp; 15 &amp; 6 \\
+  \textrm{Is \textit{bat}} &amp; 6  &amp; 8 \\
+\end{array}\]</span>
+<p>Note that we insisted that the learner select exactly 21 suspected recordings of <em>bet</em>, no more and no fewer. As a result, the column total <span class="math inline">\(n_{+1}\)</span> was known in advance. Moreover, we knew beforehand that 21 of the recordings actually featured <em>bet</em> and 14 of the recordings actually featured <em>bat</em>. Hence, the row totals <span class="math inline">\(n_{1+}, n_{2+}\)</span> were also known in advance. As a result, <span class="math inline">\(n_{++}\)</span> and <span class="math inline">\(n_{+2}\)</span> were also known in advance. Consequently, this study design fixes both the row and column marginals. What wasn’t known in advance was the number of suspected <em>bet</em> recordings that actually were <em>bet</em> recordings (<span class="math inline">\(n_{11}\)</span>).</p>
+<p>The null hypothesis in this setting is that the learner is incapable of distinguishing <em>bet</em> from <em>bat</em> recordings and just selected 21 random audio files as suspected <em>bet</em> recordings in order to comply with the instructions. Under this null hypothesis, the top left entry in the contingency table (<span class="math inline">\(n_{11}\)</span>) follows a hypergeometric distribution with parameters <span class="math inline">\(n_{1+} = 21, n_{2+} = 14\)</span> and <span class="math inline">\(n_{+1} = 21\)</span>. (Different authors parametrise this distribution differently; I use the parametrisation that’s used in R.) That is,</p>
+<p><span class="math display">\[H_0 : n_{11} \sim \textrm{Hypergeometric}(\underbrace{21}_{\textrm{is bet}}, \underbrace{14}_{\textrm{is bat}}, \underbrace{21}_{\textrm{to be categorised as bet}}).\]</span></p>
+<p><a href="#fig-hypergeometric">Figure&nbsp;1</a> shows the probability mass and cumulative probability functions of the <span class="math inline">\(\textrm{Hypergeometric}(21, 14, 21)\)</span> distribution. The observed top-left entry, i.e., 15, is highlighted in blue.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hypergeometric" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-hypergeometric-1.svg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: The probability mass function (left) and the cumulative probability function (right) of the <span class="math inline">\(\textrm{Hypergeometric}(21, 14, 21)\)</span> distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If the learner did not just pick 21 audio files at random but was in fact able to tell <em>bet</em> and <em>bat</em> recordings apart to some degree, this top-left entry can be expected to be large as opposed to small. This means that we want to compute a right-sided <span class="math inline">\(p\)</span>-value, which we do by calculating</p>
+<p><span class="math display">\[\mathbb{P}(n_{11} \geq 15) = 1 - \mathbb{P}(n_{11} \leq 14):\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">phyper</span>(<span class="dv">15</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">21</span>, <span class="dv">14</span>, <span class="dv">21</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09059986</code></pre>
+</div>
+</div>
+<p>This computation amounts to running <strong>Fisher’s exact test</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">6</span>), <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">8</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09059986</code></pre>
+</div>
+</div>
+<p><strong>Example 2</strong> (Fisher’s exact test, two-sided)<strong>.</strong> Let’s slightly change the design of the study in Example 1. Instead of recording <em>bet</em> 21 times and <em>bat</em> 14 times and asking the learner to select 21 suspected <em>bet</em> recordings, we record both <em>bet</em> and <em>bat</em> 18 times and ask the learner to select 18 suspected <em>bet</em> recordings. The results are summarised in the following contingency table:</p>
+<span class="math display">\[\begin{array}{l|cc}
+  &amp; \textrm{Categorised as \textit{bet}}  &amp; \textrm{Categorised as \textit{bat}}  \\
+  \hline
+  \textrm{Is \textit{bet}} &amp; 5            &amp; 13 \\
+  \textrm{Is \textit{bat}} &amp; 13           &amp; 5 \\
+\end{array}\]</span>
+<p>Under the null hypothesis that the learner possesses no relevant discriminatory ability, the top-left entry (<span class="math inline">\(n_{11}\)</span>) follows a <span class="math inline">\(\textrm{Hypergeometric}(18, 18, 18)\)</span> distribution; see <a href="#fig-hypergeometric-twosided">Figure&nbsp;2</a>. The observed top-left entry (5) is highlighted by the dashed blue line.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hypergeometric-twosided" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-hypergeometric-twosided-1.svg" class="img-fluid figure-img" style="width:38.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: The probability mass function of the <span class="math inline">\(\textrm{Hypergeometric}(18, 18, 18)\)</span> distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Of note, the learner seems to be able to tell <em>bet</em> and <em>bat</em> apart to some extent – it’s just that he seems to identify <em>bet</em> recordings as <em>bat</em> and vice versa. Since we’re interested in the learner’s discriminatory ability, regardless of whether he is then also able to correctly <em>label</em> the two categories, we want to compute a two-sided <span class="math inline">\(p\)</span>-value. The most common way to do so is to sum the probability masses <span class="math inline">\(\mathbb{P}(n_{11} = k), k = 1, \dots, n_{+1},\)</span> that are no greater than the probability mass of the actually observed top-left entry. These are the probability masses coloured blue in <a href="#fig-hypergeometric-twosided">Figure&nbsp;2</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_k <span class="ot">&lt;-</span> <span class="fu">dhyper</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">18</span>, <span class="dv">18</span>, <span class="dv">18</span>, <span class="dv">18</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(p_k[p_k <span class="sc">&lt;=</span> <span class="fu">dhyper</span>(<span class="dv">5</span>, <span class="dv">18</span>, <span class="dv">18</span>, <span class="dv">18</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01839395</code></pre>
+</div>
+</div>
+<p>Fisher’s exact test carries out the same computation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">13</span>), <span class="fu">c</span>(<span class="dv">13</span>, <span class="dv">5</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(tab)<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01839395</code></pre>
+</div>
+</div>
+</section>
+<section id="contingency-tables-with-one-marginal-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-one-marginal-fixed">Contingency tables with one marginal fixed</h2>
+<p>Contingency tables in which both the row and column marginals are fixed in advance are a rare sight. More common in some areas of research are contingency tables where only the row marginals are fixed by design. Such tables can be found in, for instance, experimental research in which a fixed number of participants are assigned to one experimental condition and another fixed number of participants are assigned to the other experimental condition and where for each participant, we have a single binary outcome (e.g., died vs.&nbsp;survived, or passed vs.&nbsp;failed).</p>
+<p><strong>Example 3</strong> (Boschloo’s test)<strong>.</strong> Let’s imagine we’re in charge of an agency that designs self-study courses to help students prepare for an entrance exam. We’ve developed a course whose efficacy we want to compare against that of its predecessor. More specifically, we’re interested in finding out whether the new course is better than the old one in terms of helping the students pass the entrance exam. We recruit 24 students willing to participate in an evaluation study and, using complete randomisation, we assign 12 of them to work with the new course and 12 to work with the old one. The results look as follows:</p>
+<span class="math display">\[\begin{array}{l|cc}
+  &amp; \textrm{Pass}  &amp; \textrm{Fail}  \\
+  \hline
+  \textrm{New course} &amp; 10          &amp; 2 \\
+  \textrm{Old course} &amp; 6           &amp; 6 \\
+\end{array}\]</span>
+<p>In contrast to the previous two examples, it’s only the row marginals that were known beforehand in this example. Nevertheless, applying Fisher’s exact test to this contingency table is reasonable. In doing so, we would be <strong>conditioning</strong> the analysis on the observed column marginals (<span class="math inline">\(n_{+1} = 16\)</span>, <span class="math inline">\(n_{+2} = 8\)</span>), even though the study design did not fix these marginals. The corresponding null hypothesis is</p>
+<p><span class="math display">\[H_0 | n_{+1} = 16, n_{+2} = 8~:~ n_{11} \sim \textrm{Hypergeometric}(12, 12, 16).\]</span></p>
+<p>An exact test remains exact when it is used conditionally (Lydersen 2009:1165), so the resulting <span class="math inline">\(p\)</span>-value is perfectly valid:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09651366</code></pre>
+</div>
+</div>
+<p>That said, conditional exact tests tend to be pretty conservative. Intuitively, the reason is that the conditional exact test only considers <span class="math inline">\(\min(n_{+1}, n_{1+}) + 1\)</span> of the possible tables that could have been observed under the null hypothesis; in this example, these would be the thirteen different tables where <span class="math inline">\(n_{1+} = n_{2+} = 12\)</span> and <span class="math inline">\(n_{+1} = 16\)</span>, i.e., with <span class="math inline">\(n_{11} = 0, 1, \dots, 12\)</span>. The actual sample space under the null hypothesis in this design, however, comprises <span class="math inline">\((n_{1+} + 1) \cdot (n_{2+} + 1)\)</span> tables. In this example, these would be the 169 different tables where <span class="math inline">\(n_{1+} = n_{2+} = 12\)</span>. By only considering a small part of the sample space, the conditional exact test in essence misses out on opportunities to return small <span class="math inline">\(p\)</span>-values.</p>
+<p>Unconditional exact tests consider the whole sample space and are consequently less conservative than conditional exact tests. The contingency table in the fixed row marginals design can be considered the result of two draws from binomial distributions: one with <span class="math inline">\(n_{1+}\)</span> attempts and success probability <span class="math inline">\(\pi_1\)</span>, and one with <span class="math inline">\(n_{2+}\)</span> attempts and success probability <span class="math inline">\(\pi_2\)</span>. The null hypothesis is that <span class="math inline">\(\pi_1 = \pi_2\)</span>. That is, <span class="math display">\[\begin{align*}
+H_0~:~ &amp; n_{11} \sim \textrm{Binomial}(n_{1+}, \pi), \\
+       &amp; n_{21} \sim \textrm{Binomial}(n_{2+}, \pi),
+\end{align*}\]</span> with some <span class="math inline">\(\pi \in [0,1]\)</span> that is common to both binomial distributions. This <span class="math inline">\(\pi\)</span> parameter is known as a <strong>nuisance parameter</strong>: its value is unknown and not of primary interest, but if we want to carry out an unconditional test, we need to somehow take it into account.</p>
+<p>An unconditional exact test for the fixed row marginals design that is often recommended is <strong>Boschloo’s test</strong> (Boschloo 1970). The idea behind this test is as follows. First, we define a test statistic that captures the extent to which observed contingency tables differ from the contingency table you’d expect to find under the null hypothesis, given <span class="math inline">\(n_{1+}\)</span>, <span class="math inline">\(n_{2+}\)</span> and some candidate value for <span class="math inline">\(\pi\)</span>. Second, for each table that we could have observed, we compute both how likely it was to occur (this depends on <span class="math inline">\(n_{1+}\)</span>, <span class="math inline">\(n_{2+}\)</span> and <span class="math inline">\(\pi\)</span>) and the test statistic it would have resulted in. Third, using the results of these calculations, we compute the probability that we would observe a test statistic at least as extreme as the test statistic that we actually did observe under the null hypothesis and for the given <span class="math inline">\(n_{1+}, n_{2+}\)</span> and <span class="math inline">\(\pi\)</span> values. This probability is a <span class="math inline">\(p\)</span>-value conditional on the <span class="math inline">\(\pi\)</span> value considered. We repeat this procedure for different <span class="math inline">\(\pi\)</span> values – say, for 101 equally spaced <span class="math inline">\(\pi\)</span> values in the interval <span class="math inline">\([0, 1]\)</span>. Our unconditional exact <span class="math inline">\(p\)</span>-value is now the maximum of the 101 values so computed. (Theoretically, it should be the supremum of the <span class="math inline">\(p\)</span>-values when varying <span class="math inline">\(\pi\)</span> over the entire <span class="math inline">\([0,1]\)</span> interval. But the maximum of the 101 <span class="math inline">\(p\)</span>-values compute will be close enough to this supremum.) In Boschloo’s test, the test statistic used is in fact the one-sided <span class="math inline">\(p\)</span>-value obtained from Fisher’s exact test. But this <span class="math inline">\(p\)</span>-value is used as a test statistic, not as a <span class="math inline">\(p\)</span>-value in its own right.</p>
+<p>Let’s walk through the computation step by step. First, we run a one-sided Fisher’s exact test in order to obtain the observed test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(obs_test_stat <span class="ot">&lt;-</span> <span class="fu">fisher.test</span>(<span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>), <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>)), <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09651366</code></pre>
+</div>
+</div>
+<p>Next, we create a grid with all possible combinations of <span class="math inline">\((n_{11}, n_{21})\)</span> entries that we could have observed:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n_row1 <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>n_row2 <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n11 =</span> <span class="dv">0</span><span class="sc">:</span>n_row1, <span class="at">n21 =</span> <span class="dv">0</span><span class="sc">:</span>n_row2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We now fix some <span class="math inline">\(\pi \in [0, 1]\)</span>, for instance, <span class="math inline">\(\pi = 0.43\)</span>. For each possible table, we compute how likely it would have been to observe this table if <span class="math inline">\(\pi = 0.43\)</span>. For instance, the 61st row in the grid corresponds to the table</p>
+<span class="math display">\[\begin{array}{l|cc}
+  &amp; \textrm{Pass}  &amp; \textrm{Fail}  \\
+  \hline
+  \textrm{New course} &amp; 8         &amp; 4 \\
+  \textrm{Old course} &amp; 6         &amp; 6 \\
+\end{array}\]</span>
+<p>The probability of observing the first row is given by the probability mass of <span class="math inline">\(k = 8\)</span> under a Binomial(12, 0.43) distribution; the probability of observing the second row is given by the probability mass of <span class="math inline">\(k = 6\)</span>, also under a Binomial(12, 0.43) distribution. So the probability of observing this table is the product of these two probabilities:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="dv">8</span>, <span class="dv">12</span>, <span class="fl">0.43</span>) <span class="sc">*</span> <span class="fu">dbinom</span>(<span class="dv">6</span>, <span class="dv">12</span>, <span class="fl">0.43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01223444</code></pre>
+</div>
+</div>
+<p>We compute this probability for all 169 tables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tables<span class="sc">$</span>probability <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(tables<span class="sc">$</span>n11, <span class="dv">12</span>, <span class="fl">0.43</span>) <span class="sc">*</span> <span class="fu">dbinom</span>(tables<span class="sc">$</span>n21, <span class="dv">12</span>, <span class="fl">0.43</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For each table, we also compute the test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tables<span class="sc">$</span>test_statistic <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tables)) {</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  current_table <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(tables<span class="sc">$</span>n11[i], <span class="dv">12</span> <span class="sc">-</span> tables<span class="sc">$</span>n11[i]),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">c</span>(tables<span class="sc">$</span>n21[i], <span class="dv">12</span> <span class="sc">-</span> tables<span class="sc">$</span>n21[i]))</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  tables<span class="sc">$</span>test_statistic[i] <span class="ot">&lt;-</span> <span class="fu">fisher.test</span>(current_table, <span class="at">alternative =</span> <span class="st">"greater"</span>)<span class="sc">$</span>p.value</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now compute the probability that we’d observe a test statistic at least as extreme as the test statistic associated with the table we actually observed, assuming the null hypothesis is true and <span class="math inline">\(\pi = 0.43\)</span>. Since the <span class="math inline">\(p\)</span>-value produced by Fisher’s exact test is smaller for tables that are more surprising under the null hypothesis, ‘at least as extreme’ corresponds to ‘at most as large’. We can compute the figure we’re interested in by computing the proportion of tables resulting in test statistics no larger than the one we observed but weighted by their probability of occurring under the assumption that <span class="math inline">\(\pi = 0.43\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">weighted.mean</span>(tables<span class="sc">$</span>test_statistic <span class="sc">&lt;=</span> obs_test_stat, <span class="at">w =</span> tables<span class="sc">$</span>probability)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04312598</code></pre>
+</div>
+</div>
+<p>Assuming <span class="math inline">\(\pi = 0.43\)</span>, the resulting <span class="math inline">\(p\)</span>-value is hence <span class="math inline">\(0.043\)</span>. We repeat this procedure for different candidate values of <span class="math inline">\(\pi\)</span>. The <span class="math inline">\(p\)</span>-value of Boschloo’s test is then the maximum of the resulting <span class="math inline">\(p\)</span>-values. In this specific example, the maximum <span class="math inline">\(p\)</span>-value is <span class="math inline">\(p = 0.0495\)</span>, which is obtained for <span class="math inline">\(\pi = 0.68\)</span>; see <a href="#fig-boschloo">Figure&nbsp;3</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-boschloo" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-boschloo-1.svg" class="img-fluid figure-img" style="width:66.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: In Boschloo’s test, a <span class="math inline">\(p\)</span>-value is computed for each candidate value of <span class="math inline">\(\pi\)</span>. The test then outputs the maximum of these <span class="math inline">\(p\)</span>-values.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If our alternative hypothesis were that the new programme produced worse results than the old one, we’d have used the left-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic in Boschloo’s procedure. A two-sided <span class="math inline">\(p\)</span>-value can be obtained by carrying out Boschloo’s test once using the right-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic and once using the left-sided <span class="math inline">\(p\)</span>-value, and then doubling the smaller of the two resulting <span class="math inline">\(p\)</span>-values.</p>
+<p>To run Boschloo’s test, you can use the following <code>boschloo_test()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>boschloo_test <span class="ot">&lt;-</span> <span class="cf">function</span>(tab, <span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="at">pi_range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">stepsize =</span> <span class="fl">0.01</span>) {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This test assumes fixed row sums.</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Nuisance parameter values in the interval pi_range are tried out.</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(tab) <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))) <span class="fu">stop</span>(<span class="st">"tab needs to be a 2*2 contingency table."</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span>) {</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Truncate two-sided p-value at 1</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"less"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize)), </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use Fisher's exact test p-value as test statistic</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  statistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">fisher.test</span>(x, <span class="at">alternative =</span> alternative)<span class="sc">$</span>p.value</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct grid with possible results</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  row_sums <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(tab)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  my_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n1 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">1</span>], <span class="at">n2 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">2</span>])</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>statistic <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(my_grid)) {</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    my_tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(my_grid<span class="sc">$</span>n1[i], row_sums[<span class="dv">1</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n1[i]),</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">c</span>(my_grid<span class="sc">$</span>n2[i], row_sums[<span class="dv">2</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n2[i]))</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    my_grid<span class="sc">$</span>statistic[i] <span class="ot">&lt;-</span> <span class="fu">statistic</span>(my_tab)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute observed test statistic</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  obs_p <span class="ot">&lt;-</span> <span class="fu">statistic</span>(tab)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  is_extreme <span class="ot">&lt;-</span> my_grid<span class="sc">$</span>statistic <span class="sc">&lt;=</span> obs_p</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Maximise p-value over range</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  pis <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi_range[<span class="dv">1</span>], pi_range[<span class="dv">2</span>], <span class="at">by =</span> stepsize)</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  max_p <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_pi <span class="cf">in</span> pis) {</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    current_p <span class="ot">&lt;-</span> <span class="fu">weighted.mean</span>(<span class="at">x =</span> is_extreme,</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">w =</span> <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n1, row_sums[<span class="dv">1</span>], current_pi) <span class="sc">*</span> </span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>            <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n2, row_sums[<span class="dv">2</span>], current_pi))</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (current_p <span class="sc">&gt;</span> max_p) max_p <span class="ot">&lt;-</span> current_p</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  max_p</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It works like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(<span class="at">tab =</span> tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+<p>Alternatively, you can use the <code>boschloo()</code> function in the <a href="https://cran.r-project.org/web/packages/exact2x2/index.html"><code>exact2x2</code> package</a>. See <code>?boschloo</code> for details on the parameters. Here I specify the number of grid points (<code>nPgrid</code>) in order to make the results agree exactly with those produced by <code>boschloo_test()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>exact2x2<span class="sc">::</span><span class="fu">boschloo</span>(<span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="at">alternative =</span> <span class="st">"greater"</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">control =</span> exact2x2<span class="sc">::</span><span class="fu">ucControl</span>(<span class="at">nPgrid =</span> <span class="dv">101</span>))<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+</section>
+<section id="contingency-tables-with-only-the-total-sum-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-only-the-total-sum-fixed">Contingency tables with only the total sum fixed</h2>
+<p>A third possibility is that neither the row sums (<span class="math inline">\(n_{1+}, n_{2+}\)</span>) nor the column sums (<span class="math inline">\(n_{+1}, n_{+2}\)</span>) are known beforehand but that the total number of observations (<span class="math inline">\(n_{++}\)</span>) is. One general case where such contingency tables arise is in observational research in which two binary features are measured in a fixed number of randomly sampled units. A second general case is comprised of experiments that have a binary outcome variable and in which the participants are assigned to the conditions using simple randomisation so that the precise number of participants isn’t fixed in advance.</p>
+<section id="observational-studies" class="level3">
+<h3 class="anchored" data-anchor-id="observational-studies">Observational studies</h3>
+<p><strong>Example 4</strong> (Boschloo’s test)<strong>.</strong> During a hike through the Fribourg Prealpes near <a href="https://www.myswitzerland.com/en-ch/destinations/schwarzsee/">Schwarzsee</a>, we conduct a linguistic field experiment. Any time we encounter a hiking party chatting in French, we greet them in German; any time we encounter a hiking party chatting in German, we greet them in French. Afterwards, we jot down for each party whether the first person greeting us back did so in the same language in which they were addressed or in a different language. (Parties not chatting in French or German are ignored in this field experiment.) We planned to continue the field experiment until we’ve encountered the 20th French- or German-speaking hiking party. Here’s the resulting contingency table:</p>
+<span class="math display">\[\begin{array}{l|cc}
+                                 &amp; \textrm{Same language}  &amp; \textrm{Different language}  \\
+  \hline
+  \textrm{French-speaking party} &amp; 2                       &amp; 6 \\
+  \textrm{German-speaking party} &amp; 8                       &amp; 4 \\
+\end{array}\]</span>
+<p>Note that only the total number of observations (<span class="math inline">\(n_{++} = 20\)</span>) was known beforehand.</p>
+<p>The null hypothesis is that whether the first greeter in the party responded in the same language or in a different language is independent of the language in which the party was chatting. More formally, let <span class="math inline">\(\pi_{\textrm{row}}\)</span> be the probability that a randomly encountered French- or German-speaking party is French-speaking and let <span class="math inline">\(\pi_{\textrm{col}}\)</span> be the probability that the first greeter in a French- or German-speaking party responds in the same language. Then our null hypothesis is</p>
+<p><span class="math display">\[\begin{align*}
+H_0~:~&amp;\mathbb{P}(\textrm{is French-speaking and responds in same language}) = \pi_{\textrm{row}}\pi_{\textrm{col}}, \\
+      &amp;\mathbb{P}(\textrm{is French-speaking and responds in different language}) = \pi_{\textrm{row}}(1-\pi_{\textrm{col}}), \\
+      &amp;\mathbb{P}(\textrm{is German-speaking and responds in same language}) = (1-\pi_{\textrm{row}})\pi_{\textrm{col}}, \\
+      &amp;\mathbb{P}(\textrm{is German-speaking and responds in different language}) = (1-\pi_{\textrm{row}})(1-\pi_{\textrm{col}}).
+\end{align*}\]</span></p>
+<p>More compactly, our null hypothesis is that the tuple <span class="math inline">\((n_{11}, n_{12}, n_{21}, n_{22})\)</span> is multinomially distributed with the probabilities above, i.e.,</p>
+<p><span class="math display">\[H_0~:~(n_{11}, n_{12}, n_{21}, n_{22}) \sim \textrm{Multinomial}(20, \pi_{\textrm{row}}\pi_{\textrm{col}},\pi_{\textrm{row}}(1-\pi_{\textrm{col}}),(1-\pi_{\textrm{row}})\pi_{\textrm{col}}, (1-\pi_{\textrm{row}})(1-\pi_{\textrm{col}})),\]</span> for some unknown <span class="math inline">\(\pi_{\textrm{row}}, \pi_{\textrm{col}} \in [0,1]\)</span>.</p>
+<p>In terms of the analysis, we could condition on both marginals or on one of them and run Fisher’s or Boschloo’s test, respectively:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">6</span>), <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Condition on both marginals</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fisher.test</span>(tab)<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1698023</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Condition on row marginals only</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.08332351</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Condition on column marginals only</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(<span class="fu">t</span>(tab))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.08940788</code></pre>
+</div>
+</div>
+<p>The resulting <span class="math inline">\(p\)</span>-values are all valid. But like before, these tests only consider a part of the sample space: Fisher’s exact test only takes into account the nine tables where <span class="math inline">\(n_{1+} = 8\)</span> and <span class="math inline">\(n_{+1} = 10\)</span>; Boschloo’s test considers the <span class="math inline">\(9 \cdot 13 = 117\)</span> tables where <span class="math inline">\(n_{1+} = 8\)</span> and <span class="math inline">\(n_{2+} = 12\)</span> when conditioning on the row marginals and the <span class="math inline">\(11 \cdot 11 = 121\)</span> tables where <span class="math inline">\(n_{+1} = n_{+2} = 10\)</span> when conditioning on the column marginals. But the table observed is in actual fact one of <span class="math display">\[\sum_{i = 0}^{20}\sum_{j = 0}^{20-i}\sum_{k= 0}^{20-i-j}1 = 1771\]</span> tables where <span class="math inline">\(n_{++} = 20\)</span>.</p>
+<p>One possible solution is to generalise Boschloo’s test to two nuisance parameters. That is, rather computing a <span class="math inline">\(p\)</span>-value for each candidate value of <span class="math inline">\(\pi \in [0,1]\)</span> and then taking the maximum, we compute a <span class="math inline">\(p\)</span>-value for each pair of candidate values of <span class="math inline">\((\pi_{\textrm{row}}, \pi_{\textrm{col}}) \in [0,1] \times [0,1]\)</span>. The <code>unconditional_test()</code> function defined below carries out this procedure:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>unconditional_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    tab, </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two.sided"</span>, </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_range_row =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_range_col =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stepsize =</span> <span class="fl">0.01</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This test assumes a fixed total sum.</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Nuisance parameter values in the rectangle pi_range_row * pi_range_col are tried out.</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(tab) <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))) <span class="fu">stop</span>(<span class="st">"tab needs to be a 2*2 contingency table."</span>)</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span>) {</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Truncate two-sided p-value at 1</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">min</span>(</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>      <span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"less"</span>, <span class="at">stepsize =</span> stepsize),</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">stepsize =</span> stepsize)),</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span>))</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use Fisher's exact test p-value as test statistic</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  statistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">fisher.test</span>(x, <span class="at">alternative =</span> alternative)<span class="sc">$</span>p.value</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Helper function for multinomial weights</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  weights <span class="ot">&lt;-</span> <span class="cf">function</span>(pi_row, pi_col, n11, n12, n21, n22) {</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    total_sum <span class="ot">&lt;-</span> n11 <span class="sc">+</span> n12 <span class="sc">+</span> n21 <span class="sc">+</span> n22</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    (pi_row<span class="sc">*</span>pi_col)<span class="sc">^</span>n11 <span class="sc">*</span> (pi_row <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> pi_col))<span class="sc">^</span>n12 <span class="sc">*</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>      ((<span class="dv">1</span> <span class="sc">-</span> pi_row)<span class="sc">*</span>pi_col)<span class="sc">^</span>n21 <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">-</span> pi_row)<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> pi_col))<span class="sc">^</span>n22 <span class="sc">*</span> </span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">factorial</span>(total_sum)<span class="sc">/</span>(<span class="fu">factorial</span>(n11) <span class="sc">*</span> <span class="fu">factorial</span>(n12) <span class="sc">*</span> <span class="fu">factorial</span>(n21) <span class="sc">*</span> <span class="fu">factorial</span>(n22))</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct grid with possible results</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>  total_sum <span class="ot">&lt;-</span> <span class="fu">sum</span>(tab)</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>  my_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n11 =</span> <span class="dv">0</span><span class="sc">:</span>total_sum, </span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n12 =</span> <span class="dv">0</span><span class="sc">:</span>total_sum,</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n21 =</span> <span class="dv">0</span><span class="sc">:</span>total_sum)</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>n22 <span class="ot">&lt;-</span> total_sum <span class="sc">-</span> my_grid<span class="sc">$</span>n11 <span class="sc">-</span> my_grid<span class="sc">$</span>n12 <span class="sc">-</span> my_grid<span class="sc">$</span>n21</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>  my_grid <span class="ot">&lt;-</span> <span class="fu">subset</span>(my_grid, n22 <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>statistic <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(my_grid)) {</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>    my_tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(my_grid<span class="sc">$</span>n11[i], my_grid<span class="sc">$</span>n12[i]),</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">c</span>(my_grid<span class="sc">$</span>n21[i], my_grid<span class="sc">$</span>n22[i]))</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>    my_grid<span class="sc">$</span>statistic[i] <span class="ot">&lt;-</span> <span class="fu">statistic</span>(my_tab)</span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>statistic[<span class="fu">is.na</span>(my_grid<span class="sc">$</span>statistic)] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute observed test statistic</span></span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>  obs_p <span class="ot">&lt;-</span> <span class="fu">statistic</span>(tab)</span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>  is_lower <span class="ot">&lt;-</span> my_grid<span class="sc">$</span>statistic <span class="sc">&lt;=</span> obs_p</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Maximise p value over grid</span></span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  pis <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_row =</span> <span class="fu">seq</span>(pi_range_row[<span class="dv">1</span>], pi_range_row[<span class="dv">2</span>], <span class="at">by =</span> stepsize),</span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_col =</span> <span class="fu">seq</span>(pi_range_col[<span class="dv">1</span>], pi_range_col[<span class="dv">2</span>], <span class="at">by =</span> stepsize)</span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>  max_p <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(pis)) {</span>
+<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>    w <span class="ot">&lt;-</span> <span class="fu">weights</span>(pis<span class="sc">$</span>pi_row[i], pis<span class="sc">$</span>pi_col[i], </span>
+<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a>                 my_grid<span class="sc">$</span>n11, my_grid<span class="sc">$</span>n12, my_grid<span class="sc">$</span>n21, my_grid<span class="sc">$</span>n22)</span>
+<span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>    current_p <span class="ot">&lt;-</span> <span class="fu">weighted.mean</span>(is_lower, <span class="at">w =</span> w)</span>
+<span id="cb31-63"><a href="#cb31-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (current_p <span class="sc">&gt;</span> max_p) max_p <span class="ot">&lt;-</span> current_p</span>
+<span id="cb31-64"><a href="#cb31-64" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb31-65"><a href="#cb31-65" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-66"><a href="#cb31-66" aria-hidden="true" tabindex="-1"></a>  max_p</span>
+<span id="cb31-67"><a href="#cb31-67" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While it takes noticeably longer to run this test, it should be a bit more powerful than the tests that condition on one or both marginals:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07722463</code></pre>
+</div>
+</div>
+<p>The <code>exact.test()</code> function in the <a href="https://cran.r-project.org/package=Exact"><code>Exact</code></a> also implements this procedure. For one-sided tests (i.e., <code>alternative = "less"</code> or <code>"greater"</code>), it produces the same <span class="math inline">\(p\)</span>-values as <code>unconditional_test()</code>, but it computes the two-sided <span class="math inline">\(p\)</span>-value differently:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Exact<span class="sc">::</span><span class="fu">exact.test</span>(tab, <span class="at">model =</span> <span class="st">"multinomial"</span>,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">npNumber =</span> <span class="dv">101</span>, <span class="at">ref.pvalue =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"boschloo"</span>)<span class="sc">$</span>p.value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1139588</code></pre>
+</div>
+</div>
+</section>
+<section id="experiments-with-simple-randomisation" class="level3">
+<h3 class="anchored" data-anchor-id="experiments-with-simple-randomisation">Experiments with simple randomisation</h3>
+<p><strong>Example 5</strong> (Boschloo’s test)<strong>.</strong> We conduct the same experiment as in Example 3, but with one change: We assign the participants to the conditions using simple randomisation rather than using complete randomisation. Hence, we’re not guaranteed to have exactly 12 participants in each condition, and the row marginals aren’t fixed in advance. For the sake of comparison, let’s assume we obtain the same results as in Example 3:</p>
+<span class="math display">\[\begin{array}{l|cc}
+  &amp; \textrm{Pass}  &amp; \textrm{Fail}  \\
+  \hline
+  \textrm{New course} &amp; 10        &amp; 2 \\
+  \textrm{Old course} &amp; 6         &amp; 6 \\
+\end{array}\]</span>
+<p>We could again condition on the row marginals:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>),</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)      <span class="co"># condition on row marginals</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+<p>Alternatively, we could run an unconditional test. Note, however that while <span class="math inline">\(n_{1+}\)</span> and <span class="math inline">\(n_{2+}\)</span> weren’t fixed by design, <span class="math inline">\(\pi_{\textrm{row}}\)</span> is known to be <span class="math inline">\(0.5\)</span>. Hence, we don’t need to iterate through different candidate values for <span class="math inline">\(\pi_{\textrm{row}}\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range_row =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04392337</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="contingency-tables-with-nothing-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-nothing-fixed">Contingency tables with nothing fixed</h2>
+<p>Contingency tables where not even <span class="math inline">\(n_{++}\)</span> is fixed are mentioned by Fagerland et al.&nbsp;(2017) but not discussed in any detail. An analysis that conditions on the observed <span class="math inline">\(n_{++}\)</span> seems reasonable.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Boschloo, R. D. 1970. <a href="https://doi.org/10.1111%2Fj.1467-9574.1970.tb00104.x">Raised conditional level of significance for the 2 × 2 table when testing the equality of two probabilities.</a> <em>Statistica Neerlandica</em> 24. 1-35.</p>
+<p>Fagerland, Morten W., Stian Lydersen &amp; Petter Laake. 2017. <a href="https://doi.org/10.1201/9781315374116"><em>Statistical analysis of contingency tables</em>.</a> Boca Raton, FL: Chapman and Hall/CRC.</p>
+<p>Lydersen, Stian, Morten W. Fagerland &amp; Petter Laake. 2009. <a href="https://doi.org.10.1002/sim.3531">Recommended tests for association in 2 × 2 tables.</a> <em>Statistics in Medicine</em> 28. 1159-1175.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

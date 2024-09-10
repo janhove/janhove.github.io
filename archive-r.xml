@@ -10,7 +10,1369 @@
 <atom:link href="https://janhove.github.io/archive-r.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
 <generator>quarto-1.3.353</generator>
-<lastBuildDate>Wed, 16 Feb 2022 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Sep 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Exact significance tests for 2 × 2 tables</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2024-09-10-contingency-p-value/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Two-by-two contingency tables look so simple that you’d be forgiven for thinking they’re straightforward to analyse. A glance at the statistical literature on the analysis of contingency tables, however, reveals a plethora of techniques and controversies surrounding them that will quickly disabuse you of this notion (see, for instance, Fagerland et al.&nbsp;2017). In this blog post, I discuss a handful of different study designs that give rise to two-by-two tables and present a few exact significance tests that can be applied to these tables. A more exhaustive overview can be found in Fagerland et al.&nbsp;(2017).</p>
+<section id="preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="preliminaries">Preliminaries</h2>
+<section id="two-by-two-contingency-tables" class="level3">
+<h3 class="anchored" data-anchor-id="two-by-two-contingency-tables">Two-by-two contingency tables</h3>
+<p>Two-by-two contingency tables arise when cross-tabulate obserations that have two binary properties (<img src="https://latex.codecogs.com/png.latex?X">: <img src="https://latex.codecogs.com/png.latex?x_1"> vs.&nbsp;<img src="https://latex.codecogs.com/png.latex?x_2">; <img src="https://latex.codecogs.com/png.latex?Y">: <img src="https://latex.codecogs.com/png.latex?y_1"> vs.&nbsp;<img src="https://latex.codecogs.com/png.latex?y_2">). The number of obervations for which <img src="https://latex.codecogs.com/png.latex?X%20=%20x_1"> and <img src="https://latex.codecogs.com/png.latex?Y%20=%20y_1"> is referred to as <img src="https://latex.codecogs.com/png.latex?n_%7B11%7D">, and similarly for the other combinations of <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?Y"> values. We further define the row totals <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20:=%20n_%7B11%7D%20+%20n_%7B12%7D"> and <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D%20:=%20n_%7B21%7D%20+%20n_%7B22%7D"> as well as the column totals <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20:=%20n_%7B11%7D%20+%20n_%7B21%7D"> and <img src="https://latex.codecogs.com/png.latex?n_%7B+2%7D%20:=%20n_%7B12%7D%20+%20n_%7B22%7D">. We call the total number of observations <img src="https://latex.codecogs.com/png.latex?n_%7B++%7D">.</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Cc%7Cc%7C%7Cc%7D%0A%20%20&amp;%20Y%20=%20y_1%20&amp;%20Y%20=%20y_2%20&amp;%20%5Ctextrm%7BRow%20total%7D%20%5C%5C%0A%20%20%5Chline%0A%20%20X%20=%20x_1%20&amp;%20n_%7B11%7D%20&amp;%20n_%7B12%7D%20&amp;%20n_%7B1+%7D%20%5C%5C%0A%20%20X%20=%20x_2%20&amp;%20n_%7B21%7D%20&amp;%20n_%7B22%7D%20&amp;%20n_%7B2+%7D%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BColumn%20total%7D%20&amp;%20n_%7B+1%7D%20&amp;%20n_%7B+2%7D%20&amp;%20n_%7B++%7D%20%5C%5C%0A%5Cend%7Barray%7D">
+</section>
+<section id="exact-and-approximate-tests" class="level3">
+<h3 class="anchored" data-anchor-id="exact-and-approximate-tests">Exact and approximate tests</h3>
+<p>This blog post is about <strong>exact significance tests</strong>. An exact test has the following defining property: If the null hypothesis is true, the <img src="https://latex.codecogs.com/png.latex?p">-value that the test yields is a random variable <img src="https://latex.codecogs.com/png.latex?P"> with the property that <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(P%20%5Cleq%20%5Calpha)%20%5Cleq%20%5Calpha"> for each <img src="https://latex.codecogs.com/png.latex?%5Calpha%20%5Cin%20(0,%201)">. This means that, if the null hypothesis is true, there is at most a 5% probability that the test will yield a <img src="https://latex.codecogs.com/png.latex?p">-value of 0.05 or below. Similarly, if the null hypothesis is true, there is at most a 20% probability that the test will yield a <img src="https://latex.codecogs.com/png.latex?p">-value of 0.20 or below, and so for all values between 0 and 1. Ideally, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(P%20%5Cleq%20%5Calpha)"> should be close to, but no larger than, <img src="https://latex.codecogs.com/png.latex?%5Calpha">: If <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(P%20%5Cleq%20%5Calpha)"> tends to be considerably lower than <img src="https://latex.codecogs.com/png.latex?%5Calpha">, i.e., if the test is <strong>conservative</strong>, this will negatively affect the test’s power.</p>
+<p>Tests that aren’t exact can still be <strong>approximate</strong>. A possible problem with approximate tests is that their justification depends on results derived for large samples; for smaller samples, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(P%20%5Cleq%20%5Calpha)"> may be substantially larger than <img src="https://latex.codecogs.com/png.latex?%5Calpha">. The best-known approximate test used for the analysis of two-by-two contingency tables is Pearson’s <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2">-test.</p>
+</section>
+</section>
+<section id="contingency-tables-with-both-marginals-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-both-marginals-fixed">Contingency tables with both marginals fixed</h2>
+<p>Two-by-two contingency tables can be the result of different research designs – some fairly common, others exceedingly rare.</p>
+<p><strong>Example 1</strong> (Fisher’s exact test, one-sided)<strong>.</strong> Say we want to establish if a learner of English is able to tell the /æ/ phoneme in <em>bat</em> and the /ɛ/ phoneme in <em>bet</em> apart. To this end, we make 35 recordings, 21 of which contain the word <em>bet</em> and 14 contain the word <em>bat</em>. The learner is then asked to identify those 21 audio files that he thinks are recordings of <em>bet</em>; the remaining 14 audio files are suspected recordings of <em>bat</em>. The results are summarised in the following contingency table:</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20&amp;%20%5Ctextrm%7BCategorised%20as%20%5Ctextit%7Bbet%7D%7D%20&amp;%20%5Ctextrm%7BCategorised%20as%20%5Ctextit%7Bbat%7D%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BIs%20%5Ctextit%7Bbet%7D%7D%20&amp;%2015%20&amp;%206%20%5C%5C%0A%20%20%5Ctextrm%7BIs%20%5Ctextit%7Bbat%7D%7D%20&amp;%206%20%20&amp;%208%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>Note that we insisted that the learner select exactly 21 suspected recordings of <em>bet</em>, no more and no fewer. As a result, the column total <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D"> was known in advance. Moreover, we knew beforehand that 21 of the recordings actually featured <em>bet</em> and 14 of the recordings actually featured <em>bat</em>. Hence, the row totals <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D,%20n_%7B2+%7D"> were also known in advance. As a result, <img src="https://latex.codecogs.com/png.latex?n_%7B++%7D"> and <img src="https://latex.codecogs.com/png.latex?n_%7B+2%7D"> were also known in advance. Consequently, this study design fixes both the row and column marginals. What wasn’t known in advance was the number of suspected <em>bet</em> recordings that actually were <em>bet</em> recordings (<img src="https://latex.codecogs.com/png.latex?n_%7B11%7D">).</p>
+<p>The null hypothesis in this setting is that the learner is incapable of distinguishing <em>bet</em> from <em>bat</em> recordings and just selected 21 random audio files as suspected <em>bet</em> recordings in order to comply with the instructions. Under this null hypothesis, the top left entry in the contingency table (<img src="https://latex.codecogs.com/png.latex?n_%7B11%7D">) follows a hypergeometric distribution with parameters <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20=%2021,%20n_%7B2+%7D%20=%2014"> and <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20=%2021">. (Different authors parametrise this distribution differently; I use the parametrisation that’s used in R.) That is,</p>
+<p><img src="https://latex.codecogs.com/png.latex?H_0%20:%20n_%7B11%7D%20%5Csim%20%5Ctextrm%7BHypergeometric%7D(%5Cunderbrace%7B21%7D_%7B%5Ctextrm%7Bis%20bet%7D%7D,%20%5Cunderbrace%7B14%7D_%7B%5Ctextrm%7Bis%20bat%7D%7D,%20%5Cunderbrace%7B21%7D_%7B%5Ctextrm%7Bto%20be%20categorised%20as%20bet%7D%7D)."></p>
+<p>Figure&nbsp;1 shows the probability mass and cumulative probability functions of the <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BHypergeometric%7D(21,%2014,%2021)"> distribution. The observed top-left entry, i.e., 15, is highlighted in blue.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hypergeometric" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2024-09-10-contingency-p-value/index_files/figure-html/fig-hypergeometric-1.svg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: The probability mass function (left) and the cumulative probability function (right) of the <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BHypergeometric%7D(21,%2014,%2021)"> distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If the learner did not just pick 21 audio files at random but was in fact able to tell <em>bet</em> and <em>bat</em> recordings apart to some degree, this top-left entry can be expected to be large as opposed to small. This means that we want to compute a right-sided <img src="https://latex.codecogs.com/png.latex?p">-value, which we do by calculating</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(n_%7B11%7D%20%5Cgeq%2015)%20=%201%20-%20%5Cmathbb%7BP%7D(n_%7B11%7D%20%5Cleq%2014):"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">phyper</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">14</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09059986</code></pre>
+</div>
+</div>
+<p>This computation amounts to running <strong>Fisher’s exact test</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>))</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09059986</code></pre>
+</div>
+</div>
+<p><strong>Example 2</strong> (Fisher’s exact test, two-sided)<strong>.</strong> Let’s slightly change the design of the study in Example 1. Instead of recording <em>bet</em> 21 times and <em>bat</em> 14 times and asking the learner to select 21 suspected <em>bet</em> recordings, we record both <em>bet</em> and <em>bat</em> 18 times and ask the learner to select 18 suspected <em>bet</em> recordings. The results are summarised in the following contingency table:</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20&amp;%20%5Ctextrm%7BCategorised%20as%20%5Ctextit%7Bbet%7D%7D%20%20&amp;%20%5Ctextrm%7BCategorised%20as%20%5Ctextit%7Bbat%7D%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BIs%20%5Ctextit%7Bbet%7D%7D%20&amp;%205%20%20%20%20%20%20%20%20%20%20%20%20&amp;%2013%20%5C%5C%0A%20%20%5Ctextrm%7BIs%20%5Ctextit%7Bbat%7D%7D%20&amp;%2013%20%20%20%20%20%20%20%20%20%20%20&amp;%205%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>Under the null hypothesis that the learner possesses no relevant discriminatory ability, the top-left entry (<img src="https://latex.codecogs.com/png.latex?n_%7B11%7D">) follows a <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BHypergeometric%7D(18,%2018,%2018)"> distribution; see Figure&nbsp;2. The observed top-left entry (5) is highlighted by the dashed blue line.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-hypergeometric-twosided" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2024-09-10-contingency-p-value/index_files/figure-html/fig-hypergeometric-twosided-1.svg" class="img-fluid figure-img" style="width:38.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: The probability mass function of the <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BHypergeometric%7D(18,%2018,%2018)"> distribution.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Of note, the learner seems to be able to tell <em>bet</em> and <em>bat</em> apart to some extent – it’s just that he seems to identify <em>bet</em> recordings as <em>bat</em> and vice versa. Since we’re interested in the learner’s discriminatory ability, regardless of whether he is then also able to correctly <em>label</em> the two categories, we want to compute a two-sided <img src="https://latex.codecogs.com/png.latex?p">-value. The most common way to do so is to sum the probability masses <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D(n_%7B11%7D%20=%20k),%20k%20=%201,%20%5Cdots,%20n_%7B+1%7D,"> that are no greater than the probability mass of the actually observed top-left entry. These are the probability masses coloured blue in Figure&nbsp;2.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">p_k <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dhyper</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>)</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(p_k[p_k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dhyper</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>)])</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01839395</code></pre>
+</div>
+</div>
+<p>Fisher’s exact test carries out the same computation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>))</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(tab)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01839395</code></pre>
+</div>
+</div>
+</section>
+<section id="contingency-tables-with-one-marginal-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-one-marginal-fixed">Contingency tables with one marginal fixed</h2>
+<p>Contingency tables in which both the row and column marginals are fixed in advance are a rare sight. More common in some areas of research are contingency tables where only the row marginals are fixed by design. Such tables can be found in, for instance, experimental research in which a fixed number of participants are assigned to one experimental condition and another fixed number of participants are assigned to the other experimental condition and where for each participant, we have a single binary outcome (e.g., died vs.&nbsp;survived, or passed vs.&nbsp;failed).</p>
+<p><strong>Example 3</strong> (Boschloo’s test)<strong>.</strong> Let’s imagine we’re in charge of an agency that designs self-study courses to help students prepare for an entrance exam. We’ve developed a course whose efficacy we want to compare against that of its predecessor. More specifically, we’re interested in finding out whether the new course is better than the old one in terms of helping the students pass the entrance exam. We recruit 24 students willing to participate in an evaluation study and, using complete randomisation, we assign 12 of them to work with the new course and 12 to work with the old one. The results look as follows:</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20&amp;%20%5Ctextrm%7BPass%7D%20%20&amp;%20%5Ctextrm%7BFail%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BNew%20course%7D%20&amp;%2010%20%20%20%20%20%20%20%20%20%20&amp;%202%20%5C%5C%0A%20%20%5Ctextrm%7BOld%20course%7D%20&amp;%206%20%20%20%20%20%20%20%20%20%20%20&amp;%206%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>In contrast to the previous two examples, it’s only the row marginals that were known beforehand in this example. Nevertheless, applying Fisher’s exact test to this contingency table is reasonable. In doing so, we would be <strong>conditioning</strong> the analysis on the observed column marginals (<img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20=%2016">, <img src="https://latex.codecogs.com/png.latex?n_%7B+2%7D%20=%208">), even though the study design did not fix these marginals. The corresponding null hypothesis is</p>
+<p><img src="https://latex.codecogs.com/png.latex?H_0%20%7C%20n_%7B+1%7D%20=%2016,%20n_%7B+2%7D%20=%208~:~%20n_%7B11%7D%20%5Csim%20%5Ctextrm%7BHypergeometric%7D(12,%2012,%2016)."></p>
+<p>An exact test remains exact when it is used conditionally (Lydersen 2009:1165), so the resulting <img src="https://latex.codecogs.com/png.latex?p">-value is perfectly valid:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>))</span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09651366</code></pre>
+</div>
+</div>
+<p>That said, conditional exact tests tend to be pretty conservative. Intuitively, the reason is that the conditional exact test only considers <img src="https://latex.codecogs.com/png.latex?%5Cmin(n_%7B+1%7D,%20n_%7B1+%7D)%20+%201"> of the possible tables that could have been observed under the null hypothesis; in this example, these would be the thirteen different tables where <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20=%20n_%7B2+%7D%20=%2012"> and <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20=%2016">, i.e., with <img src="https://latex.codecogs.com/png.latex?n_%7B11%7D%20=%200,%201,%20%5Cdots,%2012">. The actual sample space under the null hypothesis in this design, however, comprises <img src="https://latex.codecogs.com/png.latex?(n_%7B1+%7D%20+%201)%20%5Ccdot%20(n_%7B2+%7D%20+%201)"> tables. In this example, these would be the 169 different tables where <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20=%20n_%7B2+%7D%20=%2012">. By only considering a small part of the sample space, the conditional exact test in essence misses out on opportunities to return small <img src="https://latex.codecogs.com/png.latex?p">-values.</p>
+<p>Unconditional exact tests consider the whole sample space and are consequently less conservative than conditional exact tests. The contingency table in the fixed row marginals design can be considered the result of two draws from binomial distributions: one with <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D"> attempts and success probability <img src="https://latex.codecogs.com/png.latex?%5Cpi_1">, and one with <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D"> attempts and success probability <img src="https://latex.codecogs.com/png.latex?%5Cpi_2">. The null hypothesis is that <img src="https://latex.codecogs.com/png.latex?%5Cpi_1%20=%20%5Cpi_2">. That is, <img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%0AH_0~:~%20&amp;%20n_%7B11%7D%20%5Csim%20%5Ctextrm%7BBinomial%7D(n_%7B1+%7D,%20%5Cpi),%20%5C%5C%0A%20%20%20%20%20%20%20&amp;%20n_%7B21%7D%20%5Csim%20%5Ctextrm%7BBinomial%7D(n_%7B2+%7D,%20%5Cpi),%0A%5Cend%7Balign*%7D"> with some <img src="https://latex.codecogs.com/png.latex?%5Cpi%20%5Cin%20%5B0,1%5D"> that is common to both binomial distributions. This <img src="https://latex.codecogs.com/png.latex?%5Cpi"> parameter is known as a <strong>nuisance parameter</strong>: its value is unknown and not of primary interest, but if we want to carry out an unconditional test, we need to somehow take it into account.</p>
+<p>An unconditional exact test for the fixed row marginals design that is often recommended is <strong>Boschloo’s test</strong> (Boschloo 1970). The idea behind this test is as follows. First, we define a test statistic that captures the extent to which observed contingency tables differ from the contingency table you’d expect to find under the null hypothesis, given <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D">, <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D"> and some candidate value for <img src="https://latex.codecogs.com/png.latex?%5Cpi">. Second, for each table that we could have observed, we compute both how likely it was to occur (this depends on <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D">, <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cpi">) and the test statistic it would have resulted in. Third, using the results of these calculations, we compute the probability that we would observe a test statistic at least as extreme as the test statistic that we actually did observe under the null hypothesis and for the given <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D,%20n_%7B2+%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cpi"> values. This probability is a <img src="https://latex.codecogs.com/png.latex?p">-value conditional on the <img src="https://latex.codecogs.com/png.latex?%5Cpi"> value considered. We repeat this procedure for different <img src="https://latex.codecogs.com/png.latex?%5Cpi"> values – say, for 101 equally spaced <img src="https://latex.codecogs.com/png.latex?%5Cpi"> values in the interval <img src="https://latex.codecogs.com/png.latex?%5B0,%201%5D">. Our unconditional exact <img src="https://latex.codecogs.com/png.latex?p">-value is now the maximum of the 101 values so computed. (Theoretically, it should be the supremum of the <img src="https://latex.codecogs.com/png.latex?p">-values when varying <img src="https://latex.codecogs.com/png.latex?%5Cpi"> over the entire <img src="https://latex.codecogs.com/png.latex?%5B0,1%5D"> interval. But the maximum of the 101 <img src="https://latex.codecogs.com/png.latex?p">-values compute will be close enough to this supremum.) In Boschloo’s test, the test statistic used is in fact the one-sided <img src="https://latex.codecogs.com/png.latex?p">-value obtained from Fisher’s exact test. But this <img src="https://latex.codecogs.com/png.latex?p">-value is used as a test statistic, not as a <img src="https://latex.codecogs.com/png.latex?p">-value in its own right.</p>
+<p>Let’s walk through the computation step by step. First, we run a one-sided Fisher’s exact test in order to obtain the observed test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">(obs_test_stat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09651366</code></pre>
+</div>
+</div>
+<p>Next, we create a grid with all possible combinations of <img src="https://latex.codecogs.com/png.latex?(n_%7B11%7D,%20n_%7B21%7D)"> entries that we could have observed:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">n_row1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span></span>
+<span id="cb13-2">n_row2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span></span>
+<span id="cb13-3">tables <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n11 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>n_row1, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n21 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>n_row2)</span></code></pre></div>
+</div>
+<p>We now fix some <img src="https://latex.codecogs.com/png.latex?%5Cpi%20%5Cin%20%5B0,%201%5D">, for instance, <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">. For each possible table, we compute how likely it would have been to observe this table if <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">. For instance, the 61st row in the grid corresponds to the table</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20&amp;%20%5Ctextrm%7BPass%7D%20%20&amp;%20%5Ctextrm%7BFail%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BNew%20course%7D%20&amp;%208%20%20%20%20%20%20%20%20%20&amp;%204%20%5C%5C%0A%20%20%5Ctextrm%7BOld%20course%7D%20&amp;%206%20%20%20%20%20%20%20%20%20&amp;%206%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>The probability of observing the first row is given by the probability mass of <img src="https://latex.codecogs.com/png.latex?k%20=%208"> under a Binomial(12, 0.43) distribution; the probability of observing the second row is given by the probability mass of <img src="https://latex.codecogs.com/png.latex?k%20=%206">, also under a Binomial(12, 0.43) distribution. So the probability of observing this table is the product of these two probabilities:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.43</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.43</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01223444</code></pre>
+</div>
+</div>
+<p>We compute this probability for all 169 tables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>probability <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.43</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.43</span>)</span></code></pre></div>
+</div>
+<p>For each table, we also compute the test statistic:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>test_statistic <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span></span>
+<span id="cb17-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(tables)) {</span>
+<span id="cb17-3">  current_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11[i], <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11[i]),</span>
+<span id="cb17-4">                         <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21[i], <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21[i]))</span>
+<span id="cb17-5">  tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>test_statistic[i] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(current_table, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span>
+<span id="cb17-6">}</span></code></pre></div>
+</div>
+<p>We can now compute the probability that we’d observe a test statistic at least as extreme as the test statistic associated with the table we actually observed, assuming the null hypothesis is true and <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">. Since the <img src="https://latex.codecogs.com/png.latex?p">-value produced by Fisher’s exact test is smaller for tables that are more surprising under the null hypothesis, ‘at least as extreme’ corresponds to ‘at most as large’. We can compute the figure we’re interested in by computing the proportion of tables resulting in test statistics no larger than the one we observed but weighted by their probability of occurring under the assumption that <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">weighted.mean</span>(tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>test_statistic <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> obs_test_stat, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w =</span> tables<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>probability)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04312598</code></pre>
+</div>
+</div>
+<p>Assuming <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.43">, the resulting <img src="https://latex.codecogs.com/png.latex?p">-value is hence <img src="https://latex.codecogs.com/png.latex?0.043">. We repeat this procedure for different candidate values of <img src="https://latex.codecogs.com/png.latex?%5Cpi">. The <img src="https://latex.codecogs.com/png.latex?p">-value of Boschloo’s test is then the maximum of the resulting <img src="https://latex.codecogs.com/png.latex?p">-values. In this specific example, the maximum <img src="https://latex.codecogs.com/png.latex?p">-value is <img src="https://latex.codecogs.com/png.latex?p%20=%200.0495">, which is obtained for <img src="https://latex.codecogs.com/png.latex?%5Cpi%20=%200.68">; see Figure&nbsp;3.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-boschloo" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2024-09-10-contingency-p-value/index_files/figure-html/fig-boschloo-1.svg" class="img-fluid figure-img" style="width:66.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: In Boschloo’s test, a <img src="https://latex.codecogs.com/png.latex?p">-value is computed for each candidate value of <img src="https://latex.codecogs.com/png.latex?%5Cpi">. The test then outputs the maximum of these <img src="https://latex.codecogs.com/png.latex?p">-values.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If our alternative hypothesis were that the new programme produced worse results than the old one, we’d have used the left-sided <img src="https://latex.codecogs.com/png.latex?p">-value of Fisher’s exact test as the test statistic in Boschloo’s procedure. A two-sided <img src="https://latex.codecogs.com/png.latex?p">-value can be obtained by carrying out Boschloo’s test once using the right-sided <img src="https://latex.codecogs.com/png.latex?p">-value of Fisher’s exact test as the test statistic and once using the left-sided <img src="https://latex.codecogs.com/png.latex?p">-value, and then doubling the smaller of the two resulting <img src="https://latex.codecogs.com/png.latex?p">-values.</p>
+<p>To run Boschloo’s test, you can use the following <code>boschloo_test()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1">boschloo_test <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"two.sided"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>) {</span>
+<span id="cb20-2">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This test assumes fixed row sums.</span></span>
+<span id="cb20-3">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Nuisance parameter values in the interval pi_range are tried out.</span></span>
+<span id="cb20-4">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
+<span id="cb20-5">  </span>
+<span id="cb20-6">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">all</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dim</span>(tab) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tab needs to be a 2*2 contingency table."</span>)</span>
+<span id="cb20-7">  </span>
+<span id="cb20-8">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (alternative <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"two.sided"</span>) {</span>
+<span id="cb20-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Truncate two-sided p-value at 1</span></span>
+<span id="cb20-10">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(</span>
+<span id="cb20-11">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"less"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range =</span> pi_range, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> stepsize),</span>
+<span id="cb20-12">                  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range =</span> pi_range, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> stepsize)), </span>
+<span id="cb20-13">          <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb20-14">      )</span>
+<span id="cb20-15">  }</span>
+<span id="cb20-16">  </span>
+<span id="cb20-17">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Use Fisher's exact test p-value as test statistic</span></span>
+<span id="cb20-18">  statistic <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(x) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> alternative)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span>
+<span id="cb20-19">  </span>
+<span id="cb20-20">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Construct grid with possible results</span></span>
+<span id="cb20-21">  row_sums <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowSums</span>(tab)</span>
+<span id="cb20-22">  my_grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n1 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n2 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>])</span>
+<span id="cb20-23">  my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span></span>
+<span id="cb20-24">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(my_grid)) {</span>
+<span id="cb20-25">    my_tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n1[i], row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n1[i]),</span>
+<span id="cb20-26">                    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n2[i], row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n2[i]))</span>
+<span id="cb20-27">    my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic[i] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">statistic</span>(my_tab)</span>
+<span id="cb20-28">  }</span>
+<span id="cb20-29">  </span>
+<span id="cb20-30">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Compute observed test statistic</span></span>
+<span id="cb20-31">  obs_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">statistic</span>(tab)</span>
+<span id="cb20-32">  is_extreme <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> obs_p</span>
+<span id="cb20-33">  </span>
+<span id="cb20-34">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Maximise p-value over range</span></span>
+<span id="cb20-35">  pis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(pi_range[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], pi_range[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> stepsize)</span>
+<span id="cb20-36">  max_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb20-37">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (current_pi <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> pis) {</span>
+<span id="cb20-38">    current_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">weighted.mean</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> is_extreme,</span>
+<span id="cb20-39">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n1, row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], current_pi) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> </span>
+<span id="cb20-40">            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dbinom</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n2, row_sums[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], current_pi))</span>
+<span id="cb20-41">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (current_p <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> max_p) max_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> current_p</span>
+<span id="cb20-42">  }</span>
+<span id="cb20-43">  max_p</span>
+<span id="cb20-44">}</span></code></pre></div>
+</div>
+<p>It works like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tab =</span> tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+<p>Alternatively, you can use the <code>boschloo()</code> function in the <a href="https://cran.r-project.org/web/packages/exact2x2/index.html"><code>exact2x2</code> package</a>. See <code>?boschloo</code> for details on the parameters. Here I specify the number of grid points (<code>nPgrid</code>) in order to make the results agree exactly with those produced by <code>boschloo_test()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1">exact2x2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>,</span>
+<span id="cb23-2">                   <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">control =</span> exact2x2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ucControl</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nPgrid =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+</section>
+<section id="contingency-tables-with-only-the-total-sum-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-only-the-total-sum-fixed">Contingency tables with only the total sum fixed</h2>
+<p>A third possibility is that neither the row sums (<img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D,%20n_%7B2+%7D">) nor the column sums (<img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D,%20n_%7B+2%7D">) are known beforehand but that the total number of observations (<img src="https://latex.codecogs.com/png.latex?n_%7B++%7D">) is. One general case where such contingency tables arise is in observational research in which two binary features are measured in a fixed number of randomly sampled units. A second general case is comprised of experiments that have a binary outcome variable and in which the participants are assigned to the conditions using simple randomisation so that the precise number of participants isn’t fixed in advance.</p>
+<section id="observational-studies" class="level3">
+<h3 class="anchored" data-anchor-id="observational-studies">Observational studies</h3>
+<p><strong>Example 4</strong> (Boschloo’s test)<strong>.</strong> During a hike through the Fribourg Prealpes near <a href="https://www.myswitzerland.com/en-ch/destinations/schwarzsee/">Schwarzsee</a>, we conduct a linguistic field experiment. Any time we encounter a hiking party chatting in French, we greet them in German; any time we encounter a hiking party chatting in German, we greet them in French. Afterwards, we jot down for each party whether the first person greeting us back did so in the same language in which they were addressed or in a different language. (Parties not chatting in French or German are ignored in this field experiment.) We planned to continue the field experiment until we’ve encountered the 20th French- or German-speaking hiking party. Here’s the resulting contingency table:</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&amp;%20%5Ctextrm%7BSame%20language%7D%20%20&amp;%20%5Ctextrm%7BDifferent%20language%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BFrench-speaking%20party%7D%20&amp;%202%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&amp;%206%20%5C%5C%0A%20%20%5Ctextrm%7BGerman-speaking%20party%7D%20&amp;%208%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20&amp;%204%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>Note that only the total number of observations (<img src="https://latex.codecogs.com/png.latex?n_%7B++%7D%20=%2020">) was known beforehand.</p>
+<p>The null hypothesis is that whether the first greeter in the party responded in the same language or in a different language is independent of the language in which the party was chatting. More formally, let <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctextrm%7Brow%7D%7D"> be the probability that a randomly encountered French- or German-speaking party is French-speaking and let <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D"> be the probability that the first greeter in a French- or German-speaking party responds in the same language. Then our null hypothesis is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Balign*%7D%0AH_0~:~&amp;%5Cmathbb%7BP%7D(%5Ctextrm%7Bis%20French-speaking%20and%20responds%20in%20same%20language%7D)%20=%20%5Cpi_%7B%5Ctextrm%7Brow%7D%7D%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D,%20%5C%5C%0A%20%20%20%20%20%20&amp;%5Cmathbb%7BP%7D(%5Ctextrm%7Bis%20French-speaking%20and%20responds%20in%20different%20language%7D)%20=%20%5Cpi_%7B%5Ctextrm%7Brow%7D%7D(1-%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D),%20%5C%5C%0A%20%20%20%20%20%20&amp;%5Cmathbb%7BP%7D(%5Ctextrm%7Bis%20German-speaking%20and%20responds%20in%20same%20language%7D)%20=%20(1-%5Cpi_%7B%5Ctextrm%7Brow%7D%7D)%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D,%20%5C%5C%0A%20%20%20%20%20%20&amp;%5Cmathbb%7BP%7D(%5Ctextrm%7Bis%20German-speaking%20and%20responds%20in%20different%20language%7D)%20=%20(1-%5Cpi_%7B%5Ctextrm%7Brow%7D%7D)(1-%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D).%0A%5Cend%7Balign*%7D"></p>
+<p>More compactly, our null hypothesis is that the tuple <img src="https://latex.codecogs.com/png.latex?(n_%7B11%7D,%20n_%7B12%7D,%20n_%7B21%7D,%20n_%7B22%7D)"> is multinomially distributed with the probabilities above, i.e.,</p>
+<p><img src="https://latex.codecogs.com/png.latex?H_0~:~(n_%7B11%7D,%20n_%7B12%7D,%20n_%7B21%7D,%20n_%7B22%7D)%20%5Csim%20%5Ctextrm%7BMultinomial%7D(20,%20%5Cpi_%7B%5Ctextrm%7Brow%7D%7D%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D,%5Cpi_%7B%5Ctextrm%7Brow%7D%7D(1-%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D),(1-%5Cpi_%7B%5Ctextrm%7Brow%7D%7D)%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D,%20(1-%5Cpi_%7B%5Ctextrm%7Brow%7D%7D)(1-%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D)),"> for some unknown <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctextrm%7Brow%7D%7D,%20%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D%20%5Cin%20%5B0,1%5D">.</p>
+<p>In terms of the analysis, we could condition on both marginals or on one of them and run Fisher’s or Boschloo’s test, respectively:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1">tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span>
+<span id="cb25-2"></span>
+<span id="cb25-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Condition on both marginals</span></span>
+<span id="cb25-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(tab)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1698023</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Condition on row marginals only</span></span>
+<span id="cb27-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(tab)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.08332351</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Condition on column marginals only</span></span>
+<span id="cb29-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(tab))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.08940788</code></pre>
+</div>
+</div>
+<p>The resulting <img src="https://latex.codecogs.com/png.latex?p">-values are all valid. But like before, these tests only consider a part of the sample space: Fisher’s exact test only takes into account the nine tables where <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20=%208"> and <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20=%2010">; Boschloo’s test considers the <img src="https://latex.codecogs.com/png.latex?9%20%5Ccdot%2013%20=%20117"> tables where <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D%20=%208"> and <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D%20=%2012"> when conditioning on the row marginals and the <img src="https://latex.codecogs.com/png.latex?11%20%5Ccdot%2011%20=%20121"> tables where <img src="https://latex.codecogs.com/png.latex?n_%7B+1%7D%20=%20n_%7B+2%7D%20=%2010"> when conditioning on the column marginals. But the table observed is in actual fact one of <img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi%20=%200%7D%5E%7B20%7D%5Csum_%7Bj%20=%200%7D%5E%7B20-i%7D%5Csum_%7Bk=%200%7D%5E%7B20-i-j%7D1%20=%201771"> tables where <img src="https://latex.codecogs.com/png.latex?n_%7B++%7D%20=%2020">.</p>
+<p>One possible solution is to generalise Boschloo’s test to two nuisance parameters. That is, rather computing a <img src="https://latex.codecogs.com/png.latex?p">-value for each candidate value of <img src="https://latex.codecogs.com/png.latex?%5Cpi%20%5Cin%20%5B0,1%5D"> and then taking the maximum, we compute a <img src="https://latex.codecogs.com/png.latex?p">-value for each pair of candidate values of <img src="https://latex.codecogs.com/png.latex?(%5Cpi_%7B%5Ctextrm%7Brow%7D%7D,%20%5Cpi_%7B%5Ctextrm%7Bcol%7D%7D)%20%5Cin%20%5B0,1%5D%20%5Ctimes%20%5B0,1%5D">. The <code>unconditional_test()</code> function defined below carries out this procedure:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1">unconditional_test <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(</span>
+<span id="cb31-2">    tab, </span>
+<span id="cb31-3">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"two.sided"</span>, </span>
+<span id="cb31-4">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range_row =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), </span>
+<span id="cb31-5">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range_col =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb31-6">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)</span>
+<span id="cb31-7">  {</span>
+<span id="cb31-8">  </span>
+<span id="cb31-9">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This test assumes a fixed total sum.</span></span>
+<span id="cb31-10">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Nuisance parameter values in the rectangle pi_range_row * pi_range_col are tried out.</span></span>
+<span id="cb31-11">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
+<span id="cb31-12">  </span>
+<span id="cb31-13">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">all</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dim</span>(tab) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tab needs to be a 2*2 contingency table."</span>)</span>
+<span id="cb31-14">  </span>
+<span id="cb31-15">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (alternative <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"two.sided"</span>) {</span>
+<span id="cb31-16">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Truncate two-sided p-value at 1</span></span>
+<span id="cb31-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(</span>
+<span id="cb31-18">      <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unconditional_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"less"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> stepsize),</span>
+<span id="cb31-19">              <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unconditional_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stepsize =</span> stepsize)),</span>
+<span id="cb31-20">      <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span>
+<span id="cb31-21">  }</span>
+<span id="cb31-22">  </span>
+<span id="cb31-23">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Use Fisher's exact test p-value as test statistic</span></span>
+<span id="cb31-24">  statistic <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(x) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fisher.test</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> alternative)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span>
+<span id="cb31-25">  </span>
+<span id="cb31-26">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Helper function for multinomial weights</span></span>
+<span id="cb31-27">  weights <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(pi_row, pi_col, n11, n12, n21, n22) {</span>
+<span id="cb31-28">    total_sum <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> n11 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> n12 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> n21 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> n22</span>
+<span id="cb31-29">    (pi_row<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>pi_col)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>n11 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (pi_row <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi_col))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>n12 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb31-30">      ((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi_row)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>pi_col)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>n21 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> ((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi_row)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi_col))<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>n22 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> </span>
+<span id="cb31-31">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factorial</span>(total_sum)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factorial</span>(n11) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factorial</span>(n12) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factorial</span>(n21) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factorial</span>(n22))</span>
+<span id="cb31-32">  }</span>
+<span id="cb31-33">  </span>
+<span id="cb31-34">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Construct grid with possible results</span></span>
+<span id="cb31-35">  total_sum <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(tab)</span>
+<span id="cb31-36">  my_grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n11 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>total_sum, </span>
+<span id="cb31-37">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n12 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>total_sum,</span>
+<span id="cb31-38">                         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n21 =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>total_sum)</span>
+<span id="cb31-39">  my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n22 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> total_sum <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n12 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21</span>
+<span id="cb31-40">  my_grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">subset</span>(my_grid, n22 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb31-41">  my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span></span>
+<span id="cb31-42">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(my_grid)) {</span>
+<span id="cb31-43">    my_tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11[i], my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n12[i]),</span>
+<span id="cb31-44">                    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21[i], my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n22[i]))</span>
+<span id="cb31-45">    my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic[i] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">statistic</span>(my_tab)</span>
+<span id="cb31-46">  }</span>
+<span id="cb31-47">  my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.na</span>(my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic)] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb31-48"></span>
+<span id="cb31-49">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Compute observed test statistic</span></span>
+<span id="cb31-50">  obs_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">statistic</span>(tab)</span>
+<span id="cb31-51">  is_lower <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>statistic <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> obs_p</span>
+<span id="cb31-52">  </span>
+<span id="cb31-53">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Maximise p value over grid</span></span>
+<span id="cb31-54">  pis <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(</span>
+<span id="cb31-55">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_row =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(pi_range_row[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], pi_range_row[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> stepsize),</span>
+<span id="cb31-56">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_col =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(pi_range_col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], pi_range_col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> stepsize)</span>
+<span id="cb31-57">  )</span>
+<span id="cb31-58">  max_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb31-59">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(pis)) {</span>
+<span id="cb31-60">    w <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">weights</span>(pis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>pi_row[i], pis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>pi_col[i], </span>
+<span id="cb31-61">                 my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n11, my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n12, my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n21, my_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>n22)</span>
+<span id="cb31-62">    current_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">weighted.mean</span>(is_lower, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w =</span> w)</span>
+<span id="cb31-63">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (current_p <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> max_p) max_p <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> current_p</span>
+<span id="cb31-64">  }</span>
+<span id="cb31-65">  </span>
+<span id="cb31-66">  max_p</span>
+<span id="cb31-67">}</span></code></pre></div>
+</div>
+<p>While it takes noticeably longer to run this test, it should be a bit more powerful than the tests that condition on one or both marginals:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unconditional_test</span>(tab)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07722463</code></pre>
+</div>
+</div>
+<p>The <code>exact.test()</code> function in the <a href="https://cran.r-project.org/package=Exact"><code>Exact</code></a> also implements this procedure. For one-sided tests (i.e., <code>alternative = "less"</code> or <code>"greater"</code>), it produces the same <img src="https://latex.codecogs.com/png.latex?p">-values as <code>unconditional_test()</code>, but it computes the two-sided <img src="https://latex.codecogs.com/png.latex?p">-value differently:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1">Exact<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exact.test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">model =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"multinomial"</span>,</span>
+<span id="cb34-2">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">npNumber =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">101</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ref.pvalue =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"boschloo"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>p.value</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1139588</code></pre>
+</div>
+</div>
+</section>
+<section id="experiments-with-simple-randomisation" class="level3">
+<h3 class="anchored" data-anchor-id="experiments-with-simple-randomisation">Experiments with simple randomisation</h3>
+<p><strong>Example 5</strong> (Boschloo’s test)<strong>.</strong> We conduct the same experiment as in Example 3, but with one change: We assign the participants to the conditions using simple randomisation rather than using complete randomisation. Hence, we’re not guaranteed to have exactly 12 participants in each condition, and the row marginals aren’t fixed in advance. For the sake of comparison, let’s assume we obtain the same results as in Example 3:</p>
+<img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Barray%7D%7Bl%7Ccc%7D%0A%20%20&amp;%20%5Ctextrm%7BPass%7D%20%20&amp;%20%5Ctextrm%7BFail%7D%20%20%5C%5C%0A%20%20%5Chline%0A%20%20%5Ctextrm%7BNew%20course%7D%20&amp;%2010%20%20%20%20%20%20%20%20&amp;%202%20%5C%5C%0A%20%20%5Ctextrm%7BOld%20course%7D%20&amp;%206%20%20%20%20%20%20%20%20%20&amp;%206%20%5C%5C%0A%5Cend%7Barray%7D">
+<p>We could again condition on the row marginals:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1">tab <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb36-2">             <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>))</span>
+<span id="cb36-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">boschloo_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>)      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># condition on row marginals</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04954898</code></pre>
+</div>
+</div>
+<p>Alternatively, we could run an unconditional test. Note, however that while <img src="https://latex.codecogs.com/png.latex?n_%7B1+%7D"> and <img src="https://latex.codecogs.com/png.latex?n_%7B2+%7D"> weren’t fixed by design, <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctextrm%7Brow%7D%7D"> is known to be <img src="https://latex.codecogs.com/png.latex?0.5">. Hence, we don’t need to iterate through different candidate values for <img src="https://latex.codecogs.com/png.latex?%5Cpi_%7B%5Ctextrm%7Brow%7D%7D">:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unconditional_test</span>(tab, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"greater"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pi_range_row =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.04392337</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="contingency-tables-with-nothing-fixed" class="level2">
+<h2 class="anchored" data-anchor-id="contingency-tables-with-nothing-fixed">Contingency tables with nothing fixed</h2>
+<p>Contingency tables where not even <img src="https://latex.codecogs.com/png.latex?n_%7B++%7D"> is fixed are mentioned by Fagerland et al.&nbsp;(2017) but not discussed in any detail. An analysis that conditions on the observed <img src="https://latex.codecogs.com/png.latex?n_%7B++%7D"> seems reasonable.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Boschloo, R. D. 1970. <a href="https://doi.org/10.1111%2Fj.1467-9574.1970.tb00104.x">Raised conditional level of significance for the 2 × 2 table when testing the equality of two probabilities.</a> <em>Statistica Neerlandica</em> 24. 1-35.</p>
+<p>Fagerland, Morten W., Stian Lydersen &amp; Petter Laake. 2017. <a href="https://doi.org/10.1201/9781315374116"><em>Statistical analysis of contingency tables</em>.</a> Boca Raton, FL: Chapman and Hall/CRC.</p>
+<p>Lydersen, Stian, Morten W. Fagerland &amp; Petter Laake. 2009. <a href="https://doi.org.10.1002/sim.3531">Recommended tests for association in 2 × 2 tables.</a> <em>Statistics in Medicine</em> 28. 1159-1175.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>R</category>
+  <category>significance</category>
+  <guid>https://janhove.github.io/posts/2024-09-10-contingency-p-value/index.html</guid>
+  <pubDate>Mon, 09 Sep 2024 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>An R function for computing Levenshtein distances between texts using the word as the unit of comparison</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -19011,657 +20373,6 @@ font-style: inherit;">session_info</span>()</span></code></pre></div>
   <category>Bayesian statistics</category>
   <guid>https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/index.html</guid>
   <pubDate>Tue, 03 Jul 2018 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Checking model assumptions without getting paranoid</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<p>Statistical models come with a set of assumptions, and violations of these assumptions can render irrelevant or even invalid the inferences drawn from these models. It is important, then, to verify that your model’s assumptions are at least approximately tenable for your data. To this end, statisticians commonly recommend that you check the distribution of your model’s residuals (i.e., the difference between your actual data and the model’s fitted values) graphically. An excellent piece of advice that, unfortunately, causes some students to become paranoid and see violated assumptions everywhere they look. This blog post is for them.</p>
-<p>In the following, I’ll outline the assumptions of the simple linear regression and how they can be checked visually without succumbing to paranoia. t-tests, ANOVA and ANCOVA all make essentially the same assumptions. These assumptions can be checked in the same way as illustrated below, but doing so requires that they are rewritten as regression models. For instance, if you want to test whether the mean of a variable called <img src="https://latex.codecogs.com/png.latex?Y"> varies between group encoded in variable <img src="https://latex.codecogs.com/png.latex?X"> using a t-test, you’d ordinarily do this in R using the following syntax:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">t.test</span>(Y <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> X, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> dat, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">var.equal =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>)</span></code></pre></div>
-</div>
-<p>But you’ll get the same results if you rewrite this as a linear model:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lm</span>(Y <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> X, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> dat)</span></code></pre></div>
-</div>
-<p>To make use of the techniques below, you need to use the second notation.</p>
-<section id="assumptions-of-the-simple-linear-regression-model" class="level2">
-<h2 class="anchored" data-anchor-id="assumptions-of-the-simple-linear-regression-model">Assumptions of the simple linear regression model</h2>
-<p>A simple linear regression model relates one continuous predictor to a continuous outcome in terms of a straight line and some random scatter about that line. Its key assumptions are the following:</p>
-<ol type="1">
-<li><p>A straight line adequately captures the trend in the data. The model will still gladly estimate the form of the linear relationship in the data even if this relationship isn’t approximately linear, but its estimates won’t be as relevant.</p></li>
-<li><p>The residuals are independent of one another. While this extremely important assumption can sometimes be checked, in most cases you’ll need to know how the data were collected to know whether it is tenable. For this reason, I won’t go into this assumption.</p></li>
-<li><p>The amount of scatter of the residuals doesn’t vary with the predictor or (equivalently) with the fitted values for the outcome.</p></li>
-<li><p>If you compute p-values or construct confidence intervals based on t-distributions, you tacitly assume that the residuals are drawn from a normal distribution. This assumption isn’t <em>that</em> important inasmuch as the Central Limit Theorem tends to kick in for reasonably-sized samples. Perhaps more importantly in such cases, the regression line captures the conditional means of <img src="https://latex.codecogs.com/png.latex?y"> given <img src="https://latex.codecogs.com/png.latex?x"> (e.g., the estimated mean for the outcome when the predictor value is 15). But if the distribution of the residuals is bimodal, skewed or otherwise wonky, the mean may not be such a relevant summary of the distribution lying behind it.</p></li>
-</ol>
-</section>
-<section id="assumption-checks-and-sampling-error" class="level2">
-<h2 class="anchored" data-anchor-id="assumption-checks-and-sampling-error">Assumption checks and sampling error</h2>
-<p>When checking model assumptions, it’s important to keep <strong>sampling error</strong> in mind. <em>Even if</em> the residuals were actually drawn from a normal distribution, their distribution needn’t look normal in any given sample, as the figure below shows. Similarly, the residuals in a given sample may seem like they don’t have constant variance even if they actually do in the population, and a relationship may seem somewhat nonlinear in a sample even if it’s perfectly linear in the population at large.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<p>But what’s important isn’t whether the normality, constant variance and linearity exist in the sample, but whether they exist in the population at large. Now it’s pretty difficult to tell conclusively whether this is indeed the case based on a smallish sample. But what you <em>can</em> do is check whether you could plausibly find the same degree of nonlinearity, non-constant variance and nonnormality that you observe in your sample even if they actually don’t occur in the population. Buja et al.&nbsp;(2009) and Majumder et al.&nbsp;(2013) introduce a visual inferencing procedure that allows you to judge whether the residual patterns in your sample are cause for concern or whether they are in fact to be expected even if everything were peachy. Below I illustrate this procedure (also see an earlier blog post for another example of visual inferencing: <a href="../2014-09-12-a-graphical-explanation-of-p-values"><em>A purely graphical explanation of p-values</em></a>).</p>
-</section>
-<section id="an-example" class="level2">
-<h2 class="anchored" data-anchor-id="an-example">An example</h2>
-<p>I’m going to use an old dataset of mine to fit a simple linear regression model between an outcome (<code>TotCorrect</code>, which in principle can take integer values between 0 and 45) and a predictor (<code>WST</code>, which takes integer values between 0 and 42) using <code>R</code>. The data can be read in directly from my webspace.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Read in data</span></span>
-<span id="cb3-2">dat <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"http://homeweb.unifr.ch/VanhoveJ/Pub/Data/VanhoveBerthele2015.csv"</span>,</span>
-<span id="cb3-3">                <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">na.strings =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"-9999"</span>)</span>
-<span id="cb3-4"></span>
-<span id="cb3-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Only retain complete cases</span></span>
-<span id="cb3-6">dat <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> dat[<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">complete.cases</span>(dat), ]</span>
-<span id="cb3-7"></span>
-<span id="cb3-8"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Fit regression model</span></span>
-<span id="cb3-9">wst.lm <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> dat)</span></code></pre></div>
-</div>
-<p>If you want to inspect the estimated coefficients and their standard errors, run the command <code>summary(wst.lm)</code>. Here I’ll skip right to the assumption checks.</p>
-<section id="checking-for-non-linearity" class="level3">
-<h3 class="anchored" data-anchor-id="checking-for-non-linearity">Checking for non-linearity</h3>
-<p>I fitted the relationship between <code>WST</code> and <code>TotCorrect</code> linearly. This assumption is typically checked by inspecting whether the model’s residuals still show some trend when plotted against the model’s fitted values. If the relationship is linear, there shouldn’t be no such trend. However, due to random variation, you’re bound to find some pattern in the residuals if you squint hard enough. To help analysts evaluate whether such patterns are compatible with a truly linear relationship tainted by some random variation, Buja et al.&nbsp;(2009) and Majumder et al.&nbsp;(2013) suggest the following procedure:</p>
-<ol>
-<li>
-Fit your model.
-</li>
-<li>
-<p>Simulate new outcome data from your model. In our example, the estimated intercept is about 7.83 and the estimated slope parameter for the <code>WST</code> variable is about 0.29.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Estimated coefficients</span></span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">coef</span>(wst.lm)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(Intercept)         WST 
-  7.8321310   0.2860069 </code></pre>
-</div>
-</div>
-<p>For a participant with a <code>WST</code> value of 13, the fitted <code>TotCorrect</code> value is consequently <img src="https://latex.codecogs.com/png.latex?7.83%20+%200.29%20%5Ctimes%2013%20=%2011.6">. To simulate a new datum for such a participant, this fitted value (<img src="https://latex.codecogs.com/png.latex?11.6">) is combined with a random number drawn from a normal distribution whose mean is 0 and whose standard deviation equals the model estimate for the standard deviation of the residuals – in our case about 4.81.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Estimated standard deviation of residuals</span></span>
-<span id="cb6-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sigma</span>(wst.lm)</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.814969</code></pre>
-</div>
-</div>
-<p>Such new outcome data are simulated a couple of times for each observation in the dataset. (This can be achieved quickly using the <code>simulate()</code> function.)</p>
-<p>Importantly, the new outcome data were simulated from a regression model that assumes that the relationship between the predictor and the outcome is linear, that the residuals are randomly sampled from one and the same normal distribution and so have constant variance. In a word, <em>all assumptions we want to test are literally true in the simulated data</em>.</p>
-</li>
-<li>
-Now refit your model to the simulated datasets and extract the residuals from each model.
-</li>
-<li>
-Draw diagnostic plots for both your actual model and the models fitted on the simulated datasets (for which the model’s assumptions are literally true) and jumble up the different plots.
-</li>
-<li>
-If you can’t distinguish the diagnostic plot based on your actual data from the ones based on the simulated datasets, it doesn’t suggest that your model violates the assumption that you were testing.
-</li>
-</ol>
-<p>We’ll carry out these steps in <code>R</code>, of course; the <a href="https://cran.r-project.org/web/packages/nullabor/vignettes/nullabor.html"><code>nullabor</code></a> package is helpful for this.</p>
-<p>The visual inferencing procedure is based on randomly generated data so if you want to obtain the same results as in this blog post, be sure to run the <code>set.seed()</code> command below.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Set seed for generating random numbers</span></span>
-<span id="cb8-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2018-04-25</span>)</span>
-<span id="cb8-3"></span>
-<span id="cb8-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Load the tidyverse packages;</span></span>
-<span id="cb8-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  use install.packages("tidyverse")</span></span>
-<span id="cb8-6"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  to install if needed.</span></span>
-<span id="cb8-7"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tidyverse)</span>
-<span id="cb8-8"></span>
-<span id="cb8-9"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Load the nullabor package (for visual inferencing);</span></span>
-<span id="cb8-10"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  use install.packages("nullabor")</span></span>
-<span id="cb8-11"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  to install if needed.</span></span>
-<span id="cb8-12"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(nullabor)</span></code></pre></div>
-</div>
-<p>Then construct a data frame that contains the real data and the real model’s residuals and fitted values. Importantly, the column with the residuals should be called <code>.resid</code> and the one with the fitted values <code>.fitted</code>, otherwise the next steps won’t work.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">real_data <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">data.frame</span>(dat,</span>
-<span id="cb9-2">                        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">.resid =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">residuals</span>(wst.lm),</span>
-<span id="cb9-3">                        <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">.fitted =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">fitted</span>(wst.lm))</span></code></pre></div>
-</div>
-<p>Now create a new object (here <code>parade</code>) that combines the newly created <code>real_data</code> with (by default) 19 similar but simulated datasets based on the same model. This is accomplished using <code>nullabor</code>’s convenience function <code>null_lm()</code> (for generating the simulated datasets) and the <code>lineup()</code> function (for combining the real and simulated datasets and shuffling their positions).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">parade <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lineup</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">null_lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST), real_data)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 ux")</code></pre>
-</div>
-</div>
-<p>We’ll come back to this “decrypt” message in a minute. First let’s plot the relevant diagnostic plots to check for remaining trends in the residuals:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(parade,</span>
-<span id="cb12-2">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> .fitted,             <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># plot residuals against</span></span>
-<span id="cb12-3">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> .resid)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span>           <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  fitted values</span></span>
-<span id="cb12-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span>           <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># plot values as points</span></span>
-<span id="cb12-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_smooth</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">formula =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"y ~ x"</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span>  <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># add a scatterplot smoother (optional)</span></span>
-<span id="cb12-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> .sample)             <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># separate panels for each dataset</span></span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'loess'</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p>In your view, which plot shows the strongest residual trend?</p>
-<p>After you’ve made up your mind, copy-paste <code>decrypt("sFZM ldbd 32 PN43b3N2 ux")</code> (the output of the <code>lineup()</code> command above) to the R prompt. If this confirms your answer, then perhaps you ought to consider reading up on models that can take into account nonlinear patterns. But if you thought another plot was more conspicuous, then that shows that randomness alone can plausibly account for any departures from linearity in your actual data.</p>
-<p>(In case you already knew beforehand what the diagnostic plot for your model looks like, just mail this type of lineup to a couple of colleagues of yours and ask them to identify the most conspicuous pattern.)</p>
-</section>
-<section id="checking-for-non-constant-variance" class="level3">
-<h3 class="anchored" data-anchor-id="checking-for-non-constant-variance">Checking for non-constant variance</h3>
-<p>To check for non-constant variance (heteroskedasticity), the idea is exactly the same as before. The only thing that changes is the diagnostic plot. We’ll create a new lineup with new simulated datasets, though.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">parade <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lineup</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">null_lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST), real_data)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 5J")</code></pre>
-</div>
-</div>
-<p>To check for heteroskedasticity, statisticians typically plot the square roots of the absolute residuals against the fitted values against the fitted data. If the variance around the regression line is constant, then you’d expect a horizontal trend line in this type of plot.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(parade,</span>
-<span id="cb16-2">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> .fitted, </span>
-<span id="cb16-3">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">abs</span>(.resid)))) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb16-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb16-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_smooth</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">formula =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"y ~ x"</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb16-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> .sample)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'loess'</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p>Again, ask yourself which plot looks most conspicuously heteroskedastic? Then check your answer with <code>decrypt()</code>. If you guessed right, then perhaps you need to consider brushing up on methods that can take into account heteroskedasticity, but otherwise, you can conclude the residual plot doesn’t give you much reason to doubt that the residuals are homoskedastic.</p>
-</section>
-<section id="checking-for-non-normality" class="level3">
-<h3 class="anchored" data-anchor-id="checking-for-non-normality">Checking for non-normality</h3>
-<p>The same procedure as every year, James. A useful diagnostic plot for checking for non-normal residuals is the quantile-quantile plot. If the residuals are distributed normally, the points in such plots fall on a diagonal line.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1">parade <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lineup</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">null_lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST), real_data)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 5x")</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(parade,</span>
-<span id="cb20-2">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">sample =</span> TotCorrect)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb20-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">stat_qq</span>() <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb20-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> .sample)</span></code></pre></div>
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p>Again, decide which pattern is most conspicuous and check your answer. If the normality assumption is clearly violated, you need to ask yourself whether the degree of normality is such that it would affect your inferences. If you want to play it safe, you can try computing p-values and constructing confidence intervals using a bootstrap procedure that doesn’t assume normality, for instance.</p>
-</section>
-<section id="impossible-data" class="level3">
-<h3 class="anchored" data-anchor-id="impossible-data">Impossible data</h3>
-<p>The technique illustrated above is also useful to make it clearer for yourself what you know about your data but your model doesn’t. Let’s generate a new lineup:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1">parade <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lineup</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">null_lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST), real_data)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 5O")</code></pre>
-</div>
-</div>
-<p>Now draw scatterplots as you would:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(parade,</span>
-<span id="cb23-2">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> WST, </span>
-<span id="cb23-3">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> TotCorrect)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb23-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb23-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_smooth</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">formula =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"y ~ x"</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb23-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> .sample)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using method = 'loess'</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p>Take a closer look at each of these plots. Do you find patterns or data points that are just <em>impossible</em> given what you know about how the data were collected?</p>
-<p>Several of these plots contain <code>TotCorrect</code> values below 0, but such values are impossible. I’m not saying categorically that this is a problem, but it does show that the model doesn’t ‘know’ everything about the problem at hand that I do know.</p>
-<p>Let’s try this once more. Instead of drawing scatterplots, I visualise the distribution of the outcome variable using empirical cumulative density plots.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1">parade <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lineup</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">null_lm</span>(TotCorrect <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> WST), real_data)</span></code></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>decrypt("sFZM ldbd 32 PN43b3N2 5t")</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(parade,</span>
-<span id="cb27-2">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(TotCorrect)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb27-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">stat_ecdf</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">geom =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"step"</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb27-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">xintercept =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">linetype =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb27-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">facet_wrap</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> .sample)</span></code></pre></div>
-<div class="cell-output-display">
-<p><img src="https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p>What you’ll notice here is that there’s one empirical cumulative density plot that’s considerably more step-like than the others. This is the plot for our actual data and it reflects the fact that our actual outcome variable is measured in integers (0, 1, 2, …) rather than decimals. This is something I know, but clearly the model doesn’t and so it happily generates non-integer values for the outcome. This doesn’t dramatically affect the inferences from the model, but it still goes to show that fairly run-of-the-mill models such as these don’t encode everything the analyst knows about the problem at hand.</p>
-</section>
-</section>
-<section id="an-important-caveat" class="level2">
-<h2 class="anchored" data-anchor-id="an-important-caveat">An important caveat</h2>
-<p>Saying that a diagnostic plot is still compatible with the model’s assumptions doesn’t mean that the diagnostic plot confirms that the model’s assumptions are true. This is particulary important if you’re dealing with small samples: Assumptions such as normality are more important yet harder to verify in small samples.</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>If your diagnostic plots suggest departures from linearity, homoskedasticity and normality, don’t panic: Such deviations may just be due to randomness. Draw a lineup of plots with both simulated and real data, and see if you can guess which plot show the real data: If you can’t, your diagnostic plot is in fact compatible with the model’s assumptions. If you don’t trust your own judgement, just ask a colleague to identify the most different plot in the lineup.</p>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p>Buja, Andreas, Dianne Cook, Heike Hofmann, Michael Lawrence, Eun-Kyung Lee, Deborah F. Swayne &amp; Hadley Wickham. 2009. Statistical inference for exploratory data analysis and model diagnostics. <em>Philosophical Transactions of the Royal Society A</em> 367(1906). 4361-4383. <a href="http://doi.org/10.1098/rsta.2009.0120">doi:10.1098/rsta.2009.0120</a></p>
-<p>Majumder, Mahbubul, Heike Hofmann &amp; Dianne Cook. 2013. Validation of visual statistical inference, applied to linear models. <em>Journal of the American Statistical Association</em> 108(503). 942-956. <a href="http://doi.org/10.1080/01621459.2013.808157">doi:10.1080/01621459.2013.808157</a></p>
-</section>
-<section id="software-versions" class="level2">
-<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
-<p>Please note that I reran the code on this page on August 6, 2023.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1">devtools<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">session_info</span>()</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>─ Session info ───────────────────────────────────────────────────────────────
- setting  value
- version  R version 4.3.1 (2023-06-16)
- os       Ubuntu 22.04.3 LTS
- system   x86_64, linux-gnu
- ui       X11
- language en_US
- collate  en_US.UTF-8
- ctype    en_US.UTF-8
- tz       Europe/Zurich
- date     2023-08-27
- pandoc   3.1.1 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
-
-─ Packages ───────────────────────────────────────────────────────────────────
- package     * version date (UTC) lib source
- cachem        1.0.6   2021-08-19 [2] CRAN (R 4.2.0)
- callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
- class         7.3-22  2023-05-03 [4] CRAN (R 4.3.1)
- cli           3.6.1   2023-03-23 [1] CRAN (R 4.3.0)
- cluster       2.1.4   2022-08-22 [4] CRAN (R 4.2.1)
- colorspace    2.1-0   2023-01-23 [1] CRAN (R 4.3.0)
- crayon        1.5.2   2022-09-29 [1] CRAN (R 4.3.1)
- DEoptimR      1.1-0   2023-07-12 [1] CRAN (R 4.3.1)
- devtools      2.4.5   2022-10-11 [1] CRAN (R 4.3.1)
- digest        0.6.29  2021-12-01 [2] CRAN (R 4.2.0)
- diptest       0.76-0  2021-05-04 [1] CRAN (R 4.3.1)
- dplyr       * 1.1.2   2023-04-20 [1] CRAN (R 4.3.0)
- ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
- evaluate      0.15    2022-02-18 [2] CRAN (R 4.2.0)
- fansi         1.0.4   2023-01-22 [1] CRAN (R 4.3.1)
- farver        2.1.1   2022-07-06 [1] CRAN (R 4.3.0)
- fastmap       1.1.0   2021-01-25 [2] CRAN (R 4.2.0)
- flexmix       2.3-19  2023-03-16 [1] CRAN (R 4.3.1)
- forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.3.0)
- fpc           2.2-10  2023-01-07 [1] CRAN (R 4.3.1)
- fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
- generics      0.1.3   2022-07-05 [1] CRAN (R 4.3.0)
- ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.3.0)
- glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
- gtable        0.3.3   2023-03-21 [1] CRAN (R 4.3.0)
- hms           1.1.3   2023-03-21 [1] CRAN (R 4.3.0)
- htmltools     0.5.5   2023-03-23 [1] CRAN (R 4.3.0)
- htmlwidgets   1.6.2   2023-03-17 [1] CRAN (R 4.3.1)
- httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.3.1)
- jsonlite      1.8.7   2023-06-29 [1] CRAN (R 4.3.1)
- kernlab       0.9-32  2023-01-31 [1] CRAN (R 4.3.1)
- knitr         1.39    2022-04-26 [2] CRAN (R 4.2.0)
- labeling      0.4.2   2020-10-20 [1] CRAN (R 4.3.0)
- later         1.3.1   2023-05-02 [1] CRAN (R 4.3.1)
- lattice       0.21-8  2023-04-05 [4] CRAN (R 4.3.0)
- lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.3.0)
- lubridate   * 1.9.2   2023-02-10 [1] CRAN (R 4.3.0)
- magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.3.0)
- MASS          7.3-60  2023-05-04 [4] CRAN (R 4.3.1)
- Matrix        1.6-0   2023-07-08 [4] CRAN (R 4.3.1)
- mclust        6.0.0   2022-10-31 [1] CRAN (R 4.3.1)
- memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
- mgcv          1.9-0   2023-07-11 [4] CRAN (R 4.3.1)
- mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
- miniUI        0.1.1.1 2018-05-18 [1] CRAN (R 4.3.1)
- modeltools    0.2-23  2020-03-05 [1] CRAN (R 4.3.1)
- moments       0.14.1  2022-05-02 [1] CRAN (R 4.3.1)
- munsell       0.5.0   2018-06-12 [1] CRAN (R 4.3.0)
- nlme          3.1-162 2023-01-31 [4] CRAN (R 4.2.2)
- nnet          7.3-19  2023-05-03 [4] CRAN (R 4.3.1)
- nullabor    * 0.3.9   2020-02-25 [1] CRAN (R 4.3.1)
- pillar        1.9.0   2023-03-22 [1] CRAN (R 4.3.0)
- pkgbuild      1.4.2   2023-06-26 [1] CRAN (R 4.3.1)
- pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
- pkgload       1.3.2.1 2023-07-08 [1] CRAN (R 4.3.1)
- prabclus      2.3-2   2020-01-08 [1] CRAN (R 4.3.1)
- prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
- processx      3.8.2   2023-06-30 [1] CRAN (R 4.3.1)
- profvis       0.3.8   2023-05-02 [1] CRAN (R 4.3.1)
- promises      1.2.0.1 2021-02-11 [1] CRAN (R 4.3.1)
- ps            1.7.5   2023-04-18 [1] CRAN (R 4.3.1)
- purrr       * 1.0.1   2023-01-10 [1] CRAN (R 4.3.0)
- R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
- Rcpp          1.0.11  2023-07-06 [1] CRAN (R 4.3.1)
- readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.3.0)
- remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
- rlang         1.1.1   2023-04-28 [1] CRAN (R 4.3.0)
- rmarkdown     2.21    2023-03-26 [1] CRAN (R 4.3.0)
- robustbase    0.99-0  2023-06-16 [1] CRAN (R 4.3.1)
- rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.3.0)
- scales        1.2.1   2022-08-20 [1] CRAN (R 4.3.0)
- sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
- shiny         1.7.4.1 2023-07-06 [1] CRAN (R 4.3.1)
- stringi       1.7.12  2023-01-11 [1] CRAN (R 4.3.1)
- stringr     * 1.5.0   2022-12-02 [1] CRAN (R 4.3.0)
- tibble      * 3.2.1   2023-03-20 [1] CRAN (R 4.3.0)
- tidyr       * 1.3.0   2023-01-24 [1] CRAN (R 4.3.0)
- tidyselect    1.2.0   2022-10-10 [1] CRAN (R 4.3.0)
- tidyverse   * 2.0.0   2023-02-22 [1] CRAN (R 4.3.1)
- timechange    0.2.0   2023-01-11 [1] CRAN (R 4.3.0)
- tzdb          0.4.0   2023-05-12 [1] CRAN (R 4.3.0)
- urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.3.1)
- usethis       2.2.2   2023-07-06 [1] CRAN (R 4.3.1)
- utf8          1.2.3   2023-01-31 [1] CRAN (R 4.3.1)
- vctrs         0.6.3   2023-06-14 [1] CRAN (R 4.3.0)
- withr         2.5.0   2022-03-03 [2] CRAN (R 4.2.0)
- xfun          0.39    2023-04-20 [1] CRAN (R 4.3.0)
- xtable        1.8-4   2019-04-21 [1] CRAN (R 4.3.1)
- yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
-
- [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.3
- [2] /usr/local/lib/R/site-library
- [3] /usr/lib/R/site-library
- [4] /usr/lib/R/library
-
-──────────────────────────────────────────────────────────────────────────────</code></pre>
-</div>
-</div>
-
-
-</section>
-
- ]]></description>
-  <category>assumptions</category>
-  <category>R</category>
-  <category>tutorial</category>
-  <category>graphs</category>
-  <guid>https://janhove.github.io/posts/2018-04-25-graphical-model-checking/index.html</guid>
-  <pubDate>Tue, 24 Apr 2018 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
