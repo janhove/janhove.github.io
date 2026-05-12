@@ -3,6 +3,8 @@ title: "Adjusting to Julia: Tea tasting"
 date: "2023-02-23"
 categories: [Julia]
 jupyter: julia
+execute:
+  freeze: true
 ---
 
 In this third blog post in which I try my hand at the [Julia](https://julialang.org/) language, I'll tackle a slight variation of an old problem -- Fisher's tea tasting lady -- both analytically and using a brute-force simulation.

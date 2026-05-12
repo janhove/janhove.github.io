@@ -4,6 +4,8 @@ date: "2022-12-20"
 categories: [Julia]
 jupyter: julia
 image: "image.png"
+execute:
+  freeze: true
 ---
 
 I'm currently learning a bit of [Julia](https://julialang.org/) and I thought I'd share with you a couple of my attempts at writing Julia code. I'll spare you the sales pitch, and I'll skip straight to the goal of this blog post: writing three different Julia functions that can generate the Fibonacci sequence.

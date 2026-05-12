@@ -4,6 +4,8 @@ date: "2023-03-07"
 categories: [Julia, piecewise regression, non-linearities]
 image: "image.png"
 jupyter: julia
+execute:
+  freeze: true
 ---
 
 In this fourth installment of *Adjusting to [Julia](https://julialang.org/)*, I will at long last analyse some actual data. One of the first posts on this blog was [Calibrating p-values in 'flexible' piecewise regression models](../2014-08-20-adjusted-pvalues-breakpoint-regression). In that post, I fitted a piecewise regression to a dataset comprising the ages at which a number of language learners started learning a second language (age of acquisition, AOA) and their scores on a grammaticality judgement task (GJT) in that second language. A piecewise regression is a regression model in which the slope of the function relating the predictor (here: AOA) to the outcome (here: GJT) changes at some value of the predictor, the so-called breakpoint. The problem, however, was that I didn't specify the breakpoint beforehand but pick the breakpoint that minimised the model's deviance. This increased the probability that I would find that the slope before and after the breakpoint differed, even if they in fact were the same. In the blog post I wrote almost nine years ago, I sought to recalibrate the p-value for the change in slope by running a bunch of simulations in R. In this blog post, I'll do the same, but in Julia.

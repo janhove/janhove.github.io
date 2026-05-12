@@ -3,6 +3,8 @@ title: "Adjusting to Julia: The Levenshtein algorithm"
 date: "2023-02-09"
 categories: [Julia]
 jupyter: julia
+execute:
+  freeze: true
 ---
 
 In this second blog post about [Julia](https://julialang.org/), I'll share with you a Julia implementation of the Levenshtein algorithm.
