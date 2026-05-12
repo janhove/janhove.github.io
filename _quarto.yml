@@ -1,5 +1,8 @@
 project:
   type: website
+  resources:
+    - datasets_graphs/**
+    - datasets/**
 
 website:
   title: "Jan Vanhove"
@@ -25,11 +28,6 @@ format:
     include-in-header: ga.html
 
 editor: source
-
-project:
-  resources:
-    - datasets_graphs/**
-    - datasets/**
 
 execute:
   freeze: true
