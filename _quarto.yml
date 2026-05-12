@@ -26,6 +26,11 @@ format:
 
 editor: source
 
+project:
+  resources:
+    - datasets_graphs/**
+    - datasets/**
+
 execute:
   freeze: true
   jupyter:
