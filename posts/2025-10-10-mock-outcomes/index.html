@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2025-10-10">
+
+<title>Clarifying research questions by sketching possible outcomes – Jan Vanhove</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#study-design" id="toc-study-design" class="nav-link active" data-scroll-target="#study-design">Study design</a></li>
+  <li><a href="#step-1-sketch-mock-results" id="toc-step-1-sketch-mock-results" class="nav-link" data-scroll-target="#step-1-sketch-mock-results">Step 1: Sketch mock results</a></li>
+  <li><a href="#step-2-compare-mock-results-to-predictions" id="toc-step-2-compare-mock-results-to-predictions" class="nav-link" data-scroll-target="#step-2-compare-mock-results-to-predictions">Step 2: Compare mock results to predictions</a></li>
+  <li><a href="#step-3-draw-confirmatory-results-and-come-up-with-alternative-explanations" id="toc-step-3-draw-confirmatory-results-and-come-up-with-alternative-explanations" class="nav-link" data-scroll-target="#step-3-draw-confirmatory-results-and-come-up-with-alternative-explanations">Step 3: Draw confirmatory results and come up with alternative explanations</a></li>
+  <li><a href="#step-4-draw-disconfirmatory-and-ambiguous-results-and-try-to-spin-them" id="toc-step-4-draw-disconfirmatory-and-ambiguous-results-and-try-to-spin-them" class="nav-link" data-scroll-target="#step-4-draw-disconfirmatory-and-ambiguous-results-and-try-to-spin-them">Step 4: Draw disconfirmatory and ambiguous results and try to spin them</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Clarifying research questions by sketching possible outcomes</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">research questions</div>
+    <div class="quarto-category">research design</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 10, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this blog post, I’d like to share a technique that I’ve found useful both for teaching students how to read research articles and for advising colleagues on study design. The technique is low-tech: you sketch a few possible outcomes for the study you’re reading about or designing, and you evaluate each sketch in light of the study’s predictions, research questions, and theoretical rationale.</p>
+<p>Applying this technique before reading results and discussion sections helps you become a more independent and critical reader of research articles. Applying it when designing your own studies allows you to clarify your research questions and expectations, and to anticipate and address plausible critical comments.</p>
+<p>Let’s apply the technique to an example.</p>
+<section id="study-design" class="level2">
+<h2 class="anchored" data-anchor-id="study-design">Study design</h2>
+<p>Rummer (2015) investigated the influence of taking Latin in secondary school on the use of grammatical tenses in L1 German. His quasi-experimental study included 22 8th-graders and 22 9th-graders. Of the 22 8th-graders, seven took Latin and 15 took French or Russian as a foreign language (in addition to English). Of the 22 9th-graders, nine took Latin and 13 French or Russian. The pupils were not randomly assigned to the ‘with Latin’ or ‘without Latin’ groups; these groups already existed before Rummer designed the study. The pupils had started learning their second foreign language (Latin, Russian or French) in 7th grade.</p>
+<p>All pupils completed a test. The details of this test needn’t concern us, but the idea is that higher test scores reflect a more sophisticated use of the L1 German tense system.</p>
+<p>Rummer’s explicit prediction, translated from the German original on p.&nbsp;255 and slightly rephrased, was</p>
+<blockquote class="blockquote">
+<p>Regardless of grade, pupils in the ‘with Latin’ group will show a more sophisticated use in the L1 German tense system compared to pupils in the ‘without Latin’ group. This difference will be larger in the ninth grade than in the eighth grade.</p>
+</blockquote>
+<p>The rationale underlying the study is that Latin classes have been said to sharpen pupils’ ‘linguistic logic’. The author, however, is skeptical of claims that Latin confers greater transferable linguistic benefits than other foreign languages.</p>
+<p>While a few criticisms can be raised about this study, the article is a good read—especially for students who are still learning to read empirical research critically.</p>
+</section>
+<section id="step-1-sketch-mock-results" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-sketch-mock-results">Step 1: Sketch mock results</h2>
+<p>The first step is to take a piece of paper and roughly sketch a few possible results. For simplicity, assume that there won’t be any statistical uncertainty about the outcomes. Also assume that you’re only interested in group means, not medians or other summaries. Don’t overthink the sketches—a couple of points and lines on a piece of paper are all you need.</p>
+<p>The research design of our example features two times two cells (with vs without Latin, and 8th vs 9th grade), so a simple chart with two times two values suffices. These values could in principle range from 0 to 12, but you can simplify the charts even further by making only a broad distinction between, say, low, mid, and high values.</p>
+<p>While I suggest you just draw these charts on a slip of paper, I wrote an R function called <code>mock_up()</code> for this blog post. Feel free to adapt it to suit your own needs.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create mock results</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mock_up <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">levels =</span> <span class="dv">3</span>, <span class="at">plots =</span> <span class="dv">9</span>, <span class="at">show_data =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (plots <span class="sc">&gt;</span> levels<span class="sc">^</span><span class="dv">4</span>) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"The number of datasets generated is lower than the requested number of plots."</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    plots <span class="ot">&lt;-</span> levels<span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">Latin_8 =</span> <span class="dv">1</span><span class="sc">:</span>levels, <span class="at">Latin_9 =</span> <span class="dv">1</span><span class="sc">:</span>levels, </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">NoLatin_8 =</span> <span class="dv">1</span><span class="sc">:</span>levels, <span class="at">NoLatin_9 =</span> <span class="dv">1</span><span class="sc">:</span>levels)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>Plot <span class="ot">&lt;-</span> <span class="fu">rownames</span>(d) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">reshape</span>(d,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">varying   =</span> <span class="fu">c</span>(<span class="st">"Latin_8"</span>, <span class="st">"Latin_9"</span>, <span class="st">"NoLatin_8"</span>, <span class="st">"NoLatin_9"</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">v.names   =</span> <span class="st">"Outcome"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">timevar   =</span> <span class="st">"Var"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">times     =</span> <span class="fu">c</span>(<span class="st">"Latin_8"</span>, <span class="st">"Latin_9"</span>, <span class="st">"NoLatin_8"</span>, <span class="st">"NoLatin_9"</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">direction =</span> <span class="st">"long"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  split_names <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">strsplit</span>(d<span class="sc">$</span>Var, <span class="st">"_"</span>))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>Group <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(split_names[,<span class="dv">1</span>] <span class="sc">==</span> <span class="st">"Latin"</span>, <span class="st">"with Latin"</span>, <span class="st">"without Latin"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>Grade <span class="ot">&lt;-</span> split_names[,<span class="dv">2</span>]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row.names</span>(d) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> d[, <span class="fu">c</span>(<span class="st">"Plot"</span>, <span class="st">"Group"</span>, <span class="st">"Grade"</span>, <span class="st">"Outcome"</span>)]</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Breaks at minimum ("low"), average ("mid"), and maximum ("high")</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  breaks <span class="ot">&lt;-</span> (<span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">*</span> (levels <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (plots <span class="sc">!=</span> <span class="dv">0</span>) {</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    my_plot <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">subset</span>(Plot <span class="sc">%in%</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>levels<span class="sc">^</span><span class="dv">4</span>, plots)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Grade, <span class="at">y =</span> Outcome,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                 <span class="at">linetype =</span> Group,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>                 <span class="at">group =</span> Group,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                 <span class="at">shape =</span> Group)) <span class="sc">+</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"mid"</span>, <span class="st">"high"</span>)) <span class="sc">+</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="fu">vars</span>(Plot)) <span class="sc">+</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mock results"</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(my_plot)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (show_data) <span class="fu">return</span>(d)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><a href="#fig-mockup1" class="quarto-xref">Figure&nbsp;1</a> shows a few rough sketches of possible findings, using four levels to distinguish between the outcomes. Since there are <span class="math inline">\(\ell^4\)</span> possible ways to assign one of <span class="math inline">\(\ell\)</span> values to four cells in the design (here: <span class="math inline">\(\ell = 4\)</span>, so <span class="math inline">\(\ell^4 = 256\)</span>), only a random subset of possible sketches is plotted. The numbers in the facets identify which of these <span class="math inline">\(\ell^4\)</span> sketches are plotted. If you run the function yourself, you’ll get a different set of sketches.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025-10-09</span>) <span class="co"># comment out when running the function yourself</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">mock_up</span>(<span class="at">levels =</span> <span class="dv">4</span>, <span class="at">plots =</span> <span class="dv">4</span>, <span class="at">show_data =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-mockup1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mockup1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-mockup1-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mockup1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Four sketches of mock results for Rummer’s study. The numbers in the facet description (41, 70, 98, 188) identify the plotted mock results in the set of the 256 generated results.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="step-2-compare-mock-results-to-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-compare-mock-results-to-predictions">Step 2: Compare mock results to predictions</h2>
+<p>The second step is to decide, for each of the mock results you’ve drawn, whether it matches the predictions or hypotheses. Take these predictions or hypotheses literally.</p>
+<p>For readers, the idea of this step is to figure out which aspects of the results are relevant for evaluating the predictions and which aspects are irrelevant. This way, once you move on to the article’s results section, you know what you should pay attention to.</p>
+<p>If you’re designing a study, the idea of this step is to figure out whether your phrased your predictions clearly and if they match what you intended to say.</p>
+<p>Let’s try this for the mock-up results in <a href="#fig-mockup1" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<ul>
+<li>Sketch 41: The with Latin group in 8th grade doesn’t score higher than the without Latin group in 8th grade. So the predictions aren’t confirmed.</li>
+<li>Sketch 70: The with Latin group in 9th grade doesn’t score higher than the without Latin group in 9th grade. So the predictions aren’t confirmed.</li>
+<li>Sketches 98 and 188: The predictions aren’t confirmed for the same reasons.</li>
+</ul>
+<p>This already tells us that the predictions aren’t so vague that pretty much any pattern in the results would confirm them—which is a good thing. Moreover, the predictions seem to be clear in the sense that we were able to make a decision for all four patterns.</p>
+<p>Further, if you’re fairly novice reader of quantitative research, the sketches above may help you figure out some criteria that the results need to meet if they are to confirm the predictions:</p>
+<ol type="1">
+<li>The with Latin group should outperform the without Latin group in grade 8.</li>
+<li>The with Latin group should outperform the without Latin group in grade 9.</li>
+</ol>
+<p>To more seasoned consumers of quantitative research, this may seem obvious. (It may also seem obvious to them that one more condition needs to be satisfied. We’ll return to this shortly.) But from experience, I can tell you that it isn’t obvious for everyone—not even if the predictions are spelt out as clearly and specifically as here.</p>
+</section>
+<section id="step-3-draw-confirmatory-results-and-come-up-with-alternative-explanations" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-draw-confirmatory-results-and-come-up-with-alternative-explanations">Step 3: Draw confirmatory results and come up with alternative explanations</h2>
+<p>The next step is to sketch a couple of further possible results that satisfy the necessary conditions for them to confirm the predictions. If we notice that some of the patterns drawn still wouldn’t confirm the predictions, we need to revise the list of necessary conditions. Iteratively, we refine our understanding of what exactly counts as evidence for or against the predictions.</p>
+<p><a href="#fig-literal-confirm" class="quarto-xref">Figure&nbsp;2</a> shows sketches of four patterns that conform to the two necessary conditions we’ve identified.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Patterns satisfying the 2 necessary conditions</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>d_confirm <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> Plot, <span class="at">names_from =</span> <span class="fu">c</span>(Group, Grade),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> Outcome) <span class="sc">|&gt;</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">with Latin_8</span><span class="st">`</span> <span class="sc">&gt;</span> <span class="st">`</span><span class="at">without Latin_8</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">with Latin_9</span><span class="st">`</span> <span class="sc">&gt;</span> <span class="st">`</span><span class="at">without Latin_9</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">contains</span>(<span class="st">"Latin"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"Grade"</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_pattern =</span> <span class="st">"(.*)_(.*)"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Outcome"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Other patterns (refuting or perhaps ambiguous)</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>d_refute <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(d_confirm)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot some of the patterns confirming the predictions</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>levels <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> (<span class="dv">0</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">*</span> (<span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">1</span> <span class="co"># for nice plotting</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>d_confirm <span class="sc">|&gt;</span> </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Plot <span class="sc">%in%</span> <span class="fu">sample</span>(<span class="fu">unique</span>(Plot), plots)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Grade, <span class="at">y =</span> Outcome,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> Group,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> Group,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> Group)) <span class="sc">+</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"mid"</span>, <span class="st">"high"</span>)) <span class="sc">+</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="fu">vars</span>(Plot)) <span class="sc">+</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confirmatory mock results?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-literal-confirm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-literal-confirm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-literal-confirm-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literal-confirm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Sketches of four patterns that conform to the two necessary conditions we’ve identified.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s evaluate these sketches, too, in terms of the predictions:</p>
+<ul>
+<li>Sketch 6: The difference between the with and the without Latin groups isn’t larger in grade 9 than in grade 8. So the predictions aren’t confirmed.</li>
+<li>Sketch 10: This pattern conforms fully to the predictions.</li>
+<li>Sketches 16 and 159: The patterns don’t conform to the predictions for the same reason as sketch 6 doesn’t.</li>
+</ul>
+<p>This tells us that we need to add a third necessary condition to the list:</p>
+<ol type="1">
+<li>The with Latin group should outperform the without Latin group in grade 8.</li>
+<li>The with Latin group should outperform the without Latin group in grade 9.</li>
+<li>The difference between the with and without Latin groups is larger in grade 9 than in grade 8.</li>
+</ol>
+<p>We repeat the process, ending up with the eleven sketches shown in <a href="#fig-literal-confirm2" class="quarto-xref">Figure&nbsp;3</a>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Patterns satisfying the 3 necessary conditions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>d_confirm <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> Plot, <span class="at">names_from =</span> <span class="fu">c</span>(Group, Grade),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> Outcome) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add another condition</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">with Latin_8</span><span class="st">`</span> <span class="sc">&gt;</span> <span class="st">`</span><span class="at">without Latin_8</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">with Latin_9</span><span class="st">`</span> <span class="sc">&gt;</span> <span class="st">`</span><span class="at">without Latin_9</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">with Latin_8</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">without Latin_8</span><span class="st">`</span> <span class="sc">&lt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>           <span class="st">`</span><span class="at">with Latin_9</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">without Latin_9</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">contains</span>(<span class="st">"Latin"</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"Group"</span>, <span class="st">"Grade"</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_pattern =</span> <span class="st">"(.*)_(.*)"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Outcome"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Other patterns (refuting or perhaps ambiguous)</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>d_refute <span class="ot">&lt;-</span> d <span class="sc">|&gt;</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(d_confirm)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>d_confirm <span class="sc">|&gt;</span> </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Grade, <span class="at">y =</span> Outcome,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> Group,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> Group,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> Group)) <span class="sc">+</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"mid"</span>, <span class="st">"high"</span>)) <span class="sc">+</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="fu">vars</span>(Plot)) <span class="sc">+</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Confirmatory mock results"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-literal-confirm2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-literal-confirm2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-literal-confirm2-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literal-confirm2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: All eleven out of 256 sketches that conform fully to the author’s predictions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can verify, all of these patterns literally conform to the author’s predictions. But some of these patterns probably don’t correspond to what the author had in mind. I suspect that the author pictured a pattern like the ones shown in sketches 78 and 95, where at least the with Latin groups show some improvement from grade 8 to grade 9. In some of the other sketches, the performance in the with Latin groups is constant whereas it declines in the without Latin groups. Such a pattern would be more consistent with Latin classes having a prophylactic effect against the decline of language logic than with their actively enhancing language logic.</p>
+<p>If you’re designing a study, sketches that literally conform the predictions but look unlike what you expect may prompt you to rephrase your predictions. If you’re reading a quantitative research article, such sketches can help you appreciate that the author’s formal predictions don’t fully capture what are likely their actual expectations.</p>
+<p>Moreover, having drawn patterns that would confirm the author’s predictions, we can try to think of plausible alternative explanations for them. As far as I’m concerned, all eleven patterns in <a href="#fig-literal-confirm2" class="quarto-xref">Figure&nbsp;3</a> could possibly be explained by selection bias: The pupils weren’t randomly assigned to the language groups, and it’s entirely plausible that pupils choosing or being encouraged to take Latin tend to be the ones with a knack for language logic. This would show up as a better outcome for the with Latin group than for the without Latin group in grade 8, and an even greater difference in grade 9.</p>
+<p>Another plausible alternative explanation for some of the sketches involves floor effects. In sketches 10, 14, 15 and 78, the without Latin group performs near the bottom of the scale. This leaves open the possibility that the difference between the with and the without Latin groups in grade 8 in terms of the sophistication of their use of L1 tenses is larger than the test scores suggests. As a result, it’s possible that the true gap in the sophistication of L1 tense use between the with and without Latin groups is equally as large in grade 9 as it is in grade 8, and that both groups show a parallel development. Likewise, ceiling effects in with Latin group in grade 8 (sketches 32, 44, 48, 112) may mask such a parallel development.</p>
+<p>I don’t want to exhaustively list plausible alternative explanations for these patterns. If you’re a reader, the goal of this part of the exercise is to prepare yourself mentally that a pattern that conforms to the author’s predictions may be compatible with an explanation other than the one put forward by the author. If you’re the one designing the study, this may help you identify weaknesses in your design that you can hopefully still fix.</p>
+</section>
+<section id="step-4-draw-disconfirmatory-and-ambiguous-results-and-try-to-spin-them" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-draw-disconfirmatory-and-ambiguous-results-and-try-to-spin-them">Step 4: Draw disconfirmatory and ambiguous results and try to spin them</h2>
+<p>Steps 2 and 3 allowed us to identify the patterns that would confirm the author’s predictions and to anticipate alternative explanations for them. In step 4, the goal is to take a closer look at results that would <em>not</em> confirm the predictions and to consider whether, and how, such results might still be interpreted in line with the broader idea underpinning the study.</p>
+<p>Consider <a href="#fig-literal-refute" class="quarto-xref">Figure&nbsp;4</a>. None of the patterns sketched literally conforms to the author’s predictions. But how difficult would it be to spin these patterns in such a way that they are still consistent with the broader idea that Latin classes are more beneficial to language logic than French or Russian classes?</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d_refute <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Plot <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">86</span>, <span class="dv">107</span>, <span class="dv">139</span>, <span class="dv">144</span>, <span class="dv">158</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Grade, <span class="at">y =</span> Outcome,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> Group,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> Group,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">shape =</span> Group)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"mid"</span>, <span class="st">"high"</span>)) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="fu">vars</span>(Plot)) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Disconfirmatory results"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-literal-refute" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-literal-refute-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-literal-refute-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-literal-refute-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: A few of the sketches that do not match with the author’s predictions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The pattern in sketch 6 could easily be spun in these terms: The children had already taken Latin, French or Russian in grade 7, and the boost in language logic already happened before the start of this study.</p>
+<p>Sketch 86 could also be explained away as a result of poor timing: Latin classes are more conducive to language logic, just not in the short term. Perhaps the structures targeted in this study aren’t even taught until grade 9? An alternative explanation for these results would be that the test used in this study just isn’t up to scratch.</p>
+<p>Sketch 107 isn’t compatible with the author’s predictions, either. But such results could suggest that taking Latin protects against a decline in language logic—or that taking French or Russian expediates such a decline.</p>
+<p>Sketch 139 might suggest that taking Latin hastens the development of language logic, even though admittedly this relative benefit isn’t long-lasting. But precocious levels of development of language logic may perhaps confer advantages in other respects that aren’t captured in this study?</p>
+<p>Sketch 144 might also suggest that taking Latin hastens the development of language logic. This relative benefit seems to be more long-lasting. Moreover, the ceiling effect for the with Latin group may mask a continued development in language loss beyond grade 8.</p>
+<p>Finally, sketch 158 could suggest that the benefit of taking Latin isn’t evident in grade 8 but that it does become visible by grade 9.</p>
+<p>Step 4 may reveal that the author’s predictions were overly restrictive. For instance, the results in sketch 158 arguably represent stronger evidence for the claim that taking Latin boosts language logic than some of the results in <a href="#fig-literal-confirm2" class="quarto-xref">Figure&nbsp;3</a>: the pattern in sketch 158 renders less plausible the explanation that pupils taking Latin already were stronger in language logic before they even took Latin.</p>
+<p>If, as the researcher planning the study, you notice that your predictions, taken literally, are too restrictive, you may want to revise them. Again, the idea is to iterate through these steps until you’re confident that what you wrote is what you mean.</p>
+<p>Like step 3, step 4 highlights the role of auxiliary assumptions in deriving predictions from theories—or from vaguer notions such as ‘Latin boosts language logic’. In this particular example, some key assumptions appear to be</p>
+<ol type="1">
+<li>that this beneficial effect is already noticeable in grade 8 (cf.&nbsp;patterns 86, 107 and 158);</li>
+<li>that this beneficial effect is cumulative (cf.&nbsp;patterns 6 and 139);</li>
+<li>and that the test used could show such a cumulative beneficial effect (cf.&nbsp;patterns 86 and 144).</li>
+</ol>
+<p>As a reader, such insights may help you better appreciate the distinction between the specific predictions and the broader theoretical ideas that motivate them. They also make you more aware of how easily results can be interpreted—or spun—to fit a preferred narrative.</p>
+<p>As a researcher planning a study, they hopefully encourage you to make explicit how you derived your predictions from the theoretical framework and to revise these predictions if needed. Further, they may prompt you to adjust your design to address potential criticisms (e.g., by including 7th- and 10-th graders) or to build in some checks of key assumptions.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Sketching possible results and then trying to interpret them is a simple enough exercise. But it forces you to understand or specify exactly what patterns would support the predictions, and what patterns would refute them. Further, it helps you to identify the often tacit auxiliary assumptions that the predictions are based on. For readers, it encourages critical engagement with research articles as opposed to merely taking the author’s interpretations at face value. For researchers, it sharpens research questions and predictions, and, by forcing them to anticipate alternative explanations, it may help them strengthen the study’s design.</p>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<p>Rummer, Ralf. 2015. <a href="https://doi.org/10.1515/zfal-2015-0015">Der Einfluss des schulischen Lateinunterrichts auf die Tempuswahl im Deutschen.</a> <em>Zeitschrift für Angewandte Linguistik</em> 63(1). 247–264.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>(<span class="at">pkgs =</span> <span class="st">"attached"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.1 (2025-06-13)
+ os       Ubuntu 22.04.5 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2025-10-10
+ pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package   * version date (UTC) lib source
+ dplyr     * 1.1.4   2023-11-17 [1] CRAN (R 4.5.1)
+ forcats   * 1.0.0   2023-01-29 [1] CRAN (R 4.5.1)
+ ggplot2   * 3.5.2   2025-04-09 [1] CRAN (R 4.5.1)
+ lubridate * 1.9.4   2024-12-08 [1] CRAN (R 4.5.1)
+ purrr     * 1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
+ readr     * 2.1.5   2024-01-10 [1] CRAN (R 4.5.1)
+ stringr   * 1.5.1   2023-11-14 [1] CRAN (R 4.5.1)
+ tibble    * 3.3.0   2025-06-08 [1] CRAN (R 4.5.1)
+ tidyr     * 1.3.1   2024-01-24 [1] CRAN (R 4.5.1)
+ tidyverse * 2.0.0   2023-02-22 [1] CRAN (R 4.5.1)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2025-11-09">
+
+<title>The population model and the randomisation model of statistical inference – Jan Vanhove</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-two-group-comparison" id="toc-a-two-group-comparison" class="nav-link active" data-scroll-target="#a-two-group-comparison">A two-group comparison</a>
+  <ul class="collapse">
+  <li><a href="#the-randomisation-model-theory" id="toc-the-randomisation-model-theory" class="nav-link" data-scroll-target="#the-randomisation-model-theory">The randomisation model: Theory</a></li>
+  <li><a href="#the-randomisation-model-practice" id="toc-the-randomisation-model-practice" class="nav-link" data-scroll-target="#the-randomisation-model-practice">The randomisation model: Practice</a></li>
+  <li><a href="#the-population-model-a-fiction-but-a-useful-one" id="toc-the-population-model-a-fiction-but-a-useful-one" class="nav-link" data-scroll-target="#the-population-model-a-fiction-but-a-useful-one">The population model: A fiction but a useful one</a></li>
+  </ul></li>
+  <li><a href="#the-scope-of-inference" id="toc-the-scope-of-inference" class="nav-link" data-scroll-target="#the-scope-of-inference">The scope of inference</a></li>
+  <li><a href="#what-about-random-group-sizes" id="toc-what-about-random-group-sizes" class="nav-link" data-scroll-target="#what-about-random-group-sizes">What about random group sizes?</a></li>
+  <li><a href="#a-real-example" id="toc-a-real-example" class="nav-link" data-scroll-target="#a-real-example">A real example</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">tl;dr</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">What’s next?</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The population model and the randomisation model of statistical inference</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">assumptions</div>
+    <div class="quarto-category">experiments</div>
+    <div class="quarto-category">design features</div>
+    <div class="quarto-category">nonparametric tests</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">significance</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 9, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Much of statistical practice—and teaching—relies on an assumption that is demonstrably false: the fiction that the data were sampled randomly from some population. Now, in practice, this fiction turns out to be quite useful. But I think that it’s important to appreciate that it is a fiction and that it’s possible to do statistics without subscribing to it.</p>
+<p>Let’s first take a look at the ubiquitous Student’s <em>t</em>-test for independent samples. This test is used to check if the difference between the means of two lists of numbers, <span class="math inline">\(\boldsymbol x = (x_1, \dots, x_k)\)</span> and <span class="math inline">\(\boldsymbol y = (y_1, \dots, y_m)\)</span>, could plausibly be explained by chance. It is based on the following assumptions:</p>
+<ol type="1">
+<li>The observations <span class="math inline">\(\boldsymbol x\)</span> and <span class="math inline">\(\boldsymbol y\)</span> constitute simple random samples from some populations <span class="math inline">\(P_1\)</span> and <span class="math inline">\(P_2\)</span>, respectively.</li>
+<li>Population <span class="math inline">\(P_1\)</span> follows a normal distribution with mean <span class="math inline">\(\mu_1\)</span> and variance <span class="math inline">\(\sigma^2\)</span>.</li>
+<li>Population <span class="math inline">\(P_2\)</span> follows a normal distribution with mean <span class="math inline">\(\mu_2 = \mu_1 + \delta\)</span> and variance <span class="math inline">\(\sigma^2\)</span>.</li>
+</ol>
+<p>If these assumptions are well-founded, the Student’s <em>t</em>-test provides an exact test for the null hypothesis that <span class="math inline">\(\delta = \delta_0\)</span> for some specified number <span class="math inline">\(\delta_0\)</span>, where typically <span class="math inline">\(\delta_0 = 0\)</span>. (In this context, `exact’ means that the probability that the test yields a <em>p</em>-value no larger than <span class="math inline">\(\alpha\)</span> if the null hypothesis is true is itself no larger than <span class="math inline">\(\alpha\)</span> for <em>any</em> <span class="math inline">\(\alpha \in (0, 1)\)</span>.)</p>
+<p>That’s a big <em>if</em>.</p>
+<p>Thanks to the central limit theorem, though, the normality assumption isn’t <em>too</em> crucial: for “large enough” samples from non-normal distributions, the <em>t</em>-test behaves “more or less” as it does for normal distributions, at least under fairly general conditions such as that the distributions that are sampled have finite variance. And except for the smallest of samples, the equality of variances assumption can be dealt with by using Welch’ <em>t</em>-test instead of Student’s. I don’t want to go into what “large enough” and “more or less” mean in this context; interested readers may want to look up what “convergence in distribution” means.</p>
+<p>But what strikes me as more fundamental than the shape of the populations <span class="math inline">\(P_1\)</span> and <span class="math inline">\(P_2\)</span> are the questions <em>Who’s drawing random samples from a population?</em> and <em>What’s the population, anyway?</em></p>
+<p>Sure, it’s easy to set up computer simulations in which the data are sampled from some population. But at the coalface, most research is done with volunteers (or students needing credits) who’ve undergone a round of screening. And even if there is some population that these participants can be considered to be a sample from, their recruitment didn’t involve any mathematically well-defined sampling procedure. This <strong>population model</strong> of statistical inference, which treats data as random samples from some population (normal or other), is, then, mostly based on a fiction.</p>
+<p>The population model of statistical inference contrasts with the <strong>randomisation model</strong>. In the population model, the randomness in the results is assumed to be caused by random sampling; in the randomisation model, it is assumed to be caused by randomly assigning the units (e.g., the participants) in the study to different conditions. Whereas random sampling is exceedingly rare in the social sciences, random assignment is quite common. And if random assignment was used, the randomisation model results in valid hypothesis tests that do not make any unverifiable distributional assumptions.</p>
+<p>In what follows, I’ll illustrate the randomisation model in the simplest of settings.</p>
+<section id="a-two-group-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="a-two-group-comparison">A two-group comparison</h2>
+<p>Consider a two-group study in which <span class="math inline">\(k + \ell = m\)</span> participants are randomly assigned to one of two groups such that <span class="math inline">\(k\)</span> are assigned to the first group and <span class="math inline">\(\ell\)</span> to the second group. The participants in the first group engage in some activity or are subjected to some treatment, and those in the second group engage in another activity or are subjected to another treatment. For each participant <span class="math inline">\(i = 1, \dots, m\)</span>, we observe a numerical outcome <span class="math inline">\(Y_i\)</span>, and the question of interest is whether the two treatments differentially affected the outcome.</p>
+<p>To make the following a bit more concrete, I’ll start out by the fictitious data summarised in <a href="#tbl-summary" class="quarto-xref">Table&nbsp;1</a> and shown in <a href="#fig-boxplot" class="quarto-xref">Figure&nbsp;1</a>. Fictitious data are a bit boring, so I’ll apply the techniques discussed to a real but somewhat more complicated example later on.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">list</span>(<span class="at">Group =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">Outcome =</span> <span class="fu">c</span>(<span class="dv">7</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>, <span class="fl">9.5</span>, <span class="fl">8.5</span>, <span class="fl">7.5</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="fl">7.5</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="fl">8.5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="fl">10.5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="fl">7.5</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>, <span class="fl">9.5</span>, <span class="dv">11</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="fl">7.5</span>, <span class="dv">9</span>, <span class="fl">9.5</span>, <span class="fl">8.5</span>, <span class="fl">8.5</span>)), <span class="at">class =</span> <span class="st">"data.frame"</span>, <span class="at">row.names =</span> <span class="fu">c</span>(<span class="cn">NA</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="dv">27</span>L))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Group) <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">mean</span>(Outcome) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median =</span> <span class="fu">median</span>(Outcome),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Standard deviation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sd</span>(Outcome) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Results summary of a fictitious experiment.
+</figcaption>
+<div aria-describedby="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Group</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">Median</th>
+<th style="text-align: right;">Standard deviation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">8.25</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.78</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">8.87</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">1.04</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Group), <span class="at">y =</span> Outcome)) <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Condition"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-boxplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-boxplot-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Data for a fictitious randomised experiment with two groups.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="the-randomisation-model-theory" class="level3">
+<h3 class="anchored" data-anchor-id="the-randomisation-model-theory">The randomisation model: Theory</h3>
+<p>For each participant <span class="math inline">\(i = 1, \dots, m\)</span>, there exist two potential outcomes <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span>, only one of which is observed:</p>
+<ul>
+<li>either <span class="math inline">\(y_i(0)\)</span> if the participant is assigned to the first condition;</li>
+<li>or <span class="math inline">\(y_i(1)\)</span> if the participant is assigned to the second condition.</li>
+</ul>
+<p>In the randomisation model, these potential outcomes are treated as fixed, though possibly unknown, quantities, and not as random variables having some distribution. What <em>is</em> random is which of these two quantities we end up observing. Specifically, let <span class="math inline">\(B_i\)</span> be the random variable that indicates which condition the <span class="math inline">\(i\)</span>-th participant is assigned to. Then <span class="math inline">\(B_i = 0\)</span> if the participant is assigned to the first condition and <span class="math inline">\(B_i = 1\)</span> if the participant is assigned to the second condition. Then the observed outcome for the <span class="math inline">\(i\)</span>-th participant is <span class="math display">\[Y_i = y_i(B_i) = \begin{cases}y_i(0) &amp;\textrm{if } B_i = 0,\\ y_i(1) &amp;\textrm{if } B_i = 1.\end{cases}\]</span></p>
+<p>The researchers control the randomisation, so they <em>know</em> what the distribution of the assignment vector <span class="math inline">\(\boldsymbol B := (B_1, \dots, B_m)\)</span> is. In the present example, the assignment vector was picked randomly from the set of vectors with length <span class="math inline">\(12 + 15 = 27\)</span> that contain exactly <span class="math inline">\(12\)</span> zeroes and <span class="math inline">\(15\)</span> ones, with each such vector having the same probability of being picked. Formally, <span class="math display">\[\boldsymbol B \sim \textrm{Uniform}(\mathcal{B}_{12, 15}),\]</span> where <span class="math display">\[\mathcal{B}_{k, \ell} := \{\boldsymbol b \in \{0, 1\}^{k + \ell} : \sum_{i=1}^{k + \ell} b_i = \ell\}.\]</span> According to the so-called <strong>sharp null hypothesis</strong>, there is no differential treatment effect whatsoever. That is, <span class="math display">\[H_0: y_i(1) = y_i(0) \textrm{ for }  i = 1, \dots, m.\]</span> Under such a sharp null hypothesis, the values for <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> can immediately be reconstructed from the observed outcomes: <span class="math inline">\(y_i(0) = y_i(1) = Y_i\)</span> for <span class="math inline">\(i = 1, \dots, m\)</span>.</p>
+<p>More generally, for any number <span class="math inline">\(\delta\)</span>, we could set up the sharp null hypothesis that the second treatment boosts (or would have boosted) the outcome by <span class="math inline">\(\delta\)</span> for all participants: <span class="math display">\[H_0(\delta): y_i(1) = y_i(0) + \delta \textrm{ for }  i = 1, \dots, m.\]</span> Under <span class="math inline">\(H_0(\delta)\)</span>, too, we can straightforwardly reconstruct the <span class="math inline">\(y_i\)</span> values for all participants: <span class="math inline">\(y_i(0) = Y_i - B_i\delta\)</span> and <span class="math inline">\(y_i(1) = Y_i + (1-B_i)\delta\)</span> for <span class="math inline">\(i = 1, \dots, m\)</span>.</p>
+<p>An exact <em>p</em>-value testing such sharp null hypotheses can now be computed as follows without needing to assume that the <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> values are randomly sampled from some population.</p>
+<ol type="1">
+<li><p>Decide on a relevant <strong>test statistic</strong> <span class="math inline">\(T_{\delta}(\boldsymbol y, \boldsymbol b)\)</span>. The <em>p</em>-value that eventually results will be valid regardless of the test statistic chosen. But ideally, a test statistic is chosen that tends to be small (or close to zero) under the null hypothesis but large (or farther from zero) if the null hypothesis isn’t true. For the current setting, you could compute, for instance, the difference between the group means, or the difference between the group medians, or the probability that a randomly chosen participant who was assigned to the second condition has a higher score than a randomly chosen participant from the first condition.</p></li>
+<li><p>Compute the test statistic for the data at hand: <span class="math inline">\(T_{\delta, \textrm{obs}} := T_{\delta}(\boldsymbol Y, \boldsymbol B)\)</span>.</p></li>
+<li><p>For a left-sided <em>p</em>-value, compute the probability that <span class="math inline">\(T_{\delta}(\boldsymbol Y, \boldsymbol {\tilde B}) \leq T_{\delta, \textrm{obs}}\)</span>, where <span class="math inline">\(\boldsymbol {\tilde B}\)</span> has the same distribution as <span class="math inline">\(\boldsymbol B\)</span> (here: <span class="math inline">\(\boldsymbol {\tilde B} \sim \textrm{Uniform}(\mathcal{B}_{k, \ell})\)</span>). This can be computed by going through all the possible assignment vectors <span class="math inline">\(\boldsymbol b\)</span> and counting how often <span class="math inline">\(T_{\delta}(\boldsymbol Y, \boldsymbol b) \leq T_{\delta, \textrm{obs}}\)</span>. For a right-sided <em>p</em>-value, instead compute the probability that <span class="math inline">\(T_{\delta}(\boldsymbol Y, \boldsymbol {\tilde B}) \geq T_{\delta, \textrm{obs}}\)</span>. A two-sided <em>p</em>-value can be computed as twice the smaller of the left-side and the right-sided <em>p</em>-value.</p></li>
+</ol>
+<p>Step 3 poses a practical challenge: the set of possible assignment vectors is usually too large to handle. In our case, the set <span class="math inline">\(\mathcal{B}_{k, \ell}\)</span> contains <span class="math display">\[{{k + \ell}\choose {k}} = \frac{(k + \ell)!}{k!\ell!}\]</span> elements. Even for fairly small <span class="math inline">\(k, \ell\)</span>, this are too many vectors to iterate over. For instance, for <span class="math inline">\(k = 12, \ell = 15\)</span>, we obtain 17,383,860 possible assignment vectors; for <span class="math inline">\(k = \ell = 20\)</span>, there are 137,846,528,820 such vectors.</p>
+<p>What we can do instead is sample <span class="math inline">\(M\)</span> assignment vectors at random from the distribution of <span class="math inline">\(\boldsymbol B\)</span> and count how often the resulting test statistic is no larger than <span class="math inline">\(T_{\delta, \textrm{obs}}\)</span> (for a left-sided <em>p</em>-value) or no smaller than <span class="math inline">\(T_{\delta, \textrm{obs}}\)</span> (for a right-sided <em>p</em>-value). This number plus one and then divided by <span class="math inline">\(M+1\)</span> is an exact left- or right-sided <em>p</em>-value. A two-sided <em>p</em>-value can then again be calculated as twice the smaller of these two one-sided <em>p</em>-values.</p>
+</section>
+<section id="the-randomisation-model-practice" class="level3">
+<h3 class="anchored" data-anchor-id="the-randomisation-model-practice">The randomisation model: Practice</h3>
+<p>Let’s put this theory into practice.</p>
+<p>First, we need to decide on a test statistic. In the code snippet below, I define five such statistics, mainly to illustrate the flexibility of the approach.</p>
+<ol type="1">
+<li>The difference between the means in the 0 condition and in the 1 condition.</li>
+<li>The difference between the medians in the 0 condition and in the 1 condition.</li>
+<li>The difference between the <a href="https://en.wikipedia.org/wiki/Interquartile_mean">midmeans</a> in the 0 condition and in the 1 condition.</li>
+<li>The rank sum of the observations in the 1 condition. To obtain this statistic, compute the ranks of all observations, and then sum the ranks of those in the 1 condition.</li>
+<li>The probability of superiority: If you pick a random observation in the 1 condition and compare it to a randomly chosen observation the 0 condition, what’s the probability that the 1 observation is higher than the 0 observation? Both the rank sum and the probability of superiority are closely connected to the Wilcoxon–Mann–Whitney tests.</li>
+</ol>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># All functions assume that one of the groups is coded as 0 and the other as 1.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mean_diff <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>median_diff <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">median</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>midmean_diff <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">1</span>], <span class="at">trim =</span> <span class="fl">0.25</span>) <span class="sc">-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">0</span>], <span class="at">trim =</span> <span class="fl">0.25</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ranksum <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  ranks <span class="ot">&lt;-</span> <span class="fu">rank</span>(x)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(ranks[group <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>probsup <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  n0 <span class="ot">&lt;-</span> <span class="fu">sum</span>(group <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(group <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">ranksum</span>(x, group) <span class="sc">-</span> n1<span class="sc">*</span>(n1 <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span>) <span class="sc">/</span> (n0 <span class="sc">*</span> n1)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>For the present data, the five observed test statistics are the following:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Mean difference</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">mean_diff</span>(Outcome, Group),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Median difference</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">median_diff</span>(Outcome, Group),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Midmean difference</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">midmean_diff</span>(Outcome, Group),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Rank sum</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ranksum</span>(Outcome, Group),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Probability of superiority</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">probsup</span>(Outcome, Group)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"Test statistic"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Value"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Value =</span> <span class="fu">round</span>(Value, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-teststats" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teststats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Observed test statistics.
+</figcaption>
+<div aria-describedby="tbl-teststats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Test statistic</th>
+<th style="text-align: right;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Mean difference</td>
+<td style="text-align: right;">0.62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median difference</td>
+<td style="text-align: right;">1.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Midmean difference</td>
+<td style="text-align: right;">0.56</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rank sum</td>
+<td style="text-align: right;">240.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Probability of superiority</td>
+<td style="text-align: right;">0.67</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The next code snippet defines the function <code>randomisation_test()</code>, which computes a left-sided, right-sided or two-sided (= default) <em>p</em>-value by applying a randomisation test for the test statistic of choice, as explained above. By default, 19,999 new assignment vectors are randomly generated under the assumption that <span class="math inline">\(\boldsymbol B \sim \textrm{Uniform}({\mathcal{B}_{k, \ell}})\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>randomisation_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomisation test of sharp null in two-group comparison.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    x,           <span class="co"># outcome</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    group,       <span class="co"># grouping variable</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    fun,         <span class="co"># function for computing test statistic from x and group</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> <span class="dv">0</span>,   <span class="co"># delta for sharp null hypothesis</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two_sided"</span>, <span class="co"># two-sided, left-sided or right-sided p-value?</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">M =</span> <span class="dv">19999</span>,   <span class="co"># number of new randomisations generated</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="co"># plot histogram of test statistic under H0?</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ...          <span class="co"># parameters passed to histogram</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  test_stat <span class="ot">&lt;-</span> <span class="fu">fun</span>(x, group)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  x[group <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> x[group <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span> delta</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  test_stat_H0 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(M, {</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fun</span>(x, <span class="fu">sample</span>(group))</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  test_stat_H0 <span class="ot">&lt;-</span> <span class="fu">c</span>(test_stat, test_stat_H0)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (plot) {</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(test_stat_H0, ...)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v =</span> test_stat, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  p_left <span class="ot">&lt;-</span> <span class="fu">mean</span>(test_stat_H0 <span class="sc">&lt;=</span> test_stat)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"l"</span>) <span class="fu">return</span>(p_left)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  p_right <span class="ot">&lt;-</span><span class="fu">mean</span>(test_stat_H0 <span class="sc">&gt;=</span> test_stat)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"r"</span>) <span class="fu">return</span>(p_right)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(p_left, p_right), <span class="dv">1</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p><a href="#fig-meandiff" class="quarto-xref">Figure&nbsp;2</a> shows the distribution of the mean difference under the sharp null hypothesis for <span class="math inline">\(\delta = 0\)</span>. The vertical line highlights the observed mean difference. The resulting two-sided <em>p</em>-value is about 0.12.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025-11-07</span>) <span class="co"># the day I wrote this</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, mean_diff, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">xlab =</span> <span class="st">"Mean difference"</span>, <span class="at">main =</span> <span class="st">"Distribution under H0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1213</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-meandiff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meandiff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-meandiff-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meandiff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The distribution of the mean difference under the sharp null hypothesis for <span class="math inline">\(\delta = 0\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While the distribution of the mean difference under <span class="math inline">\(H_0\)</span> looks roughly bell-shaped but with some gaps, the distribution of the median difference shown in <a href="#fig-mediandiff" class="quarto-xref">Figure&nbsp;3</a> looks much weirder. But no distributional assumptions are required for computing the randomisation-based <em>p</em>-value, and so the resulting <em>p</em>-value of 0.18 is also a valid, exact <em>p</em>-value testing <span class="math inline">\(H_0\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, median_diff, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">xlab =</span> <span class="st">"Median difference"</span>, <span class="at">main =</span> <span class="st">"Distribution under H0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1801</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-mediandiff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mediandiff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-mediandiff-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mediandiff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The distribution of the median difference under the sharp null hypothesis for <span class="math inline">\(\delta = 0\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Similarly, we can compute exact <em>p</em>-values for the other test statistics, or indeed for any statistic you can come up with. For the midmean, we obtain <span class="math inline">\(p = 0.20\)</span>; for the rank sum and the probability of superiority <span class="math inline">\(p = 0.14\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, midmean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.197</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, ranksum, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1403</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, probsup, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1426</code></pre>
+</div>
+</div>
+<p>All of these <em>p</em>-values are exact for tests of the sharp null hypothesis. In fact, any test statistic can be used, and the resulting inference will still be exact as long as the randomisation procedure is correctly mirrored in the computation. Computing tests for several test statistics is a bad idea, however, as you’re just creating a multiple-comparisons problem. At present, I’m not aware of general rules of thumb for choosing among different test statistics, beyond the simple advice that the test statistic should be sensitive to the kinds of departures from the null hypothesis that are scientifically relevant. But I’ll look into it.</p>
+<p>What may not sit so well with some readers is that repeated runs of the same randomisation test won’t produce identical results. This is due to the randomness involved in choosing the assignment vectors. For instance, another run of the randomisation test for the mean difference yields a slightly different result from the first one.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, mean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1245</code></pre>
+</div>
+</div>
+<p>Increasing <span class="math inline">\(M\)</span> decreases this variability, but crucially, the validity of the <em>p</em>-value does not depend on the specific choice of <span class="math inline">\(M\)</span>. In practical terms, preregistering a test statistic, a random seed, and <span class="math inline">\(M\)</span> strikes me as a good idea.</p>
+</section>
+<section id="the-population-model-a-fiction-but-a-useful-one" class="level3">
+<h3 class="anchored" data-anchor-id="the-population-model-a-fiction-but-a-useful-one">The population model: A fiction but a useful one</h3>
+<p>Student’s two-sample <em>t</em>-test serves as the classical population-model counterpart to the randomisation test for the mean difference. In the present example, the <em>p</em>-value it outputs (0.10) is similar but not quite identical to the one we obtained above.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(d<span class="sc">$</span>Outcome <span class="sc">~</span> d<span class="sc">$</span>Group, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  d$Outcome by d$Group
+t = -1.698, df = 25, p-value = 0.1019
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -1.3646507  0.1313174
+sample estimates:
+mean in group 0 mean in group 1 
+       8.250000        8.866667 </code></pre>
+</div>
+</div>
+<p>This is typical: it’s surprisingly difficult to construct realistic examples, even with simulated data, where the <em>t</em>-test yields a markedly different <em>p</em>-value from the randomisation test for the mean difference. This similarity is not coincidental. Indeed, the <em>t</em>-test and its cousins gained their popularity precisely because, in the pre-computer era, they provided a computationally tractable approximation of randomisation tests. But just because the <em>t</em>-test generally produces similar <em>p</em>-values to those obtained by an exact procedure doesn’t mean that the <em>t</em>-test is also exact.</p>
+<p>(Incidentally, population-based approaches tend to produce results close to those obtained under the randomisation model because, for moderately large samples and under mild regularity conditions, the distribution of the mean difference under all possible random permutations of the group labels is approximately normal.)</p>
+</section>
+</section>
+<section id="the-scope-of-inference" class="level2">
+<h2 class="anchored" data-anchor-id="the-scope-of-inference">The scope of inference</h2>
+<p>Under the randomisation model, the null hypothesis concerns only the specific experimental units included in the study. As a result, any <em>statistical</em> inference drawn is about what happened in the experiment, not about what might happen in a larger population (whatever it may be). Since population-model tests used in randomised experiments are useful by virtue of how well they approximate randomisation-model methods, any statistical inferences they enable still concern only the experimental units included in the study.</p>
+<p>This is not to say that generalisation beyond the experimental units is impossible. But it must be based on subject-matter arguments, not on statistical ones. In practice, this is precisely what reasonable researchers do: they interpret each others’ and their own findings by taking external validity into account.</p>
+</section>
+<section id="what-about-random-group-sizes" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-random-group-sizes">What about random group sizes?</h2>
+<p>Before we apply the randomisation model to a real dataset, it is worth considering experiments in which the group sizes aren’t fixed in advance. Suppose we have an experiment with <span class="math inline">\(m\)</span> experimental units (e.g., participants) that are randomly assigned to two conditions. Unlike in our previous discussion, the number of units assigned to each condition isn’t predetermined. For instance, each participant may be assigned independently to the first or second condition with equal probability.</p>
+<p>In this case, the assignment vector <span class="math inline">\(\boldsymbol B\)</span> isn’t distributed according to <span class="math inline">\(\textrm{Uniform}(\mathcal{B}_{k, \ell})\)</span> with fixed group sizes <span class="math inline">\(k, \ell\)</span>. Instead, <span class="math inline">\(\boldsymbol B\)</span> follows some distribution over <span class="math inline">\(\{0, 1\}^m\)</span>. Fortunately, we can still apply the same randomisation test as before: we simply use the observed number <span class="math inline">\(K\)</span> of units assigned to the first condition and the observed number <span class="math inline">\(L\)</span> of units assigned to the second condition in lieu of some fixed <span class="math inline">\(k\)</span> and <span class="math inline">\(\ell\)</span>. In statistical parlance, we condition on the observed group sizes.</p>
+<p>The reason why we can condition on the observed group sizes is as follows. Let <span class="math inline">\(P\)</span> denote the <em>p</em>-value obtained from the randomisation test conditional on the groups sizes <span class="math inline">\(K\)</span> and <span class="math inline">\(L\)</span> under the sharp null hypothesis. For any fixed group sizes <span class="math inline">\(k, \ell\)</span>, the randomisation test is exact. Hence, <span class="math inline">\(\textrm{Prob}(P \leq \alpha | K = k, L = \ell) \leq \alpha\)</span> for any <span class="math inline">\(\alpha \in (0, 1)\)</span> and for any <span class="math inline">\(k, \ell\)</span> with <span class="math inline">\(k + \ell = m\)</span>. So, under the null, <span class="math display">\[\begin{align*}
+  \textrm{Prob}(P \leq \alpha)
+  &amp;= \sum_{\boldsymbol b \in \mathcal{B}_{m}} \underbrace{\textrm{Prob}(P \leq \alpha | K = m - L, L = \sum_{i = 1}^m b_i)}_{\leq \alpha}\textrm{Prob}(K = m - L, L = \sum_{i = 1}^m b_i) \\
+  &amp;\leq \alpha \sum_{\boldsymbol b \in \mathcal{B}_{m}} \textrm{Prob}(K = m - L, L = \sum_{i = 1}^m b_i) \\
+  &amp;= \alpha,
+\end{align*}\]</span> for any <span class="math inline">\(\alpha \in (0,1)\)</span>. So <span class="math inline">\(P\)</span> is an exact <em>p</em>-value even when the group sizes are random rather than fixed.</p>
+<p>The same reasoning works if we condition on, say, the total number of experimental units. So randomisation tests also work when the participants trickle into the lab and the total number of participants isn’t known in advance.</p>
+<p>(Alternatively, we could write a slight variant of the <code>randomisation_test()</code> function in which the new assignment vectors <span class="math inline">\(\boldsymbol b\)</span> are sampled from the unconditional distribution.)</p>
+</section>
+<section id="a-real-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-real-example">A real example</h2>
+<p>Klein et al.&nbsp;(2014) replicated a study originally devised by Oppenheimer and Monin (2009) at 36 different sites. This is their description:</p>
+<blockquote class="blockquote">
+<p>``Oppenheimer &amp; Monin (2009) investigated whether the rarity of an independent, chance observation influenced beliefs about what occurred before that event. Participants imagined that they saw a man rolling dice in a casino. In one condition, participants imagined witnessing three dice being rolled and all came up 6’s. In a second condition two came up 6’s and one came up 3. In a third condition, two dice were rolled and both came up 6’s. All participants then estimated, in an open-ended format, how many times the man had rolled the dice before they entered the room to watch him. Participants estimated that the man rolled dice more times when they had seen him roll three 6’s than when they had seen him roll two 6’s or two 6’s and a 3. For the replication, the condition in which the man rolls two 6’s was removed leaving two conditions.’’</p>
+</blockquote>
+<p>Let’s use the data from the Brasília site as a more realistic example; see <a href="#tbl-summaryklein" class="quarto-xref">Table&nbsp;3</a> and <a href="#fig-boxplotklein" class="quarto-xref">Figure&nbsp;4</a>. The participants were randomly assigned to the conditions, but without enforcing specific group sizes. For the randomisation tests, we’ll condition on the observed group sizes.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Klein2014_gambler.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sample <span class="sc">==</span> <span class="st">"brasilia"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(RollsImagined))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>n.Condition <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(d<span class="sc">$</span>Condition <span class="sc">==</span> <span class="st">"three6"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Condition) <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">mean</span>(RollsImagined) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median =</span> <span class="fu">median</span>(RollsImagined),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Standard deviation</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sd</span>(RollsImagined) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-summaryklein" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summaryklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Results summary of Klein et al.’s replication of the gambler’s fallacy study in Brasília.
+</figcaption>
+<div aria-describedby="tbl-summaryklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Condition</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Mean</th>
+<th style="text-align: right;">Median</th>
+<th style="text-align: right;">Standard deviation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">three6</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">71.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">two6</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> RollsImagined)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">shape =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">height =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">name =</span> <span class="st">"Condition"</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="st">"two6"</span>, <span class="st">"three6"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"two sixes"</span>, <span class="st">"three sixes"</span>)) <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Number of previous rolls imagined"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-boxplotklein" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-boxplotklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-boxplotklein-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-boxplotklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Data from the replication of the gambler’s fallacy study at the Brasília site.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-meandiffklein" class="quarto-xref">Figure&nbsp;5</a> shows the distribution of the mean differences under the null hypothesis. Note the weird multimodal distribution of the test statistic. Nevertheless, the <em>p</em>-value of 0.17 is valid for the null hypothesis that none of the participants’ estimations would have been different in the other condition.</p>
+<div class="cell preview-image">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>RollsImagined, d<span class="sc">$</span>n.Condition, mean_diff,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">xlab =</span> <span class="st">"Mean difference"</span>, <span class="at">main =</span> <span class="st">"Distribution under H0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1659</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-meandiffklein" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meandiffklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-meandiffklein-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meandiffklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The distribution of the mean difference under the sharp null hypothesis for <span class="math inline">\(\delta = 0\)</span> for the Brasília replication of the gambler’s fallacy.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Further, despite the wonky distribution of the mean difference under the null hypothesis, Student’s <em>t</em>-test produces a highly similar <em>p</em>-value.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(d<span class="sc">$</span>RollsImagined <span class="sc">~</span> d<span class="sc">$</span>n.Condition, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  d$RollsImagined by d$n.Condition
+t = -1.3905, df = 112, p-value = 0.1671
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ -34.116850   5.978661
+sample estimates:
+mean in group 0 mean in group 1 
+       8.137255       22.206349 </code></pre>
+</div>
+</div>
+<p>Klein et al.&nbsp;actually square-root-transformed the data. If we feed the square-root-transformed data to a randomisation test, we obtain <span class="math inline">\(p = 0.048\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(<span class="fu">sqrt</span>(d<span class="sc">$</span>RollsImagined), d<span class="sc">$</span>n.Condition, mean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0483</code></pre>
+</div>
+</div>
+<p>The corresponding <em>t</em>-test again yields quite a similar result, though one that many researchers would interpret differently (<span class="math inline">\(p = 0.06\)</span>).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(<span class="fu">sqrt</span>(d<span class="sc">$</span>RollsImagined) <span class="sc">~</span> d<span class="sc">$</span>n.Condition, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06051211</code></pre>
+</div>
+</div>
+<p>I suspect that Klein et al.&nbsp;used a square-root transformation rather than a rank-based test because they wanted to compare results across replicated studies, and this required them to express the findings of all studies in terms of mean differences. But since we don’t have this problem, we can turn to other test statistics, such as the probability of superiority; see <a href="#fig-propsupklein" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>RollsImagined, d<span class="sc">$</span>n.Condition, probsup,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="dv">50</span>, <span class="at">xlab =</span> <span class="st">"Probability of superiority"</span>, <span class="at">main =</span> <span class="st">"Distribution under H0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0489</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-propsupklein" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-propsupklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-propsupklein-1.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-propsupklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: The distribution of the probability of superiority under the sharp null hypothesis for <span class="math inline">\(\delta = 0\)</span> for the Brasília replication of the gambler’s fallacy.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The resulting <em>p</em>-value (0.049) is very similar to the one produced by the corresponding Wilcoxon–Mann–Whitney test.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(d<span class="sc">$</span>RollsImagined <span class="sc">~</span> d<span class="sc">$</span>n.Condition, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test
+
+data:  d$RollsImagined by d$n.Condition
+W = 1265, p-value = 0.05037
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<p>Incidentally, you can use the <span class="math inline">\(W = 1265\)</span> statistic in the model output to compute the probability of superiority like so:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="dv">1265</span> <span class="sc">/</span> (<span class="fu">sum</span>(d<span class="sc">$</span>n.Condition <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">sum</span>(d<span class="sc">$</span>n.Condition <span class="sc">==</span> <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.606287</code></pre>
+</div>
+</div>
+</section>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<p>The randomisation model offers a way to compute valid <em>p</em>-values that are justified by the research design rather than by alluding to an imagined population and an idealised sampling procedure. Nevertheless, the population model is useful, but mostly as an approximation. It allows for convenient, general-purpose methods (e.g., the <em>t</em>-test) that tend to work well for largish samples. But the asymptotic reasoning that underpins the use of these methods in randomised experiments involves complex mathematics and only guarantees large-sample validity. Randomisation tests, by contrast, are conceptually straightforward and the resulting inferences are exact for any sample size. In the words of Berger et al.&nbsp;(2002):</p>
+<blockquote class="blockquote">
+<p>``If credibility for the parametric [= population-model test, JV] derives from assurances that its p-value will likely be close to the corresponding exact one, then this is tantamount to an admission that the exact test is the gold standard (or, perhaps, the platinum standard).’’ (p.&nbsp;79)</p>
+</blockquote>
+<p>(Platinum was worth more than gold in 2002.)</p>
+<p>Randomisation testing is also flexible: we can make up any test statistic we deem suitable and obtain a valid <em>p</em>-value for the test of the sharp null hypothesis. If the test statistic we choose has a classical population-model counterpart (e.g., Student’s two-sample <em>t</em>-test when testing the mean difference), the randomisation test and its classical counterpart usually result in similar <em>p</em>-values. But running the randomisation test instead of the classical counterpart is a small change that makes the resulting inferences more defensible.</p>
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">What’s next?</h2>
+<p>The randomisation approach extends beyond simple two-group comparisons. In future posts, I’ll explore how it applies to more complex experimental designs.</p>
+<p>What’s not obvious to me is how sensible confidence intervals could be constructed in the randomisation model. This, too, will have to be the subject for another post.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Berger, Vance W., Clifford E. Lunneborg, Michael D. Ernst &amp; Jonathan G. Levine. 2002. <a href="https://doi.org/10.22237/jmasm/1020255120">Parametric analysis in randomized clinical trials</a>. <em>Journal of Modern Applied Statistical Methods</em> 1(1). 74–82.</p>
+<p>Klein, Richard A., Kate A. Ratliff, Michelangelo Vianello, Reginald B. Adams Jr., Štěpán Bahník, Michael J. Bernstein, Konrad Bocian et al.&nbsp;2014. <a href="https://doi.org/10.1027/1864-9335/a000178">Investigating variation in replicability: A “many labs” replication project</a>. <em>Social Psychology</em> 45(3). 142–152.</p>
+<p>Oppenheimer, Daniel M. &amp; Benoît Monin. 2009. <a href="https://doi.org/10.1017/S1930297500001170">The retrospective gambler’s fallacy: Unlikely events, constructing the past, and multiple universes</a>. <em>Judgment and Decision Making</em> 4(5). 326–334.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>(<span class="st">"attached"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.1 (2025-06-13)
+ os       Ubuntu 25.10
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2025-11-09
+ pandoc   3.8 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+ quarto   1.8.25 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package   * version date (UTC) lib source
+ dplyr     * 1.1.4   2023-11-17 [1] CRAN (R 4.5.1)
+ forcats   * 1.0.1   2025-09-25 [1] CRAN (R 4.5.1)
+ ggplot2   * 4.0.0   2025-09-11 [1] CRAN (R 4.5.1)
+ lubridate * 1.9.4   2024-12-08 [1] CRAN (R 4.5.1)
+ purrr     * 1.1.0   2025-07-10 [1] CRAN (R 4.5.1)
+ readr     * 2.1.5   2024-01-10 [1] CRAN (R 4.5.1)
+ stringr   * 1.5.2   2025-09-08 [1] CRAN (R 4.5.1)
+ tibble    * 3.3.0   2025-06-08 [1] CRAN (R 4.5.1)
+ tidyr     * 1.3.1   2024-01-24 [1] CRAN (R 4.5.1)
+ tidyverse * 2.0.0   2023-02-22 [1] CRAN (R 4.5.1)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+ * ── Packages attached to the search path.
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

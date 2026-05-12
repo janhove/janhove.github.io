@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2016-11-16">
+
+<title>Common-language effect sizes – Jan Vanhove</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-the-common-language-effect-size" id="toc-what-is-the-common-language-effect-size" class="nav-link active" data-scroll-target="#what-is-the-common-language-effect-size">What is the ‘common-language effect size’?</a></li>
+  <li><a href="#computing-common-language-effect-sizes-in-r" id="toc-computing-common-language-effect-sizes-in-r" class="nav-link" data-scroll-target="#computing-common-language-effect-sizes-in-r">Computing common-language effect sizes in R</a></li>
+  <li><a href="#an-example-with-non-overlapping-distributions" id="toc-an-example-with-non-overlapping-distributions" class="nav-link" data-scroll-target="#an-example-with-non-overlapping-distributions">An example with non-overlapping distributions</a></li>
+  <li><a href="#for-use-with-more-complex-datasets" id="toc-for-use-with-more-complex-datasets" class="nav-link" data-scroll-target="#for-use-with-more-complex-datasets">For use with more complex datasets</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Common-language effect sizes</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">simplicity</div>
+    <div class="quarto-category">effect sizes</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 16, 2016</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The goal of this blog post is to share with you a simple <code>R</code> function that may help you to better communicate the extent to which two groups differ and overlap by computing <em>common-language effect sizes</em>.</p>
+<section id="what-is-the-common-language-effect-size" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-common-language-effect-size">What is the ‘common-language effect size’?</h2>
+<p>In 1992, <a href="http://psycnet.apa.org/doi/10.1037/0033-2909.111.2.361">McGraw and Wong</a> introduced the common-language effect size, which they defined as</p>
+<blockquote class="blockquote">
+<p>the probability that a score sampled at random from one distribution will be greater than a score sampled from some other distribution.</p>
+</blockquote>
+<p>For instance, if you have scores on an English reading comprehension task for both French- and German-speaking learners, you can compute the probability that a randomly chosen French-speaking learner will have a higher score than a randomly chosen German-speaking learner. This gives you an idea of how much the groups’ scores overlap, and the number can more easily be communicated to an audience that has no firm notion of what quantiles are or of what standardised effect sizes such as <em>d = 0.3</em> mean.</p>
+</section>
+<section id="computing-common-language-effect-sizes-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="computing-common-language-effect-sizes-in-r">Computing common-language effect sizes in R</h2>
+<p>Below I first generate some data: 40 data points in a group creatively called <code>A</code> vs.&nbsp;30 data points in group <code>B</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">16-11-2016</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Outcome =</span> <span class="fu">c</span>(<span class="fu">rbeta</span>(<span class="dv">40</span>, <span class="dv">4</span>, <span class="dv">14</span>),   <span class="co"># 40 observations in A</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">rbeta</span>(<span class="dv">30</span>, <span class="dv">2</span>, <span class="dv">4</span>)),   <span class="co"># 30 in B</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"A"</span>, <span class="dv">40</span>), <span class="fu">rep</span>(<span class="st">"B"</span>, <span class="dv">30</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A couple of boxplots to show the spread and central tendencies:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And the key summary statistics:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  Group  Mean Standard_Deviation
+  &lt;chr&gt; &lt;dbl&gt;              &lt;dbl&gt;
+1 A     0.244             0.0841
+2 B     0.301             0.172 </code></pre>
+</div>
+</div>
+<p>On the basis of the group means and standard deviations, McGraw and Wong’s common-language effect size can be computed as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pnorm</span>(<span class="dv">0</span>, <span class="fl">0.24</span> <span class="sc">-</span> <span class="fl">0.30</span>, <span class="fu">sqrt</span>(<span class="fl">0.084</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fl">0.172</span><span class="sc">^</span><span class="dv">2</span>), <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.38</code></pre>
+</div>
+</div>
+<p>I.e., there’s a 38% chance that if you put an observation from Group A and one from Group B together at random, the one from Group A will be greater.</p>
+<p>Strictly speaking, McGraw and Wong’s method assumes normally distributed, continuous data. While they point out that their measure is quite robust with respect to this assumption, you can use a brute-force method that doesn’t make this assumption to see if that yields different results.</p>
+<p><strong>Edit: On Twitter, Guillaume Rousselet <a href="https://twitter.com/robustgar/status/798962929475457024">suggested</a> a quicker <em>and</em> mor exhaustive brute-force method for computing common-language effect sizes. I’ve updated the code and post to implement his suggestion.</strong></p>
+<p>On <a href="http://janhove.github.io/RCode/CommonLanguageEffectSizes.R">https://janhove.github.io/RCode/CommonLanguageEffectSizes.R</a>, I provide a function, <code>cles.fnc()</code>, that pairs each observation from the first group to each observation from the second group and then checks how often the observation from the first group is larger than the one from the second group. Ties are also taken into account.</p>
+<p>Here’s how the <code>cles.fnc()</code> function works:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the function</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"https://janhove.github.io/RCode/CommonLanguageEffectSizes.R"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set variable you want to compare between the groups,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the group name,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># the baseline level,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and the dataset:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>cles <span class="ot">&lt;-</span> <span class="fu">cles.fnc</span>(<span class="at">variable =</span> <span class="st">"Outcome"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">baseline =</span> <span class="st">"A"</span>, <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Common-language effect size:
+
+The probability that a random Outcome observation from group A
+is higher/larger than a random Outcome observation from the other group(s):
+
+    Algebraic method:   0.38
+    Brute-force method: 0.4</code></pre>
+</div>
+</div>
+<p>The results for both methods aren’t identical (38% vs.&nbsp;40%), but they’re in the same ballpark. This is more often the case than not.</p>
+<p>You can turn off the output by setting the parameter <code>print</code> to <code>FALSE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## (not run)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># cles &lt;- cles.fnc(variable = "Outcome", group = "Group", baseline = "A", data = df, print = FALSE)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You can also extract information from the <code>cles</code> object if you want to pass it on to other functions:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cles<span class="sc">$</span>algebraic <span class="co"># McGraw &amp; Wong's method</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.38</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cles<span class="sc">$</span>brute     <span class="co"># brute-force method</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4</code></pre>
+</div>
+</div>
+</section>
+<section id="an-example-with-non-overlapping-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="an-example-with-non-overlapping-distributions">An example with non-overlapping distributions</h2>
+<p>The code below generates a dataset with two non-overlapping groups.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">16-11-2016</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Outcome =</span> <span class="fu">c</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>, <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">sample</span>(<span class="dv">21</span><span class="sc">:</span><span class="dv">25</span>, <span class="dv">10</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"A"</span>, <span class="dv">10</span>), <span class="fu">rep</span>(<span class="st">"B"</span>, <span class="dv">10</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Boxplots:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>McGraw &amp; Wong’s (1992) method suggests that there’s a 4% chance that a random observation in A will be higher than one in B. This may well be true at the population level, but it’s clearly not true at the sample level. The brute-force method pegs this probability at 0%, which may be wrong at the population level, but it’s clearly correct at the sample level.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cles <span class="ot">&lt;-</span> <span class="fu">cles.fnc</span>(<span class="at">variable =</span> <span class="st">"Outcome"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">baseline =</span> <span class="st">"A"</span>, <span class="at">data =</span> df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Common-language effect size:
+
+The probability that a random Outcome observation from group A
+is higher/larger than a random Outcome observation from the other group(s):
+
+    Algebraic method:   0.04
+    Brute-force method: 0</code></pre>
+</div>
+</div>
+</section>
+<section id="for-use-with-more-complex-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="for-use-with-more-complex-datasets">For use with more complex datasets</h2>
+<p>Let’s say you have data from a longitudinal study in which you collected data for Groups A and B at Times 1, 2 and 3, and you want to compare the groups at each time:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate data</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">16-11-2016</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Time =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">40</span>), <span class="fu">rep</span>(<span class="dv">2</span>, <span class="dv">40</span>), <span class="fu">rep</span>(<span class="dv">3</span>, <span class="dv">40</span>)),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"A"</span>, <span class="dv">25</span>), <span class="fu">rep</span>(<span class="st">"B"</span>, <span class="dv">15</span>)), <span class="dv">3</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Outcome =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="fl">1.1</span>, <span class="fl">1.0</span>), <span class="fu">rnorm</span>(<span class="dv">15</span>, <span class="fl">1.2</span>, <span class="fl">0.3</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="fl">1.2</span>, <span class="fl">0.6</span>), <span class="fu">rnorm</span>(<span class="dv">15</span>, <span class="fl">1.2</span>, <span class="fl">0.8</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">rnorm</span>(<span class="dv">25</span>, <span class="fl">1.8</span>, <span class="fl">0.4</span>), <span class="fu">rnorm</span>(<span class="dv">15</span>, <span class="fl">1.7</span>, <span class="fl">1.0</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The boxplots:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the <code>by()</code> function, you can run <code>cles.fnc()</code> separately for each <code>Time</code>. For more complex datasets, you can include more variables in the <code>INDICES</code> list.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cles <span class="ot">&lt;-</span> <span class="fu">with</span>(df, <span class="co"># select dataframe df</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">by</span>(<span class="at">data =</span> df, <span class="co"># group dataframe df</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">INDICES =</span> <span class="fu">list</span>(<span class="at">Time =</span> Time), <span class="co"># by Time</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                <span class="co"># and run cles.fnc() within each group</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">cles.fnc</span>(<span class="st">"Outcome"</span>, <span class="st">"Group"</span>, <span class="st">"A"</span>, <span class="at">data =</span> x, <span class="at">print =</span> <span class="cn">FALSE</span>)))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>cles</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Time: 1
+$algebraic
+[1] 0.45
+
+$brute
+[1] 0.55
+
+------------------------------------------------------------ 
+Time: 2
+$algebraic
+[1] 0.46
+
+$brute
+[1] 0.5
+
+------------------------------------------------------------ 
+Time: 3
+$algebraic
+[1] 0.75
+
+$brute
+[1] 0.77</code></pre>
+</div>
+</div>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.1 (2025-06-13)
+ os       Ubuntu 22.04.5 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2025-09-24
+ pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package      * version date (UTC) lib source
+ cachem         1.1.0   2024-05-16 [1] CRAN (R 4.5.1)
+ callr          3.7.6   2024-03-25 [1] CRAN (R 4.5.1)
+ cli            3.6.5   2025-04-23 [1] CRAN (R 4.5.1)
+ crayon         1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
+ devtools       2.4.5   2022-10-11 [1] CRAN (R 4.5.1)
+ digest         0.6.37  2024-08-19 [1] CRAN (R 4.5.1)
+ dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.5.1)
+ ellipsis       0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate       1.0.4   2025-06-18 [1] CRAN (R 4.5.1)
+ farver         2.1.2   2024-05-13 [1] CRAN (R 4.5.1)
+ fastmap        1.2.0   2024-05-15 [1] CRAN (R 4.5.1)
+ forcats      * 1.0.0   2023-01-29 [1] CRAN (R 4.5.1)
+ fs             1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ generics       0.1.4   2025-05-09 [1] CRAN (R 4.5.1)
+ ggplot2      * 3.5.2   2025-04-09 [1] CRAN (R 4.5.1)
+ glue           1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ gtable         0.3.6   2024-10-25 [1] CRAN (R 4.5.1)
+ hms            1.1.3   2023-03-21 [1] CRAN (R 4.5.1)
+ htmltools      0.5.8.1 2024-04-04 [1] CRAN (R 4.5.1)
+ htmlwidgets    1.6.4   2023-12-06 [1] CRAN (R 4.5.1)
+ httpuv         1.6.16  2025-04-16 [1] CRAN (R 4.5.1)
+ jsonlite       2.0.0   2025-03-27 [1] CRAN (R 4.5.1)
+ knitr          1.50    2025-03-16 [1] CRAN (R 4.5.1)
+ labeling       0.4.3   2023-08-29 [1] CRAN (R 4.5.1)
+ later          1.4.2   2025-04-08 [1] CRAN (R 4.5.1)
+ lifecycle      1.0.4   2023-11-07 [1] CRAN (R 4.5.1)
+ lubridate    * 1.9.4   2024-12-08 [1] CRAN (R 4.5.1)
+ magrittr       2.0.3   2022-03-30 [1] CRAN (R 4.5.1)
+ memoise        2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime           0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI         0.1.2   2025-04-17 [1] CRAN (R 4.5.1)
+ pillar         1.10.2  2025-04-05 [1] CRAN (R 4.5.1)
+ pkgbuild       1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
+ pkgconfig      2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload        1.4.0   2024-06-28 [1] CRAN (R 4.5.1)
+ prettyunits    1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx       3.8.6   2025-02-21 [1] CRAN (R 4.5.1)
+ profvis        0.4.0   2024-09-20 [1] CRAN (R 4.5.1)
+ promises       1.3.3   2025-05-29 [1] CRAN (R 4.5.1)
+ ps             1.9.1   2025-04-12 [1] CRAN (R 4.5.1)
+ purrr        * 1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
+ R6             2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ RColorBrewer   1.1-3   2022-04-03 [1] CRAN (R 4.5.1)
+ Rcpp           1.0.14  2025-01-12 [1] CRAN (R 4.5.1)
+ readr        * 2.1.5   2024-01-10 [1] CRAN (R 4.5.1)
+ remotes        2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang          1.1.6   2025-04-11 [1] CRAN (R 4.5.1)
+ rmarkdown      2.29    2024-11-04 [1] CRAN (R 4.5.1)
+ rstudioapi     0.17.1  2024-10-22 [1] CRAN (R 4.5.1)
+ scales         1.4.0   2025-04-24 [1] CRAN (R 4.5.1)
+ sessioninfo    1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny          1.10.0  2024-12-14 [1] CRAN (R 4.5.1)
+ stringi        1.7.6   2021-11-29 [2] CRAN (R 4.2.0)
+ stringr      * 1.5.1   2023-11-14 [1] CRAN (R 4.5.1)
+ tibble       * 3.3.0   2025-06-08 [1] CRAN (R 4.5.1)
+ tidyr        * 1.3.1   2024-01-24 [1] CRAN (R 4.5.1)
+ tidyselect     1.2.1   2024-03-11 [1] CRAN (R 4.5.1)
+ tidyverse    * 2.0.0   2023-02-22 [1] CRAN (R 4.5.1)
+ timechange     0.3.0   2024-01-18 [1] CRAN (R 4.5.1)
+ tzdb           0.5.0   2025-03-15 [1] CRAN (R 4.5.1)
+ urlchecker     1.0.1   2021-11-30 [1] CRAN (R 4.5.1)
+ usethis        3.1.0   2024-11-26 [1] CRAN (R 4.5.1)
+ utf8           1.2.2   2021-07-24 [2] CRAN (R 4.2.0)
+ vctrs          0.6.5   2023-12-01 [1] CRAN (R 4.5.1)
+ withr          3.0.2   2024-10-28 [1] CRAN (R 4.5.1)
+ xfun           0.52    2025-04-02 [1] CRAN (R 4.5.1)
+ xtable         1.8-4   2019-04-21 [1] CRAN (R 4.5.1)
+ yaml           2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

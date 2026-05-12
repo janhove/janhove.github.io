@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2015-11-02">
+
+<title>Causes and consequences of unequal sample sizes – Jan Vanhove</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goal" id="toc-goal" class="nav-link active" data-scroll-target="#goal">Goal</a></li>
+  <li><a href="#simple-randomisation-as-the-cause-of-sample-size-imbalance" id="toc-simple-randomisation-as-the-cause-of-sample-size-imbalance" class="nav-link" data-scroll-target="#simple-randomisation-as-the-cause-of-sample-size-imbalance">Simple randomisation as the cause of sample size imbalance</a></li>
+  <li><a href="#planned-imbalances" id="toc-planned-imbalances" class="nav-link" data-scroll-target="#planned-imbalances">Planned imbalances</a></li>
+  <li><a href="#drop-outs-and-missing-data" id="toc-drop-outs-and-missing-data" class="nav-link" data-scroll-target="#drop-outs-and-missing-data">Drop-outs and missing data</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#r-code-average-power-of-experiments-with-simple-randomisation" id="toc-r-code-average-power-of-experiments-with-simple-randomisation" class="nav-link" data-scroll-target="#r-code-average-power-of-experiments-with-simple-randomisation">R code: Average power of experiments with simple randomisation</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Causes and consequences of unequal sample sizes</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">power</div>
+    <div class="quarto-category">design features</div>
+    <div class="quarto-category">missing data</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 2, 2015</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this blog post, I want to dispel a myth that’s reasonably common among students: the notion that there’s something wrong about a study that compares groups of different sizes.</p>
+<section id="goal" class="level2">
+<h2 class="anchored" data-anchor-id="goal">Goal</h2>
+<p>There is something aesthetically pleasing about studies that compare two equal-sized groups. An experiment with two conditions with 30 participants each looks ‘cleaner’ than one with 27 participants in one condition and 34 in the other. Whatever the reasons for this aesthetic appeal may be, I’m going to argue that there’s nothing un-kosher about unequal sample sizes per se. This post is geared first and foremost to our MA students, primarily to help them get rid of the idea that they should throw away data in order to perfectly balance their datasets.</p>
+<p>There are three main causes of unequal sample sizes: simple random assignment of participants to conditions; planned imbalances; and drop-outs and missing data. I will discuss these in order.</p>
+</section>
+<section id="simple-randomisation-as-the-cause-of-sample-size-imbalance" class="level2">
+<h2 class="anchored" data-anchor-id="simple-randomisation-as-the-cause-of-sample-size-imbalance">Simple randomisation as the cause of sample size imbalance</h2>
+<p>The random assignment of participants to the different conditions is the hallmark of a ‘true experiment’ and distinguishes it from ‘quasi-experiments’. Random assignment can be accomplished in essentially two different ways. The first technique is <strong>complete randomisation</strong>: first, sixty participants are recruited; then, half of them are randomly assigned to the control and half to the experimental condition. This technique guarantees that an equal number of participants is assigned to both conditions. The second technique is <strong>simple randomisation</strong>: for each participant that volunteers for the experiment, there’s a 50/50 chance that she ends up in the control or in the experimental condition – regardless of how large either sample already is. Simple randomisation causes unequal sample sizes: you’re not guaranteed to get <em>exactly</em> 30 heads in 60 coin flips, and similarly you’re not guaranteed to get exactly 30 participants in either condition.</p>
+<p>(Note: Some refer to ‘simple randomisation’ as ‘complete randomisation’, so check how the procedures are described when reading about randomisation techniques.)</p>
+<p>Unequal sample sizes, then, may be the consequence of using simple rather than complete randomisation. And there can be good reasons for choosing simple rather than complete randomisation as your allocation technique, notably a reduced potential for selection bias (see <a href="http://www.trialsjournal.com/content/16/1/405/abstract">Kahan et al.&nbsp;2015</a>) and ease of planning (it’s easier to let the experimental software take care of the randomisation than to keep track of the number of participants in each condition as participants find their way to the lab).</p>
+<p>Compared to complete randomisation, simple randomisation seems to have a distinct disadvantage, however: an experiment with 60 participants in total has more power, i.e.&nbsp;a better chance to find systematic differences between the conditions, if the participants are distributed evenly across the conditions (i.e.&nbsp;30/30, complete randomisation) than if they’re distributed unevenly (e.g.&nbsp;20/40). (This is assuming that the variability in both conditions is comparable.) For this reason, it’s usually much better to have 50 participants in both conditions rather than 20 in one condition and 200 in the other – even though the total number of participants is much greater in the second set-up. Simple randomisation, however, can cause such imbalances. In fact, it’s possible to end up with <em>no</em> participants in one of the groups.</p>
+<p>But. While stark imbalances are <em>possible</em> when using simple randomisation, they’re also pretty improbable. Figure 1 shows the probability of ending up with any number of participants in one condition when 60 participants are randomly assigned to one of two conditions with equal probability. As this graph illustrates, it’s highly improbable to end up with 10 participants in the first condition (and 50 in the other). In fact, in 999 out of 1,000 cases, you’ll end up with between 17 and 43 participants in each group.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
+<figcaption>Figure 1: Probability that simple randomisation will give rise to a specific numbers of participants in one condition if the total number of participants is 60 and they are assigned to one of two conditions with equal probability and independently of one another.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Additionally, while equal-sized groups maximise statistical power, the advantage is easily overstated. An experiment with 30+30 participants has a 76% chance to detect a systematic difference of 0.7 standard deviations between the two group means; for an experiment with 20+40 participants, this probability is 71%. On average, an experiment in which 60 participants are assigned to the conditions according to a simple randomisation procedure has 75% power to detect a difference of 0.7 standard deviations. The difference in power between complete randomisation (guaranteeing equal sample sizes) and simple randomisation, then, is minimal. Table 1 compares a couple of additional set-ups, and all point to the same conclusion: <strong>the loss of power associated with simple vs.&nbsp;complete randomisation is negligible.</strong></p>
+<table class="caption-top table">
+<caption><strong>Table 1:</strong> Comparison of the power of an experiment using complete randomisation (equal sample sizes) and the average power of an experiment using simple randomisation (possibly unequal sample sizes). The R code for the comparison is at the bottom of this post.</caption>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 14%">
+<col style="width: 32%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Total number of participants</th>
+<th>Difference (sd)</th>
+<th>Power complete randomisation (t-test)</th>
+<th>Power simple randomisation (t-test)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20</td>
+<td>0.7</td>
+<td>0.32</td>
+<td>0.30</td>
+</tr>
+<tr class="even">
+<td>60</td>
+<td>0.7</td>
+<td>0.76</td>
+<td>0.75</td>
+</tr>
+<tr class="odd">
+<td>120</td>
+<td>0.7</td>
+<td>0.97</td>
+<td>0.97</td>
+</tr>
+<tr class="even">
+<td>20</td>
+<td>0.3</td>
+<td>0.10</td>
+<td>0.10</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>0.3</td>
+<td>0.21</td>
+<td>0.21</td>
+</tr>
+<tr class="even">
+<td>120</td>
+<td>0.3</td>
+<td>0.37</td>
+<td>0.37</td>
+</tr>
+</tbody>
+</table>
+<p>Simple randomisation and the unequal sample sizes it gives rise to, then, aren’t much of a problem when comparing the means of two groups. For more complex (factorial) designs, however, they do present some complications. Specifically, cell size imbalances in factorial designs force the analyst to decide whether the effects should be estimated by means of Type I, Type II or Type III <strong>sums of squares</strong> (see <a href="http://goanna.cs.rmit.edu.au/~fscholer/anova.php">the explanation by Falk Scholer</a>). I don’t feel qualified to give any definite advice in this matter other than to point out the following:</p>
+<ul>
+<li><p>What’s usually (though not invariably) of interest in a factorial design is the interaction between the predictors rather than their main effects.</p></li>
+<li><p>The conclusions about the highest-order interaction aren’t affected by the choice between Type I, Type II or Type III sums of squares. In the most common case, if you have two independent variables, the test for the interaction between them gives the same result irrespective of your sums of squares choice.</p></li>
+<li><p>So, if you’re interested in this interaction and not so much in the independent effects of the predictors, it doesn’t really matter.</p></li>
+</ul>
+<p>In conclusion, sample size imbalances can be the result of assigning participants to conditions by means of simple randomisation. When comparing two groups, this doesn’t really present any problems. When the study has a factorial design, though, you may want to brush up on Type I/II/III sums of squares. But whatever you do, <strong>don’t throw away precious data just to make the group sizes equal.</strong></p>
+</section>
+<section id="planned-imbalances" class="level2">
+<h2 class="anchored" data-anchor-id="planned-imbalances">Planned imbalances</h2>
+<p>Researchers sometimes intentionally recruit a greater number of participants in one condition than in the other. This seems to be particularly the case in quasi-experiments, i.e.&nbsp;studies in which the allocation of participants to condition is predetermined rather than manipulated by the researcher (e.g.&nbsp;comparisons of native speakers to foreign language learners). From what I can tell, the (usually tacit) reasons for such imbalances include:</p>
+<ul>
+<li><p>accessibility problems and financial cost: It may be more difficult or more costly to recruit participants in secluded villages than university students;</p></li>
+<li><p>a relative lack of interest: Comparisons within, say, the Learner group may be considered more interesting than comparisons between the Learner and the Native Speaker group;</p></li>
+<li><p>less variability in one group: One group may be considerably more homogeneous with respect to some linguistic behaviour than the other one, so you gain less by recruiting participants for one group than for the other.</p></li>
+</ul>
+<p>So, even when the unequal sample sizes were planned and not due to simple randomisation, they may be a matter of sound reasoning and practicality rather than of poor design.</p>
+</section>
+<section id="drop-outs-and-missing-data" class="level2">
+<h2 class="anchored" data-anchor-id="drop-outs-and-missing-data">Drop-outs and missing data</h2>
+<p>Imbalances can arise when participants drop out of the study or when data is lost due to technical glitches. These cases are different from the previous two (simple randomisation and planned imbalances) as they needn’t be due to different numbers of participants being <em>assigned</em> to the experiment’s conditions. Rather, at the end of the study, different numbers of participants <em>remain</em> there to be analysed.</p>
+<p>When data are lost due to, say, computer malfunctions, the loss of data can reasonably be expected not to skew the study’s results by occurring more often in one condition than in the other or by primarily affecting high or low performers etc. In this case, the lost data are said to be <strong>missing completely at random</strong>. While such losses of data are unfortunate as they lead to a loss of statistical power, they’re benign in that you can just discount the missing data and run your analyses on the remaining data without introducing bias. (Alternatively, the analyst could try to impute the missing data, but that’s for another time.)</p>
+<p>Not all missing data are missing completely at random, however. Say that an experimental study finds that children in L2 immersion classes outperform children in the control group (traditional classes) in subjects such as geography and biology. Such a finding could well be interpreted as evidence for bilingual advantages extending into scholastic performance. Now imagine that out of the 230 children starting the school year in an L2 class, 80 switched to traditional classes and dropped out of the study (35%), whereas out of the 200 children starting out in the control group, 20 went off the radar (10%). All of a sudden, the picture for L2 immersion looks bleaker: it’s plausible that it’s especially the pupils that would’ve performed poorly dropped out of the L2 immersion classes, and that the positive effect is the result of L2 immersion being more <em>selective</em> rather than being more <em>effective</em>. In such cases, the lost data are said to be <strong>not missing at random</strong>. Indeed, the very fact that more data are missing in the L2 immersion group than in the control condition is <strong>informative in its own right</strong> and should be taken into account when evaluating the efficacy of L2 immersion.</p>
+<p>(There’s a third kind of ‘missingness’, viz.&nbsp;<em>missing at random</em>, which describes the situation in which the missingness can be accounted for by control variables.)</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>The main points to take away from this blog post are the following:</p>
+<ul>
+<li><p>A sample size imbalance isn’t a tell-tale sign of a poor study.</p></li>
+<li><p>You don’t need equal-sized groups to compute accurate statistics.</p></li>
+<li><p>If the sample size imbalance is due to drop-outs rather than due to design, simple randomisation or technical glitches, this is something to take into account when interpreting the results.</p></li>
+<li><p><strong>Whatever you do, don’t throw away data.</strong></p></li>
+</ul>
+</section>
+<section id="r-code-average-power-of-experiments-with-simple-randomisation" class="level2">
+<h2 class="anchored" data-anchor-id="r-code-average-power-of-experiments-with-simple-randomisation">R code: Average power of experiments with simple randomisation</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pwr package</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># To compute power for complete randomisation, use:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">d =</span> <span class="fl">0.7</span>)<span class="sc">$</span>power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7599049</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pwr.t.test</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">d =</span> <span class="fl">0.2</span>)<span class="sc">$</span>power</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1186794</code></pre>
+</div>
+</div>
+<p>For experiments where the allocation was done using simple randomisation, we need to compute the power of each possible combination of sample sizes and weight it by its probability of occurrence. The <code>pwr.t2n.test()</code> function will return an error when the sample size in one condition is 0 or 1, so we’ll manually set the power for these cases to 0.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>weighted.power <span class="ot">&lt;-</span> <span class="cf">function</span>(total.n, d) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute power for n1 = 2, 3 etc. n-2</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># And add 0 for n1 = 0, 1, n-1 and n</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  power.unbalanced <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="fu">pwr.t2n.test</span>(<span class="at">n1 =</span> <span class="dv">2</span><span class="sc">:</span>(total.n <span class="sc">-</span> <span class="dv">2</span>), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">n2 =</span> (total.n<span class="dv">-2</span>)<span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">d =</span> d)<span class="sc">$</span>power,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                        <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute probability of each n1/n2 combination occurring</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  weights <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>total.n, total.n, <span class="fl">0.5</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute weighted average and return</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">weighted.mean</span>(power.unbalanced, weights))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">weighted.power</span>(<span class="at">total.n =</span> <span class="dv">60</span>, <span class="at">d =</span> <span class="fl">0.7</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7527472</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">weighted.power</span>(<span class="at">total.n =</span> <span class="dv">60</span>, <span class="at">d =</span> <span class="fl">0.2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1175073</code></pre>
+</div>
+</div>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.1 (2025-06-13)
+ os       Ubuntu 22.04.5 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2025-09-24
+ pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package     * version date (UTC) lib source
+ cachem        1.1.0   2024-05-16 [1] CRAN (R 4.5.1)
+ callr         3.7.6   2024-03-25 [1] CRAN (R 4.5.1)
+ cli           3.6.5   2025-04-23 [1] CRAN (R 4.5.1)
+ crayon        1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
+ devtools      2.4.5   2022-10-11 [1] CRAN (R 4.5.1)
+ digest        0.6.37  2024-08-19 [1] CRAN (R 4.5.1)
+ ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate      1.0.4   2025-06-18 [1] CRAN (R 4.5.1)
+ fastmap       1.2.0   2024-05-15 [1] CRAN (R 4.5.1)
+ fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
+ glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ htmltools     0.5.8.1 2024-04-04 [1] CRAN (R 4.5.1)
+ htmlwidgets   1.6.4   2023-12-06 [1] CRAN (R 4.5.1)
+ httpuv        1.6.16  2025-04-16 [1] CRAN (R 4.5.1)
+ jsonlite      2.0.0   2025-03-27 [1] CRAN (R 4.5.1)
+ knitr         1.50    2025-03-16 [1] CRAN (R 4.5.1)
+ later         1.4.2   2025-04-08 [1] CRAN (R 4.5.1)
+ lifecycle     1.0.4   2023-11-07 [1] CRAN (R 4.5.1)
+ magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.5.1)
+ memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
+ mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI        0.1.2   2025-04-17 [1] CRAN (R 4.5.1)
+ pkgbuild      1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
+ pkgload       1.4.0   2024-06-28 [1] CRAN (R 4.5.1)
+ prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
+ processx      3.8.6   2025-02-21 [1] CRAN (R 4.5.1)
+ profvis       0.4.0   2024-09-20 [1] CRAN (R 4.5.1)
+ promises      1.3.3   2025-05-29 [1] CRAN (R 4.5.1)
+ ps            1.9.1   2025-04-12 [1] CRAN (R 4.5.1)
+ purrr         1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
+ pwr         * 1.3-0   2020-03-17 [1] CRAN (R 4.5.1)
+ R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
+ Rcpp          1.0.14  2025-01-12 [1] CRAN (R 4.5.1)
+ remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
+ rlang         1.1.6   2025-04-11 [1] CRAN (R 4.5.1)
+ rmarkdown     2.29    2024-11-04 [1] CRAN (R 4.5.1)
+ rstudioapi    0.17.1  2024-10-22 [1] CRAN (R 4.5.1)
+ sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
+ shiny         1.10.0  2024-12-14 [1] CRAN (R 4.5.1)
+ urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.5.1)
+ usethis       3.1.0   2024-11-26 [1] CRAN (R 4.5.1)
+ vctrs         0.6.5   2023-12-01 [1] CRAN (R 4.5.1)
+ xfun          0.52    2025-04-02 [1] CRAN (R 4.5.1)
+ xtable        1.8-4   2019-04-21 [1] CRAN (R 4.5.1)
+ yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

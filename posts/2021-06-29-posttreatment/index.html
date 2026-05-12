@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2021-06-29">
+
+<title>The consequences of controlling for a post-treatment variable – Jan Vanhove</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#case-1-x-affects-both-y-and-z-y-and-z-dont-affect-each-other." id="toc-case-1-x-affects-both-y-and-z-y-and-z-dont-affect-each-other." class="nav-link active" data-scroll-target="#case-1-x-affects-both-y-and-z-y-and-z-dont-affect-each-other.">Case 1: <code>x</code> affects both <code>y</code> and <code>z</code>; <code>y</code> and <code>z</code> don’t affect each other.</a></li>
+  <li><a href="#case-2-x-affects-y-which-in-turn-affects-z." id="toc-case-2-x-affects-y-which-in-turn-affects-z." class="nav-link" data-scroll-target="#case-2-x-affects-y-which-in-turn-affects-z.">Case 2: <code>x</code> affects <code>y</code>, which in turn affects <code>z</code>.</a></li>
+  <li><a href="#case-3-x-and-y-both-affect-z.-x-also-affects-y." id="toc-case-3-x-and-y-both-affect-z.-x-also-affects-y." class="nav-link" data-scroll-target="#case-3-x-and-y-both-affect-z.-x-also-affects-y.">Case 3: <code>x</code> and <code>y</code> both affect <code>z</code>. <code>x</code> also affects <code>y</code>.</a></li>
+  <li><a href="#case-4-x-affects-z-both-x-and-z-influence-y." id="toc-case-4-x-affects-z-both-x-and-z-influence-y." class="nav-link" data-scroll-target="#case-4-x-affects-z-both-x-and-z-influence-y.">Case 4: <code>x</code> affects <code>z</code>; both <code>x</code> and <code>z</code> influence <code>y</code>.</a></li>
+  <li><a href="#case-5-x-and-z-affect-y-x-and-z-dont-affect-each-other." id="toc-case-5-x-and-z-affect-y-x-and-z-dont-affect-each-other." class="nav-link" data-scroll-target="#case-5-x-and-z-affect-y-x-and-z-dont-affect-each-other.">Case 5: <code>x</code> and <code>z</code> affect <code>y</code>; <code>x</code> and <code>z</code> don’t affect each other.</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The consequences of controlling for a post-treatment variable</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">multiple regression</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 29, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Let’s say you want to find out if a pedagogical intervention boosts learners’ conversational skills in L2 French. You’ve learnt that including a well-chosen control variable in your analysis can work <a href="../2017-10-24-increasing-power-precision">wonders</a> in terms of statistical power and precision, so you decide to administer a French vocabulary test to your participants in order to include their score on this test in your analyses as a covariate. But if you administer the vocabulary test <em>after</em> the intervention, it’s possible that the vocabulary scores are themselves affected by the intervention as well. If this is indeed the case, you may end up doing more harm than good. In this blog post, I will take a closer look at five general cases where controlling for such a ‘post-treatment’ variable is harmful.</p>
+<p>In the following, <code>x</code> and <code>y</code> refer to the independent and dependent variable of interest, respectively, i.e., <code>x</code> would correspond to the intervention and <code>y</code> to the L2 French conversational skills in our example. <code>z</code> refers to the post-treatment variable, i.e., the French vocabulary scores in our example. <code>x</code> is a binary variable, <code>y</code> and <code>z</code> are continuous. Since <code>z</code> is a post-treatment variable, it’s possible that it is itself influenced directly or indirectly by <code>x</code>. In the five cases examined below, this is indeed the case.</p>
+<p>I’ve included all R code as I think running simulations like the ones below are a useful way to learn research design and statistics. If you’re just interested in the upshot, just ignore the code snippets :)</p>
+<section id="case-1-x-affects-both-y-and-z-y-and-z-dont-affect-each-other." class="level2">
+<h2 class="anchored" data-anchor-id="case-1-x-affects-both-y-and-z-y-and-z-dont-affect-each-other.">Case 1: <code>x</code> affects both <code>y</code> and <code>z</code>; <code>y</code> and <code>z</code> don’t affect each other.</h2>
+<p>In the first case, <code>x</code> affects both <code>y</code> and <code>z</code>, but <code>z</code> and <code>y</code> don’t influence each other.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 1.1.</strong> The causal links between <code>x</code>, <code>y</code> and <code>z</code> in Case 1.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In this case, controlling for <code>z</code> doesn’t bias the estimate for the causal influence of <code>x</code> on <code>y</code>. It does, however, reduce the precision of these estimates. To appreciate this, let’s simulate some data. The function <code>case1()</code> defined in the next code snippet generates a dataset corersponding to Case 1. The parameter <code>beta_xy</code> specifies the coefficient of the influence of <code>x</code> on <code>y</code>; the goal of the analysis is to estimate the value of this parameter from the data. The parameter <code>beta_xz</code> similarly specifies the coefficient of the influence of <code>x</code> on <code>z</code>. Estimating the latter coefficient isn’t a goal of the analysis, since <code>z</code> is merely a control variable.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>case1 <span class="ot">&lt;-</span> <span class="cf">function</span>(n_per_group, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create x (n_per_group 0s and n_per_group 1s)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n_per_group)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x affects y; 'rnorm' just adds some random noise to the observations.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In a DAG, this noise corresponds to the influence of other variables that</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># didn't need to be plotted.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> beta_xy<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x affects z</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> beta_xz<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create data frame</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(x), y, z)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add info: z above or below median?</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  dfr<span class="sc">$</span>z_split <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(dfr<span class="sc">$</span>z <span class="sc">&gt;</span> <span class="fu">median</span>(dfr<span class="sc">$</span>z), <span class="st">"above"</span>, <span class="st">"below"</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return data frame</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  dfr</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Use this function to create a dataset with 100 participants per group:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_case1 <span class="ot">&lt;-</span> <span class="fu">case1</span>(<span class="at">n_per_group =</span> <span class="dv">100</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Type 'df_case1' to inspect.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A graphical analysis that doesn’t take the control variable <code>z</code> into account reveals a roughly one-point difference between the two conditions, which is as it should be.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case1,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 1.2.</strong> Graphical analysis without the covariate for Case 1.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A linear model is able to retrieve the <code>beta_xy</code> coefficient, which was set at 1, well enough (<span class="math inline">\(\widehat{\beta_{xy}} = 1.03 \pm 0.13\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, df_case1))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  -0.0161      0.092  -0.175 8.61e-01
+x1            1.0349      0.130   7.951 1.38e-13</code></pre>
+</div>
+</div>
+<p>Alternatively, we could analyse these data while taking the control variable into account. The graphical analysis in Figure 3 achieves this by splitting up the control variable at its median and plotting the two subset separately. This is statistically suboptimal, but it makes the visualisation easier to grok. Here we also find a roughly one-point difference between the two conditions in each panel, which suggests that controlling for <code>z</code> won’t induce any bias.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case1,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> z_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 1.3.</strong> Graphical analysis with the covariate (median split) for Case 1.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model is again able to retrieve the coefficient of interest well enough (<span class="math inline">\(\widehat{\beta_{xy}} = 1.04 \pm 0.16\)</span>), though with a slightly wider standard error.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, df_case1))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) -0.01615     0.0923 -0.1750 8.61e-01
+x1           1.04147     0.1632  6.3826 1.22e-09
+z           -0.00409     0.0613 -0.0667 9.47e-01</code></pre>
+</div>
+</div>
+<p>Of course, it’s difficult to draw any firm conclusions about the analysis of a single simulated dataset. To see that in this general case, the coefficient of interest is indeed estimated without bias but with decreased precision, let’s generate 5,000 such datasets and analyse them with and without taking the control variable into account. The function <code>sim_case1()</code> defined below runs these analyses; the ggplot call plots the estimates for the <span class="math inline">\(\beta_{xy}\)</span> parameter. As the caption to Figure 4 explains, this simulation confirms what we observed above.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Another function. This one takes the function case1(),</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># runs it nruns (here: 1000) times and extracts estimates</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># from two analyses per generated dataset.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>sim_case1 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nruns =</span> <span class="dv">5000</span>, <span class="at">n_per_group =</span> <span class="dv">100</span>, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  est_without <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  est_with <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nruns) {</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate data</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">case1</span>(<span class="at">n_per_group =</span> n_per_group, <span class="at">beta_xy =</span> beta_xy, <span class="at">beta_xz =</span> beta_xz)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Analyse (in regression model) without covariate and extract estimate</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    est_without[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Analyse with covariate, extract estimate</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    est_with[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Output data frame with results</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">simulation =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nruns, <span class="dv">2</span>),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">covariate =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"with covariate"</span>, <span class="st">"without covariate"</span>), <span class="at">each =</span> nruns),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">c</span>(est_with, est_without)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Run function and plot results</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>results_sim_case1 <span class="ot">&lt;-</span> <span class="fu">sim_case1</span>()</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_sim_case1,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> covariate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 1.4.</strong> In Case 1, the distribution of the parameter estimates is centred around the correct value both when the control variable is taken into account and when it isn’t. The distribution is wider when taking the control variable into account, however, i.e., the estimates are less precise when taking the control variable into account than when not taking it into account.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The estimate for the <span class="math inline">\(\beta_{xy}\)</span> parameter is unbiased in both analyses, but the analysis with the covariate offers <em>less</em> rather than more precision: The standard deviation of the distribution of parameter estimates increases from 0.14 to 0.18:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>results_sim_case1 <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(covariate) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(estimate),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_est =</span> <span class="fu">sd</span>(estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  covariate         mean_est sd_est
+  &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+1 with covariate       0.999  0.177
+2 without covariate    0.998  0.141</code></pre>
+</div>
+</div>
+</section>
+<section id="case-2-x-affects-y-which-in-turn-affects-z." class="level2">
+<h2 class="anchored" data-anchor-id="case-2-x-affects-y-which-in-turn-affects-z.">Case 2: <code>x</code> affects <code>y</code>, which in turn affects <code>z</code>.</h2>
+<p>In the second case, <code>x</code> affects <code>y</code> directly, and <code>y</code> in turns affects <code>z</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 2.1.</strong> The causal links between <code>x</code>, <code>y</code> and <code>z</code> in Case 2.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This time, controlling for <code>z</code> biases the estimates for the <span class="math inline">\(\beta_{xy}\)</span> parameter. To see this, let’s again simulate and analyse some data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>case2 <span class="ot">&lt;-</span> <span class="cf">function</span>(n_per_group, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_yz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n_per_group)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> beta_xy<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># y affects z</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> beta_yz<span class="sc">*</span>y <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(x), y, z)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  dfr<span class="sc">$</span>z_split <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(dfr<span class="sc">$</span>z <span class="sc">&gt;</span> <span class="fu">median</span>(dfr<span class="sc">$</span>z), <span class="st">"above"</span>, <span class="st">"below"</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  dfr</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>df_case2 <span class="ot">&lt;-</span> <span class="fu">case2</span>(<span class="at">n_per_group =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>When the data are analyses without taking the control variable into account, we obtain the following result:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case2,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 2.2.</strong> Graphical analysis without the covariate for Case 2.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This isn’t quite as close to a one-point difference as in the previous example, but as we’ll see below that’s merely due to the randomness inherent in these simulations. The linear model yields a parameter estimate of <span class="math inline">\(\widehat{\beta_{xy}} = 0.76 \pm 0.14\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, df_case2))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    0.248     0.0958    2.59 1.02e-02
+x1             0.755     0.1354    5.57 8.06e-08</code></pre>
+</div>
+</div>
+<p>When we take the control variable into account, however, the difference between the two groups defined by <code>x</code> becomes smaller:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case2,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> z_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 2.3.</strong> Graphical analysis with the covariate for Case 2.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model now yields a parameter estimate of <span class="math inline">\(\widehat{\beta_{xy}} = 0.18 \pm 0.08\)</span>, which is considerably farther from the actual parameter value of 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, df_case2))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   0.0479     0.0531    0.90 3.69e-01
+x1            0.1790     0.0787    2.28 2.39e-02
+z             0.4717     0.0218   21.59 7.87e-54</code></pre>
+</div>
+</div>
+<p>The larger-scale simulation shows that the analysis with the covariate is indeed biased if you want to estimate the causal influence of <code>x</code> on <code>y</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Change beta_xz to beta_xy compared to the previous case</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>sim_case2 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nruns =</span> <span class="dv">5000</span>, <span class="at">n_per_group =</span> <span class="dv">100</span>, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_yz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  est_without <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  est_with <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nruns) {</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">case2</span>(<span class="at">n_per_group =</span> n_per_group, <span class="at">beta_xy =</span> beta_xy, <span class="at">beta_yz =</span> beta_yz)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    est_without[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    est_with[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">simulation =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nruns, <span class="dv">2</span>),</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">covariate =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"with covariate"</span>, <span class="st">"without covariate"</span>), <span class="at">each =</span> nruns),</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">c</span>(est_with, est_without)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>results_sim_case2 <span class="ot">&lt;-</span> <span class="fu">sim_case2</span>()</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_sim_case2,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> covariate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-17-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 2.4.</strong> In Case 2, the distribution of the parameter estimates is centred around the correct value both when the control variable isn’t taken into account but it is strongly biased when this control variable <em>is</em> taken into account, i.e., the analysis with the covariate yields biased estimates.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The fact that the distribution of the parameter estimates is narrower when taking the covariate into account is completely immaterial, since these estimates are estimating the wrong quantity.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>results_sim_case2 <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(covariate) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(estimate),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_est =</span> <span class="fu">sd</span>(estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  covariate         mean_est sd_est
+  &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+1 with covariate       0.310 0.0856
+2 without covariate    1.00  0.141 </code></pre>
+</div>
+</div>
+</section>
+<section id="case-3-x-and-y-both-affect-z.-x-also-affects-y." class="level2">
+<h2 class="anchored" data-anchor-id="case-3-x-and-y-both-affect-z.-x-also-affects-y.">Case 3: <code>x</code> and <code>y</code> both affect <code>z</code>. <code>x</code> also affects <code>y</code>.</h2>
+<p>Now <code>z</code> is affected by both <code>x</code> and <code>y</code>. <code>x</code> still affects <code>y</code>, though. Taking the covariate into account again yields biased estimates.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 3.1.</strong> The causal links between <code>x</code>, <code>y</code> and <code>z</code> in Case 3.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Same procedure as last year, James.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>case3 <span class="ot">&lt;-</span> <span class="cf">function</span>(n_per_group, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>, <span class="at">beta_yz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n_per_group)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> beta_xy<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x and y affect z</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> beta_xz<span class="sc">*</span>x <span class="sc">+</span> beta_yz<span class="sc">*</span>y <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(x), y, z)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  dfr<span class="sc">$</span>z_split <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(dfr<span class="sc">$</span>z <span class="sc">&gt;</span> <span class="fu">median</span>(dfr<span class="sc">$</span>z), <span class="st">"above"</span>, <span class="st">"below"</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  dfr</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>df_case3 <span class="ot">&lt;-</span> <span class="fu">case3</span>(<span class="at">n_per_group =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case3,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 3.2.</strong> Graphical analysis without the covariate for Case 3.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Again, the analysis without the control variable yields a reasonably accurate estimate of the true parameter value of 1 (<span class="math inline">\(\widehat{\beta_{xy}} = 1.07 \pm 0.15\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, df_case3))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  -0.0817      0.105  -0.778 4.37e-01
+x1            1.0687      0.148   7.197 1.25e-11</code></pre>
+</div>
+</div>
+<p>When we take the control variable into account, however, the difference between the two groups defined by <code>x</code> becomes smaller:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case3,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> z_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 3.3.</strong> Graphical analysis with the covariate for Case 3.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model now yields a parameter estimate of <span class="math inline">\(\widehat{\beta_{xy}} = -0.31 \pm 0.11\)</span>, which is considerably farther from the actual parameter value of 1 and even has the wrong sign.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, df_case3))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   0.0038     0.0594  0.0639 9.49e-01
+x1           -0.3067     0.1071 -2.8631 4.65e-03
+z             0.4614     0.0224 20.6083 4.71e-51</code></pre>
+</div>
+</div>
+<p>For the sake of completeness, let’s run this simulation 5,000 times, too.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sim_case3 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nruns =</span> <span class="dv">5000</span>, <span class="at">n_per_group =</span> <span class="dv">100</span>, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>, <span class="at">beta_yz =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  est_without <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  est_with <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nruns) {</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">case3</span>(<span class="at">n_per_group =</span> n_per_group, <span class="at">beta_xy =</span> beta_xy, <span class="at">beta_xz =</span> beta_xz, <span class="at">beta_yz =</span> beta_yz)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    est_without[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    est_with[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">simulation =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nruns, <span class="dv">2</span>),</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">covariate =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"with covariate"</span>, <span class="st">"without covariate"</span>), <span class="at">each =</span> nruns),</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">c</span>(est_with, est_without)</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>results_sim_case3 <span class="ot">&lt;-</span> <span class="fu">sim_case3</span>()</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_sim_case3,</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> covariate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-25-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 3.4.</strong> In Case 3, too, the distribution of the parameter estimates is centred around the correct value when the control variable isn’t taken into account but it is strongly biased when this control variable <em>is</em> taken into account, i.e., the analysis with the covariate yields biased estimates.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The fact that the distribution of the parameter estimates is narrower when taking the covariate into account is completely immaterial, since these estimates are estimating the wrong quantity.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>results_sim_case3 <span class="sc">%&gt;%</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(covariate) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(estimate),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_est =</span> <span class="fu">sd</span>(estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  covariate         mean_est sd_est
+  &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+1 with covariate      -0.382  0.104
+2 without covariate    1.00   0.144</code></pre>
+</div>
+</div>
+</section>
+<section id="case-4-x-affects-z-both-x-and-z-influence-y." class="level2">
+<h2 class="anchored" data-anchor-id="case-4-x-affects-z-both-x-and-z-influence-y.">Case 4: <code>x</code> affects <code>z</code>; both <code>x</code> and <code>z</code> influence <code>y</code>.</h2>
+<p>That is, <code>x</code> influences both <code>y</code> and <code>z</code>, but <code>z</code> also influences <code>y</code>. Let <span class="math inline">\(\beta_{xy}\)</span> be the direct effect of <code>x</code> on <code>y</code>, <span class="math inline">\(\beta_{xz}\)</span> the effect of <code>x</code> on <code>z</code> and <span class="math inline">\(\beta_{zy}\)</span> the effect of <code>z</code> on <code>y</code>. Then the <em>total</em> effect of <code>x</code> on <code>y</code> is <span class="math inline">\(\beta_{xy} + \beta_{xz}\times\beta_{zy}\)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-27-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 4.1.</strong> The causal links between <code>x</code>, <code>y</code> and <code>z</code> in Case 4.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the defaults in the following function, the total effect of <code>x</code> on <code>y</code> is <span class="math inline">\(1 + 1.5\times 0.5 = 1.75\)</span>. If this doesn’t make immediate sense, consider what a change of one unit in <code>x</code> causes downstream: A one-unit increase in <code>x</code> directly increases <code>y</code> by 1. It also increases <code>z</code> by 1.5. But a one-unit increase <em>in <code>z</code></em> causes an increase of 0.5 in <code>y</code> as well, so a 1.5-unit increase in <code>z</code> causes an additional increase of 0.75 in <code>y</code>. So in total, a one-unit increase in <code>x</code> causes a 1.75-point increase in <code>y</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>case4 <span class="ot">&lt;-</span> <span class="cf">function</span>(n_per_group, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>, <span class="at">beta_zy =</span> <span class="fl">0.5</span>) {</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n_per_group)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x affects z</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> beta_xz<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x and z affect y</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> beta_xy<span class="sc">*</span>x <span class="sc">+</span> beta_zy<span class="sc">*</span>z <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(x), y, z)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  dfr<span class="sc">$</span>z_split <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(dfr<span class="sc">$</span>z <span class="sc">&gt;</span> <span class="fu">median</span>(dfr<span class="sc">$</span>z), <span class="st">"above"</span>, <span class="st">"below"</span>))</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  dfr</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>df_case4 <span class="ot">&lt;-</span> <span class="fu">case4</span>(<span class="at">n_per_group =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case4,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-29-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 4.2.</strong> Graphical analysis without the covariate for Case 4.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Again, the analysis without the control variable yields a reasonably accurate estimate of the true <em>total</em> influence of <code>x</code> on <code>y</code> of 1.75 (!) (<span class="math inline">\(\widehat{\beta_{xy}} = 1.67 \pm 0.16\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, df_case4))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)   0.0802      0.115   0.695 4.88e-01
+x1            1.6744      0.163  10.263 4.36e-20</code></pre>
+</div>
+</div>
+<p>When we take the control variable into account, however, the difference between the two groups defined by <code>x</code> becomes smaller:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case4,</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> z_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 4.3.</strong> Graphical analysis with the covariate for Case 4.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model now yields a parameter estimate of <span class="math inline">\(\widehat{\beta_{xy}} = 1.11 \pm 0.17\)</span>. This analysis correctly estimates the <em>direct</em> effect of <code>x</code> on <code>y</code> (i.e., without the additional causal link between <code>x</code> on <code>y</code> through <code>z</code>). This may be interesting in its own right, but the analysis addresses a question different from `<code>What's the causal influence of</code>x<code>on</code>y`?’’</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, df_case4))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  -0.0451     0.1073  -0.421 6.75e-01
+x1            1.1054     0.1742   6.346 1.49e-09
+z             0.4853     0.0768   6.321 1.70e-09</code></pre>
+</div>
+</div>
+<p>For the sake of completeness, let’s run this simulation 5,000 times, too.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>sim_case4 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nruns =</span> <span class="dv">5000</span>, <span class="at">n_per_group =</span> <span class="dv">100</span>, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_xz =</span> <span class="fl">1.5</span>, <span class="at">beta_zy =</span> <span class="fl">0.5</span>) {</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  est_without <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  est_with <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nruns) {</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">case4</span>(<span class="at">n_per_group =</span> n_per_group, <span class="at">beta_xy =</span> beta_xy, <span class="at">beta_xz =</span> beta_xz, <span class="at">beta_zy =</span> beta_zy)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    est_without[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    est_with[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">simulation =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nruns, <span class="dv">2</span>),</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">covariate =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"with covariate"</span>, <span class="st">"without covariate"</span>), <span class="at">each =</span> nruns),</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">c</span>(est_with, est_without)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>results_sim_case4 <span class="ot">&lt;-</span> <span class="fu">sim_case4</span>()</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_sim_case4,</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">1.75</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> covariate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-33-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 4.4.</strong> In Case 4, the analysis without the covariate correctly estimates the <em>total</em> causal influence that <code>x</code> has on <code>y</code>, while the analysis with the covariate correctly estimates the <em>direct</em> causal effect of <code>x</code> on <code>y</code>. Either may be relevant, but you have to know which!</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>results_sim_case4 <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(covariate) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(estimate),</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_est =</span> <span class="fu">sd</span>(estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  covariate         mean_est sd_est
+  &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+1 with covariate        1.00  0.178
+2 without covariate     1.75  0.158</code></pre>
+</div>
+</div>
+</section>
+<section id="case-5-x-and-z-affect-y-x-and-z-dont-affect-each-other." class="level2">
+<h2 class="anchored" data-anchor-id="case-5-x-and-z-affect-y-x-and-z-dont-affect-each-other.">Case 5: <code>x</code> and <code>z</code> affect <code>y</code>; <code>x</code> and <code>z</code> don’t affect each other.</h2>
+<p>In the final general case, <code>x</code> and <code>z</code> both affect <code>y</code>, but <code>x</code> and <code>z</code> don’t affect each other. That is, <code>z</code> isn’t affected by the intervention in any way and so functions like a pre-treatment control variable would. The result is an increase in statistical precision. This is the only of the five cases examined in which the control variable has added value for the purposes of estimated the causal influence of <code>x</code> on <code>y</code>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-35-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 5.1.</strong> The causal links between <code>x</code>, <code>y</code> and <code>z</code> in Case 5.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the defaults in the following function, the total effect of <code>x</code> on <code>y</code> is <span class="math inline">\(1 + 1.5\times 0.5 = 1.75\)</span>. If this doesn’t make immediate sense, consider what a change of one unit in <code>x</code> causes downstream: A one-unit increase in <code>x</code> directly increases <code>y</code> by 1. It also increases <code>z</code> by 1.5. But a one-unit increase <em>in <code>z</code></em> causes an increase of 0.5 in <code>y</code> as well, so a 1.5-unit increase in <code>z</code> causes an additional increase of 0.75 in <code>y</code>. So in total, a one-unit increase in <code>x</code> causes a 1.75-point increase in <code>y</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>case5 <span class="ot">&lt;-</span> <span class="cf">function</span>(n_per_group, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_zy =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">each =</span> n_per_group)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create z</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># x and z affect y</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> beta_xy<span class="sc">*</span>x <span class="sc">+</span> beta_zy<span class="sc">*</span>z <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">2</span><span class="sc">*</span>n_per_group)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  dfr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">as.factor</span>(x), y, z)</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  dfr<span class="sc">$</span>z_split <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ifelse</span>(dfr<span class="sc">$</span>z <span class="sc">&gt;</span> <span class="fu">mean</span>(dfr<span class="sc">$</span>z), <span class="st">"above"</span>, <span class="st">"below"</span>))</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  dfr</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>df_case5 <span class="ot">&lt;-</span> <span class="fu">case5</span>(<span class="at">n_per_group =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case5,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-37-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 5.2.</strong> Graphical analysis without the covariate for Case 5.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Again, the analysis without the control variable yields an estimate within one standard error of the true parameter value of 1 (<span class="math inline">\(\widehat{\beta_{xy}} = 0.76 \pm 0.24\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, df_case5))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  0.00417      0.172  0.0242   0.9807
+x1           0.75596      0.244  3.1027   0.0022</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df_case5,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> <span class="fl">0.2</span>), <span class="at">pch =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> z_split)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-39-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 5.3.</strong> Graphical analysis with the covariate for Case 5.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model now yields a parameter estimate of <span class="math inline">\(\widehat{\beta_{xy}} = 1.08 \pm 0.15\)</span>, with is also a reasonable estimate but with a smaller standard error.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, df_case5))<span class="sc">$</span>coefficient</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)  -0.0376     0.1027  -0.366 7.15e-01
+x1            1.0823     0.1462   7.402 3.80e-12
+z             1.4193     0.0748  18.986 2.23e-46</code></pre>
+</div>
+</div>
+<p>For the sake of completeness, let’s run this simulation 5,000 times, too.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>sim_case5 <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">nruns =</span> <span class="dv">1000</span>, <span class="at">n_per_group =</span> <span class="dv">100</span>, <span class="at">beta_xy =</span> <span class="dv">1</span>, <span class="at">beta_zy =</span> <span class="fl">1.5</span>) {</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  est_without <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  est_with <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"double"</span>, <span class="at">length =</span> nruns)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nruns) {</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> <span class="fu">case5</span>(<span class="at">n_per_group =</span> n_per_group, <span class="at">beta_xy =</span> beta_xy, <span class="at">beta_zy =</span> beta_zy)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    est_without[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    est_with[[i]] <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> z, <span class="at">data =</span> d))[[<span class="dv">2</span>]]</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">simulation =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>nruns, <span class="dv">2</span>),</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">covariate =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"with covariate"</span>, <span class="st">"without covariate"</span>), <span class="at">each =</span> nruns),</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> <span class="fu">c</span>(est_with, est_without)</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>results_sim_case5 <span class="ot">&lt;-</span> <span class="fu">sim_case5</span>()</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> results_sim_case5,</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> estimate)) <span class="sc">+</span></span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> covariate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-41-1.svg" class="img-fluid figure-img"></p>
+<figcaption><strong>Figure 5.4.</strong> In Case 5, both analyses are centred around the correct value, i.e., both are unbiased. The analysis with the control variable yields a narrower distribution of estimates, however, i.e., it is more precise.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>results_sim_case5 <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(covariate) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_est =</span> <span class="fu">mean</span>(estimate),</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_est =</span> <span class="fu">sd</span>(estimate))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  covariate         mean_est sd_est
+  &lt;chr&gt;                &lt;dbl&gt;  &lt;dbl&gt;
+1 with covariate       1.00   0.138
+2 without covariate    0.999  0.250</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>When a control variable is collected <em>after</em> the intervention took place, it is possible that it is directly or indirectly affected by the intervention. If this is indeed the case, including the control variable in the analysis may yield biased estimates or decrease rather than increase the precision of the estimates. In designed experiments, the solution to this problem is evident: collect the control variable before the intervention takes place. If this isn’t possible, you had better be pretty sure that the control variable isn’t a post-treatment variable. More generally, throwing predictor variables into a statistical model in the hopes that this will improve the analysis is a dreadful idea.</p>
+<!-- ## Reference -->
+<!-- Zimmerman, Donald W. 1998. [Invalidation of parametric and nonparametric statistical tests by concurrent violation of two assumptions](https://doi.org/10.1080/00220979809598344). _Journal of Experimental Education_ 67(1). 55-68. -->
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<p>Please note that I reran the code on this page on August 6, 2023.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.1 (2025-06-13)
+ os       Ubuntu 22.04.5 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language en_US
+ collate  en_US.UTF-8
+ ctype    en_US.UTF-8
+ tz       Europe/Zurich
+ date     2025-09-24
+ pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package        * version  date (UTC) lib source
+ abind            1.4-8    2024-09-12 [1] CRAN (R 4.5.1)
+ backports        1.5.0    2024-05-23 [1] CRAN (R 4.5.1)
+ boot             1.3-31   2024-08-28 [4] CRAN (R 4.4.2)
+ cachem           1.1.0    2024-05-16 [1] CRAN (R 4.5.1)
+ callr            3.7.6    2024-03-25 [1] CRAN (R 4.5.1)
+ checkmate        2.3.3    2025-08-18 [1] CRAN (R 4.5.1)
+ cli              3.6.5    2025-04-23 [1] CRAN (R 4.5.1)
+ cmdstanr       * 0.9.0    2025-03-30 [1] https://stan-dev.r-universe.dev (R 4.5.1)
+ coda             0.19-4.1 2024-01-31 [1] CRAN (R 4.5.1)
+ crayon           1.5.1    2022-03-26 [2] CRAN (R 4.2.0)
+ curl             6.4.0    2025-06-22 [1] CRAN (R 4.5.1)
+ dagitty        * 0.3-4    2023-12-07 [1] CRAN (R 4.5.1)
+ devtools         2.4.5    2022-10-11 [1] CRAN (R 4.5.1)
+ digest           0.6.37   2024-08-19 [1] CRAN (R 4.5.1)
+ distributional   0.5.0    2024-09-17 [1] CRAN (R 4.5.1)
+ dplyr          * 1.1.4    2023-11-17 [1] CRAN (R 4.5.1)
+ ellipsis         0.3.2    2021-04-29 [2] CRAN (R 4.2.0)
+ evaluate         1.0.4    2025-06-18 [1] CRAN (R 4.5.1)
+ farver           2.1.2    2024-05-13 [1] CRAN (R 4.5.1)
+ fastmap          1.2.0    2024-05-15 [1] CRAN (R 4.5.1)
+ forcats        * 1.0.0    2023-01-29 [1] CRAN (R 4.5.1)
+ fs               1.5.2    2021-12-08 [2] CRAN (R 4.2.0)
+ generics         0.1.4    2025-05-09 [1] CRAN (R 4.5.1)
+ ggplot2        * 3.5.2    2025-04-09 [1] CRAN (R 4.5.1)
+ glue             1.6.2    2022-02-24 [2] CRAN (R 4.2.0)
+ gtable           0.3.6    2024-10-25 [1] CRAN (R 4.5.1)
+ hms              1.1.3    2023-03-21 [1] CRAN (R 4.5.1)
+ htmltools        0.5.8.1  2024-04-04 [1] CRAN (R 4.5.1)
+ htmlwidgets      1.6.4    2023-12-06 [1] CRAN (R 4.5.1)
+ httpuv           1.6.16   2025-04-16 [1] CRAN (R 4.5.1)
+ jsonlite         2.0.0    2025-03-27 [1] CRAN (R 4.5.1)
+ knitr            1.50     2025-03-16 [1] CRAN (R 4.5.1)
+ labeling         0.4.3    2023-08-29 [1] CRAN (R 4.5.1)
+ later            1.4.2    2025-04-08 [1] CRAN (R 4.5.1)
+ lattice          0.22-5   2023-10-24 [4] CRAN (R 4.3.1)
+ lifecycle        1.0.4    2023-11-07 [1] CRAN (R 4.5.1)
+ loo              2.8.0    2024-07-03 [1] CRAN (R 4.5.1)
+ lubridate      * 1.9.4    2024-12-08 [1] CRAN (R 4.5.1)
+ magrittr         2.0.3    2022-03-30 [1] CRAN (R 4.5.1)
+ MASS             7.3-65   2025-02-28 [4] CRAN (R 4.4.3)
+ matrixStats      1.5.0    2025-01-07 [1] CRAN (R 4.5.1)
+ memoise          2.0.1    2021-11-26 [2] CRAN (R 4.2.0)
+ mime             0.10     2021-02-13 [2] CRAN (R 4.0.2)
+ miniUI           0.1.2    2025-04-17 [1] CRAN (R 4.5.1)
+ mvtnorm          1.3-3    2025-01-10 [1] CRAN (R 4.5.1)
+ pillar           1.10.2   2025-04-05 [1] CRAN (R 4.5.1)
+ pkgbuild         1.3.1    2021-12-20 [2] CRAN (R 4.2.0)
+ pkgconfig        2.0.3    2019-09-22 [2] CRAN (R 4.2.0)
+ pkgload          1.4.0    2024-06-28 [1] CRAN (R 4.5.1)
+ posterior      * 1.6.1    2025-02-27 [1] CRAN (R 4.5.1)
+ prettyunits      1.1.1    2020-01-24 [2] CRAN (R 4.2.0)
+ processx         3.8.6    2025-02-21 [1] CRAN (R 4.5.1)
+ profvis          0.4.0    2024-09-20 [1] CRAN (R 4.5.1)
+ promises         1.3.3    2025-05-29 [1] CRAN (R 4.5.1)
+ ps               1.9.1    2025-04-12 [1] CRAN (R 4.5.1)
+ purrr          * 1.0.4    2025-02-05 [1] CRAN (R 4.5.1)
+ R6               2.5.1    2021-08-19 [2] CRAN (R 4.2.0)
+ RColorBrewer     1.1-3    2022-04-03 [1] CRAN (R 4.5.1)
+ Rcpp             1.0.14   2025-01-12 [1] CRAN (R 4.5.1)
+ readr          * 2.1.5    2024-01-10 [1] CRAN (R 4.5.1)
+ remotes          2.4.2    2021-11-30 [2] CRAN (R 4.2.0)
+ rethinking     * 2.42     2025-09-24 [1] Github (rmcelreath/rethinking@ac1b3b2)
+ rlang            1.1.6    2025-04-11 [1] CRAN (R 4.5.1)
+ rmarkdown        2.29     2024-11-04 [1] CRAN (R 4.5.1)
+ rstudioapi       0.17.1   2024-10-22 [1] CRAN (R 4.5.1)
+ scales           1.4.0    2025-04-24 [1] CRAN (R 4.5.1)
+ sessioninfo      1.2.2    2021-12-06 [2] CRAN (R 4.2.0)
+ shape            1.4.6.1  2024-02-23 [1] CRAN (R 4.5.1)
+ shiny            1.10.0   2024-12-14 [1] CRAN (R 4.5.1)
+ stringi          1.7.6    2021-11-29 [2] CRAN (R 4.2.0)
+ stringr        * 1.5.1    2023-11-14 [1] CRAN (R 4.5.1)
+ tensorA          0.36.2.1 2023-12-13 [1] CRAN (R 4.5.1)
+ tibble         * 3.3.0    2025-06-08 [1] CRAN (R 4.5.1)
+ tidyr          * 1.3.1    2024-01-24 [1] CRAN (R 4.5.1)
+ tidyselect       1.2.1    2024-03-11 [1] CRAN (R 4.5.1)
+ tidyverse      * 2.0.0    2023-02-22 [1] CRAN (R 4.5.1)
+ timechange       0.3.0    2024-01-18 [1] CRAN (R 4.5.1)
+ tzdb             0.5.0    2025-03-15 [1] CRAN (R 4.5.1)
+ urlchecker       1.0.1    2021-11-30 [1] CRAN (R 4.5.1)
+ usethis          3.1.0    2024-11-26 [1] CRAN (R 4.5.1)
+ utf8             1.2.2    2021-07-24 [2] CRAN (R 4.2.0)
+ V8               6.0.4    2025-06-04 [1] CRAN (R 4.5.1)
+ vctrs            0.6.5    2023-12-01 [1] CRAN (R 4.5.1)
+ withr            3.0.2    2024-10-28 [1] CRAN (R 4.5.1)
+ xfun             0.52     2025-04-02 [1] CRAN (R 4.5.1)
+ xtable           1.8-4    2019-04-21 [1] CRAN (R 4.5.1)
+ yaml             2.3.5    2022-02-21 [2] CRAN (R 4.2.0)
+
+ [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
+ [2] /usr/local/lib/R/site-library
+ [3] /usr/lib/R/site-library
+ [4] /usr/lib/R/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
