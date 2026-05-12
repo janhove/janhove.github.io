@@ -20,6 +20,11 @@ jobs:
           packages: |
             rmarkdown
             knitr
+            
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
