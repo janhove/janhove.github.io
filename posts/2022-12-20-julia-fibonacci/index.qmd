@@ -2,7 +2,6 @@
 title: "Adjusting to Julia: Generating the Fibonacci sequence"
 date: "2022-12-20"
 categories: [Julia]
-jupyter: julia
 image: "image.png"
 execute:
   freeze: true

@@ -3,7 +3,6 @@ title: "Adjusting to Julia: Piecewise regression"
 date: "2023-03-07"
 categories: [Julia, piecewise regression, non-linearities]
 image: "image.png"
-jupyter: julia
 execute:
   freeze: true
 ---
