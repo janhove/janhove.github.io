@@ -2,7 +2,7 @@
 title: "About"
 image: profile.jpg
 about:
-  template: solana
+  template: trestles
   links:
     - icon: google
       text: Google Scholar
@@ -10,13 +10,15 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/janhove
-    
+    - icon: bluesky
+      text: Bluesky
+      href: https://bsky.app/profile/janhove.bsky.social
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/in/janhove86
 ---
 
-I'm a *maître d'enseignment et de recherche* / *Lehr- und Forschungsrat* ('senior lecturer') 
+I'm a senior lecturer
 at the [Department of Multilingualism and Foreign Language Education](https://www.unifr.ch/pluriling/en/) 
 at the University of Fribourg in Switzerland.
 In 2024, I obtained a Bachelor's degree in computer science
@@ -26,22 +28,23 @@ where I'm currently pursuing a Master's degree in statistics.
 I'm also a saxophonist with [Beat Moustache](https://beatmoustache.ch), 
 a ska-pop band that mostly plays original songs in the Bernese dialect.
 
-## CV
-2024--...: M.Sc. Statistics and data science, University of Bern (CH)
-
-2020--2024: B.Sc. Computer science with a minor in mathematics, University of Bern (CH)
-
+## Employment
 2017--present: Senior lecturer, Department of Multilingualism and Foreign Language Teaching, University of Fribourg (CH)
 
 2014--2017: Lecturer, Department of Multilingualism and Foreign Language Teaching, University of Fribourg (CH)
 
-2010--2014: Ph.D., University of Fribourg (CH)
-
 2010: Research assistant, Scandinavian Department, University of Groningen (NL)
 
-2008--2010: M.A. European linguistics, University of Freiburg (D)
-
 2009: Internship, Scandinavian Department, University of Groningen (NL)
+
+## Education
+2024--...: M.Sc. Statistics and data science, University of Bern (CH)
+
+2020--2024: B.Sc. Computer science with a minor in mathematics, University of Bern (CH)
+
+2010--2014: Ph.D., University of Fribourg (CH)
+
+2008--2010: M.A. European linguistics, University of Freiburg (D)
 
 2004--2007: B.A. English and Swedish linguistics and literature, Ghent University (B)
 
