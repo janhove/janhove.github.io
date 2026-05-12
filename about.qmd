@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "Jan Vanhove"
 image: profile.jpg
 about:
   template: trestles
