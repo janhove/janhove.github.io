@@ -1,0 +1,89 @@
+---
+title: "A closer look at a classic study (Bailey et al. 1974)"
+date: "2018-10-29"
+categories: [graphs]
+---
+
+In this blog post, I take a closer look at the results of a classic study I sometimes discuss in my classes on second language acquisition. As I'll show below, the strength of this study's findings is strongly overexaggerated, presumably owing to a mechanical error.
+
+Bailey et al.'s (1974) [*Is there a 'natural sequence' in adult second language learning?*](https://doi.org/10.1111/j.1467-1770.1974.tb00505.x) is a crisp paper that's been cited over 1,000 times (according to Google Scholar). Here's the relevant bit from the abstract:
+
+> "The Bilingual Syntax Measure (...) was administered to 73 adult learners of English as a second language in order to investigate accuracy of usage for eight English functors. It was found that there is a highly consistent order of relative difficulty in the use of the functors across different language backgrounds, indicating that learners are experiencing intra‐language difficulties."
+
+This finding and others like it were quite readily interpreted, in the spirit of the age, as suggesting that learners' L1 didn't affect the order with which they acquired grammatical morphemes in the L2.
+
+The conclusion that there is a "highly consistent order of relative difficulty" is based on the following finding:
+
+> "Pearson product-moment correlations were performed on the relative accuracy of the use of the eight grammatical morphemes between Spanish and non-Spanish speakers (...). There was a significant correlation between relative accuracies of function words for Spanish and non-Spanish speakers (r = .926, p \< .005, one-tailed test)." (p. 238)
+
+While the study itself has been criticised on a number of grounds, the correlation coefficient of r = 0.926 has been reproduced in handbook chapters and overview articles without much comment. But based on Bailey et al.'s own data, their correlation coefficient isn't anywhere near 0.926 to begin with.
+
+Bailey et al. investigated how accurately L2 English learners used eight English grammatical morphemes. They then split up their learner sample into learners with Spanish as their native language and learners with another native language (including Italian, Greek, Hebrew, Chinese, and Japanese). The results were shown in a graph similar to Figure 1 below.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# Bailey et al. 1974, Abb. 1
+spanish <- c(0.81, 0.80, 0.81, 0.89, 0.72, 0.51, 0.30, 0.31)
+# plot(spanish, ylim = c(0, 1), type = "b", lty = 1)
+other <- c(0.87, 0.85, 0.76, 0.72, 0.74, 0.80, 0.59, 0.53)
+# points(other, type = "b", lty = 2)
+order_villiers <- c(2, 5, 1, 4, 8, 3, 7, 6)
+
+functors <- c("-ing", "copula", "plural -s", "articles",
+              "auxiliary", "past", "3ps -s", "possessive")
+
+df <- data.frame(Spanish = spanish,
+                 Other = other,
+                 Functor = functors)
+df$Functor <- factor(df$Functor, levels = functors)
+library(tidyverse)
+theme_set(theme_bw(10))
+p1 <- ggplot(df,
+       aes(x = 1:8)) +
+  geom_line(aes(y = Spanish)) +
+  geom_line(aes(y = Other), linetype = 2) +
+  scale_x_continuous(breaks = 1:8, labels = functors,
+                     name = "functor") +
+  ylim(0, 1) +
+  ylab("accuracy") +
+  geom_label(x = 7, y = 0.65, label = "other L1s", hjust = 0) +
+  geom_label(x = 7, y = 0.40, label = "L1 Spanish", hjust = 0) +
+  ggtitle("Figure 1 from Bailey et al. 1974")
+  
+p2 <- ggplot(df,
+       aes(x = Spanish,
+           y = Other,
+           label = Functor)) +
+  geom_label() +
+  xlab("Accuracy L1 Spanish") +
+  ylab("Accuracy other L1s") +
+  xlim(0.25, 0.95) +
+  ggtitle("The same data but as a scatterplot")
+
+# cor(df$Spanish, df$Other)
+# cor(df$Spanish, df$Other, method = "s")
+# cor(sort(df$Spanish), sort(df$Other))
+```
+
+```{r, echo = FALSE, fig.width = 6, fig.height = 4}
+#| fig.cap: "**Figure 1.** A reproduction of Bailey et al.'s (1974) Figure 1."
+p1
+```
+
+Figure 1 is a pretty non-standard way of showing the data underlying a correlation coefficient, so I extracted the (approximate) data points it contained and replotted them as a scatterplot for a class I teach:
+
+```{r, echo = FALSE, fig.width = 6, fig.height = 4}
+#| fig.cap: "**Figure 2.** The same data as in Figure 1, but this time shown in a scatterplot."
+p2
+```
+
+Now, if you've seen enough scatterplots in your life, you know that the relationship shown in Figure 2 doesn't have a Pearson correlation of 0.93. Indeed, the actual Pearson correlation is r = 0.76. (The Spearman correlation is 0.47, in case you were wondering.)
+
+So what went wrong? I end up with a Pearson correlation coefficient extremely close to Bailey et al.'s 0.926 *when I independently sort both the Spanish and non-Spanish data from high to low*. That is to say, I suspect that what went wrong here is that the authors inadvertently paired up the Spanish speakers' accuracy on articles (their strong suit) with the non-Spanish speakers' accuracy on *-ing* (*their* strong suit), the Spanish speakers' accuracy on *-ing* (their 2nd best) with the non-Spanish speakers' accuracy on copulas (their 2nd best), and so on. Obviously this yields a strong correlation coefficient -- their rank orders are already perfectly correlated. But it's also quite nonsensical.
+
+Incidentally, I don't think correlation coefficients are too useful for addressing Bailey et al.'s question, and I think their study suffers from other methodological issues, too (e.g., the hodgepodge of L1 background collapsed into 'other', and whether accuracy on, say, past tense can meaningfully be compared with accuracy on articles). But I think the field is already well-versed in such conceptual methodological reflection, while being at the same time a tad too eager to take the quantitative results themselves on good faith.
+
+For those interested, these are the data I extracted from Bailey et al.'s Figure 1. They won't be perfectly accurate, but they should be close enough.
+
+```{r, echo = FALSE}
+df %>% select(Functor, everything())
+```

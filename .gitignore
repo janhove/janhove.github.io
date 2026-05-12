@@ -1,0 +1,7 @@
+_site/
+site_libs/
+.Rproj.user/
+/.quarto/
+**/*.quarto_ipynb
+**/*_cache/
+simulation_results/

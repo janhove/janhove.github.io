@@ -1,0 +1,32 @@
+---
+title: "Tutorial: Visualising statistical uncertainty using model-based graphs"
+date: "2020-06-29"
+categories: [R, graphs, logistic regression, mixed-effects models, multiple regression, Bayesian statistics, brms]
+---
+
+I wrote a tutorial about visualising the statistical uncertainty in 
+statistical models for a conference that took place a couple of months ago,
+and I've just realised that I've never advertised this tutorial in this blog.
+You can find the tutorial here: 
+[Visualising statistical uncertainty using model-based graphs](https://janhove.github.io/visualise_uncertainty).
+
+Contents:
+
+1. Why plot models, and why visualise uncertainty?
+2. The principle: An example with simple linear regression
+   + Step 1: Fit the model
+   + Step 2: Compute the conditional means and confidence intervals
+   + Step 3: Plot!
+3. Predictions about individual cases vs. conditional means
+4. More examples
+   + Several continuous predictors
+   + Dealing with categorical predictors
+   + t-tests are models, too
+   + Dealing with interactions
+   + Ordinary logistic regression
+   + Mixed-effects models
+   + Logistic mixed effects models
+5. Caveats
+	 + Other things may not be equal
+	 + Your model may be misspecified
+	 + Other models may yield different pictures

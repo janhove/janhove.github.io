@@ -1,0 +1,475 @@
+---
+title: "Baby steps in Bayes: Recoding predictors and homing in on specific comparisons"
+date: "2018-12-20"
+categories: [Bayesian statistics, brms, R, graphs, mixed-effects models, contrast coding]
+execute: 
+  cache: true
+---
+
+Interpreting models that take into account a host of possible interactions between predictor variables can be a pain, especially when some of the predictors contain more than two levels. In this post, I show how I went about fitting and then making sense of a multilevel model containing a three-way interaction between its categorical fixed-effect predictors. To this end, I used the [`brms`](https://github.com/paul-buerkner/brms) package, which makes it relatively easy to fit Bayesian models using a notation that hardly differs from the one used in the popular `lme4` package. I won't discuss the Bayesian bit much here (I don't think it's too important), and I will instead cover the following points:
+
+1.  How to fit a multilevel model with `brms` using `R`'s default way of handling categorical predictors (treatment coding).
+2.  How to interpret this model's fixed parameter estimates.
+3.  How to visualise the modelled effects.
+4.  How to recode predictors to obtain more useful parameter estimates.
+5.  How to extract information from the model to home in on specific comparisons.
+
+## The data
+
+For a longitudinal project, 328 children wrote narrative and argumentative texts in Portuguese at three points in time. About a third of the children hailed from Portugal, about a third were children of Portuguese heritage living in the French-speaking part of Switzerland, and about a third were children of Portuguese heritage living in the German-speaking part of Switzerland. Not all children wrote both kinds of texts at all three points in time, and 1,040 texts were retained for the analysis. For each text, we computed the Guiraud index, which is a function of the number of words (tokens) and the number of *different* words (types) in the texts. Higher values are assumed to reflect greater diversity in vocabulary use.
+
+If you want to know more about this project, check out Bonvin et al. (2018), Lambelet et al. (2017a,b) and Vanhove et al. (2019); you'll find the references at the bottom of this page.
+
+**Update (2023-08-06):** I ran all of the R code again with newer software versions when converting the format of this blog.
+
+Read in the data:
+
+```{r, echo = FALSE}
+options(digits = 3)
+```
+
+```{r, message = FALSE}
+# Load tidyverse suite
+library(tidyverse)
+
+# Read in data from my webspace
+d <- read_csv("http://homeweb.unifr.ch/VanhoveJ/Pub/Data/portuguese_guiraud.csv")
+
+# Need to code factors explicitly
+d$Group    <- factor(d$Group)
+d$TextType <- factor(d$TextType)
+d$Time     <- factor(d$Time)
+
+str(d)
+summary(d)
+```
+
+Let's also plot the data. Incidentally, and contrary to popular belief, I don't write `ggplot` code such as this from scratch. What you see is the result of drawing and redrawing (see comments).
+
+```{r, fig.width = 6, fig.height = 4, echo = TRUE, message = FALSE}
+#| fig.cap: "**Figure 1.** The texts' Guiraud values by time of data collection, text type, and language background."
+# Plot Guiraud scores
+ggplot(d,
+       aes(x = Time,
+           y = Guiraud,
+           # reorder: sort the Groups by their median Guiraud value
+           fill = reorder(Group, Guiraud, median))) +
+  # I prefer empty (shape = 1) to filled circles (shape = 16).
+  geom_boxplot(outlier.shape = 1) +
+  facet_grid(. ~ TextType) +
+  # The legend name ("Group") seems superfluous, so suppress it;
+  # the default colours contain red and green, which can be hard to
+  #  distinguish for some people.
+  scale_fill_brewer(name = element_blank(), type = "qual") +
+  # I prefer the black and white look to the default grey one.
+  theme_bw() +
+  # Put the legend at the bottom rather than on the right
+  theme(legend.position = "bottom")
+```
+
+## A multilevel model with treatment coding
+
+Our data are nested: Each child wrote up to 6 texts, and the data were collected in classes, with each child belong to one class. It's advisable to take such nesting into account since you may end up overestimating your degree of certainty about the results otherwise. I mostly use `lme4`'s `lmer()` and `glmer()` functions to handle such data, but as will become clearer in a minute, `brms`'s `brm()` function offers some distinct advantages. So let's load that package:
+
+```{r, message = FALSE}
+library(brms)
+```
+
+### Fitting the model
+
+We'll fit a model with a three-way fixed-effect interaction between `Time`, `TextType` and `Group` as well as with by-`Child` and by-`Class` random intercepts. In order to take into account the possibility that children vary in the development of their lexical diversity, we add a random slope of `Time` by `Child`, and in order to take into account the possibility that their lexical diversity varies by text type, we do the same for `TextType`. Similarly, we add by-`Class` random slopes for `Time` and `TextType`.
+
+```{r, warning = FALSE, message = FALSE}
+m_default <- brm(Guiraud ~ Time*TextType*Group +
+                   (1 + TextType + Time|Class) +
+                   (1 + TextType + Time|Child),
+                 cores = 4, iter = 4000,
+                 silent = 2,
+                 control = list(adapt_delta = 0.95),
+                 data = d)
+```
+
+### Interpreting the parameter estimates
+
+```{r}
+summary(m_default)
+```
+
+The output looks pretty similar to what we'd obtain when using `lmer()`, but let's review what these estimates actually refer to. By default, `R` uses treatment coding. This entails that the `Intercept` refers to a specific combination of factors: the combination of all reference levels. Again by default, the reference levels are chosen alphabetically:
+
+-   `Time` consists of three levels (`T1`, `T2`, `T3`); for alphabetical reasons, `T1` is chosen as the default reference level.
+-   `Group` also consists of three levels (`monolingual Portuguese`, `Portuguese-French`, `Portuguese-German`); `monolingual Portuguese` is chosen as the default level.
+-   `TextType` consists of two levels (`argumentative`, `narrative`); `argumentative` is the default reference level.
+
+The `Intercept`, then, shows the modelled mean Guiraud value of `argumentative` texts written by `monolingual Portuguese` children at `T1`: 5.25.
+
+If you're unsure which factor level was used as the reference level, you can use the `contrasts()` function. The reference level is the one in whose rows only zeroes occur.
+
+```{r}
+contrasts(d$Group)
+```
+
+Crucially, all other estimated effects are computed with respect to this intercept. That is, `TimeT2` (0.57) shows the difference between T1 and T2 *for monolingual Portuguese children writing argumentative texts*. Similarly, `TimeT3` (0.91) shows the difference between *T1* and T3 for monolingual Portuguese children writing argumentative texts, and `TextTypenarrative` (-0.27) shows the difference between the mean Guiraud values of argumentative and narrative texts written by monolingual Portuguese children writing at T1. The texts written by the Portuguese-German and Portuguese-French bilinguals don't enter into these estimates.
+
+Now, it's possible to piece together the mean values associated with each combination of predictor values, but questions such as the following remain difficult to answer with just these estimates at hand:
+
+-   What's the overall difference between T2 and T3 and its uncertainty?
+-   What's the overall difference between the Guiraud values of texts written by Portuguese-French and Portuguese-German children and its uncertainty?
+-   ...
+
+We'll tackle these questions in a minute; for now, the point is merely that the estimated parameters above all refer to highly specific comparisons that may not be the most relevant.
+
+### Plotting the fitted values and the uncertainty about them
+
+When working with `brms`, it's relatively easy to obtain the modelled average outcome value for each combination of the predictor variables as well as a measure of the uncertainty associated with them.
+
+First construct a small data frame containing the unique combinations of predictor variables in our dataset:
+
+```{r}
+d_pred <- d |> 
+  select(Group, Time, TextType) |> 
+  distinct() |> 
+  arrange(Group, Time, TextType)
+d_pred
+```
+
+If you feed the model (here: `m_default`) and the data frame we've just created (`d_pred`) to the `fitted()` function, it outputs the modelled mean estimate for each combination of predictor values (`Estimate`), the estimated error of this mean estimate (`Est.Error`), and a 95% uncertainty interval about the estimate (`Q2.5` and `Q97.5`). One more thing: The `re_formula = NA` line specifies that we do not want the variability associated with the by-`Class` and by-`Child` random effects to affect the estimates and their uncertainty. This is what I typically want.
+
+```{r}
+cbind(
+  d_pred, 
+  fitted(m_default, 
+         newdata = d_pred, 
+         re_formula = NA)
+  )
+```
+
+So where do these estimates and uncertainty intervals come from? In the Bayesian approach, every model parameter hasn't got just one estimate but an entire distribution of estimates. Moreover, everything that *depends* on model parameters also has an entire distribution of estimates associated with it. The mean modelled outcome values per cell depend on the model parameters, so they, too, have entire distributions associated with them. The `fitted()` function summarises these distributions for us: it returns their means as `Estimate`, their standard deviations as `Est.Error` and their 2.5th and 97.5 percentiles as `Q2.5` and `Q97.5`. If so inclined, you can generate these distributions yourself using the `posterior_linpred()` function:
+
+```{r}
+posterior_fit <- posterior_linpred(m_default, newdata = d_pred, re_formula = NA)
+dim(posterior_fit)
+```
+
+This returns matrix of 4000 rows and 18 columns. 4000 is the number of 'post-warmup samples' (see the output of `summary(m_default)`; 18 is the number of combinations of predictor values in `d_pred`.
+
+The first *column* of `posterior_fit` contains the distribution associated with the first *row* in `d_pred`. If you compute its mean, standard deviation and 2.5th and 97.5th percentiles, you end up with the same numbers as above:
+
+```{r}
+mean(posterior_fit[, 1])
+sd(posterior_fit[, 1])
+quantile(posterior_fit[, 1], probs = c(0.025, 0.975))
+```
+
+Or similarly for the 10th row of `d_pred` (Portuguese-French, T2, narrative):
+
+```{r}
+mean(posterior_fit[, 10])
+sd(posterior_fit[, 10])
+quantile(posterior_fit[, 10], probs = c(0.025, 0.975))
+```
+
+At the moment, using `posterior_linpred()` has no added value, but it's good to know where these numbers come from.
+
+Let's draw a graph showing these modelled averages and the uncertainty about them. 95% uncertainty intervals are typically used, but they may instill dichotomous thinking. To highlight that such an interval highlights but two points on a continuum, I'm tempted to add 80% intervals as well:
+
+```{r}
+# Obtain fitted values + uncertainty
+fitted_values <- fitted(m_default, newdata = d_pred, re_formula = NA, 
+                        # 95% interval: between 2.5th and 97.5th percentile
+                        # 80% interval: between 10th and 90th percentile
+                        probs = c(0.025, 0.10, 0.90, 0.975))
+# Combine fitted values with predictor values
+fitted_values <- cbind(d_pred, fitted_values)
+fitted_values
+```
+
+```{r, echo = FALSE, eval = FALSE}
+fitted_values <- read.csv("http://homeweb.unifr.ch/VanhoveJ/Pub/Data/fitted_values_default.csv")
+```
+
+And now for the graph:
+
+```{r, fig.width = 6, fig.height = 4, echo = TRUE, message = FALSE}
+#| fig.cap: "**Figure 2.** The modelled mean Guiraud values and their uncertainty (thick vertical lines: 80% interval; thin vertical lines: 95% interval)."
+# Move all points apart horizontally to reduce overlap
+position_adjustment <- position_dodge(width = 0.3)
+
+ggplot(fitted_values,
+       aes(x = Time,
+           y = Estimate,
+           # Sort Groups from low to high
+           colour = reorder(Group, Estimate),
+           group = Group)) +
+  # Move point apart:
+  geom_point(position = position_adjustment) +
+  # Move lines apart:
+  geom_path(position = position_adjustment) +
+  # Add 95% intervals; move them apart, too
+  geom_linerange(aes(ymin = Q2.5, ymax = Q97.5), linewidth = 0.4,
+                 position = position_adjustment) +
+  # Add 80% intervals; move them apart, too
+  geom_linerange(aes(ymin = Q10, ymax = Q90), linewidth = 0.9,
+                 position = position_adjustment) +
+  facet_wrap(~ TextType) +
+  # Override default colour
+  scale_colour_brewer(name = element_blank(), type = "qual") +
+  ylab("Modelled mean Guiraud") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+## A model with more sensible coding
+
+### Tailoring the coding of categorical predictors to the research questions
+
+The `summary()` output for `m_default` was difficult to interpret because treatment coding was used. However, we can override this default behaviour to end up with estimates that are more readily and more usefully interpretable.
+
+The first thing we can do is to override the default refence level. Figure 1 showed that the Guiraud values at T2 tend to be somewhere midway between those at T1 and T3, so we can make the intercept estimate more representative of the dataset as a whole by making T2 the reference level of `Time` rather than T1. A benefit of doing so is that we will now have two parameters, `TimeT1` and `TimeT3` that specify the difference between T1-T2 and T2-T3, respectively. In other words, the estimated parameters will directly reflect the progression from data collection to data collection. (Before, the parameter estimates specified the differences between T1-T2 and *T1*-T3, so a direct estimate for T2-T3 was lacking.)
+
+```{r}
+# Set T2 as default time; retain treatment coding
+d$Time <- relevel(d$Time, "T2")
+```
+
+Second, there's no reason for preferring `argumentative` or `narrative` texts as the reference level. If we sum-code this predictor, the intercept reflects the *grand mean* of the argumentative and narrative texts (at T2), and the estimated parameter then specifies how far the mean Guiraud value of each text type is removed from this mean:
+
+```{r}
+# Sum (or deviation) coding for TextType (2 levels)
+contrasts(d$TextType) <- contr.sum(2)
+```
+
+Similarly, there are a couple of reasonable ways to choose the reference level for `Group` when using treatment coding. But you can also sum-code this predictor so that the intercept reflects the grand mean of the Guiraud values of texts written by monolingual Portuguese and bilingual Portuguese-French and Portuguese-German kids (at T2).
+
+```{r}
+# Sum (or deviation) coding for Group (3 levels)
+contrasts(d$Group) <- contr.sum(3)
+```
+
+### Refitting the model
+
+No difference here.
+
+```{r, warning = FALSE, message = FALSE}
+m_recoded <- brm(Guiraud ~ Time*TextType*Group +
+                   (1 + TextType + Time|Class) +
+                   (1 + TextType + Time|Child),
+                 cores = 4, iter = 4000,
+                 silent = 2,
+                 control = list(adapt_delta = 0.95),
+                 data = d)
+```
+
+### Interpreting the parameter estimates
+
+```{r}
+summary(m_recoded)
+```
+
+Now the `Intercept` reflects the grand mean of the Guiraud values for both argumentative and narrative texts for all three groups **written at T2**. The `TimeT1` estimate (-0.20) shows the difference between T1 and T2 averaged over all text types and all groups (0.20 points worse at T1); the `TimeT3` estimate (0.56) shows the difference between T2 and T3 averaged over all text types and all groups (0.56 points better at T3).
+
+`TextType1` (0.05) shows that the mean Guiraud value of one text type (still written at T2!) averaged over all groups is 0.05 points higher than the grand mean; and by implication that the mean Guiraud value of the other text type is 0.05 lower than the grand mean. To find out which text type is which, use `contrasts()`:
+
+```{r}
+contrasts(d$TextType)
+```
+
+Since `argumentative` is coded as 1, it's the argumentative texts that have the higher Guiraud values at T2.
+
+Similarly, `Group1` (0.98) shows that one group has higher-than-average Guiraud values averaged across text types at T2, whereas `Group2` (-0.38) shows that another group has a mean Guiraud value that lies 0.38 points below the average at T2. By implication, the third group's mean Guiraud value lies 0.60 points below average ((0.98-0.38-0.60)/3 = 0). To see which group is which, use `contrasts()`:
+
+```{r}
+contrasts(d$Group)
+```
+
+`monolingual Portuguese` is '1' for the purposes of `Group1`, `Portuguese-French` is `1` for the purposes of `Group2`, and `Portuguese-German` is the third group.
+
+We can double-check these numbers by generating the modelled mean values for each predictor value combination:
+
+```{r}
+double_check <- cbind(
+  d_pred, 
+  fitted(m_recoded, 
+         newdata = d_pred, 
+         re_formula = NA)
+  )
+double_check
+```
+
+```{r, echo = FALSE, eval = FALSE}
+double_check <- read.csv("http://homeweb.unifr.ch/VanhoveJ/Pub/Data/double_check.csv")
+```
+
+Some sanity checks:
+
+(1) Intercept = 4.59 = grand mean at T2:
+
+```{r}
+double_check |> 
+  filter(Time == "T2") |> 
+  summarise(mean_est = mean(Estimate))
+```
+
+(2) TimeT3 = 0.56 = T2/T3 difference across texts and groups:
+
+```{r}
+double_check |> 
+  group_by(Time) |> 
+  summarise(mean_est = mean(Estimate)) |> 
+  spread(Time, mean_est) |> 
+  summarise(diff_T2T3 = T3 - T2)
+```
+
+(3) Portuguese-German lies 0.60 below average at T2 across texts:
+
+```{r}
+double_check |> 
+  filter(Time == "T2") |> 
+  group_by(Group) |> 
+  summarise(mean_est = mean(Estimate)) |> 
+  mutate(diff_mean = mean_est - mean(mean_est))
+```
+
+I won't plot the modelled averages and their uncertainty, because the result will be the same as before: Recoding the predictors in this way doesn't affect the modelled averages per cell; it just makes the summary output easier to parse.
+
+### Homing in on specific comparisons
+
+Finally, let's see how we can target some specific comparisons without having to refit the model several times. A specific comparison you might be interested in could be "How large is the difference in Guiraud scores for narrative texts written by Portuguese-French bilinguals between T1 and T2?" Or a more complicated one: "How large is the difference in the progression from T1 to T3 for argumentative texts between Portuguese-French and Portuguese-German children?"
+
+To answer such questions, we need to generate the distribution of the modelled averages per predictor value combination:
+
+```{r}
+posterior_fit <- posterior_linpred(m_recoded, newdata = d_pred, re_formula = NA)
+```
+
+```{r, echo = FALSE, eval = FALSE}
+posterior_fit <- dget(url("http://homeweb.unifr.ch/VanhoveJ/Pub/Data/posterior_guiraud.txt"))
+```
+
+#### Question 1: Progression T1-T2 for narrative texts, Portuguese-French bilinguals?
+
+This question requires us to compare the modelled average for narrative texts written by Portuguese-French bilinguals at T2 to that of the narrative texts written by Portuguese-French bilinguals at T1. The first combination of predictor values can be found in row 10 in `d_pred`, so the corresponding estimates are in *column* 10 in `posterior_fit`. The second combination of predictor values can be found in row 8 in `d_pred`, so the corresponding estimates are in *column* 8 in `posterior_fit`.
+
+```{r}
+t2 <- posterior_fit[, 10]
+t1 <- posterior_fit[, 8]
+df <- data.frame(t2, t1)
+```
+
+Now compute and plot the pairwise differences:
+
+```{r}
+#| fig.cap: "**Figure 3.** Estimate of the progression in Guiraud values for narrative texts by Portuguese-French bilinguals from T1 to T2."
+df <- df |> 
+  mutate(progression = t2 - t1)
+ggplot(df,
+       aes(x = progression)) +
+  geom_histogram(bins = 50, fill = "lightgrey", colour = "black") +
+  theme_bw()
+```
+
+The mean progression is easily calculated:
+
+```{r}
+mean(df$progression)
+```
+
+The estimated error for this estimate is:
+
+```{r}
+sd(df$progression)
+```
+
+And its 95% uncertainty interval is:
+
+```{r}
+quantile(df$progression, probs = c(0.025, 0.975))
+```
+
+According to the model, there's about a 84% chance that there's indeed some progression going from T1 to T2.
+
+```{r}
+mean(df$progression > 0)
+```
+
+#### Question 2: T1-T3 progression for argumentative texts, Portuguese-French vs. Portuguese-German?
+
+This question requires us to take into consideration the modelled average for argumentative texts written by Portuguese-French bilinguals at T1, that for argumentative texts written by Portuguese-French bilinguals at T3, and the same for the texts written by Portuguese-German bilinguals. We need the following columns in `posterior_fit`:
+
+-   7 (Portuguese-French, T1, argumentative)
+-   11 (Portuguese-French, T3, argumentative)
+-   13 (Portuguese-German, T1, argumentative)
+-   17 (Portuguese-German, T3, argumentative)
+
+```{r}
+fr_t1 <- posterior_fit[, 7]
+fr_t3 <- posterior_fit[, 11]
+gm_t1 <- posterior_fit[, 13]
+gm_t3 <- posterior_fit[, 17]
+df <- data.frame(fr_t1, fr_t3, gm_t1, gm_t3)
+```
+
+We compute the progression for the Portuguese-French bilinguals and that for the Portuguese-German bilinguals. Then we compute the difference between these progressions:
+
+```{r}
+df <- df |> 
+  mutate(prog_fr = fr_t3 - fr_t1,
+         prog_gm = gm_t3 - gm_t1,
+         diff_prog = prog_gm - prog_fr)
+```
+
+The mean progression for the Portuguese-French bilinguals was 0.54 compared to 0.68 for the Portuguese-German bilinguals:
+
+```{r}
+mean(df$prog_fr)
+mean(df$prog_gm)
+```
+
+The mean difference between these progressions, then, is 0.14 in favour of the Portuguese-German bilinguals:
+
+```{r}
+mean(df$diff_prog)
+```
+
+However, there is considerable uncertainty about this difference:
+
+```{r}
+ggplot(df,
+       aes(x = diff_prog)) +
+  geom_histogram(bins = 50, fill = "lightgrey", colour = "black") +
+  theme_bw()
+```
+
+The probability that the Portuguese-German bilinguals make more progress than the Portuguese-French bilinguals is 77%, and according to the model, there's a 95% chance its size is somewhere between -0.25 and 0.52 points.
+
+```{r}
+mean(df$diff_prog > 0)
+quantile(df$diff_prog, probs = c(0.025, 0.975))
+```
+
+## Summary
+
+By investing some time in recoding your predictors, you can make the parameter estimates more relevant to your questions. Any specific comparisons you may be interested in can additionally be addressed by making use of the entire distribution of estimates. You can also use these estimate distributions to draw effect plots.
+
+## Further resources
+
+-   [R Library Contrast Coding Systems for categorical variables](https://stats.idre.ucla.edu/r/library/r-library-contrast-coding-systems-for-categorical-variables/)
+-   Matthew Kay. 2018. [Extracting and visualizing tidy draws from brms models](https://mjskay.github.io/tidybayes/articles/tidy-brms.html)
+-   Daniel J. Schad, Sven Hohenstein, Shravan Vasishth and Reinhold Kliegl. 2018. [How to capitalize on a priori contrasts in linear (mixed) models: A tutorial](https://arxiv.org/abs/1807.10451).
+-   In simpler models, you can use bootstrapping to generate distributions of estimates. This would be possible for these data, too, but it would take a considerable amount of time.
+
+## References
+
+Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018. [Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz.](http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886) *Zeitschrift für Interkulturellen Fremdsprachenunterricht* 23(1). 135-148. Data and R code available from [figshare](http://dx.doi.org/10.6084/m9.figshare.4578991).
+
+Amelia Lambelet, Raphael Berthele, Magalie Desgrippes, Carlos Pestana and Jan Vanhove. 2017a. Chapter 2: Testing interdependence in Portuguese Heritage speakers in Switzerland: the HELASCOT project. In Raphael Berthele and Amelia Lambelet (eds.), [Heritage and school language literacy development in migrant children: Interdependence or independence?](http://www.multilingual-matters.com/display.asp?k=9781783099030), pp. 26-33. Multilingual Matters.
+
+Amelia Lambelet, Magalie Desgrippes and Jan Vanhove. 2017b. Chapter 5: The development of argumentative and narrative writing skills in Portuguese heritage speakers in Switzerland (HELASCOT project). In Raphael Berthele and Amelia Lambelet (eds.), [Heritage and school language literacy development in migrant children: Interdependence or independence?](http://www.multilingual-matters.com/display.asp?k=9781783099030), pp. 83-96. Multilingual Matters.
+
+Jan Vanhove, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019. [Predicting perceptions of the lexical richness of short French, German, and Portuguese texts.](https://doi.org/10.17239/jowr-2019.10.03.04) *Journal of Writing Research*. Technical report, data (including texts), elicitation materials, and R code available from the [Open Science Framework](https://osf.io/vw4pc/).
+
+## Session info
+
+```{r}
+devtools::session_info()
+```

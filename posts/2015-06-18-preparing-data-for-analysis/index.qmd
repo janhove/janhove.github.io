@@ -1,0 +1,153 @@
+---
+title: "Some tips on preparing your data for analysis"
+date: "2015-06-18"
+categories: [R]
+---
+
+How to prepare your spreadsheets so that they can be analysed efficiently is something you tend to learn on the job.
+In this blog post, I give some tips for organising datasets that I hope will be of use to students and researchers starting out in quantitative research.
+
+## Use self-explanatory names and labels, but keep them short
+
+Try to minimise the need to consult the project codebook during the analysis. To this end, name your variables and their values sensibly. If you're analysing questionnaire data, for instance, a variable name like `Q3c` means little to the analyst and requires them to refer back to the questionnaire or the codebook. Renaming this variable `DialectUse` makes it immediately clear that the variable likely encodes the degree to which the informant claims to use a dialect. 
+
+Similarly, a series of 0s and 1s in the `Sex` variable is uninformative. Sure, one of them will mean 'man' and the other 'woman', but which is which? Using the labels `man` and `woman` instead avoids any misunderstandings. Also note that values don't have to be labelled numerically.
+
+Lastly, use a consistent and unambiguous label to identify missing data. `NA` is usually a good choice, but don't use `0` or `-99` etc. Especially if you're analysing numeric data, it may not be immediately obvious to the analyst that `0` or `-99` don't refer to actual measurements. (See exercises 2 and 3 on page 77 in my introduction to statistics, if you can read German.)
+
+Transparent variables names and data labels facilitate the analysis because you don't have to go back and forth between dataset and codebook to make sense of the data. A further benefit is that the code used for the analysis tends to be more readable, even months after the analysis has been conducted.
+
+That said, when coming up with descriptive names and labels, try to keep them short. A variable name like `HowOftenDoYouSpeakTheLocalDialectWithYourChild` is self-explanatory but cumbersome to type repeatedly when analysing the data. `DialectChild` might be less self-explanatory but is easier to use.
+
+Lastly, try to keep the following guidelines in mind:
+
+<ul>
+<li>Capitalisation matters. In R, an informant whose <code>Sex</code> is <code>man</code> is of a different gender than one whose <code>Sex</code> is <code>Man</code>. Any such confusions become clear soon enough when analysing the data and they're pretty easy to take care of. But avoiding them is better for the analyst's grumpiness level :)</li>
+
+<li>Special characters are tricky. German Umlaut characters and French accents may show up without problems on your computer, but may require the manual specification of a character encoding on a different system. Try to either avoid special characters or know which character encoding you saved the dataset in (see the <a href="https://support.office.com/en-ca/article/Choose-text-encoding-when-you-open-and-save-files-60d59c21-88b5-4006-831c-d536d42fd861">MS Office support page</a> for Excel; LibreOffice users can just use the 'Save as' function and will be asked which encoding they prefer).</li>
+
+<li>Don't use spaces, question marks or exclamation marks in variable names.</li>
+
+<li>Colour-coding is fine for your own use, but the colours get lost when the dataset is imported into a statistics program.</li>
+
+<li>'Empty' rows or columns may contain lingering spaces that mess up the dataset when it's imported into a statistics program. By way of example, the csv file <code>FormantMeasurements1.csv</code> (available <a href ="http://janhove.github/io/downloads/FormantMeasurements1.csv">here</a>) looks fine when it's opened in a spreadsheet program:
+
+![Example superfluous spaces](http://janhove.github.io/images/FormantMeasurements1.png)
+
+When the dataset is imported into <code>R</code>, however, there seem to be two additional variables (<code>X</code> and <code>X.1</code>), some missing values (<code>NA</code>) and a <code>Speaker</code> without an ID:
+
+```{r}
+dat <- read.csv("http://janhove.github.io/downloads/FormantMeasurements1.csv",
+                stringsAsFactors = TRUE)
+summary(dat)
+```
+
+The reason is that there are superfluous spaces in cells D99 and G9.
+</li>
+
+<li>Similarly, a value label with a trailing space will be inconspicuous in your spreadsheet program but will affect how the dataset is read in into your statistics program.
+The csv file <code>FormantMeasurements2.csv</code> contains the same data as <code>FormantMeasurements1.csv</code>, but when read into <code>R</code>, there seem to be two <code>Speaker</code>s with the same ID (<code>S2</code>):
+
+```{r}
+dat <- read.csv("http://janhove.github.io/downloads/FormantMeasurements2.csv",
+                stringsAsFactors = TRUE)
+summary(dat)
+```
+
+
+The reason is that there's a trailing space in cell A28.
+
+Less obvious (because it doesn't show up in the <code>summary()</code> output) is that there's also a superfluous space in the <code>Word</code> column (the carrier word <code>tiet</code> occurs twice, once with and once without trailing space):
+
+```{r}
+levels(dat$Word)
+```
+
+
+As you can check for yourself, the trailing space is in cell C2.
+
+Problems like inconsistent capitalisation or trailing spaces are pretty easy to fix when you know they're there, 
+but they aren't always obvious.
+</li>
+
+</ul>
+
+## A 'long' data format is usually easier to manage than a 'wide' one
+An example of a 'wide' dataset is `Cognates_wide.csv` (available [here](http://janhove.github.io/downloads/Cognates_wide.csv)). The column `Subject` contains the participants' IDs and every other column expresses whether the participant  translated a given stimulus (e.g. 'ägg', 'alltid', 'äta' etc.) correctly. Every participant has their own row:
+
+```{r}
+dat <- read.csv("http://janhove.github.io/downloads/Cognates_wide.csv",
+                fileEncoding = "UTF-8",
+                stringsAsFactors = TRUE)
+head(dat)
+```
+
+In a 'long' dataset (e.g. `Cognates_long.csv`), the data are arranged differently, typically with one row per 'observation unit':
+
+```{r}
+dat <- read.csv("http://janhove.github.io/downloads/Cognates_long.csv",
+                fileEncoding = "UTF-8", stringsAsFactors = TRUE)
+head(dat); tail(dat)
+```
+
+I prefer long datasets for the following reasons:
+
+- The statistical tools I usually work with (mixed-effects models) require data in a long format.
+
+- It's easier to add information to a long than to a wide dataset. For instance, if I wanted to add the order in which the participants saw the stimuli to the wide format, I'd have to add 100 columns to save the trial numbers (i.e. `aggTrial`, `alltidTrial` etc.). I'd only have to add one column (`Trial`) in the case of long data.
+
+- While wide datasets are useful for analytical techniques such as principal component analysis, factor analysis or structural equation modeling as well as paired t-tests, I find it easier to convert a long dataset to a wide dataset than vice versa, especially if the dataset contains additional information about the stimuli or trials.
+
+A useful package for converting long data to wide data and vice versa is `reshape2`, whose use is helpfully explained by [Sean Anderson](http://seananderson.ca/2013/10/19/reshape.html).
+
+
+## Managing several smallish datasets and then joining them before the analysis is easier than handling one large dataset
+Complex datasets often contain repeated data. For instance, we could add the participants' age to `Cognates_long.csv` above, but we'd have to repeat each participant's age 100 times. Similarly, we could add information about the stimuli to `Cognates_long.csv` (e.g. their length in phonemes), but we'd have to repeat each stimulus's length 163 times (once for each participant). In such cases, I find it easiest to compile several smaller datasets with as little information repeated as possible and to combine them when needed. That way, if I make a mistake when entering the data, I'll only have to correct it once and then recombine the datasets.
+
+Here's an illustration of what I mean.
+The participants' accuracy per stimulus is stored in `Cognates_long.csv`.
+
+```{r}
+dat <- read.csv("http://janhove.github.io/downloads/Cognates_long.csv",
+                fileEncoding = "UTF-8", stringsAsFactors = TRUE)
+```
+
+Background information about the participants is available in `ParticipantInformation.csv`:
+
+```{r}
+participants <- read.csv("http://janhove.github.io/downloads/ParticipantInformation.csv",
+                         fileEncoding = "UTF-8", stringsAsFactors = TRUE)
+summary(participants)
+```
+
+The entries in the `Subject` column in `Cognates_long.csv` correspond to those in the same column in `ParticipantInformation.csv`. Using `merge()`, we can add the information in the latter dataset to the corresponding rows in the former:
+
+```{r}
+dat <- merge(dat, participants, "Subject")
+head(dat); tail(dat)
+```
+
+Similarly, we can add information about the stimuli, available in `StimulusInformation.csv`, to `dat`.
+
+```{r}
+stimuli <- read.csv("http://janhove.github.io/downloads/StimulusInformation.csv",
+                    fileEncoding = "UTF-8", stringsAsFactors = TRUE)
+summary(stimuli)
+```
+
+The shared denominator of both datasets is stored in the column `Stimulus`:
+
+```{r}
+dat <- merge(dat, stimuli, "Stimulus")
+head(dat); tail(dat)
+```
+
+
+## Reading tip
+Hadley Wickham's [_Tidy data_](http://vita.had.co.nz/papers/tidy-data.pdf), while primarily geared towards software developers, is well worth a read.
+
+## Software versions
+```{r}
+devtools::session_info()
+```
+

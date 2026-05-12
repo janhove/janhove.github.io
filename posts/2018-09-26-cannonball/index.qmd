@@ -1,0 +1,96 @@
+---
+title: "Introducing cannonball - Tools for teaching statistics"
+date: "2018-09-26"
+categories: [cannonball, R, teaching materials]
+---
+
+I've put my first R package on GitHub! It's called `cannonball` and contains a couple of functions that I use for teaching; perhaps others will follow. \# Installation Make sure you have the `devtools` package:
+
+```{r, eval = FALSE}
+install.packages("devtools")
+```
+
+Then load it and install `cannonball`:
+
+```{r, eval = FALSE}
+library(devtools)
+install_github("janhove/cannonball")
+```
+
+To use it, load the package as per usual:
+
+```{r}
+library(cannonball)
+```
+
+## Overview of the functions
+
+### plot_r(): Draw scatterplots with the same correlation coefficient
+
+People seem to like this function from my blog post [*What data patterns can lie behind a correlation coefficient?*](../2016-11-21-what-correlations-look-like). Specify the number of observations and a desired sample Pearson correlation coefficient, and out come 16 rather different looking scatterplots conforming to these criteria:
+
+```{r, fig.width = 8, fig.height = 8}
+plot_r(r = -0.6, n = 42)
+```
+
+For more details, type in `?plot_r` at the R prompt.
+
+### clustered_data(): Simulate data from a cluster-randomised experiment
+
+Cluster-randomised experiments are experiments in which whole groups of participants (e.g., entire classes) are necessarily assigned to the same condition. If the data from such experiments are analysed as though the participants were assigned to the conditions *individually* (e.g., by running a *t*-test on the individual data points), the false positive rate can go [through the roof](../2015-09-17-cluster-randomised-experiments). This function simulates data from such an experiment and allows you to specify unequal cluster sizes (via the `parts_per_class` parameter):
+
+```{r}
+# Generate data
+d <- clustered_data(ICC = 0.15, # intra-class correlation coefficient
+                    n_per_class = c(8, 13, 28,   # sizes of the control clusters
+                                    22, 18, 16), # sizes of the intervention clusters
+                    effect = 0) # population effect size
+
+# Plot
+library(ggplot2)
+ggplot(data = d,
+       aes(x = class,
+           y = outcome,
+           fill = condition)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(shape = 1,
+             position = position_jitter(width = 0.1, height = 0))
+```
+
+I mostly use this function in a simulation to illustrate the effects of clustering on p-values. With a null effect, you'd expect only 5% of the p-values to be lower than 0.05. Let's see what happens when you analyse the individual data from a cluster-randomised experiment using a t-test:
+
+```{r, echo = FALSE}
+set.seed(2023-08-06)
+```
+
+```{r}
+p_vals <- replicate(5000, {
+  d <- clustered_data(ICC = 0.15,
+                      n_per_class = c(8, 13, 28, 22, 18, 16),
+                      effect = 0)
+  p <- t.test(outcome ~ condition, data = d)$p.value
+  return(p)
+})
+hist(p_vals)
+```
+
+```{r}
+mean(p_vals < 0.05)
+```
+
+The false positive rate is now through the roof (32%).
+
+### Graphically checking model assumptions
+
+See the full-fledged [tutorial](../../tutorials/assumptions.html) for these functions.
+
+## Why `cannonball`?
+
+Glad you asked! Julian 'Cannonball' Adderley is one of my favourite alto saxophone players (check out his solos on [*Autumn Leaves*](https://www.youtube.com/watch?v=u37RF5xKNq8) (from around 2'03"; Somethin' Else) or [*Freddie Freeloader*](https://www.youtube.com/watch?v=RPfFhfSuUZ4) (6'22"; Kind of Blue)!) and he was a consummate jazz educator to boot.
+
+## Software versions
+Please note that I reran the code on this page on August 6, 2023.
+
+```{r}
+devtools::session_info()
+```

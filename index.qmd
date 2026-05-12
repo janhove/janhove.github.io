@@ -1,0 +1,15 @@
+---
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: false
+  fields: [author, image, date, title, description, categories]
+  max-description-length: 9999
+page-layout: full
+title-block-banner: false
+---
+
+I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.
+
+# Latest blog posts

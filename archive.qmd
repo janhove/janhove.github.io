@@ -1,0 +1,16 @@
+---
+listing:
+  contents: posts
+  sort: "date desc"
+  type: table
+  categories: true
+  sort-ui: true
+  filter-ui: true
+  fields: [date, title]
+  feed: 
+    categories: [Julia, R, Python, Stan]
+page-layout: full
+title-block-banner: false
+---
+
+# Blog archive

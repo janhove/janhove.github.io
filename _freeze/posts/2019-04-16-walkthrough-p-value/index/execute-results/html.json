@@ -1,0 +1,15 @@
+{
+  "hash": "049b4a7f7c022a59e1e245310efafc6d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Walkthrough: A significance test for a two-group comparison\"\ndate: \"2019-04-16\"\ncategories: [significance, R, teaching materials]\n---\n\n\n::: {.cell}\n\n:::\n\n\nI wrote an R function that's hopefully useful to teach students what significance tests do and how they can and can't be interpreted.\n\n**Update (2023-08-06):** By now, this function has long been integrated in the `cannonball` package. I've edited this blog post correspondingly. The installation instructions for the `cannonball` package are available from its [GitHub page](https://github.com/janhove/cannonball).\n\nThe basic use is simple. Just run `walkthrough_p()` and follow the on-screen instructions.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncannonball::walkthrough_p()\n```\n:::\n\n\n## What does the function do?\n\nData are generated from a normal distribution with the requested standard deviation. Then, the data points are randomly assigned to two equal-sized groups. Data points in the intervention group receive a boost as specified by `diff`. Finally, a significance test is run on the data.\n\nBy default, the significance test is a two-sample Student's t-test. Technically, the p-value from this test is the probability that a t-statistic larger than the one observed would've been observed if only chance were at play, but the walkthrough text says that is the probability that a mean difference larger than the one observed would've been observed if only chance were at play. That is, I use the t-test as an approximation to a permutation test. Switch on pedant mode if you want to run a permutation test.\n\n## Parameters\n\n-   `n`: the number of data points per group\n-   `diff`: The boost that participants in the intervention group receive.\n-   `sd`: The standard deviation of the normal distribution from which the data were generated.\n-   `showdata`: Do you want to output a dataframe containing the plotted data (TRUE) or not (FALSE, default)?\n-   `pedant`: Do you want to run the significance test in pedant mode (TRUE; performs a permutation test) or not (FALSE, default; performs Student's t-test)?\n\n## Examples\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncannonball::walkthrough_p(n = 12, diff = 0.2, sd = 1.3)\n\n# Save data and double check results\ndat <- cannonball::walkthrough_p(n = 10, diff = 0.2, \n                                 sd = 2, showdata = TRUE)\nt.test(score ~ group, data = dat, var.equal = TRUE)\n\n# Run in pedant mode (= permutation test)\ndat <- cannonball::walkthrough_p(n = 13, diff = 1, sd = 4, \n                                 pedant = TRUE, showdata = TRUE)\nt.test(score ~ group, data = dat, var.equal = TRUE)\n```\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,32 @@
+project:
+  type: website
+
+website:
+  title: "Jan Vanhove"
+  site-url: https://janhove.github.io
+  description: "I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind."
+  navbar:
+    right:
+      - text: About
+        href: about.qmd
+      - text: Blog archive
+        href: archive.qmd 
+      - text: Teaching resources
+        href: resources.qmd
+      - text: Publications
+        href: publications.qmd
+      - icon: rss
+        href: archive.xml
+format:
+  html:
+    theme: yeti
+    css: styles.css
+    fig-format: svg
+    include-in-header: ga.html
+
+editor: source
+
+execute:
+  jupyter:
+    kernel-map:
+      julia-1.9: julia-1.12

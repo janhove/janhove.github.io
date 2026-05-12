@@ -1,0 +1,5 @@
+---
+title: "Statistische Grundlagen: eine Einführung mit Beispielen aus der Sprachforschung"
+---
+
+Das Skript *Statistische Grundlagen* ist eine Einführung in die Analyse quantitativer Daten, die sich an erster Stelle an Forscherinnen und Forscher im Bereich der angewandten Linguistik richtet. Das Skript und die verwendeten Datensätze können Sie kostenlos auf [GitHub](https://github.com/janhove/statintro) herunterladen.

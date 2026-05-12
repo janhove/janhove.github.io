@@ -1,0 +1,15 @@
+{
+  "hash": "f52b54fd19642dae5696b2564497e57f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"An R function for computing Levenshtein distances between texts using the word as the unit of comparison\"\ndate: \"2022-02-17\"\ncategories: [R]\n---\n\nFor a new research project, we needed a way to tabulate\nthe changes that were made to a text when correcting it.\nSince we couldn't find a suitable tool, I wrote an \nR function that uses the Levenshtein algorithm to determine\nboth the smallest number of words that need to be changed\nto transform one version of a text into another\nand what these changes are.\n\nYou can download the `obtain_edits()` function from https://janhove.github.io/RCode/obtainEdits.R\nor source it directly:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsource(\"https://janhove.github.io/RCode/obtainEdits.R\")\n```\n:::\n\n\nThe function recognises words that were deleted or inserted,\nwords that were substituted for other words, and cases\nwhere one word was split into two words or where two words\nwere merged to one word. All these changes count as one operation.\nThe algorithm determines both the smallest number of operations\nneeded to transform one version of the text into the other\nand outputs a data frame that lists what these operations are.\n\nHere's an example:\n\n::: {.cell}\n\n```{.r .cell-code}\noriginal  <- \"Check howmany changes need be made in order to change the first tekst in to the second one.\"\ncorrected <- \"Check how many changes need to be made in order to change the first text into the second one.\"\nobtain_edits(original, corrected)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[[1]]\n[1] 4\n\n[[2]]\n  change_position  change_type change_from change_to\n1              14       merger       in to      into\n2              13 substitution       tekst      text\n3               5    insertion                    to\n4               2        split     howmany  how many\n```\n\n\n:::\n:::\n\n\nNote that while the minimal operation count is uniquely determined,\nthe list of changes that were made isn't. Consider this example:\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntextA <- \"first secondthird\"\ntextB <- \"second third\"\nobtain_edits(textA, textB)\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\n[[1]]\n[1] 2\n\n[[2]]\n  change_position change_type change_from    change_to\n1               2       split secondthird second third\n2               1    deletion       first             \n```\n\n\n:::\n:::\n\n\nThe algorithm identifies the difference from `textA` to `textB`\nas a matter of deleting 'first' and splitting up 'secondthird'.\nBut we could also consider it a matter of substituting 'second' for 'first'\nand 'third' for 'secondthird'.\n\nNothing about stats or research design in this post, but perhaps this \nfunction is useful to someone somewhere!\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

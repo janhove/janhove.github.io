@@ -1,0 +1,20 @@
+---
+title: "New and updated teaching resources"
+date: "2024-09-04"
+draft: false
+categories: [teaching materials]
+---
+
+This is just a quick blog post to let you know that I've added a few entries
+to the [Teaching resources](../../resources.html) page and updated a few others:
+
+* I've added more exercises to the [_Quantitative methodology_](../../resources.html#quantitative-methodology-an-introduction) script, and I've
+  embedded the reading assignments into the lecture chapters.
+* I've taught another summer school course on the general linear model and
+  I've updated the [script](../../resources.html#introduction-to-the-general-linear-model)
+  accordingly.
+* I've taught a crash course on working with datasets in R and another
+  on visualising data. Both the scripts and datasets can be accessed
+  on the [Teaching resources](../../resources.html#working-with-datasets-and-visualising-data-in-r-two-primers) page.
+* I've substantially revised the German-language introduction to
+  quantitative data ([_Einführung in die quantitative Datenanalyse_](../../resources.html#einf%C3%BChrung-in-die-quantitative-datenanalyse)).

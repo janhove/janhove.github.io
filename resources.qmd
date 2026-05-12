@@ -1,0 +1,110 @@
+---
+title: "Teaching resources"
+toc: true
+toc-depth: 3
+---
+
+## Analysing quantitative data: An introduction for language researchers
+These lecture notes as well as the datasets used are available from [GitHub](https://github.com/janhove/AnalysingQuantitativeData).
+
+Contents:
+
+1. Software
+2. Working with datasets
+3. Fundamentals of probability theory
+4. Descriptive statistics of a univariate sample
+5. Random samples
+6. Estimating estimation uncertainty
+7. Another look at the mean
+8. Adding a predictor
+9. Group differences
+10. Differences between differences
+11. Several predictors in one model
+12. The logic of significance testing
+13. The t-test
+14. Analysis of variance
+15. Calculating statistical power
+16. Silly tests
+17. Questionable research practices
+18. Within-subjects experiments
+19. Logistic regression
+20. Recommendations for self-study
+
+## Quantitative methodology: An introduction
+The script for the course on quantitative methodology I teach 
+is available [here](QuantitativeMethodology.pdf).
+
+Contents:
+
+1. Association and causality.
+2. Constructing a control group.
+3. Alternative explanations.
+4. Inferential statistics 101. (The course is not a statistics course, but there’s no avoiding talking about p-values given their omnipresence.)
+5. Increasing precision.
+6. Pedagogical interventions.
+7. Within-subjects experiments.
+8. Quasi-experiments and correlational studies.
+9. Constructs and indicators.
+10. Questionable research practices.
+
+I've also included two appendices:
+
+* Reading difficult results sections.
+* Reporting research transparently.
+
+## Introduction to the general linear model
+These are the lecture notes for a summer school module I taught.
+They are available from [GitHub](https://github.com/janhove/GeneralLinearModel).
+
+Contents:
+
+1. Nuts and bolts: General linear model equation; optimisation criteria (least absolute deviations, least squares, maximum likelihood); estimating uncertainty (bootstrapping, i.i.d. normality assumption).
+2. Adding a predictor: Interpretation of parameter estimates and regression lines; confidence bands.
+3. Group differences: Dummy variables (treatment coding, sum coding); bootstrapping without homoskedasticity.
+4. Interactions.
+5. Multiple predictors: Confounding variables; control variables; posttreatment variables.
+6. The basic of logistic regression: Linear probability model; odds, odds ratios, log-odds.
+
+## Working with datasets and visualising data in R: Two primers
+I wrote a primer on [working with datasets](https://janhove.github.io/datasets_graphs/datasets.html) in R and another 
+on [visualising data](https://janhove.github.io/datasets_graphs/graphs.html) in R.
+You can find the datasets used in the primers on [GitHub](https://github.com/janhove/DatasetsAndGraphs).
+
+## Visualising statistical uncertainty using model-based graphs
+I wrote a tutorial about visualising the statistical uncertainty in statistical models for the BICLCE 2019 conference in Bamberg. You can find the tutorial here: [Visualising statistical uncertainty using model-based graphs](https://janhove.github.io/visualise_uncertainty/).
+
+Contents:
+
+1.  Why plot models, and why visualise uncertainty?
+2.  The principle: An example with simple linear regression
+    -   Step 1: Fit the model
+    -   Step 2: Compute the conditional means and confidence intervals
+    -   Step 3: Plot!
+3.  Predictions about individual cases vs. conditional means
+4.  More examples
+    -   Several continuous predictors
+    -   Dealing with categorical predictors
+    -   t-tests are models, too
+    -   Dealing with interactions
+    -   Ordinary logistic regression
+    -   Mixed-effects models
+    -   Logistic mixed effects models
+5.  Caveats
+    -   Other things may not be equal
+    -   Your model may be misspecified
+    -   Other models may yield different pictures
+    
+## Miscellaneous tutorials
+The blog [archive](archive.html#category=tutorial) contains a number of tutorials.
+
+## cannonball (R package)
+The `cannonball` package
+bundles a couple of functions that I use when teaching introductory courses in 
+quantitative methodology and statistics. These include
+
+* `plot_r()` for drawing different scatterplots with the same correlation coefficient,
+* `walkthrough_p()` and `walkthrough_blocking()`, which both aim to help students see the connection between an experiment's design and its analysis,
+* `clustered_data()` for simulating data from cluster-randomised experiments,
+* `parade()` and associated functions for helping researchers check the assumptions of their statistical models.
+
+More information is available on [GitHub](https://github.com/janhove/cannonball).
