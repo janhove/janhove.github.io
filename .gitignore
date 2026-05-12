@@ -5,3 +5,4 @@ site_libs/
 **/*.quarto_ipynb
 **/*_cache/
 simulation_results/
+.positai
