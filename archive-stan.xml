@@ -9,8 +9,8 @@
 <link>https://janhove.github.io/archive.html#category=Stan</link>
 <atom:link href="https://janhove.github.io/archive-stan.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
-<generator>quarto-1.8.25</generator>
-<lastBuildDate>Mon, 17 Feb 2020 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Tue, 18 Feb 2020 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Baby steps in Bayes: Incorporating reliability estimates in regression models</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -2916,7 +2916,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>reliability</category>
   <guid>https://janhove.github.io/posts/2020-02-18-measurement-error/</guid>
-  <pubDate>Mon, 17 Feb 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 18 Feb 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Accounting for measurement error on a control variable</title>
@@ -6137,7 +6137,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>measurement error</category>
   <category>correlational studies</category>
   <guid>https://janhove.github.io/posts/2020-01-21-statistical-control-measurement-error/</guid>
-  <pubDate>Mon, 20 Jan 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 21 Jan 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Piecewise regression with two breakpoints</title>
@@ -6538,7 +6538,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>Bayesian statistics</category>
   <category>Stan</category>
   <guid>https://janhove.github.io/posts/2018-07-27-bayesian-two-breakpoint-model/</guid>
-  <pubDate>Thu, 26 Jul 2018 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 27 Jul 2018 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Piecewise regression</title>
@@ -7907,7 +7907,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>non-linearities</category>
   <category>Bayesian statistics</category>
   <guid>https://janhove.github.io/posts/2018-07-04-bayesian-breakpoint-model/</guid>
-  <pubDate>Tue, 03 Jul 2018 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 04 Jul 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

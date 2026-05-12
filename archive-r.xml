@@ -9,8 +9,8 @@
 <link>https://janhove.github.io/archive.html#category=R</link>
 <atom:link href="https://janhove.github.io/archive-r.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
-<generator>quarto-1.8.25</generator>
-<lastBuildDate>Sun, 14 Dec 2025 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Mon, 15 Dec 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Does multilingualism really protect against accelerated ageing? Some critical comments</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -2023,7 +2023,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2025-12-15-multilingualism-accelerated-ageing/</guid>
-  <pubDate>Sun, 14 Dec 2025 23:00:00 GMT</pubDate>
+  <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The population model and the randomisation model of statistical inference</title>
@@ -2273,7 +2273,7 @@ Table&nbsp;1: Results summary of a fictitious experiment.
 </figcaption>
 <div aria-describedby="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Group</th>
@@ -2675,7 +2675,7 @@ Table&nbsp;2: Observed test statistics.
 </figcaption>
 <div aria-describedby="tbl-teststats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Test statistic</th>
@@ -3218,7 +3218,7 @@ Table&nbsp;3: Results summary of Klein et al.’s replication of the gambler’s
 </figcaption>
 <div aria-describedby="tbl-summaryklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Condition</th>
@@ -3650,7 +3650,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2025-11-09-population-randomisation/</guid>
-  <pubDate>Sat, 08 Nov 2025 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Exact significance tests for 2 × 2 tables</title>
@@ -5046,7 +5046,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2024-09-10-contingency-p-value/</guid>
-  <pubDate>Mon, 09 Sep 2024 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 10 Sep 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>An R function for computing Levenshtein distances between texts using the word as the unit of comparison</title>
@@ -5127,7 +5127,7 @@ font-style: inherit;">obtain_edits</span>(textA, textB)</span></code></pre></div
  ]]></description>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2022-02-17-levenshtein/</guid>
-  <pubDate>Wed, 16 Feb 2022 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Feb 2022 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The consequences of controlling for a post-treatment variable</title>
@@ -7782,7 +7782,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>R</category>
   <category>multiple regression</category>
   <guid>https://janhove.github.io/posts/2021-06-29-posttreatment/</guid>
-  <pubDate>Mon, 28 Jun 2021 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2021-06-29-posttreatment/image.png" medium="image" type="image/png" height="115" width="144"/>
 </item>
 <item>
@@ -7831,7 +7831,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>cluster-randomised experiments</category>
   <category>preprint</category>
   <guid>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</guid>
-  <pubDate>Tue, 01 Sep 2020 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 02 Sep 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Tutorial: Visualising statistical uncertainty using model-based graphs</title>
@@ -7882,7 +7882,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>Bayesian statistics</category>
   <category>brms</category>
   <guid>https://janhove.github.io/posts/2020-06-29-visualise-uncertainty/</guid>
-  <pubDate>Sun, 28 Jun 2020 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 29 Jun 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Tutorial: Obtaining directly interpretable regression coefficients by recoding categorical predictors</title>
@@ -9516,7 +9516,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>tutorial</category>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2020-05-05-contrast-coding/</guid>
-  <pubDate>Fri, 22 May 2020 22:00:00 GMT</pubDate>
+  <pubDate>Sat, 23 May 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Nonparametric tests aren’t a silver bullet when parametric assumptions are violated</title>
@@ -9998,7 +9998,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>assumptions</category>
   <category>nonparametric tests</category>
   <guid>https://janhove.github.io/posts/2020-05-23-nonparametric/</guid>
-  <pubDate>Fri, 22 May 2020 22:00:00 GMT</pubDate>
+  <pubDate>Sat, 23 May 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Incorporating reliability estimates in regression models</title>
@@ -12905,7 +12905,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>reliability</category>
   <guid>https://janhove.github.io/posts/2020-02-18-measurement-error/</guid>
-  <pubDate>Mon, 17 Feb 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 18 Feb 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Accounting for measurement error on a control variable</title>
@@ -16126,7 +16126,95 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>measurement error</category>
   <category>correlational studies</category>
   <guid>https://janhove.github.io/posts/2020-01-21-statistical-control-measurement-error/</guid>
-  <pubDate>Mon, 20 Jan 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 21 Jan 2020 00:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Drawing scatterplot matrices</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is just a quick blog post to share a function with which you can draw scatterplot matrices.</p>
+<p>Scatterplot matrices are useful for displaying the intercorrelation between several continuous variables. Based on the help page for the <code>pairs()</code> function in <code>R</code>, I put together a function for quickly drawing scatterplot matrices that also show the Pearson correlation coefficients for the bivariate relationships as well as the number of observations that go into them: <code>scatterplot_matrix()</code>. Here’s how you’d use it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Read in the function</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">source</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://janhove.github.io/RCode/scatterplot_matrix.R"</span>)</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example: airquality is a built-in dataset in R</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(airquality)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatterplot_matrix</span>(</span>
+<span id="cb1-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">subset</span>(airquality, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">select =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(Ozone, Wind, Temp, Solar.R, Month)),</span>
+<span id="cb1-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ozone"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Wind"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Temperature"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Solar radiation"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Month"</span>)</span>
+<span id="cb1-10">)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Use:</p>
+<ul>
+<li><p><code>x</code> contains the vectors (= columns in a dataset) containing the continuous variables you want to plot in the order you want to plot them. To the extent possible, try to arrange the variables in such an order that the earlier variables are more likely to be influenced by the later variables than vice versa. I’m hardly an expert on meteorology, so the order in which I put the variables may not be optimal – but <code>Month</code> is evidently more likely to influence <code>Temp</code>erature than vice versa, so put <code>Month</code> somewhere after <code>Temp</code>. Similarly, if you collected your participants’ age, L1 vocabulary skills, and their results on a cognate translation test in L2, put age last, L1 vocabulary skills second and the translation test results first.</p></li>
+<li><p><code>labels</code> contains the readable names of the variables, in that same order. If you leave out this argument, the column names will serve as labels.</p></li>
+</ul>
+<p>Output:</p>
+<ul>
+<li><p>Main diagonal: Histograms for each variable as well as the number of available data points for that variable.</p></li>
+<li><p>Upper triangle: Scatterplots for the bivariate relationships between the variables, with a nonlinear scatterplot smoother. In the example above, the scatterplot in the first row, third column, shows the relationship between the Temperature (the third variable, on the x-axis) and Ozone (the first variable, on the y-axis). The scatterplot in the second row, fifth column, shows the relationship between Month (the fifth variable, on the x-axis) and Wind (the second variable, on the y-axis).</p></li>
+<li><p>Lower triangle: Pearson correlation coefficients for the bivariate relationships between the variables and the number of observations on which it is based. In the example above, the correlation coefficient in the third row, first column, concerns the relationship between the Temperature and Ozone (the first variable). The correlation coefficient in the second row, fifth column, shows the relationship between Month (the fifth variable) and Wind (the second variable).</p></li>
+</ul>
+<p>Functions you can use instead of this one are <code>pairscor.fnc()</code> in the <code>languageR</code> package, and <code>ggscatmat()</code> and <code>ggpairs()</code> in the <code>GGally</code> package.</p>
+
+
+
+ ]]></description>
+  <category>R</category>
+  <category>graphs</category>
+  <category>correlational studies</category>
+  <category>non-linearities</category>
+  <category>multiple regression</category>
+  <guid>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</guid>
+  <pubDate>Thu, 28 Nov 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting for a covariate in cluster-randomised experiments</title>
@@ -16908,95 +16996,7 @@ pretest      0.033 -0.004</code></pre>
   <category>mixed-effects models</category>
   <category>cluster-randomised experiments</category>
   <guid>https://janhove.github.io/posts/2019-10-28-cluster-covariates/</guid>
-  <pubDate>Wed, 27 Nov 2019 23:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Drawing scatterplot matrices</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is just a quick blog post to share a function with which you can draw scatterplot matrices.</p>
-<p>Scatterplot matrices are useful for displaying the intercorrelation between several continuous variables. Based on the help page for the <code>pairs()</code> function in <code>R</code>, I put together a function for quickly drawing scatterplot matrices that also show the Pearson correlation coefficients for the bivariate relationships as well as the number of observations that go into them: <code>scatterplot_matrix()</code>. Here’s how you’d use it:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Read in the function</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">source</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://janhove.github.io/RCode/scatterplot_matrix.R"</span>)</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Example: airquality is a built-in dataset in R</span></span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">data</span>(airquality)</span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">scatterplot_matrix</span>(</span>
-<span id="cb1-8">  <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">subset</span>(airquality, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">select =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(Ozone, Wind, Temp, Solar.R, Month)),</span>
-<span id="cb1-9">  <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Ozone"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Wind"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Temperature"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Solar radiation"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Month"</span>)</span>
-<span id="cb1-10">)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Use:</p>
-<ul>
-<li><p><code>x</code> contains the vectors (= columns in a dataset) containing the continuous variables you want to plot in the order you want to plot them. To the extent possible, try to arrange the variables in such an order that the earlier variables are more likely to be influenced by the later variables than vice versa. I’m hardly an expert on meteorology, so the order in which I put the variables may not be optimal – but <code>Month</code> is evidently more likely to influence <code>Temp</code>erature than vice versa, so put <code>Month</code> somewhere after <code>Temp</code>. Similarly, if you collected your participants’ age, L1 vocabulary skills, and their results on a cognate translation test in L2, put age last, L1 vocabulary skills second and the translation test results first.</p></li>
-<li><p><code>labels</code> contains the readable names of the variables, in that same order. If you leave out this argument, the column names will serve as labels.</p></li>
-</ul>
-<p>Output:</p>
-<ul>
-<li><p>Main diagonal: Histograms for each variable as well as the number of available data points for that variable.</p></li>
-<li><p>Upper triangle: Scatterplots for the bivariate relationships between the variables, with a nonlinear scatterplot smoother. In the example above, the scatterplot in the first row, third column, shows the relationship between the Temperature (the third variable, on the x-axis) and Ozone (the first variable, on the y-axis). The scatterplot in the second row, fifth column, shows the relationship between Month (the fifth variable, on the x-axis) and Wind (the second variable, on the y-axis).</p></li>
-<li><p>Lower triangle: Pearson correlation coefficients for the bivariate relationships between the variables and the number of observations on which it is based. In the example above, the correlation coefficient in the third row, first column, concerns the relationship between the Temperature and Ozone (the first variable). The correlation coefficient in the second row, fifth column, shows the relationship between Month (the fifth variable) and Wind (the second variable).</p></li>
-</ul>
-<p>Functions you can use instead of this one are <code>pairscor.fnc()</code> in the <code>languageR</code> package, and <code>ggscatmat()</code> and <code>ggpairs()</code> in the <code>GGally</code> package.</p>
-
-
-
- ]]></description>
-  <category>R</category>
-  <category>graphs</category>
-  <category>correlational studies</category>
-  <category>non-linearities</category>
-  <category>multiple regression</category>
-  <guid>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</guid>
-  <pubDate>Wed, 27 Nov 2019 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 28 Nov 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Collinearity isn’t a disease that needs curing</title>
@@ -18450,7 +18450,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>assumptions</category>
   <category>collinearity</category>
   <guid>https://janhove.github.io/posts/2019-09-11-collinearity/</guid>
-  <pubDate>Tue, 10 Sep 2019 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 11 Sep 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Interactions in logistic regression models</title>
@@ -19414,7 +19414,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>Bayesian statistics</category>
   <category>brms</category>
   <guid>https://janhove.github.io/posts/2019-08-07-interactions-logistic/</guid>
-  <pubDate>Tue, 06 Aug 2019 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 07 Aug 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Walkthrough: A significance test for a two-group comparison</title>
@@ -19562,7 +19562,7 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2019-04-16-walkthrough-p-value/</guid>
-  <pubDate>Mon, 15 Apr 2019 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 16 Apr 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Guarantees in the long run vs. interpreting the data at hand: Two analyses of clustered data</title>
@@ -20137,7 +20137,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>mixed-effects models</category>
   <category>cluster-randomised experiments</category>
   <guid>https://janhove.github.io/posts/2019-01-14-clustered-data-different-results/</guid>
-  <pubDate>Sun, 13 Jan 2019 23:00:00 GMT</pubDate>
+  <pubDate>Mon, 14 Jan 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Recoding predictors and homing in on specific comparisons</title>
@@ -21894,7 +21894,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>mixed-effects models</category>
   <category>contrast coding</category>
   <guid>https://janhove.github.io/posts/2018-12-20-contrasts-interaction/</guid>
-  <pubDate>Wed, 19 Dec 2018 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 20 Dec 2018 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introducing cannonball - Tools for teaching statistics</title>
@@ -22258,7 +22258,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>R</category>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2018-09-26-cannonball/</guid>
-  <pubDate>Tue, 25 Sep 2018 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 26 Sep 2018 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Looking for comments on a paper on model assumptions</title>
@@ -22285,7 +22285,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>assumptions</category>
   <category>cannonball</category>
   <guid>https://janhove.github.io/posts/2018-09-12-preprint-assumptions/</guid>
-  <pubDate>Tue, 11 Sep 2018 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 12 Sep 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

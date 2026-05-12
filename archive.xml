@@ -9,8 +9,8 @@
 <link>https://janhove.github.io/archive.html</link>
 <atom:link href="https://janhove.github.io/archive.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
-<generator>quarto-1.8.25</generator>
-<lastBuildDate>Sun, 14 Dec 2025 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.37</generator>
+<lastBuildDate>Mon, 15 Dec 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Does multilingualism really protect against accelerated ageing? Some critical comments</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -2023,7 +2023,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2025-12-15-multilingualism-accelerated-ageing/</guid>
-  <pubDate>Sun, 14 Dec 2025 23:00:00 GMT</pubDate>
+  <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The population model and the randomisation model of statistical inference</title>
@@ -2273,7 +2273,7 @@ Table&nbsp;1: Results summary of a fictitious experiment.
 </figcaption>
 <div aria-describedby="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">Group</th>
@@ -2675,7 +2675,7 @@ Table&nbsp;2: Observed test statistics.
 </figcaption>
 <div aria-describedby="tbl-teststats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Test statistic</th>
@@ -3218,7 +3218,7 @@ Table&nbsp;3: Results summary of Klein et al.’s replication of the gambler’s
 </figcaption>
 <div aria-describedby="tbl-summaryklein-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">Condition</th>
@@ -3650,7 +3650,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2025-11-09-population-randomisation/</guid>
-  <pubDate>Sat, 08 Nov 2025 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Clarifying research questions by sketching possible outcomes</title>
@@ -4892,7 +4892,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>research questions</category>
   <category>research design</category>
   <guid>https://janhove.github.io/posts/2025-10-10-mock-outcomes/</guid>
-  <pubDate>Thu, 09 Oct 2025 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 10 Oct 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Exact significance tests for 2 × 2 tables</title>
@@ -6288,7 +6288,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2024-09-10-contingency-p-value/</guid>
-  <pubDate>Mon, 09 Sep 2024 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 10 Sep 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>New and updated teaching resources</title>
@@ -6312,7 +6312,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
  ]]></description>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2024-09-04-updated-resources/</guid>
-  <pubDate>Tue, 03 Sep 2024 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 04 Sep 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Piecewise regression</title>
@@ -7489,7 +7489,7 @@ font-style: inherit;">/</span> n_runs</span></code></pre></div></div>
   <category>piecewise regression</category>
   <category>non-linearities</category>
   <guid>https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/</guid>
-  <pubDate>Mon, 06 Mar 2023 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 07 Mar 2023 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/image.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 <item>
@@ -8237,7 +8237,7 @@ font-style: inherit;">*</span>ses</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-23-julia-tea-tasting/</guid>
-  <pubDate>Wed, 22 Feb 2023 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 23 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: The Levenshtein algorithm</title>
@@ -9028,7 +9028,7 @@ font-style: inherit;">norm_lev_dist</span>.(german, dutch)</span></code></pre></
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-09-julia-levenshtein/</guid>
-  <pubDate>Wed, 08 Feb 2023 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 09 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Generating the Fibonacci sequence</title>
@@ -10069,7 +10069,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2022-12-20-julia-fibonacci/</guid>
-  <pubDate>Mon, 19 Dec 2022 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 20 Dec 2022 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2022-12-20-julia-fibonacci/image.png" medium="image" type="image/png" height="101" width="144"/>
 </item>
 <item>
@@ -10104,7 +10104,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
   <category>silly tests</category>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2022-02-18-dont-do-things-you-dont-see-the-point-of/</guid>
-  <pubDate>Thu, 17 Feb 2022 23:00:00 GMT</pubDate>
+  <pubDate>Fri, 18 Feb 2022 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>An R function for computing Levenshtein distances between texts using the word as the unit of comparison</title>
@@ -10185,7 +10185,7 @@ font-style: inherit;">obtain_edits</span>(textA, textB)</span></code></pre></div
  ]]></description>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2022-02-17-levenshtein/</guid>
-  <pubDate>Wed, 16 Feb 2022 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Feb 2022 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The consequences of controlling for a post-treatment variable</title>
@@ -12840,7 +12840,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>R</category>
   <category>multiple regression</category>
   <guid>https://janhove.github.io/posts/2021-06-29-posttreatment/</guid>
-  <pubDate>Mon, 28 Jun 2021 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2021-06-29-posttreatment/image.png" medium="image" type="image/png" height="115" width="144"/>
 </item>
 <item>
@@ -12879,7 +12879,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>research design</category>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2020-12-16-quant-meth/</guid>
-  <pubDate>Tue, 15 Dec 2020 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Capitalising on covariates in cluster-randomised experiments</title>
@@ -12927,7 +12927,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>cluster-randomised experiments</category>
   <category>preprint</category>
   <guid>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</guid>
-  <pubDate>Tue, 01 Sep 2020 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 02 Sep 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Tutorial: Visualising statistical uncertainty using model-based graphs</title>
@@ -12978,7 +12978,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>Bayesian statistics</category>
   <category>brms</category>
   <guid>https://janhove.github.io/posts/2020-06-29-visualise-uncertainty/</guid>
-  <pubDate>Sun, 28 Jun 2020 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 29 Jun 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Interpreting regression models: a reading list</title>
@@ -13127,7 +13127,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>contrast coding</category>
   <category>reliability</category>
   <guid>https://janhove.github.io/posts/2020-06-12-stats-course/</guid>
-  <pubDate>Thu, 11 Jun 2020 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 12 Jun 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Tutorial: Obtaining directly interpretable regression coefficients by recoding categorical predictors</title>
@@ -14761,7 +14761,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>tutorial</category>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2020-05-05-contrast-coding/</guid>
-  <pubDate>Fri, 22 May 2020 22:00:00 GMT</pubDate>
+  <pubDate>Sat, 23 May 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Nonparametric tests aren’t a silver bullet when parametric assumptions are violated</title>
@@ -15243,7 +15243,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>assumptions</category>
   <category>nonparametric tests</category>
   <guid>https://janhove.github.io/posts/2020-05-23-nonparametric/</guid>
-  <pubDate>Fri, 22 May 2020 22:00:00 GMT</pubDate>
+  <pubDate>Sat, 23 May 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Incorporating reliability estimates in regression models</title>
@@ -18150,7 +18150,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>reliability</category>
   <guid>https://janhove.github.io/posts/2020-02-18-measurement-error/</guid>
-  <pubDate>Mon, 17 Feb 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 18 Feb 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Baby steps in Bayes: Accounting for measurement error on a control variable</title>
@@ -21371,7 +21371,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>measurement error</category>
   <category>correlational studies</category>
   <guid>https://janhove.github.io/posts/2020-01-21-statistical-control-measurement-error/</guid>
-  <pubDate>Mon, 20 Jan 2020 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 21 Jan 2020 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

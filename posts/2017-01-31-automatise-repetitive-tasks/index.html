@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>Automatise repetitive tasks – Jan Vanhove</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,15 +37,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5fe7d9e47025ee3c9104366921b83f40.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-61a0dc3788722c69be08a208a32bdf1b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -91,8 +93,6 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Jan Vanhove</span>
     </a>
@@ -184,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Doing repetitive tasks is what computers are for, so rather than spending several hours learning nothing, I suggest you spend that time writing a script or putting together a command line call that does the task for you. If you have little experience doing this, this will take time at first. In fact, I reckon I often spend roughly same amount of time trying to automatise menial tasks as it would have cost me to do them by hand. But in the not-so-long run, automatisation is a time-saver: Once you have a working script, you can tweak and reuse it. Additionally, while you’re figuring out how to automatise a menial chore, you’re actually learning something useful. The chores become more of a challenge and less mind-numbing. I’m going to present an example or two of what I mean and I will conclude by giving some general pointers.</p>
 <section id="example-1-replacing-stylised-apostrophes-by-straight-apostrophes" class="level2">
 <h2 class="anchored" data-anchor-id="example-1-replacing-stylised-apostrophes-by-straight-apostrophes">Example 1: Replacing stylised apostrophes by straight apostrophes</h2>
-<p>This is the example cited above: for an ongoing project, we needed to replace all stylised apostrophes (i.e., ’) with straight apostrophes (i.e., ‘) in some 3,000 text files. This task is so menial you shouldn’t even think about doing it by hand, i.e., by opening all 3,000 text files and using ‘Find and replace’. I work on Linux so I Googled something like “find and replace in all files Linux” and found a post on StackOverflow very much like <a href="http://stackoverflow.com/a/11392505">this one</a> that provided the basic solution: To replace occurrences of “foo” with “bar”” in all files in a directory, open a Linux terminal (command-line) and use</p>
+<p>This is the example cited above: for an ongoing project, we needed to replace all stylised apostrophes (i.e., ’) with straight apostrophes (i.e., ’) in some 3,000 text files. This task is so menial you shouldn’t even think about doing it by hand, i.e., by opening all 3,000 text files and using ‘Find and replace’. I work on Linux so I Googled something like “find and replace in all files Linux” and found a post on StackOverflow very much like <a href="http://stackoverflow.com/a/11392505">this one</a> that provided the basic solution: To replace occurrences of “foo” with “bar”” in all files in a directory, open a Linux terminal (command-line) and use</p>
 <pre>cd /path/to/your/folder
 sed -i 's/foo/bar/g' *
 </pre>
