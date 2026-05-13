@@ -25,7 +25,7 @@ jobs:
             rmarkdown
             knitr
           cache: true
-          dependencies: '"Depends", "Imports"'  # drop Suggests/Enhances
+          dependencies: 'c("Depends", "Imports")'
             
       - name: Set up Julia (cached)
         uses: julia-actions/setup-julia@v2
