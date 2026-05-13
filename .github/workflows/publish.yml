@@ -18,14 +18,14 @@ jobs:
           r-version: 'release'
           use-public-rspm: true
 
-- name: Install R packages (cached)
-  uses: r-lib/actions/setup-r-dependencies@v2
-  with:
-    packages: |
-      rmarkdown
-      knitr
-    cache: true
-    dependencies: '"Depends", "Imports"'  # drop Suggests/Enhances
+      - name: Install R packages (cached)
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            rmarkdown
+            knitr
+          cache: true
+          dependencies: '"Depends", "Imports"'  # drop Suggests/Enhances
             
       - name: Set up Julia (cached)
         uses: julia-actions/setup-julia@v2
