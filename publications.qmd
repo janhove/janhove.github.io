@@ -1,5 +1,7 @@
 ---
 title: "Publications"
+toc: true
+toc-depth: 3
 ---
 
 <h2>2026</h2>
