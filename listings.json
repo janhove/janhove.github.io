@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/archive.html",
+    "listing": "/index.html",
     "items": [
       "/posts/2025-12-15-multilingualism-accelerated-ageing/index.html",
       "/posts/2025-11-09-population-randomisation/index.html",
@@ -23,8 +23,8 @@
       "/posts/2020-02-18-measurement-error/index.html",
       "/posts/2020-01-21-statistical-control-measurement-error/index.html",
       "/posts/2019-12-05-simplifying-articles/index.html",
-      "/posts/2019-11-28-scatterplot-matrix/index.html",
       "/posts/2019-10-28-cluster-covariates/index.html",
+      "/posts/2019-11-28-scatterplot-matrix/index.html",
       "/posts/2019-09-11-collinearity/index.html",
       "/posts/2019-08-07-interactions-logistic/index.html",
       "/posts/2019-04-16-walkthrough-p-value/index.html",
@@ -94,7 +94,7 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/archive.html",
     "items": [
       "/posts/2025-12-15-multilingualism-accelerated-ageing/index.html",
       "/posts/2025-11-09-population-randomisation/index.html",
@@ -117,8 +117,8 @@
       "/posts/2020-02-18-measurement-error/index.html",
       "/posts/2020-01-21-statistical-control-measurement-error/index.html",
       "/posts/2019-12-05-simplifying-articles/index.html",
-      "/posts/2019-11-28-scatterplot-matrix/index.html",
       "/posts/2019-10-28-cluster-covariates/index.html",
+      "/posts/2019-11-28-scatterplot-matrix/index.html",
       "/posts/2019-09-11-collinearity/index.html",
       "/posts/2019-08-07-interactions-logistic/index.html",
       "/posts/2019-04-16-walkthrough-p-value/index.html",
