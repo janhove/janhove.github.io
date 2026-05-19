@@ -4,17 +4,19 @@ toc: true
 toc-depth: 3
 ---
 
-<h2>2026</h2>
+## 2026
+
 <p>Jan Vanhove. 2026.
 <a href="https://doi.org/10.1080/01434632.2026.2626158">Does multilingualism really protect against accelerated ageing?
 Critical comments on Amoruso et al. (2025).</a>
 <i>Journal of Multilingual and Multicultural Development</i>. <a href="https://folia.unifr.ch/unifr/documents/334974">Postprint.</a><br />
 Data and code available from the <a href="https://osf.io/45xwm">Open Science Framework</a>.</p>
 
-<h2>2024</h2>
+## 2024
+
 <p>Jan Vanhove. 2024. <a href="CDCL_Vanhove.pdf">SAT solving using conflict-driven clause learning and its application to classical planning.</a> Bachelor's thesis in Computer science. University of Berne.</p>
 
-<h2>2021</h2>
+## 2021
 
 <p>Raphael Berthele, Jan Vanhove, Carina Steiner, Isabelle Udry and Hansjakob Schneider. 2021. <a href="https://doi.org/10.5281/zenodo.5464751">Predicting L2 achievement: Results from a test battery measuring language aptitude, general learning ability, and affective factors.</a> In Raphael Berthele & Isabelle Udry (eds.), <i>Individual differences in early instructed language learning: The role of language aptitude, cognition, and motivation</i> (pp. 91-103). Berlin, Germany: Language Science Press.<br /> Data and R code available from the <a href="https://osf.io/hstv7/">Open Science Framework</a>.</p>
 
@@ -26,7 +28,7 @@ Data and code available from the <a href="https://osf.io/45xwm">Open Science Fra
 
 <p>Jan Vanhove. 2021. <a href="https://doi.org/10.15626/MP.2021.2548">Collinearity isn't a disease that needs curing</a>. <i>Meta-Psychology</i> 5.</p>
 
-<h2>2020</h2>
+## 2020
 
 <p>Jan Vanhove. 2020. <a href="https://doi.org/10.1177/0267658319827055">When labeling L2 users as nativelike or not, consider classification errors</a>. <i>Second Language Research</i> 36(4). 709--724. <a href="https://doc.rero.ch/record/324140">Preprint</a>.<br /> Data and R code available from the <a href="https://osf.io/pxefv/">Open Science Framework</a>.</p>
 
@@ -36,11 +38,9 @@ Data and code available from the <a href="https://osf.io/45xwm">Open Science Fra
 
 <p>Raphael Berthele and Jan Vanhove. 2020. <a href = "https://dx.doi.org/10.1080/13670050.2017.1385590">What would disprove interdependence? Lessons learned from a study on biliteracy in Portuguese heritage language speakers in Switzerland</a>. <i>International Journal of Bilingual Education and Bilingualism</i> 23(5). 550-566.<br /> Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.4861406">figshare</a>.</p>
 
-<h2>2019</h2>
+## 2019
 
-<p>
-
-Jan Vanhove. 2019. <a href="https://doi.org/10.5117/TET2019.1.BOEK">\[Review of the book De vele gezichten van het Nederlands in Vlaanderen. Een inleiding tot de variatietaalkunde by Gert De Sutter (ed.)\]</a>. <i>Taal en Tongval</i> 71. 89-93.
+<p>Jan Vanhove. 2019. <a href="https://doi.org/10.5117/TET2019.1.BOEK">\[Review of the book De vele gezichten van het Nederlands in Vlaanderen. Een inleiding tot de variatietaalkunde by Gert De Sutter (ed.)\]</a>. <i>Taal en Tongval</i> 71. 89-93.</p>
 
 <p>Jan Vanhove. 2019. <a href="https://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove2019c.pdf">Metalinguistic knowledge about the native language and language transfer in gender assignment</a>. <i>Studies in Second Language Learning and Teaching</i> 9(2). 397-419.<br /> Data, elicitation materials, and R code available from the <a href="https://osf.io/d7cu2/">Open Science Framework</a>.</p>
 
@@ -48,13 +48,13 @@ Jan Vanhove. 2019. <a href="https://doi.org/10.5117/TET2019.1.BOEK">\[Review of 
 
 <p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2019. <a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> <i>International Journal of Bilingualism</i> 23(2). 612-628.<br /> Data and R code available from <a href="http://doi.org/10.6084/m9.figshare.5379448">figshare</a>.</p>
 
-<h2>2018</h2>
+## 2018
 
 <p>Jan Vanhove. <a href = "https://osf.io/zvawb">Checking the assumptions of your statistical model without getting paranoid</a>. PsyArXiv Preprints.</p>
 
 <p>Audrey Bonvin, Jan Vanhove, Raphael Berthele and Amelia Lambelet. 2018. <a href="http://tujournals.ulb.tu-darmstadt.de/index.php/zif/article/view/886">Die Entwicklung von produktiven lexikalischen Kompetenzen bei Schüler(innen) mit portugiesischem Migrationshintergrund in der Schweiz</a>. <i>Zeitschrift für Interkulturellen Fremdsprachenunterricht</i> 23(1). 135-148.<br /> Data and R code available from <a href="http://dx.doi.org/10.6084/m9.figshare.4578991">figshare</a>.</p>
 
-<h2>2017</h2>
+## 2017
 
 <p>Amelia Lambelet, Raphael Berthele, Magalie Desgrippes, Carlos Pestana and Jan Vanhove. 2017. Chapter 2: Testing interdependence in Portuguese Heritage speakers in Switzerland: the HELASCOT project. In Raphael Berthele and Amelia Lambelet (eds.), <a href="http://www.multilingual-matters.com/display.asp?k=9781783099030">Heritage and school language literacy development in migrant children: Interdependence or independence?</a>, pp. 26-33. Multilingual Matters.</p>
 
@@ -68,13 +68,13 @@ Jan Vanhove. 2019. <a href="https://doi.org/10.5117/TET2019.1.BOEK">\[Review of 
 
 <p>Jan Vanhove and Raphael Berthele. 2017. <a href = "https://doi.org/10.1515/iral-2017-0007">Interactions between formal distance and participant-related variables in receptive multilingualism</a>. <i>International Review of Applied Linguistics in Language Teaching</i>. 55(1). 23--40.<br /> Data and R code available from <a href = "https://dx.doi.org/10.6084/m9.figshare.1172058.v3">figshare</a>.</p>
 
-<h2>2016</h2>
+## 2016
 
 <p>David Birdsong and Jan Vanhove. 2016. Age of second-language acquisition: Critical periods and social concerns. In E. Nicoladis and S. Montanari (eds), <i>Bilingualism across the lifespan: Factors moderating language proficiency</i>, 163--182. Berlin/Washington, DC: De Gruyter Mouton/American Psychological Association. <a href = "http://homeweb.unifr.ch/VanhoveJ/Pub/papers/AgeofSLA.pdf">Postprint</a>.</p>
 
 <p>Jan Vanhove. 2016. <a href = "http://dx.doi.org/10.1177/1367006915573338">The early learning of interlingual correspondence rules in receptive multilingualism</a>. <i>International Journal of Bilingualism</i> 20(5). 580--593. <a href = "http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Vanhove_CorrespondenceRules.pdf">Postprint</a>.<br /> Data, R code, scoring protocol and stimulus lists available from <a href = "http://hdl.handle.net/10.6084/m9.figshare.1291191">figshare</a>.</p>
 
-<h2>2015</h2>
+## 2015
 
 <p>Jan Vanhove and Raphael Berthele. 2015. Item-related determinants of cognate guessing in multilinguals. In G. De Angelis, U. Jessner and M. Kresić (eds), <i>Crosslinguistic influence and crosslinguistic interaction in multilingual language learning</i>, 95--118. London: Bloomsbury. <a href = "http://homeweb.unifr.ch/VanhoveJ/Pub/papers/ItemRelatedDeterminants.pdf">Postprint</a>.<br /> Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.763246">figshare</a>.</p>
 
@@ -82,13 +82,13 @@ Jan Vanhove. 2019. <a href="https://doi.org/10.5117/TET2019.1.BOEK">\[Review of 
 
 <p>Jan Vanhove and Raphael Berthele. 2015. <a href = "http://dx.doi.org/10.1515/iral-2015-0001">The lifespan development of cognate guessing skills in an unknown related language</a>. <i>International Review of Applied Linguistics in Language Teaching</i> 53(1). 1--38.<br /> Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.936924">figshare</a>.</p>
 
-<h2>2014</h2>
+## 2014
 
 <p>Raphael Berthele and Jan Vanhove. 2014. <a href = "https://doc.rero.ch/record/255776?ln=en">Entre jeunes barbes et vieux de la vieille. Usages du répertoire plurilingue dans une tâche d'intercompréhension à travers les âges.</a> <i>Bulletin suisse de linguistique appliquée</i> 99. 31--50.</p>
 
 <p>Jan Vanhove. 2014. <a href = "http://ethesis.unifr.ch/theses/downloads.php?file=VanhoveJ.pdf">Receptive multilingualism across the lifespan: Cognitive and linguistic factors in cognate guessing</a>. Ph.D. thesis. University of Fribourg.<br /> Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.795286">figshare</a>.</p>
 
-<h2>2013</h2>
+## 2013
 
 <p>Jan Vanhove and Raphael Berthele. 2013. <a href = "http://homeweb.unifr.ch/VanhoveJ/Pub/papers/Cog4Talen/FactorenCognaatherkenning.pdf">Factoren bij het herkennen van cognaten in onbekende talen: algemeen of taalspecifiek?</a> <a href = "http://dx.doi.org/10.5117/TET2013.2.VANH"><i>Taal en Tongval</i> 65. 171--210.</a>.<br /> Data and R code available from <a href = "http://dx.doi.org/10.6084/m9.figshare.1063422">figshare</a>.</p>
 
