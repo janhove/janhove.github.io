@@ -1149,46 +1149,6 @@ Figure&nbsp;6: The PAVA is easily adapted to non-increasing trend lines. Data fr
 <p>DeKeyser, Robert, Iris Alfi-Shabtay and Dorit Ravid. 2010. <a href="https://doi.org/10.1017/S0142716410000056">Cross-linguistic evidence for the nature of age effects in second language acquisition</a>. <em>Applied Psycholinguistics</em> 31(3). 413–438.</p>
 <p>Mair, Patrick, Jan De Leeuw and Kurt Hornik. 2025. <a href="10.32614/CRAN.package.isotone"><code>isotone</code>: Active set and generalized PAVA for isotone optimization</a>. R package, version 1.1-2.</p>
 <p>Pya, Natalya. 2026. <a href="https://doi.org/10.32614/CRAN.package.scam"><code>scam</code>: Shape constrained additive models</a>. R package, version 1.2-22.</p>
-</section>
-<section id="software-versions" class="level2">
-<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">devtools<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">session_info</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>─ Session info ───────────────────────────────────────────────────────────────
- setting  value
- version  R version 4.5.0 (2025-04-11 ucrt)
- os       Windows 11 x64 (build 26200)
- system   x86_64, mingw32
- ui       RTerm
- language (EN)
- collate  English_United Kingdom.utf8
- ctype    English_United Kingdom.utf8
- tz       Europe/Zurich
- date     2026-05-29
- pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
- quarto   NA @ C:\\PROGRA~1\\RStudio\\RESOUR~1\\app\\bin\\quarto\\bin\\quarto.exe
-
-─ Packages ───────────────────────────────────────────────────────────────────
- package * version date (UTC) lib source
- ggplot2 * 4.0.3   2026-04-22 [1] CRAN (R 4.5.3)
-
- [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.5
- [2] C:/Program Files/R/R-4.5.0/library
- * ── Packages attached to the search path.
-
-──────────────────────────────────────────────────────────────────────────────</code></pre>
-</div>
-</div>
 
 
 </section>

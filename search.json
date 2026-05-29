@@ -1421,13 +1421,6 @@
     "text": "References\nDeKeyser, Robert, Iris Alfi-Shabtay and Dorit Ravid. 2010. Cross-linguistic evidence for the nature of age effects in second language acquisition. Applied Psycholinguistics 31(3). 413–438.\nMair, Patrick, Jan De Leeuw and Kurt Hornik. 2025. isotone: Active set and generalized PAVA for isotone optimization. R package, version 1.1-2.\nPya, Natalya. 2026. scam: Shape constrained additive models. R package, version 1.2-22."
   },
   {
-    "objectID": "posts/2026-05-29-isotonic-regression/index.html#software-versions",
-    "href": "posts/2026-05-29-isotonic-regression/index.html#software-versions",
-    "title": "A quick introduction to isotonic regression",
-    "section": "Software versions",
-    "text": "Software versions\n\n\nCode\ndevtools::session_info(\"attached\")\n\n\n─ Session info ───────────────────────────────────────────────────────────────\n setting  value\n version  R version 4.5.0 (2025-04-11 ucrt)\n os       Windows 11 x64 (build 26200)\n system   x86_64, mingw32\n ui       RTerm\n language (EN)\n collate  English_United Kingdom.utf8\n ctype    English_United Kingdom.utf8\n tz       Europe/Zurich\n date     2026-05-29\n pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)\n quarto   NA @ C:\\\\PROGRA~1\\\\RStudio\\\\RESOUR~1\\\\app\\\\bin\\\\quarto\\\\bin\\\\quarto.exe\n\n─ Packages ───────────────────────────────────────────────────────────────────\n package * version date (UTC) lib source\n ggplot2 * 4.0.3   2026-04-22 [1] CRAN (R 4.5.3)\n\n [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.5\n [2] C:/Program Files/R/R-4.5.0/library\n * ── Packages attached to the search path.\n\n──────────────────────────────────────────────────────────────────────────────"
-  },
-  {
     "objectID": "posts/2026-05-29-isotonic-regression/index.html#footnotes",
     "href": "posts/2026-05-29-isotonic-regression/index.html#footnotes",
     "title": "A quick introduction to isotonic regression",
