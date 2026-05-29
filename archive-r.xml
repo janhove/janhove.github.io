@@ -9,8 +9,1204 @@
 <link>https://janhove.github.io/archive.html#category=R</link>
 <atom:link href="https://janhove.github.io/archive-r.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
-<generator>quarto-1.9.37</generator>
-<lastBuildDate>Mon, 15 Dec 2025 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Fri, 29 May 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>A quick introduction to isotonic regression</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-05-29-isotonic-regression/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Sometimes, when fitting a trend line to a cloud of data points, you just <em>know</em> that the line has to go up. It may not be a straight line, it may not be a smooth line, it may not even be a continuous line, but onwards and upwards it must go. This blog post briefly introduces <strong>isotonic regression</strong>, which is a technique for fitting such trend lines, and provides a few easy-to-use R function for adding isotonic regression lines to scatterplots.</p>
+<section id="least-squares-isotonic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="least-squares-isotonic-regression">Least-squares isotonic regression</h2>
+<p>Figure&nbsp;1 shows a scatterplot with some made-up data. We often want to add a trend line to such scatterplots in order to better appreciate the relationship between the <img src="https://latex.codecogs.com/png.latex?x"> and <img src="https://latex.codecogs.com/png.latex?y"> variables. These trend lines are typically drawn so as to be optimal in some sense. A common optimality criterion is that the trend line should show the graph of a function <img src="https://latex.codecogs.com/png.latex?f%20:%20%5Cmathbb%7BR%7D%20%5Cto%20%5Cmathbb%7BR%7D"> that minimises the residual sum of squares when applied to the data. That is, given observations <img src="https://latex.codecogs.com/png.latex?(x_1,%20y_1),%20%5Cdots,%20(x_N,%20y_N)">, we want our function <img src="https://latex.codecogs.com/png.latex?f"> to minimise the quantity <img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi%20=%201%7D%5EN%20(y_i%20-%20f(x_i))%5E2."></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">22</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span>)</span>
+<span id="cb1-2">y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>,  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">22</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">17</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"l"</span>,</span>
+<span id="cb1-4">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>),</span>
+<span id="cb1-5">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.main =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font.main =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb1-6">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.axis =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.85</span>,</span>
+<span id="cb1-7">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some made-up data"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-example-data" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/index_files/figure-html/fig-example-data-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-example-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A scatterplot to which we want to add a trend line.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This criterion alone doesn’t usefully constrain the form of the trend line, however. The trend line shown in Figure&nbsp;2 illustrates the problem. At each observed <img src="https://latex.codecogs.com/png.latex?x"> value, the function value <img src="https://latex.codecogs.com/png.latex?f(x)"> is the mean of the <img src="https://latex.codecogs.com/png.latex?y"> values at this <img src="https://latex.codecogs.com/png.latex?x"> value; between the observed <img src="https://latex.codecogs.com/png.latex?x"> values, the fitted values are linearly interpolated. It is one of the best-fitting least-squares trend lines, but it likely suffers from substantial overfitting.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"l"</span>,</span>
+<span id="cb2-2">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>),</span>
+<span id="cb2-3">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.main =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font.main =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb2-4">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.axis =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.85</span>,</span>
+<span id="cb2-5">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A best-fitting least-squares fit"</span>)</span>
+<span id="cb2-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lines</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(x), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tapply</span>(y, x, mean), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-overfitting" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-overfitting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/index_files/figure-html/fig-overfitting-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-overfitting-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: This trend line minimises the residual sum of squares
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To obtain more useful trend lines, the form of <img src="https://latex.codecogs.com/png.latex?f"> needs to be constrained in some way. In simple ordinary least-squares linear regression, the constraint is that that <img src="https://latex.codecogs.com/png.latex?f"> should be an affine function. That is, only functions that satisfy <img src="https://latex.codecogs.com/png.latex?f(x)%20=%20%5Calpha%20+%20%5Cbeta%20x"> for some numbers <img src="https://latex.codecogs.com/png.latex?%5Calpha"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> and for all <img src="https://latex.codecogs.com/png.latex?x"> are considered. If there are at least two distinct <img src="https://latex.codecogs.com/png.latex?x"> values, the least-squares optimality criterion guarantees that there is a single optimal function <img src="https://latex.codecogs.com/png.latex?f">, the graph of which is a straight line through the cloud of data; see Figure&nbsp;3.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"l"</span>,</span>
+<span id="cb3-2">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">min</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">max</span>(y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.8</span>),</span>
+<span id="cb3-3">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.main =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font.main =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb3-4">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cex.axis =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.85</span>,</span>
+<span id="cb3-5">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"The best-fitting least-squares linear regression line"</span>)</span>
+<span id="cb3-6">m.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(y <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> x)</span>
+<span id="cb3-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lines</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(x), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">predict</span>(m.lm, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">newdata =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(x))), </span>
+<span id="cb3-8">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-linreg" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linreg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/index_files/figure-html/fig-linreg-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linreg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The best-fitting least-squares linear regression line
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>While it’s clear that <img src="https://latex.codecogs.com/png.latex?y"> tends to have larger values as <img src="https://latex.codecogs.com/png.latex?x"> increases, it’s not so clear that this relationship is best captured by a straight line. Indeed, the straight line tends to underfit the <img src="https://latex.codecogs.com/png.latex?y"> values corresponding to the smallest <img src="https://latex.codecogs.com/png.latex?x"> values, and there seems to be a jump in the <img src="https://latex.codecogs.com/png.latex?(x,%20y)"> relationship around <img src="https://latex.codecogs.com/png.latex?x%20=%2020"> that the linear fit glosses over.</p>
+<p>In isotonic regression, it is no longer assumed that the trend line has to be straight. Instead, the constraint imposed on the form of the function <img src="https://latex.codecogs.com/png.latex?f"> is that <img src="https://latex.codecogs.com/png.latex?f"> should be isotonic. This is synonymous to <img src="https://latex.codecogs.com/png.latex?f"> being monotonically non-decreasing: if <img src="https://latex.codecogs.com/png.latex?x_i%20%5Cleq%20x_j">, then we require <img src="https://latex.codecogs.com/png.latex?f(x_i)%20%5Cleq%20f(x_j)">. A best-fitting function <img src="https://latex.codecogs.com/png.latex?f"> satisfying this constraint can be found by means of the <strong>pool adjacent violators algorithm</strong> (<strong>PAVA</strong>).</p>
+<p>The GIF in Figure&nbsp;4 shows the PAVA at work.<sup>1</sup> The algorithm works as follows.</p>
+<ol type="1">
+<li>Start from the unconstrained best least-squares fit in Figure&nbsp;2. That is, connect the <img src="https://latex.codecogs.com/png.latex?y"> means at each value of <img src="https://latex.codecogs.com/png.latex?x">.</li>
+<li>Identify the first segment where the trend line decreases.</li>
+<li>Compute the mean of the <img src="https://latex.codecogs.com/png.latex?y"> values belonging to this offending segment (i.e., <em>pool</em> the <em>adjacent violators</em>) and replace the trend line value with this pooled mean.</li>
+<li>Stop if there are no further decreasing segments; otherwise go back to step 2.</li>
+</ol>
+<div id="fig-pava-steps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pava-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/pava_steps.gif" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pava-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The pool adjacent violators algorithm at work: The decreasing segments in the best-fitting line are ironed out one at a time until the trend line is entirely non-decreasing.
+</figcaption>
+</figure>
+</div>
+<p>Technically, the PAVA only computes the <img src="https://latex.codecogs.com/png.latex?f(x_i)"> values at the observed <img src="https://latex.codecogs.com/png.latex?x_i"> values. In Figure&nbsp;4, I connected these <img src="https://latex.codecogs.com/png.latex?f(x_i)"> values using linear interpolation (i.e., with straight lines), but this isn’t necessary: as long as you connect them in monotonically non-decreasing way, the function <img src="https://latex.codecogs.com/png.latex?f"> you end with is <em>an</em> optimal (in the least-squares sense) isotonic fit.</p>
+</section>
+<section id="r-code" class="level2">
+<h2 class="anchored" data-anchor-id="r-code">R code</h2>
+<section id="pava" class="level3">
+<h3 class="anchored" data-anchor-id="pava">PAVA</h3>
+<p>The next code snippet defines the function <code>pava()</code> that takes <code>x</code> and <code>y</code> vectors of equal length and outputs the least-squares isotonic fit values at the unique values of <code>x</code>. If the parameter <code>plot</code> is set to <code>TRUE</code>, a scatterplot with the fitted isotonic trend line is generated. If the parameter <code>antitonic</code> is set to <code>TRUE</code>, an <strong>antitonic</strong> (i.e., monotonically non-increasing) trend line is computed instead.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">pava <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">antitonic =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>) {</span>
+<span id="cb4-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (antitonic) y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">  y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> y[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">order</span>(x)]</span>
+<span id="cb4-5">  y_all <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> y</span>
+<span id="cb4-6">  x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sort</span>(x)</span>
+<span id="cb4-7">  y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tapply</span>(y, x, mean)</span>
+<span id="cb4-8">  w <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tapply</span>(x, x, length)</span>
+<span id="cb4-9">  m <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(y)</span>
+<span id="cb4-10">  k <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-11">  b <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-12">  s <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">integer</span>(m)</span>
+<span id="cb4-13">  g <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">numeric</span>(m)</span>
+<span id="cb4-14">  v <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">numeric</span>(m)</span>
+<span id="cb4-15">  </span>
+<span id="cb4-16">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> m) {</span>
+<span id="cb4-17">    k <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-18">    vnew <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> w[k]</span>
+<span id="cb4-19">    Gnew <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> w[k] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> y[k]</span>
+<span id="cb4-20">    </span>
+<span id="cb4-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> m <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> y[k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> y[k]) {</span>
+<span id="cb4-22">      k <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> k <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-23">      vnew <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vnew <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w[k]</span>
+<span id="cb4-24">      Gnew <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Gnew <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> w[k] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> y[k]</span>
+<span id="cb4-25">    }</span>
+<span id="cb4-26">    </span>
+<span id="cb4-27">    b <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-28">    s[b] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> k</span>
+<span id="cb4-29">    g[b] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> Gnew <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> vnew</span>
+<span id="cb4-30">    v[b] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vnew</span>
+<span id="cb4-31">    </span>
+<span id="cb4-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;&amp;</span> g[b] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> g[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]) {</span>
+<span id="cb4-33">      s[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> k</span>
+<span id="cb4-34">      vtemp <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> v[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> v[b]</span>
+<span id="cb4-35">      g[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (v[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> g[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> v[b] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> g[b]) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> vtemp</span>
+<span id="cb4-36">      v[b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> vtemp</span>
+<span id="cb4-37">      b <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> b <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-38">    }</span>
+<span id="cb4-39">  }</span>
+<span id="cb4-40">  </span>
+<span id="cb4-41">  f <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">numeric</span>(m)</span>
+<span id="cb4-42">  start <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-43">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (a <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>b) {</span>
+<span id="cb4-44">    end <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> s[a]</span>
+<span id="cb4-45">    f[start<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>end] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> g[a]</span>
+<span id="cb4-46">    start <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> end <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-47">  }</span>
+<span id="cb4-48">  </span>
+<span id="cb4-49">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (antitonic) {</span>
+<span id="cb4-50">    y_all <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y_all</span>
+<span id="cb4-51">    f <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>f</span>
+<span id="cb4-52">  }</span>
+<span id="cb4-53">  </span>
+<span id="cb4-54">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (plot) {</span>
+<span id="cb4-55">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(x, y_all, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb4-56">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lines</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(x), f, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>)</span>
+<span id="cb4-57">  }</span>
+<span id="cb4-58">  </span>
+<span id="cb4-59">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb4-60">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x_vals =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unique</span>(x),</span>
+<span id="cb4-61">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y_fit  =</span> f</span>
+<span id="cb4-62">  )</span>
+<span id="cb4-63">}</span></code></pre></div></div>
+</details>
+</div>
+<p>So, for instance,</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">(pava_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pava</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$x_vals
+ [1]  3  5  6  7  9 12 13 15 17 19 20 22 23 26
+
+$y_fit
+ [1]  2.0  3.5  3.5  4.0  4.0  5.0  8.0  8.0  8.0  9.0 19.0 19.0 19.0 19.0</code></pre>
+</div>
+</div>
+<p>The function <code>iso_predict()</code> defined below can be used to compute the location of the trend line at new values of <img src="https://latex.codecogs.com/png.latex?x">, as long as these are within the range of the observed <img src="https://latex.codecogs.com/png.latex?x"> values.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">iso_predict <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(pava_fit, x_new) {</span>
+<span id="cb7-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">approx</span>(pava_fit<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>x_vals, pava_fit<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xout =</span> x_new, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"linear"</span>)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y</span>
+<span id="cb7-3">}</span></code></pre></div></div>
+</details>
+</div>
+<p>For instance,</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">iso_predict</span>(pava_fit, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x_new =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">14</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19.3</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  4.333333  8.000000 12.000000</code></pre>
+</div>
+</div>
+</section>
+<section id="a-ggplot2-geom" class="level3">
+<h3 class="anchored" data-anchor-id="a-ggplot2-geom">A <code>ggplot2</code> geom</h3>
+<p>The next code snippet defines a ggplot geom called <code>geom_pava()</code> with which you can add isotonic (and antitonic) trend lines to scatterplots drawn with <code>ggplot2</code>. You also need the <code>pava()</code> function defined above.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.5.3</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">StatPava <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggproto</span>(</span>
+<span id="cb12-2">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"StatPava"</span>, Stat,</span>
+<span id="cb12-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">required_aes =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>),</span>
+<span id="cb12-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">compute_group =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(data, scales, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>) {</span>
+<span id="cb12-5">    fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pava</span>(data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>x, data<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">antitonic =</span> decreasing)</span>
+<span id="cb12-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> fit<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>x_vals, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> fit<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y_fit)</span>
+<span id="cb12-7">  }</span>
+<span id="cb12-8">)</span>
+<span id="cb12-9"></span>
+<span id="cb12-10">geom_pava <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mapping     =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb12-11">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data        =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>,</span>
+<span id="cb12-12">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position    =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"identity"</span>,</span>
+<span id="cb12-13">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing  =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb12-14">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm       =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb12-15">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">show.legend =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>,</span>
+<span id="cb12-16">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit.aes =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span id="cb12-17">                      ...) {</span>
+<span id="cb12-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">layer</span>(</span>
+<span id="cb12-19">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">geom        =</span> GeomLine,</span>
+<span id="cb12-20">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stat        =</span> StatPava,</span>
+<span id="cb12-21">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data        =</span> data,</span>
+<span id="cb12-22">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mapping     =</span> mapping,</span>
+<span id="cb12-23">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position    =</span> position,</span>
+<span id="cb12-24">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">show.legend =</span> show.legend,</span>
+<span id="cb12-25">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inherit.aes =</span> inherit.aes,</span>
+<span id="cb12-26">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">params      =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(</span>
+<span id="cb12-27">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> decreasing,</span>
+<span id="cb12-28">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm      =</span> na.rm,</span>
+<span id="cb12-29">      ...</span>
+<span id="cb12-30">    )</span>
+<span id="cb12-31">  )</span>
+<span id="cb12-32">}</span></code></pre></div></div>
+</details>
+</div>
+<p>Figure&nbsp;5 shows the result.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb13-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb13-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb13-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_pava</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb13-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-geompava" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-geompava-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/index_files/figure-html/fig-geompava-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-geompava-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The isotonic trend line drawn with <code>ggplot2</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="antitonic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="antitonic-regression">Antitonic regression</h2>
+<p>The PAVA can easily be used to draw non-increasing trend lines. Figure&nbsp;6 shows some data on the relationship between the start of L2 acquisition and the learners’ performance on an L2 grammar test culled from a study by DeKeyser et al.&nbsp;(2010) with an antitonic trend line added (<a href="dekeyser2010.csv">download data</a>).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dekeyser2010.csv"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb14-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> AOA, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> GJT)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_pava</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">decreasing =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">xlab</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"age of L2 acquisition"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ylab</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"L2 grammar test score"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>()</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-dekeyser" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dekeyser-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-05-29-isotonic-regression/index_files/figure-html/fig-dekeyser-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dekeyser-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: The PAVA is easily adapted to non-increasing trend lines. Data from DeKeyser et al.&nbsp;(2010).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="generalisations-and-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="generalisations-and-r-packages">Generalisations and R packages</h2>
+<p>I’ve only given you a quick introduction to least-squares isotonic and antitonic regression for a single predictor <img src="https://latex.codecogs.com/png.latex?x"> and a single outcome <img src="https://latex.codecogs.com/png.latex?y"> as this is the only flavour of isotonic regression that I’m reasonably familiar with. That said, there exists a considerable literature on generalisations of this technique. These extensions include isotonic quantile regression and allowing for multiple predictors. If you’re interested, you may want to check out the R package <code>isotone</code> (Mair et al.&nbsp;2025) and its vignette. Further extensions that seem useful include smoothly decreasing or increasing trend lines, as opposed to the jagged trend lines shown in this post. These are implemented in the <code>scam</code> package (Pya 2026).</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>DeKeyser, Robert, Iris Alfi-Shabtay and Dorit Ravid. 2010. <a href="https://doi.org/10.1017/S0142716410000056">Cross-linguistic evidence for the nature of age effects in second language acquisition</a>. <em>Applied Psycholinguistics</em> 31(3). 413–438.</p>
+<p>Mair, Patrick, Jan De Leeuw and Kurt Hornik. 2025. <a href="10.32614/CRAN.package.isotone"><code>isotone</code>: Active set and generalized PAVA for isotone optimization</a>. R package, version 1.1-2.</p>
+<p>Pya, Natalya. 2026. <a href="https://doi.org/10.32614/CRAN.package.scam"><code>scam</code>: Shape constrained additive models</a>. R package, version 1.2-22.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">session_info</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.0 (2025-04-11 ucrt)
+ os       Windows 11 x64 (build 26200)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_United Kingdom.utf8
+ ctype    English_United Kingdom.utf8
+ tz       Europe/Zurich
+ date     2026-05-29
+ pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+ quarto   NA @ C:\\PROGRA~1\\RStudio\\RESOUR~1\\app\\bin\\quarto\\bin\\quarto.exe
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package * version date (UTC) lib source
+ ggplot2 * 4.0.3   2026-04-22 [1] CRAN (R 4.5.3)
+
+ [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.5
+ [2] C:/Program Files/R/R-4.5.0/library
+ * ── Packages attached to the search path.
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Incidentally, I sidestep the whole [ɡɪf]–[dʒɪf] controversy by saying [ɣɪf], as in the Dutch word for poison.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>graphs</category>
+  <category>non-linearities</category>
+  <category>R</category>
+  <guid>https://janhove.github.io/posts/2026-05-29-isotonic-regression/</guid>
+  <pubDate>Fri, 29 May 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://janhove.github.io/posts/2026-05-29-isotonic-regression/thumbnail.png" medium="image" type="image/png" height="108" width="144"/>
+</item>
 <item>
   <title>Does multilingualism really protect against accelerated ageing? Some critical comments</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -16129,6 +17325,94 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <pubDate>Tue, 21 Jan 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>Drawing scatterplot matrices</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is just a quick blog post to share a function with which you can draw scatterplot matrices.</p>
+<p>Scatterplot matrices are useful for displaying the intercorrelation between several continuous variables. Based on the help page for the <code>pairs()</code> function in <code>R</code>, I put together a function for quickly drawing scatterplot matrices that also show the Pearson correlation coefficients for the bivariate relationships as well as the number of observations that go into them: <code>scatterplot_matrix()</code>. Here’s how you’d use it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Read in the function</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">source</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://janhove.github.io/RCode/scatterplot_matrix.R"</span>)</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example: airquality is a built-in dataset in R</span></span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(airquality)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatterplot_matrix</span>(</span>
+<span id="cb1-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">subset</span>(airquality, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">select =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(Ozone, Wind, Temp, Solar.R, Month)),</span>
+<span id="cb1-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ozone"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Wind"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Temperature"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Solar radiation"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Month"</span>)</span>
+<span id="cb1-10">)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Use:</p>
+<ul>
+<li><p><code>x</code> contains the vectors (= columns in a dataset) containing the continuous variables you want to plot in the order you want to plot them. To the extent possible, try to arrange the variables in such an order that the earlier variables are more likely to be influenced by the later variables than vice versa. I’m hardly an expert on meteorology, so the order in which I put the variables may not be optimal – but <code>Month</code> is evidently more likely to influence <code>Temp</code>erature than vice versa, so put <code>Month</code> somewhere after <code>Temp</code>. Similarly, if you collected your participants’ age, L1 vocabulary skills, and their results on a cognate translation test in L2, put age last, L1 vocabulary skills second and the translation test results first.</p></li>
+<li><p><code>labels</code> contains the readable names of the variables, in that same order. If you leave out this argument, the column names will serve as labels.</p></li>
+</ul>
+<p>Output:</p>
+<ul>
+<li><p>Main diagonal: Histograms for each variable as well as the number of available data points for that variable.</p></li>
+<li><p>Upper triangle: Scatterplots for the bivariate relationships between the variables, with a nonlinear scatterplot smoother. In the example above, the scatterplot in the first row, third column, shows the relationship between the Temperature (the third variable, on the x-axis) and Ozone (the first variable, on the y-axis). The scatterplot in the second row, fifth column, shows the relationship between Month (the fifth variable, on the x-axis) and Wind (the second variable, on the y-axis).</p></li>
+<li><p>Lower triangle: Pearson correlation coefficients for the bivariate relationships between the variables and the number of observations on which it is based. In the example above, the correlation coefficient in the third row, first column, concerns the relationship between the Temperature and Ozone (the first variable). The correlation coefficient in the second row, fifth column, shows the relationship between Month (the fifth variable) and Wind (the second variable).</p></li>
+</ul>
+<p>Functions you can use instead of this one are <code>pairscor.fnc()</code> in the <code>languageR</code> package, and <code>ggscatmat()</code> and <code>ggpairs()</code> in the <code>GGally</code> package.</p>
+
+
+
+ ]]></description>
+  <category>R</category>
+  <category>graphs</category>
+  <category>correlational studies</category>
+  <category>non-linearities</category>
+  <category>multiple regression</category>
+  <guid>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</guid>
+  <pubDate>Thu, 28 Nov 2019 00:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Adjusting for a covariate in cluster-randomised experiments</title>
   <dc:creator>Jan Vanhove</dc:creator>
   <link>https://janhove.github.io/posts/2019-10-28-cluster-covariates/</link>
@@ -16908,94 +18192,6 @@ pretest      0.033 -0.004</code></pre>
   <category>mixed-effects models</category>
   <category>cluster-randomised experiments</category>
   <guid>https://janhove.github.io/posts/2019-10-28-cluster-covariates/</guid>
-  <pubDate>Thu, 28 Nov 2019 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Drawing scatterplot matrices</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>This is just a quick blog post to share a function with which you can draw scatterplot matrices.</p>
-<p>Scatterplot matrices are useful for displaying the intercorrelation between several continuous variables. Based on the help page for the <code>pairs()</code> function in <code>R</code>, I put together a function for quickly drawing scatterplot matrices that also show the Pearson correlation coefficients for the bivariate relationships as well as the number of observations that go into them: <code>scatterplot_matrix()</code>. Here’s how you’d use it:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Read in the function</span></span>
-<span id="cb1-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">source</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://janhove.github.io/RCode/scatterplot_matrix.R"</span>)</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Example: airquality is a built-in dataset in R</span></span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">data</span>(airquality)</span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">scatterplot_matrix</span>(</span>
-<span id="cb1-8">  <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">subset</span>(airquality, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">select =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(Ozone, Wind, Temp, Solar.R, Month)),</span>
-<span id="cb1-9">  <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">labels =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Ozone"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Wind"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Temperature"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Solar radiation"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Month"</span>)</span>
-<span id="cb1-10">)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Use:</p>
-<ul>
-<li><p><code>x</code> contains the vectors (= columns in a dataset) containing the continuous variables you want to plot in the order you want to plot them. To the extent possible, try to arrange the variables in such an order that the earlier variables are more likely to be influenced by the later variables than vice versa. I’m hardly an expert on meteorology, so the order in which I put the variables may not be optimal – but <code>Month</code> is evidently more likely to influence <code>Temp</code>erature than vice versa, so put <code>Month</code> somewhere after <code>Temp</code>. Similarly, if you collected your participants’ age, L1 vocabulary skills, and their results on a cognate translation test in L2, put age last, L1 vocabulary skills second and the translation test results first.</p></li>
-<li><p><code>labels</code> contains the readable names of the variables, in that same order. If you leave out this argument, the column names will serve as labels.</p></li>
-</ul>
-<p>Output:</p>
-<ul>
-<li><p>Main diagonal: Histograms for each variable as well as the number of available data points for that variable.</p></li>
-<li><p>Upper triangle: Scatterplots for the bivariate relationships between the variables, with a nonlinear scatterplot smoother. In the example above, the scatterplot in the first row, third column, shows the relationship between the Temperature (the third variable, on the x-axis) and Ozone (the first variable, on the y-axis). The scatterplot in the second row, fifth column, shows the relationship between Month (the fifth variable, on the x-axis) and Wind (the second variable, on the y-axis).</p></li>
-<li><p>Lower triangle: Pearson correlation coefficients for the bivariate relationships between the variables and the number of observations on which it is based. In the example above, the correlation coefficient in the third row, first column, concerns the relationship between the Temperature and Ozone (the first variable). The correlation coefficient in the second row, fifth column, shows the relationship between Month (the fifth variable) and Wind (the second variable).</p></li>
-</ul>
-<p>Functions you can use instead of this one are <code>pairscor.fnc()</code> in the <code>languageR</code> package, and <code>ggscatmat()</code> and <code>ggpairs()</code> in the <code>GGally</code> package.</p>
-
-
-
- ]]></description>
-  <category>R</category>
-  <category>graphs</category>
-  <category>correlational studies</category>
-  <category>non-linearities</category>
-  <category>multiple regression</category>
-  <guid>https://janhove.github.io/posts/2019-11-28-scatterplot-matrix/</guid>
   <pubDate>Thu, 28 Nov 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
@@ -22259,33 +23455,6 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2018-09-26-cannonball/</guid>
   <pubDate>Wed, 26 Sep 2018 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Looking for comments on a paper on model assumptions</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2018-09-12-preprint-assumptions/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I’ve written a paper titled <em>Checking the assumptions of your statistical model without getting paranoid</em> and I’d like to solicit your feedback. The paper is geared towards beginning analysts, so I’m particularly interested in hearing from readers who don’t consider themselves expert statisticians if there is anything that isn’t entirely clear to them. If you’re a more experienced analyst and you spot an error in the paper or accompanying tutorial, I’d be grateful if you could let me know, too, of course.</p>
-<ul>
-<li><a href="https://psyarxiv.com/zvawb/">Preprint on PsyArxiv</a></li>
-<li><a href="https://janhove.github.io/tutorials/assumptions.html">Online tutorial with R code</a></li>
-</ul>
-
-
-
- ]]></description>
-  <category>R</category>
-  <category>graphs</category>
-  <category>tutorial</category>
-  <category>preprint</category>
-  <category>assumptions</category>
-  <category>cannonball</category>
-  <guid>https://janhove.github.io/posts/2018-09-12-preprint-assumptions/</guid>
-  <pubDate>Wed, 12 Sep 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

@@ -9,7 +9,7 @@
 <link>https://janhove.github.io/archive.html#category=Stan</link>
 <atom:link href="https://janhove.github.io/archive-stan.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
-<generator>quarto-1.9.37</generator>
+<generator>quarto-1.9.38</generator>
 <lastBuildDate>Tue, 18 Feb 2020 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Baby steps in Bayes: Incorporating reliability estimates in regression models</title>
