@@ -334,8 +334,3 @@ Pya, Natalya.
 2026.
 [`scam`: Shape constrained additive models](https://doi.org/10.32614/CRAN.package.scam).
 R package, version 1.2-22.
-
-## Software versions
-```{r, warning = FALSE}
-devtools::session_info("attached")
-```
