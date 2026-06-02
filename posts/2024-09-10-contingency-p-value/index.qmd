@@ -1,6 +1,7 @@
 ---
 title: "Exact significance tests for 2 × 2 tables"
-date: "2024-09-10"
+date: 2024-09-10
+date-modified: 2026-06-02
 categories: [R, significance]
 ---
 
@@ -468,22 +469,37 @@ abline(v = (which.max(pvals) - 1) / 100, lty = 2, col = "red", lwd = 2)
 If our alternative hypothesis were that the new programme produced worse
 results than the old one, we'd have used the left-sided $p$-value of Fisher's
 exact test as the test statistic in Boschloo's procedure.
-A two-sided $p$-value can be obtained by carrying out Boschloo's test once
+~~A two-sided $p$-value can be obtained by carrying out Boschloo's test once
 using the right-sided $p$-value of Fisher's exact test as the test statistic
 and once using the left-sided $p$-value, and then doubling the smaller
-of the two resulting $p$-values.
+of the two resulting $p$-values.~~
+
+**Update 2026/06/02:** 
+I've slightly changed the `boschloo_test()` function by adding 
+the parameter `double_min`. 
+If it is set to `TRUE` (default),
+the two-sided $p$-value is computed by computing both one-sided $p$-values
+and doubling the smaller one.
+Otherwise, the two-sided $p$-value is computed by using the two-sided
+$p$-value of Fisher's exact test as the test statistic.
 
 To run Boschloo's test, you can use the following `boschloo_test()` function:
 
 ```{r}
-boschloo_test <- function(tab, alternative = "two.sided", pi_range = c(0, 1), stepsize = 0.01) {
+boschloo_test <- function(
+    tab, 
+    alternative = "two.sided", 
+    pi_range = c(0, 1), 
+    stepsize = 0.01,
+    double_min = TRUE
+) {
   # This test assumes fixed row sums.
   # Nuisance parameter values in the interval pi_range are tried out.
   # stepsize governs granularity of search through nuisance parameter value candidates.
   
   if (!all(dim(tab) == c(2, 2))) stop("tab needs to be a 2*2 contingency table.")
   
-  if (alternative == "two.sided") {
+  if (alternative == "two.sided" && double_min) {
     # Truncate two-sided p-value at 1
     return(
       min(2 * min(boschloo_test(tab, alternative = "less", pi_range = pi_range, stepsize = stepsize),
@@ -627,22 +643,32 @@ That is, rather computing a $p$-value for each candidate value of $\pi \in [0,1]
 and then taking the maximum, we compute a $p$-value for each pair
 of candidate values of $(\pi_{\textrm{row}}, \pi_{\textrm{col}}) \in [0,1] \times [0,1]$.
 The `unconditional_test()` function defined below carries out this procedure:
+
+**Update 2026/06/02:** 
+I've slightly changed the `unconditional_test()` function by adding 
+the parameter `double_min`. 
+If it is set to `TRUE` (default),
+the two-sided $p$-value is computed by computing both one-sided $p$-values
+and doubling the smaller one.
+Otherwise, the two-sided $p$-value is computed by using the two-sided
+$p$-value of Fisher's exact test as the test statistic.
+
 ```{r}
 unconditional_test <- function(
     tab, 
     alternative = "two.sided", 
     pi_range_row = c(0, 1), 
     pi_range_col = c(0, 1),
-    stepsize = 0.01)
+    stepsize = 0.01,
+    double_min = TRUE)
   {
-  
   # This test assumes a fixed total sum.
   # Nuisance parameter values in the rectangle pi_range_row * pi_range_col are tried out.
   # stepsize governs granularity of search through nuisance parameter value candidates.
   
   if (!all(dim(tab) == c(2, 2))) stop("tab needs to be a 2*2 contingency table.")
   
-  if (alternative == "two.sided") {
+  if (alternative == "two.sided" && double_min) {
     # Truncate two-sided p-value at 1
     return(min(
       2 * min(unconditional_test(tab, alternative = "less", stepsize = stepsize),
@@ -709,11 +735,24 @@ For one-sided tests (i.e., `alternative = "less"` or `"greater"`),
 it produces the same $p$-values as `unconditional_test()`,
 but it computes the two-sided $p$-value differently:
 
-
 ```{r}
-Exact::exact.test(tab, model = "multinomial",
-                  npNumber = 101, ref.pvalue = FALSE, method = "boschloo")$p.value
+Exact::exact.test(tab, model = "multinomial", method = "boschloo")$p.value
 ```
+
+**Update 2026/06/02:**
+To approximate the two-sided $p$-value computed by `Exact`'s
+`exact.test()`, we can proceed as follows:
+```{r}
+grid_values <- seq(1e-5, 1 - 1e-5, length.out = 100)
+stepsize <- grid_values[2] - grid_values[1]
+unconditional_test(tab, 
+  pi_range_row = range(grid_values), pi_range_col = range(grid_values),
+  stepsize = stepsize, double_min = FALSE)
+```
+
+The results still differ somewhat since `Exact` seems to implement
+some further optimisations and speed-ups, but I feel that these 
+would render the principles behind this kind of test less transparent.
 
 
 ### Experiments with simple randomisation
