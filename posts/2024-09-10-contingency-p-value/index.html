@@ -251,6 +251,12 @@ window.Quarto = {
     </div>
   </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">June 2, 2026</p>
+    </div>
+  </div>
     
   </div>
   
@@ -451,53 +457,60 @@ Figure&nbsp;3: In Boschloo’s test, a <span class="math inline">\(p\)</span>-va
 </div>
 </div>
 </div>
-<p>If our alternative hypothesis were that the new programme produced worse results than the old one, we’d have used the left-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic in Boschloo’s procedure. A two-sided <span class="math inline">\(p\)</span>-value can be obtained by carrying out Boschloo’s test once using the right-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic and once using the left-sided <span class="math inline">\(p\)</span>-value, and then doubling the smaller of the two resulting <span class="math inline">\(p\)</span>-values.</p>
+<p>If our alternative hypothesis were that the new programme produced worse results than the old one, we’d have used the left-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic in Boschloo’s procedure. <del>A two-sided <span class="math inline">\(p\)</span>-value can be obtained by carrying out Boschloo’s test once using the right-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic and once using the left-sided <span class="math inline">\(p\)</span>-value, and then doubling the smaller of the two resulting <span class="math inline">\(p\)</span>-values.</del></p>
+<p><strong>Update 2026/06/02:</strong> I’ve slightly changed the <code>boschloo_test()</code> function by adding the parameter <code>double_min</code>. If it is set to <code>TRUE</code> (default), the two-sided <span class="math inline">\(p\)</span>-value is computed by computing both one-sided <span class="math inline">\(p\)</span>-values and doubling the smaller one. Otherwise, the two-sided <span class="math inline">\(p\)</span>-value is computed by using the two-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic.</p>
 <p>To run Boschloo’s test, you can use the following <code>boschloo_test()</code> function:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>boschloo_test <span class="ot">&lt;-</span> <span class="cf">function</span>(tab, <span class="at">alternative =</span> <span class="st">"two.sided"</span>, <span class="at">pi_range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">stepsize =</span> <span class="fl">0.01</span>) {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This test assumes fixed row sums.</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Nuisance parameter values in the interval pi_range are tried out.</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(tab) <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))) <span class="fu">stop</span>(<span class="st">"tab needs to be a 2*2 contingency table."</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span>) {</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Truncate two-sided p-value at 1</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"less"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize),</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize)), </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use Fisher's exact test p-value as test statistic</span></span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  statistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">fisher.test</span>(x, <span class="at">alternative =</span> alternative)<span class="sc">$</span>p.value</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct grid with possible results</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  row_sums <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(tab)</span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  my_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n1 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">1</span>], <span class="at">n2 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">2</span>])</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>statistic <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(my_grid)) {</span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    my_tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(my_grid<span class="sc">$</span>n1[i], row_sums[<span class="dv">1</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n1[i]),</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">c</span>(my_grid<span class="sc">$</span>n2[i], row_sums[<span class="dv">2</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n2[i]))</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    my_grid<span class="sc">$</span>statistic[i] <span class="ot">&lt;-</span> <span class="fu">statistic</span>(my_tab)</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute observed test statistic</span></span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  obs_p <span class="ot">&lt;-</span> <span class="fu">statistic</span>(tab)</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  is_extreme <span class="ot">&lt;-</span> my_grid<span class="sc">$</span>statistic <span class="sc">&lt;=</span> obs_p</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Maximise p-value over range</span></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  pis <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi_range[<span class="dv">1</span>], pi_range[<span class="dv">2</span>], <span class="at">by =</span> stepsize)</span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  max_p <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_pi <span class="cf">in</span> pis) {</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    current_p <span class="ot">&lt;-</span> <span class="fu">weighted.mean</span>(<span class="at">x =</span> is_extreme,</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">w =</span> <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n1, row_sums[<span class="dv">1</span>], current_pi) <span class="sc">*</span> </span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>            <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n2, row_sums[<span class="dv">2</span>], current_pi))</span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (current_p <span class="sc">&gt;</span> max_p) max_p <span class="ot">&lt;-</span> current_p</span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  max_p</span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>boschloo_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    tab, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two.sided"</span>, </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">stepsize =</span> <span class="fl">0.01</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">double_min =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This test assumes fixed row sums.</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Nuisance parameter values in the interval pi_range are tried out.</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(tab) <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))) <span class="fu">stop</span>(<span class="st">"tab needs to be a 2*2 contingency table."</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span> <span class="sc">&amp;&amp;</span> double_min) {</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Truncate two-sided p-value at 1</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"less"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize),</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range =</span> pi_range, <span class="at">stepsize =</span> stepsize)), </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use Fisher's exact test p-value as test statistic</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  statistic <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">fisher.test</span>(x, <span class="at">alternative =</span> alternative)<span class="sc">$</span>p.value</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct grid with possible results</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  row_sums <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(tab)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  my_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n1 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">1</span>], <span class="at">n2 =</span> <span class="dv">0</span><span class="sc">:</span>row_sums[<span class="dv">2</span>])</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  my_grid<span class="sc">$</span>statistic <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(my_grid)) {</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    my_tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(my_grid<span class="sc">$</span>n1[i], row_sums[<span class="dv">1</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n1[i]),</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">c</span>(my_grid<span class="sc">$</span>n2[i], row_sums[<span class="dv">2</span>] <span class="sc">-</span> my_grid<span class="sc">$</span>n2[i]))</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    my_grid<span class="sc">$</span>statistic[i] <span class="ot">&lt;-</span> <span class="fu">statistic</span>(my_tab)</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Compute observed test statistic</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>  obs_p <span class="ot">&lt;-</span> <span class="fu">statistic</span>(tab)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>  is_extreme <span class="ot">&lt;-</span> my_grid<span class="sc">$</span>statistic <span class="sc">&lt;=</span> obs_p</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Maximise p-value over range</span></span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>  pis <span class="ot">&lt;-</span> <span class="fu">seq</span>(pi_range[<span class="dv">1</span>], pi_range[<span class="dv">2</span>], <span class="at">by =</span> stepsize)</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>  max_p <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (current_pi <span class="cf">in</span> pis) {</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    current_p <span class="ot">&lt;-</span> <span class="fu">weighted.mean</span>(<span class="at">x =</span> is_extreme,</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">w =</span> <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n1, row_sums[<span class="dv">1</span>], current_pi) <span class="sc">*</span> </span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>            <span class="fu">dbinom</span>(my_grid<span class="sc">$</span>n2, row_sums[<span class="dv">2</span>], current_pi))</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (current_p <span class="sc">&gt;</span> max_p) max_p <span class="ot">&lt;-</span> current_p</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>  max_p</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>It works like so:</p>
 <div class="cell">
@@ -554,27 +567,28 @@ H_0~:~&amp;\mathbb{P}(\textrm{is French-speaking and responds in same language})
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Condition on column marginals only</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(<span class="fu">t</span>(tab))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.08564046</code></pre>
+<pre><code>[1] 0.08940788</code></pre>
 </div>
 </div>
 <p>The resulting <span class="math inline">\(p\)</span>-values are all valid. But like before, these tests only consider a part of the sample space: Fisher’s exact test only takes into account the nine tables where <span class="math inline">\(n_{1+} = 8\)</span> and <span class="math inline">\(n_{+1} = 10\)</span>; Boschloo’s test considers the <span class="math inline">\(9 \cdot 13 = 117\)</span> tables where <span class="math inline">\(n_{1+} = 8\)</span> and <span class="math inline">\(n_{2+} = 12\)</span> when conditioning on the row marginals and the <span class="math inline">\(11 \cdot 11 = 121\)</span> tables where <span class="math inline">\(n_{+1} = n_{+2} = 10\)</span> when conditioning on the column marginals. But the table observed is in actual fact one of <span class="math display">\[\sum_{i = 0}^{20}\sum_{j = 0}^{20-i}\sum_{k= 0}^{20-i-j}1 = 1771\]</span> tables where <span class="math inline">\(n_{++} = 20\)</span>.</p>
 <p>One possible solution is to generalise Boschloo’s test to two nuisance parameters. That is, rather computing a <span class="math inline">\(p\)</span>-value for each candidate value of <span class="math inline">\(\pi \in [0,1]\)</span> and then taking the maximum, we compute a <span class="math inline">\(p\)</span>-value for each pair of candidate values of <span class="math inline">\((\pi_{\textrm{row}}, \pi_{\textrm{col}}) \in [0,1] \times [0,1]\)</span>. The <code>unconditional_test()</code> function defined below carries out this procedure:</p>
+<p><strong>Update 2026/06/02:</strong> I’ve slightly changed the <code>unconditional_test()</code> function by adding the parameter <code>double_min</code>. If it is set to <code>TRUE</code> (default), the two-sided <span class="math inline">\(p\)</span>-value is computed by computing both one-sided <span class="math inline">\(p\)</span>-values and doubling the smaller one. Otherwise, the two-sided <span class="math inline">\(p\)</span>-value is computed by using the two-sided <span class="math inline">\(p\)</span>-value of Fisher’s exact test as the test statistic.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>unconditional_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    tab, </span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two.sided"</span>, </span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_range_row =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), </span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pi_range_col =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stepsize =</span> <span class="fl">0.01</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stepsize =</span> <span class="fl">0.01</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">double_min =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  {</span>
 <span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This test assumes a fixed total sum.</span></span>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Nuisance parameter values in the rectangle pi_range_row * pi_range_col are tried out.</span></span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># stepsize governs granularity of search through nuisance parameter value candidates.</span></span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(tab) <span class="sc">==</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))) <span class="fu">stop</span>(<span class="st">"tab needs to be a 2*2 contingency table."</span>)</span>
 <span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span>) {</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (alternative <span class="sc">==</span> <span class="st">"two.sided"</span> <span class="sc">&amp;&amp;</span> double_min) {</span>
 <span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Truncate two-sided p-value at 1</span></span>
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">min</span>(</span>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>      <span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"less"</span>, <span class="at">stepsize =</span> stepsize),</span>
@@ -632,17 +646,28 @@ H_0~:~&amp;\mathbb{P}(\textrm{is French-speaking and responds in same language})
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.07469479</code></pre>
+<pre><code>[1] 0.07722463</code></pre>
 </div>
 </div>
 <p>The <code>exact.test()</code> function in the <a href="https://cran.r-project.org/package=Exact"><code>Exact</code></a> also implements this procedure. For one-sided tests (i.e., <code>alternative = "less"</code> or <code>"greater"</code>), it produces the same <span class="math inline">\(p\)</span>-values as <code>unconditional_test()</code>, but it computes the two-sided <span class="math inline">\(p\)</span>-value differently:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Exact<span class="sc">::</span><span class="fu">exact.test</span>(tab, <span class="at">model =</span> <span class="st">"multinomial"</span>,</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">npNumber =</span> <span class="dv">101</span>, <span class="at">ref.pvalue =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"boschloo"</span>)<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Exact<span class="sc">::</span><span class="fu">exact.test</span>(tab, <span class="at">model =</span> <span class="st">"multinomial"</span>, <span class="at">method =</span> <span class="st">"boschloo"</span>)<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1139588</code></pre>
+<pre><code>[1] 0.1139524</code></pre>
 </div>
 </div>
+<p><strong>Update 2026/06/02:</strong> To approximate the two-sided <span class="math inline">\(p\)</span>-value computed by <code>Exact</code>’s <code>exact.test()</code>, we can proceed as follows:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>grid_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">1e-5</span>, <span class="dv">1</span> <span class="sc">-</span> <span class="fl">1e-5</span>, <span class="at">length.out =</span> <span class="dv">100</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>stepsize <span class="ot">&lt;-</span> grid_values[<span class="dv">2</span>] <span class="sc">-</span> grid_values[<span class="dv">1</span>]</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab, </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pi_range_row =</span> <span class="fu">range</span>(grid_values), <span class="at">pi_range_col =</span> <span class="fu">range</span>(grid_values),</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stepsize =</span> stepsize, <span class="at">double_min =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.110817</code></pre>
+</div>
+</div>
+<p>The results still differ somewhat since <code>Exact</code> seems to implement some further optimisations and speed-ups, but I feel that these would render the principles behind this kind of test less transparent.</p>
 </section>
 <section id="experiments-with-simple-randomisation" class="level3">
 <h3 class="anchored" data-anchor-id="experiments-with-simple-randomisation">Experiments with simple randomisation</h3>
@@ -655,18 +680,18 @@ H_0~:~&amp;\mathbb{P}(\textrm{is French-speaking and responds in same language})
 \end{array}\]</span>
 <p>We could again condition on the row marginals:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>),</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)      <span class="co"># condition on row marginals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">2</span>),</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boschloo_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>)      <span class="co"># condition on row marginals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04954898</code></pre>
 </div>
 </div>
 <p>Alternatively, we could run an unconditional test. Note, however that while <span class="math inline">\(n_{1+}\)</span> and <span class="math inline">\(n_{2+}\)</span> weren’t fixed by design, <span class="math inline">\(\pi_{\textrm{row}}\)</span> is known to be <span class="math inline">\(0.5\)</span>. Hence, we don’t need to iterate through different candidate values for <span class="math inline">\(\pi_{\textrm{row}}\)</span>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range_row =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unconditional_test</span>(tab, <span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">pi_range_row =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.04364773</code></pre>
+<pre><code>[1] 0.04392337</code></pre>
 </div>
 </div>
 </section>
