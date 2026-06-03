@@ -328,6 +328,6 @@ _International Journal of Bilingualism_ 16(4).
 
 ## Session info
 ```{r}
-devtools::session_info(c("MASS", "tidyverse"))
+devtools::session_info("attached")
 ```
 
