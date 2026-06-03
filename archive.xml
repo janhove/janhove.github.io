@@ -577,7 +577,7 @@ font-style: inherit;">"tidyverse"</span>))</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in system2("quarto", "-V", stdout = TRUE, env = paste0("TMPDIR=", :
 running command '"quarto"
-TMPDIR=C:/Users/VanhoveJ/AppData/Local/Temp/RtmpofNr6v/file1b5831f6a55 -V' had
+TMPDIR=C:/Users/VanhoveJ/AppData/Local/Temp/RtmpsZ04yA/file587c73451ed9 -V' had
 status 1</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
