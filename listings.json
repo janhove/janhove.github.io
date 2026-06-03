@@ -1,7 +1,8 @@
 [
   {
-    "listing": "/archive.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/2026-06-03-nested-effects/index.html",
       "/posts/2026-05-29-isotonic-regression/index.html",
       "/posts/2025-12-15-multilingualism-accelerated-ageing/index.html",
       "/posts/2025-11-09-population-randomisation/index.html",
@@ -95,8 +96,9 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/archive.html",
     "items": [
+      "/posts/2026-06-03-nested-effects/index.html",
       "/posts/2026-05-29-isotonic-regression/index.html",
       "/posts/2025-12-15-multilingualism-accelerated-ageing/index.html",
       "/posts/2025-11-09-population-randomisation/index.html",

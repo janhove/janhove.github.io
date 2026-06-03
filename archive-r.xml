@@ -10,7 +10,721 @@
 <atom:link href="https://janhove.github.io/archive-r.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Fri, 29 May 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 03 Jun 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>When interaction effects are hard to explain, try nested effects</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-06-03-nested-effects/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>When analysing a factorial experiment, R’s default regression output gives you the main effects and interaction effects. The meaning of the resulting parameter estimates can be tricky to explain, especially that of the interaction effect: in essence, it tells you what the difference between two differences is. Nested effects, which immediately tell you what the differences themselves are, are often easier to interpret. This post shows how you can obtain such nested effects in R.</p>
+<section id="example-data" class="level2">
+<h2 class="anchored" data-anchor-id="example-data">Example data</h2>
+<p>Figure&nbsp;1 shows <a href="berthele2012.csv">data</a> from an experiment with a two-by-two design carried out by Berthele (2012). French-speaking students at a university for teacher education were played a recording of what they thought was a first-language German boy speaking French. About half of the students were told that the boy had a typical Swiss-German name (e.g., Luca); the others were told that he had a name associated with the Balkan region (e.g., Dragan). Furthermore, about half of the recordings contained code-switches (i.e., the boy would occasionally use German expressions when speaking French); the other half of the recordings did not contain any such code-switches. The future teachers were asked to rate the boy’s academic potential on a scale from 1 to 6, with 6 being the highest.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_set</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>())</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">d <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"berthele2012.csv"</span>)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(d, </span>
+<span id="cb1-6">       <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> CS, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Potential)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">position_jitter</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> d <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-9">               <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(CS, Name) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb1-10">               <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Potential =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(Potential), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.groups =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"drop"</span>),</span>
+<span id="cb1-11">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colour =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cols =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">vars</span>(Name)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">xlab</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Code-switching?"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ylab</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rated academic potential"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-example-data" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-06-03-nested-effects/index_files/figure-html/fig-example-data-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-example-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Data from Berthele’s (2012) experiment. Each circle shows a rating given by a teacher trainee. The red stars highlight the cell means.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="interaction-effects" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-effects">Interaction effects</h2>
+<p>Figure&nbsp;1 suggests that there is some <strong>interaction</strong> going on in the data: ‘Dragan’s’ ratings tend to be higher than ‘Luca’s’ when there is no code-switching, but lower where there is code-switching. It’s pretty easy to model this interaction in R:<sup>1</sup></p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">mod.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Potential <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>CS, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> d)</span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(mod.lm)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>coefficients</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)         2.9642857  0.1581785 18.740129 3.056638e-41
+NameLuca            0.3993506  0.2023426  1.973636 5.024817e-02
+CSwithout           0.6631653  0.1968684  3.368572 9.589511e-04
+NameLuca:CSwithout -0.9330516  0.2767167 -3.371866 9.483562e-04</code></pre>
+</div>
+</div>
+<p>You need a bit of practice to wrap your head around what these parameter estimates actually refer to, however. The parameter estimate for <code>NameLuca</code> (<img src="https://latex.codecogs.com/png.latex?0.40%20%5Cpm%200.20">), for instance, tells you that the ratings for ‘Luca’ tend to be <img src="https://latex.codecogs.com/png.latex?0.40"> points higher than those for ‘Dragan’ <em>if the recording contains code-switches</em>. Next, the parameter estimate of <code>CSwithout</code> (<img src="https://latex.codecogs.com/png.latex?0.66%20%5Cpm%200.20">), tells you that the ratings for recordings without code-switches tend to be <img src="https://latex.codecogs.com/png.latex?0.66"> points higher than those with code-switches <em>if the students were told that the boy is called Dragan</em>. The estimate of the interaction parameter <code>NameLuca:CSwithout</code> (<img src="https://latex.codecogs.com/png.latex?-0.93%20%5Cpm%200.28">) tells you that the absence of code-switches was <img src="https://latex.codecogs.com/png.latex?0.93"> points more detrimental for ‘Luca’ than it was for ‘Dragan’. <em>Equivalently</em>, it tells you that the <em>presence</em> of code-switches was <img src="https://latex.codecogs.com/png.latex?0.93"> points more detrimental for ‘Dragan’ than it was for ‘Luca’. <em>Also equivalently</em>, it tells you that labelling the recording ‘Dragan’ instead of ‘Luca’ is <img src="https://latex.codecogs.com/png.latex?0.93"> points more detrimental on average for recordings with code-switches than for recordings without code-switches.</p>
+<p>If you skipped the previous paragraph: I understand. Even for a fairly simple two-by-two design, figuring out the precise meaning of the estimated parameters requires sitting down with a pencil and a piece of paper; see Chapter 10 in my <a href="https://github.com/janhove/AnalysingQuantitativeData">statistics booklet</a>. Thankfully, however, you can usually make the output of statistical models such as the one above more readily interpretable both to yourself and to your audience by changing the coding scheme. I’ve explained how this can be done in a <a href="../2020-05-05-contrast-coding">previous blog post</a>.</p>
+</section>
+<section id="nested-effects-using-rs-shorthand-notation" class="level2">
+<h2 class="anchored" data-anchor-id="nested-effects-using-rs-shorthand-notation">Nested effects using R’s shorthand notation</h2>
+<p>Whereas an interaction effect tells you <em>how much stronger</em> an effect of one factor (e.g., code-switching) is for one level of another factor (e.g., if the name is Luca) than for the other level (e.g., if the name is Dragan), <strong>nested effects</strong> tell you quite simply <em>what</em> the effect of one factor is for each level of another factor. To fit nested effects in R, you can use the slash notation:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">mod.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Potential <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>CS, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> d)</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(mod.lm)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>coefficients</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)           2.9642857  0.1581785 18.740129 3.056638e-41
+NameLuca              0.3993506  0.2023426  1.973636 5.024817e-02
+NameDragan:CSwithout  0.6631653  0.1968684  3.368572 9.589511e-04
+NameLuca:CSwithout   -0.2698864  0.1944608 -1.387871 1.672209e-01</code></pre>
+</div>
+</div>
+<p>As before, the estimated intercept (<img src="https://latex.codecogs.com/png.latex?2.96%20%5Cpm%200.16">) shows the average rating given to Dragan recordings with code-switches, and the <code>NameLuca</code> estimate (<img src="https://latex.codecogs.com/png.latex?0.40%20%5Cpm%200.20">) shows that the Luca recordings with code-switches were rated a bit better on average than these. Again like before, the <code>NameDragan:CSwithout</code> (<img src="https://latex.codecogs.com/png.latex?0.66%20%5Cpm%200.20">) shows the effect of the absence of code-switches on the ratings given to Dragan. What’s different from before is the <code>NameLuca:CSwithout</code> estimate (<img src="https://latex.codecogs.com/png.latex?-0.27%20%5Cpm%200.19">): it shows that, for ‘Luca’, recordings without code-switches tended to be rated <img src="https://latex.codecogs.com/png.latex?0.27"> worse than recordings with code-switches.</p>
+<p>The next snippet shows an alternative coding scheme that suppresses the intercept using the <code>0</code> notation:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">mod.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Potential <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>CS, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> d)</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(mod.lm)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>coefficients</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       Estimate Std. Error   t value     Pr(&gt;|t|)
+NameDragan            2.9642857  0.1581785 18.740129 3.056638e-41
+NameLuca              3.3636364  0.1261828 26.656854 5.631382e-59
+NameDragan:CSwithout  0.6631653  0.1968684  3.368572 9.589511e-04
+NameLuca:CSwithout   -0.2698864  0.1944608 -1.387871 1.672209e-01</code></pre>
+</div>
+</div>
+<p>This makes it clearer that the previous intercept estimate refers to the Dragan recordings exclusively. The parameter estimate for <code>NameLuca</code> (<img src="https://latex.codecogs.com/png.latex?3.36%20%5Cpm%200.13">) now shows the average rating for a Luca recording with code-switches rather than a difference between two averages. The remaining estimates refers to the same nested effects as before.</p>
+<p>Of course, we can switch the order in which the factors appear. In doing so, we obtain the average ratings for the Dragan recordings with and without code-switches as well as the effects of labelling the recordings ‘Luca’ rather than ‘Dragan’ for both recordings with and without code-switches:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">mod.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Potential <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> CS<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>Name, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> d)</span>
+<span id="cb8-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(mod.lm)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>coefficients</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Estimate Std. Error   t value     Pr(&gt;|t|)
+CSwith              2.9642857  0.1581785 18.740129 3.056638e-41
+CSwithout           3.6274510  0.1172037 30.949964 2.927176e-67
+CSwith:NameLuca     0.3993506  0.2023426  1.973636 5.024817e-02
+CSwithout:NameLuca -0.5337010  0.1887580 -2.827434 5.328876e-03</code></pre>
+</div>
+</div>
+</section>
+<section id="nested-effects-using-a-custom-coding-scheme" class="level2">
+<h2 class="anchored" data-anchor-id="nested-effects-using-a-custom-coding-scheme">Nested effects using a custom coding scheme</h2>
+<p>One of the representations above is sufficient for our purposes. If you want even more control over what the estimates refer to, I recommend you use a custom coding scheme. In this example, it’s a bit unfortunate that the <code>with</code> code-switching condition gets absorbed in the intercept but the <code>without</code> condition doesn’t. By using a custom coding scheme, we can have the estimated parameters mean exactly what we want them to mean.</p>
+<p>First, we explicitly label each cell of the design and convert these labels to a factor:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Cell <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Name, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>, d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>CS) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb10-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.factor</span>()</span>
+<span id="cb10-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Cell)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Dragan-with Dragan-without      Luca-with   Luca-without 
+            28             51             44             32 </code></pre>
+</div>
+</div>
+<p>Next, we write down what we want the intercept to represent. I think that a sensible choice is to have the intercept represent the mean of the two cells in which no code-switching occurred, i.e., <code>Dragan-without</code> and <code>Luca-without</code>.<sup>2</sup> We write this down in the form of a null hypothesis, even if we don’t really want to test this null hypothesis:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B2%7D%5Cleft(%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20+%20%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%5Cright)%20=%200."></p>
+<p>We then rewrite this null hypothesis so that all four cells are represented on the left-hand side of the equation. In doing so, make sure that the cells occur in the same order in which they appear above, i.e., first Dragan with code-switches, then Dragan without, then Luca with, and finally Luca-without. (If you find this confusing, either bear with me or read the longer blog post on <a href="../2020-05-05-contrast-coding">contrast coding</a>.)</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B2%7D%5Cleft(%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20+%20%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%5Cright)%20=%200%0A%5CLeftrightarrow%0A0%5Cmu_%7B%5Ctextrm%7BDragan,%20with%20CS%7D%7D%0A+%20%5Cfrac%7B1%7D%7B2%7D%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%0A+%200%5Cmu_%7B%5Ctextrm%7BLuca,%20with%20CS%7D%7D%0A+%20%5Cfrac%7B1%7D%7B2%7D%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20=%200."></p>
+<p>We put the coefficients so obtained (i.e., 0, 1/2, 0 and 1/2) into a vector. The vector’s name makes it clear that its purpose is to estimate the mean of the averages of the cells in which no code-switching occurred; the vector entries are named for clarity’s sake (e.g., <code>Ln</code> means Luca, no code-switches).</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">Mean_NoCS <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dn =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Ln =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div></div>
+</details>
+</div>
+<p>We now write down what we want the next parameter estimate to refer to. I want it to represent the difference between Dragan’s code-switch-free ratings and Luca’s code-switch-free ratings. We can write this down as a null hypothesis like so:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%20=%20%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%5Cright)%0A%5CLeftrightarrow%0A0%5Cmu_%7B%5Ctextrm%7BDragan,%20with%20CS%7D%7D%0A+%201%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%0A+%200%5Cmu_%7B%5Ctextrm%7BLuca,%20with%20CS%7D%7D%0A-%201%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20=%200."></p>
+<p>Again, we put the resulting coefficients in a vector.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">NoCS_DraganvLuca <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dn =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Ln =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div></div>
+</details>
+</div>
+<p>I want the third parameter estimate to show the (nested) code-switching effect for Luca:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cmu_%7B%5Ctextrm%7BLuca,%20with%20CS%7D%7D%20=%20%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%5Cright)%0A%5CLeftrightarrow%0A0%5Cmu_%7B%5Ctextrm%7BDragan,%20with%20CS%7D%7D%0A+%200%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%0A+%201%5Cmu_%7B%5Ctextrm%7BLuca,%20with%20CS%7D%7D%0A-%201%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20=%200."></p>
+<p>Let’s put this into a vector, too:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">Luca_CS <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dn =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Ln =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div></div>
+</details>
+</div>
+<p>The fourth and final parameter estimate should show the (nested) code-switching effect for Dragan: <img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cmu_%7B%5Ctextrm%7BDragan,%20with%20CS%7D%7D%20=%20%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%5Cright)%0A%5CLeftrightarrow%0A1%5Cmu_%7B%5Ctextrm%7BDragan,%20with%20CS%7D%7D%0A-%201%5Cmu_%7B%5Ctextrm%7BDragan,%20no%20CS%7D%7D%0A+%200%5Cmu_%7B%5Ctextrm%7BLuca,%20with%20CS%7D%7D%0A+%200%5Cmu_%7B%5Ctextrm%7BLuca,%20no%20CS%7D%7D%20=%200."></p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">Dragan_CS <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Dn =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Lw =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Ln =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div></div>
+</details>
+</div>
+<p>Now we collect the four vectors into a hypothesis matrix <code>Hm</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">Hm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rbind</span>(</span>
+<span id="cb16-2">  Mean_NoCS,</span>
+<span id="cb16-3">  NoCS_DraganvLuca,</span>
+<span id="cb16-4">  Luca_CS,</span>
+<span id="cb16-5">  Dragan_CS </span>
+<span id="cb16-6">)</span></code></pre></div></div>
+</details>
+</div>
+<p>Using the <code>apply_contrasts()</code> function defined in the next snippet, the hypothesis matrix can be converted into a set of contrasts that can be applied to the <code>Cell</code> factor:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">apply_contrasts <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(Hm) {</span>
+<span id="cb17-2">    MASS<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fractions</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">provideDimnames</span>(MASS<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ginv</span>(Hm), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">base =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dimnames</span>(Hm)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]))[, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb17-3">}</span>
+<span id="cb17-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">contrasts</span>(d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Cell) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">apply_contrasts</span>(Hm)</span></code></pre></div></div>
+</details>
+</div>
+<p>Now fit the model using the <code>Cell</code> factor with the custom coding scheme as a predictor:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1">mod.lm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Potential <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Cell, d)</span>
+<span id="cb18-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(mod.lm)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>coefficients</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)           3.3606005 0.09437902 35.607495 2.378887e-75
+CellNoCS_DraganvLuca  0.5337010 0.18875804  2.827434 5.328876e-03
+CellLuca_CS           0.2698864 0.19446075  1.387871 1.672209e-01
+CellDragan_CS        -0.6631653 0.19686836 -3.368572 9.589511e-04</code></pre>
+</div>
+</div>
+<p>As you can verify, each parameter estimate refers exactly to what we wanted it to refer to.</p>
+</section>
+<section id="interaction-effect-or-nested-effects" class="level2">
+<h2 class="anchored" data-anchor-id="interaction-effect-or-nested-effects">Interaction effect or nested effects?</h2>
+<p>In the example above, the nested effects tell you what the effect of code-switching is for Luca recordings and for Dragan recordings, whereas the interaction effect tells you by how much these differ. I find the nested effects easier to interpret. But if you’re interested in the <em>difference</em> between these nested effects (and this is often the case!), you also need the interaction effect. What you could do in this case is have your cake and eat it, too: report the easy-to-interpret nested effects in a table, and report the interaction effect in the text if it’s also relevant. Perhaps something along the lines of</p>
+<blockquote class="blockquote">
+<p>“Luca recordings with code-switches received ratings that were <img src="https://latex.codecogs.com/png.latex?0.27%20%5Cpm%200.19"> points higher on average than did Luca recordings without code-switches. The opposite was true for ‘Dragan’: if he code-switched, the ratings were <img src="https://latex.codecogs.com/png.latex?0.66%20%5Cpm%200.20"> lower than when he did not. The difference between these code-switching effects is statistically significant (<img src="https://latex.codecogs.com/png.latex?0.93%20%5Cpm%200.28">, <img src="https://latex.codecogs.com/png.latex?t(151)%20=%203.4,%20p%20=%200.0009">).</p>
+</blockquote>
+<p>The interaction estimate and standard error as well as the significance test can be gleaned from the output of the model at the top of this page.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In sum, if you’re analysing a study with a factorial design and you find that you’re tripping yourself up when explaining the literal meaning of the parameter estimates, consider using a nested-effects parametrisation instead of an interaction-effect parametrisation. If you want full control, use a custom-coding scheme.</p>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<p>Berthele, Raphael. 2012. <a href="https://doi.org/10.1177/1367006911429514">The influence of code-mixing and speaker information on perception and assessment of foreign language proficiency: An experimental study</a>. <em>International Journal of Bilingualism</em> 16(4). 453–466.</p>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session info</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">session_info</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"MASS"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tidyverse"</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in system2("quarto", "-V", stdout = TRUE, env = paste0("TMPDIR=", :
+running command '"quarto"
+TMPDIR=C:/Users/VanhoveJ/AppData/Local/Temp/RtmpofNr6v/file1b5831f6a55 -V' had
+status 1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.0 (2025-04-11 ucrt)
+ os       Windows 11 x64 (build 26200)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_United Kingdom.utf8
+ ctype    English_United Kingdom.utf8
+ tz       Europe/Zurich
+ date     2026-06-03
+ pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+ quarto   NA @ C:\\Users\\VanhoveJ\\AppData\\Local\\Programs\\Quarto\\bin\\quarto.exe
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package       * version  date (UTC) lib source
+ askpass         1.2.1    2024-10-04 [1] CRAN (R 4.5.0)
+ backports       1.5.1    2026-04-03 [1] CRAN (R 4.5.3)
+ base64enc       0.1-6    2026-02-02 [1] CRAN (R 4.5.2)
+ bit             4.6.0    2025-03-06 [1] CRAN (R 4.5.0)
+ bit64           4.8.0    2026-04-21 [1] CRAN (R 4.5.3)
+ blob            1.3.0    2026-01-14 [1] CRAN (R 4.5.3)
+ broom           1.0.12   2026-01-27 [1] CRAN (R 4.5.3)
+ bslib           0.10.0   2026-01-26 [1] CRAN (R 4.5.3)
+ cachem          1.1.0    2024-05-16 [1] CRAN (R 4.5.0)
+ callr           3.7.6    2024-03-25 [1] CRAN (R 4.5.0)
+ cellranger      1.1.0    2016-07-27 [1] CRAN (R 4.5.0)
+ cli             3.6.6    2026-04-09 [1] CRAN (R 4.5.3)
+ clipr           0.8.0    2022-02-22 [1] CRAN (R 4.5.0)
+ conflicted      1.2.0    2023-02-01 [1] CRAN (R 4.5.0)
+ cpp11           0.5.4    2026-04-04 [1] CRAN (R 4.5.3)
+ crayon          1.5.3    2024-06-20 [1] CRAN (R 4.5.0)
+ curl            7.1.0    2026-04-22 [1] CRAN (R 4.5.3)
+ data.table      1.18.2.1 2026-01-27 [1] CRAN (R 4.5.2)
+ DBI             1.3.0    2026-02-25 [1] CRAN (R 4.5.3)
+ dbplyr          2.5.2    2026-02-13 [1] CRAN (R 4.5.3)
+ digest          0.6.39   2025-11-19 [1] CRAN (R 4.5.3)
+ dplyr         * 1.2.1    2026-04-03 [1] CRAN (R 4.5.3)
+ dtplyr          1.3.3    2026-02-11 [1] CRAN (R 4.5.3)
+ evaluate        1.0.5    2025-08-27 [1] CRAN (R 4.5.3)
+ fansi           1.0.7    2025-11-19 [1] CRAN (R 4.5.3)
+ farver          2.1.2    2024-05-13 [1] CRAN (R 4.5.0)
+ fastmap         1.2.0    2024-05-15 [1] CRAN (R 4.5.0)
+ fontawesome     0.5.3    2024-11-16 [1] CRAN (R 4.5.0)
+ forcats       * 1.0.1    2025-09-25 [1] CRAN (R 4.5.3)
+ fs              2.1.0    2026-04-18 [1] CRAN (R 4.5.3)
+ gargle          1.6.1    2026-01-29 [1] CRAN (R 4.5.3)
+ generics        0.1.4    2025-05-09 [1] CRAN (R 4.5.3)
+ ggplot2       * 4.0.3    2026-04-22 [1] CRAN (R 4.5.3)
+ glue            1.8.0    2024-09-30 [1] CRAN (R 4.5.0)
+ googledrive     2.1.2    2025-09-10 [1] CRAN (R 4.5.3)
+ googlesheets4   1.1.2    2025-09-03 [1] CRAN (R 4.5.3)
+ gtable          0.3.6    2024-10-25 [1] CRAN (R 4.5.0)
+ haven           2.5.5    2025-05-30 [1] CRAN (R 4.5.3)
+ highr           0.12     2026-03-06 [1] CRAN (R 4.5.3)
+ hms             1.1.4    2025-10-17 [1] CRAN (R 4.5.3)
+ htmltools       0.5.9    2025-12-04 [1] CRAN (R 4.5.3)
+ httr            1.4.8    2026-02-13 [1] CRAN (R 4.5.3)
+ ids             1.0.1    2017-05-31 [1] CRAN (R 4.5.0)
+ isoband         0.3.0    2025-12-07 [1] CRAN (R 4.5.3)
+ jquerylib       0.1.4    2021-04-26 [1] CRAN (R 4.5.0)
+ jsonlite        2.0.0    2025-03-27 [1] CRAN (R 4.5.0)
+ knitr           1.51     2025-12-20 [1] CRAN (R 4.5.3)
+ labeling        0.4.3    2023-08-29 [1] CRAN (R 4.5.0)
+ lifecycle       1.0.5    2026-01-08 [1] CRAN (R 4.5.3)
+ lubridate     * 1.9.5    2026-02-04 [1] CRAN (R 4.5.3)
+ magrittr        2.0.3    2022-03-30 [1] CRAN (R 4.5.0)
+ MASS            7.3-65   2025-02-28 [2] CRAN (R 4.5.0)
+ memoise         2.0.1    2021-11-26 [1] CRAN (R 4.5.0)
+ mime            0.13     2025-03-17 [1] CRAN (R 4.5.0)
+ modelr          0.1.11   2023-03-22 [1] CRAN (R 4.5.0)
+ openssl         2.3.2    2025-02-03 [1] CRAN (R 4.5.0)
+ pillar          1.11.1   2025-09-17 [1] CRAN (R 4.5.3)
+ pkgconfig       2.0.3    2019-09-22 [1] CRAN (R 4.5.0)
+ prettyunits     1.2.0    2023-09-24 [1] CRAN (R 4.5.0)
+ processx        3.8.6    2025-02-21 [1] CRAN (R 4.5.0)
+ progress        1.2.3    2023-12-06 [1] CRAN (R 4.5.0)
+ ps              1.9.1    2025-04-12 [1] CRAN (R 4.5.0)
+ purrr         * 1.0.4    2025-02-05 [1] CRAN (R 4.5.0)
+ R6              2.6.1    2025-02-15 [1] CRAN (R 4.5.0)
+ ragg            1.5.2    2026-03-23 [1] CRAN (R 4.5.3)
+ rappdirs        0.3.3    2021-01-31 [1] CRAN (R 4.5.0)
+ RColorBrewer    1.1-3    2022-04-03 [1] CRAN (R 4.5.0)
+ readr         * 2.2.0    2026-02-19 [1] CRAN (R 4.5.3)
+ readxl          1.4.5    2025-03-07 [1] CRAN (R 4.5.0)
+ rematch         2.0.0    2023-08-30 [1] CRAN (R 4.5.0)
+ rematch2        2.1.2    2020-05-01 [1] CRAN (R 4.5.0)
+ reprex          2.1.1    2024-07-06 [1] CRAN (R 4.5.0)
+ rlang           1.2.0    2026-04-06 [1] CRAN (R 4.5.3)
+ rmarkdown       2.31     2026-03-26 [1] CRAN (R 4.5.3)
+ rstudioapi      0.18.0   2026-01-16 [1] CRAN (R 4.5.3)
+ rvest           1.0.5    2025-08-29 [1] CRAN (R 4.5.3)
+ S7              0.2.2    2026-04-22 [1] CRAN (R 4.5.3)
+ sass            0.4.10   2025-04-11 [1] CRAN (R 4.5.0)
+ scales          1.4.0    2025-04-24 [1] CRAN (R 4.5.0)
+ selectr         0.5-1    2025-12-17 [1] CRAN (R 4.5.3)
+ stringi         1.8.7    2025-03-27 [1] CRAN (R 4.5.0)
+ stringr       * 1.6.0    2025-11-04 [1] CRAN (R 4.5.3)
+ sys             3.4.3    2024-10-04 [1] CRAN (R 4.5.0)
+ systemfonts     1.3.2    2026-03-05 [1] CRAN (R 4.5.3)
+ textshaping     1.0.5    2026-03-06 [1] CRAN (R 4.5.3)
+ tibble        * 3.2.1    2023-03-20 [1] CRAN (R 4.5.0)
+ tidyr         * 1.3.2    2025-12-19 [1] CRAN (R 4.5.3)
+ tidyselect      1.2.1    2024-03-11 [1] CRAN (R 4.5.0)
+ tidyverse     * 2.0.0    2023-02-22 [1] CRAN (R 4.5.3)
+ timechange      0.4.0    2026-01-29 [1] CRAN (R 4.5.3)
+ tinytex         0.59     2026-03-28 [1] CRAN (R 4.5.3)
+ tzdb            0.5.0    2025-03-15 [1] CRAN (R 4.5.0)
+ utf8            1.2.6    2025-06-08 [1] CRAN (R 4.5.3)
+ uuid            1.2-2    2026-01-23 [1] CRAN (R 4.5.2)
+ vctrs           0.7.3    2026-04-11 [1] CRAN (R 4.5.3)
+ viridisLite     0.4.3    2026-02-04 [1] CRAN (R 4.5.3)
+ vroom           1.7.1    2026-03-31 [1] CRAN (R 4.5.3)
+ withr           3.0.2    2024-10-28 [1] CRAN (R 4.5.0)
+ xfun            0.52     2025-04-02 [1] CRAN (R 4.5.0)
+ xml2            1.3.8    2025-03-14 [1] CRAN (R 4.5.0)
+ yaml            2.3.12   2025-12-10 [1] CRAN (R 4.5.3)
+
+ [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.5
+ [2] C:/Program Files/R/R-4.5.0/library
+ * ── Packages attached to the search path.
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Here I’m ignoring the rather coarse nature of the data. If you want to go the whole hog, you can use bootstrapping to verify the standard errors, but this would detract from the blog post’s goal.↩︎</p></li>
+<li id="fn2"><p>Other choices are defensible, too. In fact, if this technique is new to you, I suggest you try to adapt the code snippets so that the intercept represents the grand mean (the average of all cell averages) or just Luca’s code-switch-free recordings.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>contrast coding</category>
+  <category>multiple regression</category>
+  <category>R</category>
+  <category>tutorial</category>
+  <guid>https://janhove.github.io/posts/2026-06-03-nested-effects/</guid>
+  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>A quick introduction to isotonic regression</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -23114,370 +23828,6 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>contrast coding</category>
   <guid>https://janhove.github.io/posts/2018-12-20-contrasts-interaction/</guid>
   <pubDate>Thu, 20 Dec 2018 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Introducing cannonball - Tools for teaching statistics</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2018-09-26-cannonball/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I’ve put my first R package on GitHub! It’s called <code>cannonball</code> and contains a couple of functions that I use for teaching; perhaps others will follow. # Installation Make sure you have the <code>devtools</code> package:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"devtools"</span>)</span></code></pre></div></div>
-</div>
-<p>Then load it and install <code>cannonball</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(devtools)</span>
-<span id="cb2-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">install_github</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"janhove/cannonball"</span>)</span></code></pre></div></div>
-</div>
-<p>To use it, load the package as per usual:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(cannonball)</span></code></pre></div></div>
-</div>
-<section id="overview-of-the-functions" class="level2">
-<h2 class="anchored" data-anchor-id="overview-of-the-functions">Overview of the functions</h2>
-<section id="plot_r-draw-scatterplots-with-the-same-correlation-coefficient" class="level3">
-<h3 class="anchored" data-anchor-id="plot_r-draw-scatterplots-with-the-same-correlation-coefficient">plot_r(): Draw scatterplots with the same correlation coefficient</h3>
-<p>People seem to like this function from my blog post <a href="../2016-11-21-what-correlations-look-like"><em>What data patterns can lie behind a correlation coefficient?</em></a>. Specify the number of observations and a desired sample Pearson correlation coefficient, and out come 16 rather different looking scatterplots conforming to these criteria:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">plot_r</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">r =</span> <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.6</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">42</span>)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2018-09-26-cannonball/index_files/figure-html/unnamed-chunk-4-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>For more details, type in <code>?plot_r</code> at the R prompt.</p>
-</section>
-<section id="clustered_data-simulate-data-from-a-cluster-randomised-experiment" class="level3">
-<h3 class="anchored" data-anchor-id="clustered_data-simulate-data-from-a-cluster-randomised-experiment">clustered_data(): Simulate data from a cluster-randomised experiment</h3>
-<p>Cluster-randomised experiments are experiments in which whole groups of participants (e.g., entire classes) are necessarily assigned to the same condition. If the data from such experiments are analysed as though the participants were assigned to the conditions <em>individually</em> (e.g., by running a <em>t</em>-test on the individual data points), the false positive rate can go <a href="../2015-09-17-cluster-randomised-experiments">through the roof</a>. This function simulates data from such an experiment and allows you to specify unequal cluster sizes (via the <code>parts_per_class</code> parameter):</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Generate data</span></span>
-<span id="cb5-2">d <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">clustered_data</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">ICC =</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.15</span>, <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># intra-class correlation coefficient</span></span>
-<span id="cb5-3">                    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">n_per_class =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">28</span>,   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># sizes of the control clusters</span></span>
-<span id="cb5-4">                                    <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">22</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">16</span>), <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># sizes of the intervention clusters</span></span>
-<span id="cb5-5">                    <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">effect =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>) <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># population effect size</span></span>
-<span id="cb5-6"></span>
-<span id="cb5-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Plot</span></span>
-<span id="cb5-8"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(ggplot2)</span>
-<span id="cb5-9"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> d,</span>
-<span id="cb5-10">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> class,</span>
-<span id="cb5-11">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> outcome,</span>
-<span id="cb5-12">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fill =</span> condition)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb5-13">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_boxplot</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">outlier.shape =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">NA</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb5-14">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">shape =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>,</span>
-<span id="cb5-15">             <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">position_jitter</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span></code></pre></div></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2018-09-26-cannonball/index_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>I mostly use this function in a simulation to illustrate the effects of clustering on p-values. With a null effect, you’d expect only 5% of the p-values to be lower than 0.05. Let’s see what happens when you analyse the individual data from a cluster-randomised experiment using a t-test:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">p_vals <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">replicate</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5000</span>, {</span>
-<span id="cb6-2">  d <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">clustered_data</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">ICC =</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.15</span>,</span>
-<span id="cb6-3">                      <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">n_per_class =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">13</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">28</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">22</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">18</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">16</span>),</span>
-<span id="cb6-4">                      <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">effect =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb6-5">  p <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">t.test</span>(outcome <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> condition, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> d)<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>p.value</span>
-<span id="cb6-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">return</span>(p)</span>
-<span id="cb6-7">})</span>
-<span id="cb6-8"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">hist</span>(p_vals)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2018-09-26-cannonball/index_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(p_vals <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.05</span>)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.3208</code></pre>
-</div>
-</div>
-<p>The false positive rate is now through the roof (32%).</p>
-</section>
-<section id="graphically-checking-model-assumptions" class="level3">
-<h3 class="anchored" data-anchor-id="graphically-checking-model-assumptions">Graphically checking model assumptions</h3>
-<p>See the full-fledged <a href="../../tutorials/assumptions.html">tutorial</a> for these functions.</p>
-</section>
-</section>
-<section id="why-cannonball" class="level2">
-<h2 class="anchored" data-anchor-id="why-cannonball">Why <code>cannonball</code>?</h2>
-<p>Glad you asked! Julian ‘Cannonball’ Adderley is one of my favourite alto saxophone players (check out his solos on <a href="https://www.youtube.com/watch?v=u37RF5xKNq8"><em>Autumn Leaves</em></a> (from around 2’03”; Somethin’ Else) or <a href="https://www.youtube.com/watch?v=RPfFhfSuUZ4"><em>Freddie Freeloader</em></a> (6’22”; Kind of Blue)!) and he was a consummate jazz educator to boot.</p>
-</section>
-<section id="software-versions" class="level2">
-<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
-<p>Please note that I reran the code on this page on August 6, 2023.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">devtools<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">session_info</span>()</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>─ Session info ───────────────────────────────────────────────────────────────
- setting  value
- version  R version 4.5.1 (2025-06-13)
- os       Ubuntu 22.04.5 LTS
- system   x86_64, linux-gnu
- ui       X11
- language en_US
- collate  en_US.UTF-8
- ctype    en_US.UTF-8
- tz       Europe/Zurich
- date     2025-09-24
- pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
-
-─ Packages ───────────────────────────────────────────────────────────────────
- package      * version date (UTC) lib source
- cachem         1.1.0   2024-05-16 [1] CRAN (R 4.5.1)
- callr          3.7.6   2024-03-25 [1] CRAN (R 4.5.1)
- cannonball   * 2025-02 2025-07-03 [1] Github (janhove/cannonball@627a15e)
- cli            3.6.5   2025-04-23 [1] CRAN (R 4.5.1)
- crayon         1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
- devtools       2.4.5   2022-10-11 [1] CRAN (R 4.5.1)
- digest         0.6.37  2024-08-19 [1] CRAN (R 4.5.1)
- dplyr          1.1.4   2023-11-17 [1] CRAN (R 4.5.1)
- ellipsis       0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
- evaluate       1.0.4   2025-06-18 [1] CRAN (R 4.5.1)
- farver         2.1.2   2024-05-13 [1] CRAN (R 4.5.1)
- fastmap        1.2.0   2024-05-15 [1] CRAN (R 4.5.1)
- fs             1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
- generics       0.1.4   2025-05-09 [1] CRAN (R 4.5.1)
- ggplot2      * 3.5.2   2025-04-09 [1] CRAN (R 4.5.1)
- glue           1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
- gtable         0.3.6   2024-10-25 [1] CRAN (R 4.5.1)
- htmltools      0.5.8.1 2024-04-04 [1] CRAN (R 4.5.1)
- htmlwidgets    1.6.4   2023-12-06 [1] CRAN (R 4.5.1)
- httpuv         1.6.16  2025-04-16 [1] CRAN (R 4.5.1)
- jsonlite       2.0.0   2025-03-27 [1] CRAN (R 4.5.1)
- knitr          1.50    2025-03-16 [1] CRAN (R 4.5.1)
- labeling       0.4.3   2023-08-29 [1] CRAN (R 4.5.1)
- later          1.4.2   2025-04-08 [1] CRAN (R 4.5.1)
- lifecycle      1.0.4   2023-11-07 [1] CRAN (R 4.5.1)
- magrittr       2.0.3   2022-03-30 [1] CRAN (R 4.5.1)
- memoise        2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
- mime           0.10    2021-02-13 [2] CRAN (R 4.0.2)
- miniUI         0.1.2   2025-04-17 [1] CRAN (R 4.5.1)
- pillar         1.10.2  2025-04-05 [1] CRAN (R 4.5.1)
- pkgbuild       1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
- pkgconfig      2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
- pkgload        1.4.0   2024-06-28 [1] CRAN (R 4.5.1)
- prettyunits    1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
- processx       3.8.6   2025-02-21 [1] CRAN (R 4.5.1)
- profvis        0.4.0   2024-09-20 [1] CRAN (R 4.5.1)
- promises       1.3.3   2025-05-29 [1] CRAN (R 4.5.1)
- ps             1.9.1   2025-04-12 [1] CRAN (R 4.5.1)
- purrr          1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
- R6             2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
- RColorBrewer   1.1-3   2022-04-03 [1] CRAN (R 4.5.1)
- Rcpp           1.0.14  2025-01-12 [1] CRAN (R 4.5.1)
- remotes        2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
- rlang          1.1.6   2025-04-11 [1] CRAN (R 4.5.1)
- rmarkdown      2.29    2024-11-04 [1] CRAN (R 4.5.1)
- rstudioapi     0.17.1  2024-10-22 [1] CRAN (R 4.5.1)
- scales         1.4.0   2025-04-24 [1] CRAN (R 4.5.1)
- sessioninfo    1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
- shiny          1.10.0  2024-12-14 [1] CRAN (R 4.5.1)
- tibble         3.3.0   2025-06-08 [1] CRAN (R 4.5.1)
- tidyselect     1.2.1   2024-03-11 [1] CRAN (R 4.5.1)
- urlchecker     1.0.1   2021-11-30 [1] CRAN (R 4.5.1)
- usethis        3.1.0   2024-11-26 [1] CRAN (R 4.5.1)
- vctrs          0.6.5   2023-12-01 [1] CRAN (R 4.5.1)
- withr          3.0.2   2024-10-28 [1] CRAN (R 4.5.1)
- xfun           0.52    2025-04-02 [1] CRAN (R 4.5.1)
- xtable         1.8-4   2019-04-21 [1] CRAN (R 4.5.1)
- yaml           2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
-
- [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
- [2] /usr/local/lib/R/site-library
- [3] /usr/lib/R/site-library
- [4] /usr/lib/R/library
-
-──────────────────────────────────────────────────────────────────────────────</code></pre>
-</div>
-</div>
-
-
-</section>
-
- ]]></description>
-  <category>cannonball</category>
-  <category>R</category>
-  <category>teaching materials</category>
-  <guid>https://janhove.github.io/posts/2018-09-26-cannonball/</guid>
-  <pubDate>Wed, 26 Sep 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
