@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/index.html",
+    "listing": "/archive.html",
     "items": [
       "/posts/2026-06-03-nested-effects/index.html",
       "/posts/2026-05-29-isotonic-regression/index.html",
@@ -42,8 +42,8 @@
       "/posts/2018-06-27-phrasing-research-questions/index.html",
       "/posts/2018-04-25-graphical-model-checking/index.html",
       "/posts/2018-02-12-consider-generalisability/index.html",
-      "/posts/2017-11-20-more-informative-replications/index.html",
       "/posts/2017-10-24-increasing-power-precision/index.html",
+      "/posts/2017-11-20-more-informative-replications/index.html",
       "/posts/2017-09-19-peeking-confidence-intervals/index.html",
       "/posts/2017-09-14-comparable-stimulus-sets/index.html",
       "/posts/2017-07-14-OtherRoadsToPower/index.html",
@@ -96,7 +96,7 @@
     ]
   },
   {
-    "listing": "/archive.html",
+    "listing": "/index.html",
     "items": [
       "/posts/2026-06-03-nested-effects/index.html",
       "/posts/2026-05-29-isotonic-regression/index.html",
@@ -138,8 +138,8 @@
       "/posts/2018-06-27-phrasing-research-questions/index.html",
       "/posts/2018-04-25-graphical-model-checking/index.html",
       "/posts/2018-02-12-consider-generalisability/index.html",
-      "/posts/2017-11-20-more-informative-replications/index.html",
       "/posts/2017-10-24-increasing-power-precision/index.html",
+      "/posts/2017-11-20-more-informative-replications/index.html",
       "/posts/2017-09-19-peeking-confidence-intervals/index.html",
       "/posts/2017-09-14-comparable-stimulus-sets/index.html",
       "/posts/2017-07-14-OtherRoadsToPower/index.html",
