@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2026-07-07">
+
+<title>Kernel-based regression using distribution-valued inputs – Jan Vanhove</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-703c9532075cde06ab04a16b69a0e953.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="..">
+<script src="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/shinylive.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#concept-1-kernel-methods" id="toc-concept-1-kernel-methods" class="nav-link active" data-scroll-target="#concept-1-kernel-methods">Concept 1: Kernel methods</a></li>
+  <li><a href="#concept-2-distributions-as-inputs" id="toc-concept-2-distributions-as-inputs" class="nav-link" data-scroll-target="#concept-2-distributions-as-inputs">Concept 2: Distributions as inputs</a></li>
+  <li><a href="#concept-3-distances-between-distributions" id="toc-concept-3-distances-between-distributions" class="nav-link" data-scroll-target="#concept-3-distances-between-distributions">Concept 3: Distances between distributions</a></li>
+  <li><a href="#now-what" id="toc-now-what" class="nav-link" data-scroll-target="#now-what">Now what?</a>
+  <ul class="collapse">
+  <li><a href="#lexical-frequency-profiles-for-quality-predictions" id="toc-lexical-frequency-profiles-for-quality-predictions" class="nav-link" data-scroll-target="#lexical-frequency-profiles-for-quality-predictions">Lexical frequency profiles for quality predictions</a></li>
+  <li><a href="#comparisons-of-vowel-distributions" id="toc-comparisons-of-vowel-distributions" class="nav-link" data-scroll-target="#comparisons-of-vowel-distributions">Comparisons of vowel distributions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Kernel-based regression using distribution-valued inputs</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 7, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="concept-1-kernel-methods" class="level1">
+<h1>Concept 1: Kernel methods</h1>
+<p>Certain statistical tools, including <strong>Gaussian process regression</strong> (GPR; see below) and <strong>support vector machines</strong> (SVM), don’t require the predictors <span class="math inline">\(x_1, \dots, x_n\)</span> to be represented explicitly (for instance, as numerical vectors) and rely only on a notion of the pairwise <strong>similarities</strong> between the predictors. This similarity is expressed by means of a <strong>kernel</strong> <span class="math inline">\(k\)</span> that takes in two predictors and outputs a number expressing the similarity between them. There exists a whole host of different functions that may serve as kernels.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Gaussian processes and kernels
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The basic idea behind Gaussian process regression is that you model the outputs (i.e., the dependent variables) <span class="math inline">\(Y_1, \dots, Y_n\)</span> as a realisation of an <span class="math inline">\(n\)</span>-variate Gaussian (= Normal) distribution. The kernel matrix <span class="math inline">\(\boldsymbol{K}\)</span>, which contains the pairwise kernel values <span class="math inline">\(k(x_i, x_j), 1 \leq i, j \leq n\)</span>, serves as the covariance matrix of this <span class="math inline">\(n\)</span>-variate Gaussian distribution.</p>
+<p>The illustrations below shows some possible (a priori) realisations of <span class="math inline">\(\boldsymbol{Y} = (Y_1, \dots, Y_n)\)</span> for different choices of kernel:</p>
+<ul>
+<li>The <strong>linear kernel</strong> essentially enables the data to be modelled in terms of a linear regression model.</li>
+<li>The <strong>periodic kernel</strong> is able to model sine waves and the like.</li>
+<li>The <strong>Gaussian radial basis function</strong> retrieves smoothly varying functions.</li>
+<li>The <strong>Matérn(1/2) kernel</strong> can fit jaggedly varying functions.</li>
+<li>The <strong>Matérn(3/2) kernel</strong> can fit somewhat more smoothly varying functions.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting function</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x)), <span class="at">Sigma =</span> K)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[<span class="dv">1</span>, ], <span class="at">ylim =</span> <span class="fu">range</span>(Y), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> main)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[i, ], <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">col =</span> cols[i])</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictor data and distances between them</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.2</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"-"</span>) <span class="sc">|&gt;</span> <span class="fu">abs</span>()</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear kernel</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>K_linear <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"*"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear, <span class="at">main =</span> <span class="st">"Linear kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Periodic kernel</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>K_periodic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sin</span>(D)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_periodic, <span class="at">main =</span> <span class="st">"Periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RBF kernel</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>K_rbf <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_rbf, <span class="at">main =</span> <span class="st">"Gaussian RBF kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-3.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Matérn 1/2 kernel</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>K_matern12 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_matern12, <span class="at">main =</span> <span class="st">"Matérn(1/2) kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-4.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Matérn 3/2 kernel</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>K_matern32 <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">3</span>) <span class="sc">*</span> D) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sqrt</span>(<span class="dv">3</span>)<span class="sc">*</span>D)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_matern32, <span class="at">main =</span> <span class="st">"Matérn(3/2) kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-5.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Kernels can be combined with each other, for instance through summation or pointwise multiplication.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">+</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear + periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">+</span> K_matern12, <span class="at">main =</span> <span class="st">"Linear + Matérn kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">*</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear * periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-3.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">*</span> K_matern12, <span class="at">main =</span> <span class="st">"Linear * Matérn kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-2-4.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>There are a lot of possibilities to define a suitable kernel <span class="math inline">\(k\)</span>; see for instance <a href="anhosu.com/post/kernels-r/">https://anhosu.com/post/kernels-r/</a>. The kernels that will be most relevant to us are those that depend only on the pairwise <strong>distances</strong> <span class="math inline">\(d(x_i, x_j)\)</span> between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, <span class="math inline">\(1 \leq i, j \leq n\)</span>. Such kernels are known as <strong>stationary kernels</strong>.</p>
+<p>In the Shiny applet below, the inputs <span class="math inline">\(x_1, \dots, x_n\)</span> are real numbers. The usual (Euclidean) pairwise distance between them is <span class="math display">\[d(x_i, x_j) = |x_i - x_j|,\]</span> for <span class="math inline">\(1 \leq i, j \leq n\)</span>. This distance affords analysts several possibilities to build a stationary kernel.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Here are a few options:</p>
+<ol type="1">
+<li><p>The <strong>Gaussian radial basis function</strong> (RBF), also called the <strong>squared exponential</strong>: <span class="math display">\[k(x_i, x_j) = s^2\exp\left(-\frac{d^2(x_i, x_j)}{2t^2}\right)\]</span> with hyperparameter <span class="math inline">\(s^2, t\)</span>.</p></li>
+<li><p>The <strong>power exponential</strong>, which is a generalisation of the RBF: <span class="math display">\[k(x_i, x_j) =
+s^2\exp\left(-\left(\frac{d^2(x_i, x_j)}{2t^2}\right)^{\kappa}\right)\]</span> with an additional hyperparameter <span class="math inline">\(\kappa\)</span>.</p></li>
+<li><p>The Matérn kernel, here with smoothness parameter <span class="math inline">\(\nu = 3/2\)</span>: <span class="math display">\[k(x_i, x_j) =
+s^2\left(1 + \frac{\sqrt{3}d(x_i, x_j)}{2t}\right)
+\exp\left(-\frac{\sqrt{3}d(x_i, x_j)}{2t}\right).\]</span></p></li>
+</ol>
+<p>Not all notions of distance <span class="math inline">\(d(x_i, x_j)\)</span> result in useful kernels, and not all functions that depend only on <span class="math inline">\(d(x_i, x_j)\)</span> can serve as kernels. But when working with the Euclidean distance, the functions above satisfy all requirements, as do combinations (e.g., conical combinations and pointwise products) of them.</p>
+<p>Let’s play around with the app a bit…</p>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 1800
+
+library(shiny)
+library(bslib)
+library(corrplot)
+
+# Stationary kernel functions --------------------------------------------------
+rbf &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D^2 / (2 * length_scale^2))
+}
+matern12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D / (2 * length_scale))
+}
+matern32 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(3) * D / (2 * length_scale)
+  scaling_factor * (1 + r) * exp(-r)
+}
+matern52 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(5) * D / (2 * length_scale)
+  scaling_factor * (1 + r + r^2 / 3) * exp(-r)
+}
+
+kernel_list &lt;- list(
+  "Squared exponential" = rbf,
+  "Matérn 1/2"          = matern12,
+  "Matérn 3/2"          = matern32,
+  "Matérn 5/2"          = matern52
+)
+
+# GP conditional distribution --------------------------------------------------
+cond_dist &lt;- function(x, x0, y0, noise_var = 1e-6, kernel, ...) {
+  mean_y &lt;- mean(y0)
+  y0 &lt;- y0 - mean_y
+  n  &lt;- length(x)
+  n0 &lt;- length(x0)
+  D  &lt;- outer(c(x, x0), c(x, x0), "-") |&gt; abs()
+  K  &lt;- kernel(D, ...)
+  K11 &lt;- K[seq_len(n), seq_len(n)]
+  K12 &lt;- K[seq_len(n), (n + 1):(n + n0)]
+  K22 &lt;- K[(n + 1):(n + n0), (n + 1):(n + n0)] + noise_var * diag(n0)
+  L   &lt;- tryCatch(chol(K22), error = function(e) NULL)
+  if (is.null(L)) return(NULL)
+  alpha &lt;- backsolve(L, forwardsolve(t(L), y0))
+  mu    &lt;- as.vector(K12 %*% alpha)
+  v     &lt;- forwardsolve(t(L), t(K12))
+  Sigma &lt;- K11 - t(v) %*% v
+  list(y = mu + mean_y, se = pmax(sqrt(diag(Sigma)), 0))
+}
+
+# Hyperparameter optimisation --------------------------------------------------
+# Just BFGS without gradients for now.
+find_gpr_hyperparameters &lt;- function(x0, y0, kernel, runs = 10) {
+  n &lt;- length(y0)
+  # Centre y at 0
+  y_train &lt;- y0 - mean(y0)
+  D &lt;- outer(x0, x0, "-") |&gt; abs()
+  # Obtain median distance between elements as useful length-scale init
+  med_d &lt;- median(D[upper.tri(D)])
+
+  nll &lt;- function(log_params) {
+    va      &lt;- exp(log_params[1])
+    ls      &lt;- exp(log_params[2])
+    lambda2 &lt;- exp(log_params[3])
+    K &lt;- kernel(D, length_scale = ls, scaling_factor = va) + lambda2 * diag(n)
+    U &lt;- tryCatch(chol(K), error = function(e) NULL)
+    if (is.null(U)) return(Inf)
+    a &lt;- backsolve(U, backsolve(U, y_train, transpose = TRUE))
+    drop(0.5 * crossprod(y_train, a) + sum(log(diag(U))) + n / 2 * log(2 * pi))
+  }
+
+  best &lt;- NULL
+  for (i in seq_len(runs)) {
+    init &lt;- c(
+      scaling_factor     = runif(1, log(0.1), log(10)),
+      length_scale = runif(1, log(med_d * 0.1), log(med_d * 10)),
+      lambda2      = runif(1, -10, -2)
+    )
+    fit &lt;- tryCatch(
+      optim(init, nll, method = "BFGS"),
+      error = function(e) NULL
+    )
+    if (!is.null(fit) &amp;&amp; (is.null(best) || fit$value &lt; best$value)) {
+      best &lt;- fit
+    }
+  }
+
+  if (is.null(best)) return(NULL)
+  list(
+    scaling_factor     = exp(best$par[1]),
+    length_scale = exp(best$par[2]),
+    lambda2      = exp(best$par[3]),
+    nll          = best$value
+  )
+}
+
+# Preset functions -------------------------------------------------------------
+preset_fns &lt;- list(
+  "smooth function"  = "x*sin(x)^2",
+  "jagged function"  = "-0.05*x^2 + sin(x) + abs(x %% 1 - 1/2)",
+  "Custom…"             = NULL
+)
+
+# UI ---------------------------------------------------------------------------
+ui &lt;- page_sidebar(
+  title = "Gaussian process regression with a stationary kernel",
+  theme = bs_theme(bootswatch = "yeti"),
+
+  sidebar = sidebar(
+    width = 310,
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Data-generating mechanism",
+        selectInput("preset_fn", "True function:",
+                    choices = names(preset_fns), 
+                    selected = names(preset_fns)[1]),
+        conditionalPanel(
+          "input.preset_fn === 'Custom…'",
+          textInput("custom_fn", "f(x) =", value = "sin(x)",
+                    placeholder = "e.g., sin(x) + 0.5*x")
+        ),
+        sliderInput("x_range", "x range:",
+                    min = -10, max = 10, value = c(-10, 10), step = 0.5),
+        numericInput("noise", "Observation noise σ²:",
+                     value = 0.5, min = 0, step = 0.1)
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Observations",
+        radioButtons("x0_mode", "Specify points:",
+                     choices = c("Random" = "random", "Manual" = "manual"),
+                     inline = TRUE,
+                     selected = "manual"),
+        conditionalPanel(
+          "input.x0_mode === 'random'",
+          sliderInput("n_pts", "Number of points:", 1, 50, 25, 
+                      step = 1, ticks = FALSE),
+          actionButton("resample", "Resample", class = "btn-primary w-100",
+                       icon  = icon("dice"))
+        ),
+        conditionalPanel(
+          "input.x0_mode === 'manual'",
+          textInput("manual_x0", "x positions (comma-separated):", 
+                    value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 
+                              1, 2, 3, 4, 5, 6, 7, 8, 9")
+        )
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Kernel",
+        selectInput("kernel", "Kernel function", choices = names(kernel_list)),
+        uiOutput("hp_inputs"),
+        hr(),
+        tags$p("Optimise hyperparameters by maximising the 
+               log marginal likelihood."),
+        sliderInput("opt_runs", "Restarts:",
+                    min = 5, max = 50, value = 30, step = 1, ticks = FALSE),
+        actionButton("optimise", "Optimise hyperparameters",
+                     class = "btn-primary w-100",
+                     icon  = icon("wand-magic-sparkles")),
+        uiOutput("opt_status")
+      )
+    )
+  ),
+
+  layout_columns(
+    col_widths = 12,
+    card(
+      card_header("GP posterior"),
+      plotOutput("gp_plot", height = "420px")
+    ),
+    card(
+      card_header("Kernel covariance  k(x, x₀)"),
+      plotOutput("kernel_plot", height = "200px")
+    ),
+    card(
+      card_header("Correlation matrix"),
+      plotOutput("corr_plot")
+    )
+  ),
+)
+
+# Server -----------------------------------------------------------------------
+server &lt;- function(input, output, session) {
+
+  opt_msg     &lt;- reactiveVal(NULL)
+  opt_trigger &lt;- reactiveVal(0)
+  opt_params  &lt;- reactiveVal(list(length_scale = 1, scaling_factor = 5, 
+                                  log_noise_var = -0.3))
+
+  # Show hyperparameter inputs
+  output$hp_inputs &lt;- renderUI({
+    p &lt;- opt_params()
+    tagList(
+      numericInput("length_scale", "Length scale ℓ",
+                   value = round(p$length_scale, 4), min = 0.01, step = 0.1),
+      numericInput("scaling_factor", "Scaling factor s²",
+                   value = round(p$scaling_factor, 4), min = 0.01, step = 0.1),
+      numericInput("log_noise_var", "Noise variance η² (log-10 scale)",
+                   value = round(p$log_noise_var, 2), step = 0.5)
+    )
+  })
+
+  # Parse target function
+  f &lt;- reactive({
+    expr_str &lt;- if (input$preset_fn == "Custom…") input$custom_fn
+                else preset_fns[[input$preset_fn]]
+    tryCatch(
+      eval(parse(text = paste0("function(x) ", expr_str))),
+      error = function(e) NULL
+    )
+  })
+
+  # Observation x locations
+  x0_vals &lt;- reactive({
+    input$resample
+    if (input$x0_mode == "random") {
+      set.seed(input$resample)
+      sort(runif(input$n_pts, input$x_range[1], input$x_range[2]))
+    } else {
+      vals &lt;- suppressWarnings(
+        as.numeric(trimws(strsplit(input$manual_x0, ",")[[1]])))
+      sort(vals[!is.na(vals)])
+    }
+  })
+
+  # Observations
+  obs &lt;- reactive({
+    fn &lt;- f()
+    if (is.null(fn)) return(NULL)
+    x0 &lt;- x0_vals()
+    y0 &lt;- fn(x0) + rnorm(length(x0), sd = sqrt(input$noise))
+    list(x0 = x0, y0 = y0)
+  })
+
+  # Prediction grid
+  x_grid &lt;- reactive({
+    seq(input$x_range[1], input$x_range[2], length.out = 201)
+  })
+
+  # Step 1: show spinner and fire trigger
+  observeEvent(input$optimise, {
+    xy0 &lt;- obs()
+    if (is.null(xy0) || length(xy0$x0) &lt; 3) {
+      opt_msg(tags$span("⚠ Need at least 3 observations to optimise."))
+      return()
+    }
+    opt_trigger(isolate(opt_trigger()) + 1)
+  })
+
+  # Step 2: run optimisation in a new flush
+  observeEvent(opt_trigger(), {
+    req(opt_trigger() &gt; 0)
+    xy0  &lt;- isolate(obs())
+    kern &lt;- kernel_list[[isolate(input$kernel)]]
+
+    result &lt;- tryCatch(
+      find_gpr_hyperparameters(xy0$x0, xy0$y0, kernel = kern,
+                               runs = isolate(input$opt_runs)),
+      error = function(e) NULL
+    )
+
+    if (is.null(result)) {
+      opt_msg(tags$span("✗ Optimisation failed. Try different settings."))
+      return()
+    }
+
+    opt_params(list(
+      length_scale = result$length_scale,
+      scaling_factor     = result$scaling_factor,
+      log_noise_var   = max(log10(result$lambda2), -30)
+    ))
+
+    opt_msg(tags$span(
+      style = "color:#27ae60; font-size:0.82rem;",
+      sprintf("✓ Done.  ℓ = %.2f,  s² = %.2f,  η² = 10^%.1f  (NLL = %.1f)",
+              result$length_scale, result$scaling_factor,
+              log10(result$lambda2), result$nll)
+    ))
+  }, ignoreInit = TRUE)
+
+  output$opt_status &lt;- renderUI({ opt_msg() })
+
+  # Active hyperparameters: opt_params when set, else input values
+  hp &lt;- reactive({
+    p  &lt;- opt_params()
+    ls &lt;- if (!is.null(input$length_scale)) input$length_scale 
+                                       else p$length_scale
+    sf &lt;- if (!is.null(input$scaling_factor)) input$scaling_factor 
+                                         else p$scaling_factor
+    nv &lt;- if (!is.null(input$log_noise_var)) input$log_noise_var  
+                                        else p$log_noise_var
+    list(length_scale = ls, scaling_factor = sf, log_noise_var = nv)
+  })
+
+  # GP fit
+  gp_fit &lt;- reactive({
+    fn  &lt;- f()
+    if (is.null(fn)) return(NULL)
+    xy0  &lt;- obs()
+    kern &lt;- kernel_list[[input$kernel]]
+    p    &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    fit  &lt;- cond_dist(x_grid(), xy0$x0, xy0$y0,
+                      noise_var = 10^p$log_noise_var,
+                      kernel = kern,
+                      length_scale = p$length_scale,
+                      scaling_factor = p$scaling_factor)
+    list(fit = fit, x0 = xy0$x0, y0 = xy0$y0)
+  })
+
+  # GP posterior plot
+  output$gp_plot &lt;- renderPlot({
+    fn  &lt;- f()
+    obj &lt;- gp_fit()
+    fit &lt;- obj$fit
+    x0  &lt;- obj$x0
+    y0  &lt;- obj$y0
+    x   &lt;- x_grid()
+
+    par(mar = c(4, 4, 1, 1), bg = "white", family = "sans")
+    y_fn &lt;- if (!is.null(fn)) fn(x) else rep(0, length(x))
+
+    ylim_base &lt;- if (!is.null(fit)) {
+      range(c(fit$y + 2.5 * fit$se, fit$y - 2.5 * fit$se, y_fn), na.rm = TRUE)
+    } else {
+      range(y_fn, na.rm = TRUE)
+    }
+    ylim &lt;- ylim_base + diff(ylim_base) * c(-0.05, 0.05)
+
+    plot(NULL, xlim = input$x_range, ylim = ylim,
+         xlab = "x", ylab = "y", bty = "l", las = 1)
+    grid(col = "grey90", lty = 1)
+
+    if (!is.null(fit)) {
+      ord &lt;- order(x)
+      px  &lt;- x[ord]
+      pmu &lt;- fit$y[ord]
+      pse &lt;- fit$se[ord]
+      
+      valid &lt;- is.finite(pmu) &amp; is.finite(pse)
+      px  &lt;- px[valid]
+      pmu &lt;- pmu[valid]
+      pse &lt;- pse[valid]
+      
+      poly_x &lt;- c(px, rev(px))
+      poly_y &lt;- c(pmu + 2 * pse, rev(pmu - 2 * pse))
+      polygon(poly_x, poly_y, col = adjustcolor("#2c7bb6", 0.15), border = NA)
+      lines(px, pmu, col = "#2c7bb6", lwd = 2.5, lty = 1)
+    }
+    if (!is.null(fn)) {
+      lines(x, y_fn, col = "#d7191c", lwd = 1.5, lty = 2)
+    }
+    points(x0, y0, pch = 21, bg = "white", col = "#333", cex = 1.6, lwd = 2)
+    legend("topright", bty = "n", cex = 0.85,
+           legend = c("Posterior mean", "±2 SE", "True function", "Observations"),
+           lty    = c(1, NA, 2, NA),
+           pch    = c(NA, 15, NA, 21),
+           lwd    = c(2.5, NA, 1.5, NA),
+           col    = c("#2c7bb6", adjustcolor("#2c7bb6", 0.3), "darkred", "#333"),
+           pt.cex = c(NA, 2, NA, 1.6))
+  })
+
+  # Kernel covariance plot -----------------------------------------------------
+  output$kernel_plot &lt;- renderPlot({
+    kern  &lt;- kernel_list[[input$kernel]]
+    p     &lt;- hp()
+    req(p$length_scale, p$scaling_factor)
+    d_seq &lt;- seq(0, max(abs(input$x_range)), length.out = 300)
+    k_val &lt;- kern(d_seq,
+                  length_scale = p$length_scale,
+                  scaling_factor     = p$scaling_factor)
+
+    par(mar = c(4, 4, 0.5, 1), bg = "white", family = "sans")
+    plot(d_seq, k_val, type = "l", col = "#2c7bb6", lwd = 2,
+         xlab = "|x - x₀|", ylab = "k(x, x₀)", bty = "l", las = 1,
+         ylim = c(0, p$scaling_factor * 1.05))
+    grid(col = "grey90", lty = 1)
+    abline(h = p$scaling_factor, lty = 3, col = "grey60")
+  })
+  
+  # Implied correlation matrix -------------------------------------------------
+  output$corr_plot &lt;- renderPlot({
+    x0 &lt;- obs()$x0 |&gt; sort()
+    kern &lt;- kernel_list[[input$kernel]]
+    p &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    D &lt;- outer(x0, x0, "-") |&gt; abs()
+    M &lt;- kern(D, 
+              length_scale = p$length_scale, scaling_factor = p$scaling_factor)
+    cor_mat &lt;- cov2cor(M)
+    corrplot(cor_mat,
+         method = "color",
+         col = colorRampPalette(c("red", "white", "blue"))(200),
+         tl.col = "black",   
+         tl.cex = 0.8,       
+         addCoef.col = NULL,
+         cl.lim = c(-1, 1))
+  }, height = 380, width = 380)
+}
+
+shinyApp(ui, server)</code></pre>
+</section>
+<section id="concept-2-distributions-as-inputs" class="level1">
+<h1>Concept 2: Distributions as inputs</h1>
+<p>For common methods such as linear regression or random forests, the inputs are represented as numeric vectors (i.e., vectors in <span class="math inline">\(\mathbb{R}^d\)</span>). However, not all data structures naturally occur as vectors:</p>
+<div class="columns">
+<div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="caffeine.svg" class="img-fluid figure-img"></p>
+<figcaption>Chemists may prefer to work with graphs representing molecular structures.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="wordembeddings.png" class="img-fluid figure-img"></p>
+<figcaption>Word meanings can be represented as vectors in <span class="math inline">\(\mathbb{R}^d\)</span>, so document contents can be thought of as point clouds in <span class="math inline">\(\mathbb{R}^d\)</span>.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="frequencyprofile.svg" class="img-fluid figure-img"></p>
+<figcaption>The lexical frequency profile of a text can be represented as the empirical distribution of the Zipf values (~ frequencies) of the word occurring in the text.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In all of these cases, you can try to represent certain characteristics of the objects (e.g., the mean Zipf value) in <strong>feature vectors</strong> which can then be input into linear regression, random forests, etc. While this inevitably results in a loss of information, the hope is that the feature vector captures the relevant aspects.</p>
+<p>One alternative is to either treat the objects as <strong>probability distributions</strong> or to encode them as probability distributions in the hopes that this loses less relevant information than a representation by means of a feature vector does. For lexical frequency profiles and point clouds, this representation as a probability distribution is immediate: You treat the lexical frequency profile or the point cloud as an empirical distribution. For graphs, it takes a bit more work.</p>
+</section>
+<section id="concept-3-distances-between-distributions" class="level1">
+<h1>Concept 3: Distances between distributions</h1>
+<p>The goal is now to apply kernel methods using inputs that are represented as distributions. To this end, we need a suitable distance metric between probability distributions. When dealing with <strong>univariate distributions</strong>, it turns out that the so-called <strong>Wasserstein distance of order <span class="math inline">\(p = 2\)</span></strong> is useful in the sense that it can be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Informally, the Wasserstein distance between probability distributions <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span> expresses what the least amount of effort is that you need to expend in order to shift about the probability mass of distribution <span class="math inline">\(P\)</span> so that it corresponds to that of distribution <span class="math inline">\(Q\)</span>. For the Wasserstein distance of order <span class="math inline">\(p = 2\)</span>, ‘effort’ is defined in terms of squared distances.</p>
+<p>Computing the Wasserstein distances between univariate empirical distributions can be done pretty cheaply and essentially boils down to running two sorting operations.</p>
+<p>When working with <strong>multivariate distributions</strong>, however, Wasserstein distances are no longer attractive:</p>
+<ol type="1">
+<li>They are much more difficult to compute.</li>
+<li>They can’t be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+</ol>
+<p>One option is to work with Wasserstein distances between <strong>marginal distributions</strong>. For instance, if the distributions you’re working with live in three dimensions, you compute Wasserstein distances between the three corresponding dimensions. One possible disadvantage is that two distributions may look completely different from one another yet have the same marginal distributions:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img"></p>
+<figcaption>These two bivariate distributions have the same marginals.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>An alternative is to use the so-called <strong>sliced Wasserstein distance</strong> (of order <span class="math inline">\(p = 2\)</span>):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sliced.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>Figure 2.4 from Nguyen. 2025. <em>An introduction to sliced optimal transport: Foundations, advances, extensions, and applications.</em></figcaption>
+</figure>
+</div>
+<p>To compute the sliced Wasserstein distance, you project the multivariate distributions onto a randomly chosen line that runs through the origin. The resulting distributions are univariate, so we may cheaply compute the 2-Wasserstein distance between them. The sliced Wasserstein distance is then defined in terms of the expected value of the resulting 2-Wasserstein distance, with the random bit being the choice of the line through the origin.</p>
+<p>In practical terms, you pick a bunch of lines randomly, project the distributions on them, compute the Wasserstein distances between the projections, and average them.</p>
+<p><strong>Advantages of the sliced Wasserstein distance:</strong></p>
+<ol type="1">
+<li>It is fairly cheap to estimate.</li>
+<li>It is a valid distance between probability distributions with finite second moment. (This includes all empirical distributions.)</li>
+<li>This distance can be slotted into the Gaussian RBF, power exponential and Matérn functions to give a valid kernel.</li>
+<li>It takes into account the entire distributions, not just the marginals.</li>
+</ol>
+<p><strong>Disadvantages:</strong></p>
+<ol type="1">
+<li>It takes into account the <em>entire</em> distributions… including aspects that aren’t relevant for the regression (or classification) task, degrading performance of the downstream model.</li>
+<li>It is <strong>scale-sensitive</strong>: if you express one component of a distribution on a different scale (e.g., cm instead of inches), the downstream model will perform differently.</li>
+<li>You can’t really draw input-output plots like in the applet above…<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
+</ol>
+<p><em>Note:</em> Chapter 5 of my <a href="https://github.com/janhove/mscthesis/">Master’s thesis</a> is essentially on the second problem.</p>
+<p>I wrote the <a href="https://janhove.github.io/slicer"><code>slicer</code></a> package to carry out sliced Wasserstein computations.</p>
+</section>
+<section id="now-what" class="level1">
+<h1>Now what?</h1>
+<p>It could be fun and useful to use Wasserstein distances and sliced Wasserstein distances to revisit problems in AL (and in the social sciences more broadly) that naturally call out for a distributional approach but that so far have been tackled using feature vectors and summaries.</p>
+<section id="lexical-frequency-profiles-for-quality-predictions" class="level2">
+<h2 class="anchored" data-anchor-id="lexical-frequency-profiles-for-quality-predictions">Lexical frequency profiles for quality predictions</h2>
+<p>Data from <a href="https://doi.org/10.17239/jowr-2019.10.03.04">Vanhove et al.&nbsp;(2019)</a>:</p>
+<ul>
+<li>1,020 short German texts: 816 in training set, 204 in test set.</li>
+<li>About 16 raters per text, 1-9 scale. <span class="math inline">\(\leadsto\)</span> mean rating per text as outcome.</li>
+<li>Lots of lexical and other properties per text.</li>
+<li>Generalised additive model with 6 predictors resulted in RMSE of 0.793 on the test data (compared to a baseline of 1.18; test set <span class="math inline">\(R^2 \approx 0.55\)</span>).</li>
+</ul>
+<p>Quickish attempt:</p>
+<ul>
+<li>For each of these six predictors, build an RBF kernel.</li>
+<li>Additionally, compute the Wasserstein distances between the lexical profiles (Zipf) of the distributions and build another RBF kernel.</li>
+</ul>
+<p>Results:</p>
+<ul>
+<li>6 kernels: test set RMSE 0.820 (<span class="math inline">\(R^2 \approx 0.52\)</span>).</li>
+<li>Adding Wasserstein kernel for lexical profiles: RMSE 0.794 (<span class="math inline">\(R^2 \approx 0.55\)</span>).</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="predictions.svg" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption>True vs.&nbsp;predicted test values.</figcaption>
+</figure>
+</div>
+<p>More generally, it may be interesting to take a closer look at the literature on representing lexical frequency profiles (Nation and Laufer, etc.) and see if working with the distributions directly (instead of using summaries and frequency bands) buys us something. It may even be possible to use Wasserstein distances between lexical profiles to carry out something akin to a <em>t</em>-test (i.e., using the distributions as outcomes in a group comparison rather than as predictors).</p>
+</section>
+<section id="comparisons-of-vowel-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="comparisons-of-vowel-distributions">Comparisons of vowel distributions</h2>
+<ul>
+<li>E.g., for each speaker, measure the degree of overlap between the cloud of /e/ and /ɛ/ realisations using Wasserstein/sliced Wasserstein. Then compare these degrees of overlap between groups.</li>
+<li>Compare the clouds of /u/ realisations between speakers?</li>
+<li>L2 and L1 speakers produce /ɛ/ sounds. Compute the <strong>barycentre</strong> of the L1 vowel clouds (roughly, the average L1 vowel cloud). Compute distances between L2 vowel clouds and this barycentre.</li>
+<li>Compute distances between L1 and L2 vowel clouds within a speaker?</li>
+</ul>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You can define other kinds of distance between real numbers, for instance <span class="math inline">\(d(x_i, x_j) = 1\)</span> if <span class="math inline">\(x_i = x_j\)</span> and <span class="math inline">\(d(x_i, x_j) = 0\)</span> if <span class="math inline">\(x_i \neq x_j\)</span>. But these wouldn’t necessarily allow you to build useful kernels.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The more specific reason is that it can be shown that the Wasserstein distance of order 2 between univariate distribution is a so-called Hilbertian distance, and Hilbertian distances can be slotted into these functions to obtain suitable kernels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>In contrast to Wasserstein distances between univariate distributions, Wasserstein distances between multivariate distributions aren’t Hilbertian.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In principle, it should be possible to apply multidimensional scaling in order to draw some kind of plot.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
