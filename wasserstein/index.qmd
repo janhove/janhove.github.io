@@ -15,9 +15,10 @@ embed-resources: false
 Certain statistical tools, 
 including **Gaussian process regression** (GPR; see below)
 and **support vector machines** (SVM),
-don't require the predictors $x_1, \dots, x_n$ to be represented explicitly
-(for instance, as numerical vectors)
-and rely only on a notion of the pairwise **similarities** between 
+don't require the predictors 
+$x_1, \dots, x_n$ to be represented explicitly
+(for instance, as numerical vectors).
+Instead, they rely only on a notion of the pairwise **similarities** between 
 the predictors.
 This similarity is expressed by means of a **kernel** $k$
 that takes in two predictors and outputs a number expressing the similarity
@@ -32,6 +33,9 @@ as a realisation of an $n$-variate Gaussian (= Normal) distribution.
 The kernel matrix $\boldsymbol{K}$, 
 which contains the pairwise kernel values $k(x_i, x_j), 1 \leq i, j \leq n$,
 serves as the covariance matrix of this $n$-variate Gaussian distribution.
+That is, it expresses the variance of each output $Y_i$
+as well as how strongly the different outputs are correlated
+with each other.
 
 The illustrations below shows some possible (a priori) realisations of 
 $\boldsymbol{Y} = (Y_1, \dots, Y_n)$ for different choices of kernel:
@@ -44,6 +48,9 @@ in terms of a linear regression model.
 * The **Matérn(3/2) kernel** can fit somewhat more smoothly varying functions.
 
 ```{r}
+# Random seed
+set.seed(2026-07-07)
+
 # Plotting function
 plot_gpr <- function(x, K, n = 4, main = "") {
   cols <- RColorBrewer::brewer.pal(n, "Dark2")
@@ -63,7 +70,7 @@ D <- outer(x, x, "-") |> abs()
 K_linear <- outer(x, x, "*")
 plot_gpr(x, K_linear, main = "Linear kernel")
 
-# Periodic kernel
+# Periodic kernel - note that the period is the same for all curves
 K_periodic <- exp(-sin(D)^2)
 plot_gpr(x, K_periodic, main = "Periodic kernel")
 
@@ -81,12 +88,14 @@ plot_gpr(x, K_matern32, main = "Matérn(3/2) kernel")
 ```
 
 Kernels can be combined with each other, for instance through 
-summation or pointwise multiplication.
+conical combinations or pointwise multiplication.
 
 ```{r}
-plot_gpr(x, K_linear + K_periodic, main = "Linear + periodic kernel")
-plot_gpr(x, K_linear + K_matern12, main = "Linear + Matérn kernel")
+# Conical combinations
+plot_gpr(x, 0.5*K_linear + K_periodic, main = "Linear + periodic kernel")
+plot_gpr(x, 0.3*K_linear + 1.2*K_matern12, main = "Linear + Matérn kernel")
 
+# Pointwise multiplication
 plot_gpr(x, K_linear * K_periodic, main = "Linear * periodic kernel")
 plot_gpr(x, K_linear * K_matern12, main = "Linear * Matérn kernel")
 ```
@@ -98,7 +107,7 @@ see for instance
 The kernels that will be most relevant to us are those that depend
 only on the pairwise **distances** $d(x_i, x_j)$
 between $x_i$ and $x_j$, $1 \leq i, j \leq n$.
-Such kernels are known as **stationary kernels**.
+Such kernels are known as **stationary kernels**.^[The linear kernel used in the info box, for instance, is not a stationary kernel: The kernel value corresponding to $x_i = 4$ and $x_j = 5$ is $k(4, 5) = 20$, whereas for $x_i = 1$ and $x_j = 2$, we have $k(1, 2) = 2$. The values that this kernel produces, then, depend not only on the distance between the objects, but also on their position in the space in which they live. The reason why stationary kernels are of interest to us is that the objects we want to work with don't live in a space where the notions of both 'positions' and 'distances' makes sense. Rather, they merely live in a space in which we can say something about pairwise distances between objects.]
 
 In the Shiny applet below, the inputs $x_1, \dots, x_n$ are real numbers.
 The usual (Euclidean) pairwise distance between them is 
@@ -147,6 +156,9 @@ library(corrplot)
 rbf <- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D^2 / (2 * length_scale^2))
 }
+powerexp <- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D^2 / (2 * length_scale^2))^0.5)
+}
 matern12 <- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D / (2 * length_scale))
 }
@@ -161,6 +173,7 @@ matern52 <- function(D, length_scale = 1, scaling_factor = 1) {
 
 kernel_list <- list(
   "Squared exponential" = rbf,
+  "Power exponential (κ = 0.5)" = powerexp,
   "Matérn 1/2"          = matern12,
   "Matérn 3/2"          = matern32,
   "Matérn 5/2"          = matern52
@@ -284,8 +297,7 @@ ui <- page_sidebar(
         conditionalPanel(
           "input.x0_mode === 'manual'",
           textInput("manual_x0", "x positions (comma-separated):", 
-                    value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 
-                              1, 2, 3, 4, 5, 6, 7, 8, 9")
+            value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
         )
       )
     ),
@@ -550,7 +562,7 @@ shinyApp(ui, server)
 
 # Concept 2: Distributions as inputs
 For common methods such as linear regression or random forests,
-the inputs are represented as numeric vectors (i.e., vectors in $\mathbb{R}^d$).
+the inputs are represented as numeric vectors.
 However, not all data structures naturally occur as vectors:
 
 :::: {.columns}
@@ -560,11 +572,11 @@ However, not all data structures naturally occur as vectors:
 :::
 
 ::: {.column width="40%"}
-![Word meanings can be represented as vectors in $\mathbb{R}^d$, so document contents can be thought of as point clouds in $\mathbb{R}^d$.](wordembeddings.png)
+![Word meanings can be represented as numeric vectors, so document contents can be thought of as point clouds.](wordembeddings.png)
 :::
 
 ::: {.column width="35%"}
-![The lexical frequency profile of a text can be represented as the empirical distribution of the Zipf values (~ frequencies) of the word occurring in the text.](frequencyprofile.svg)
+![The lexical frequency profile of a text can be represented as the empirical distribution of the frequencies (here: Zipf values) of the words occurring in the text.](frequencyprofile.svg)
 :::
 ::::
 
@@ -575,15 +587,14 @@ input into linear regression, random forests, etc.
 While this inevitably results in a loss of information, the hope is 
 that the feature vector captures the relevant aspects.
 
-One alternative is to either treat the objects as **probability distributions**
-or to encode them as probability distributions
+One alternative is to either treat or encode the objects as **probability distributions**
 in the hopes that this loses less relevant information than a representation
 by means of a feature vector does.
 For lexical frequency profiles and point clouds, this representation
 as a probability distribution is immediate:
 You treat the lexical frequency profile or the point cloud as an empirical
 distribution.
-For graphs, it takes a bit more work.
+For graphs, this takes a bit more work, but useful encodings exist.
 
 # Concept 3: Distances between distributions
 The goal is now to apply kernel methods using inputs that are represented as
@@ -614,18 +625,24 @@ Wasserstein distances are no longer attractive:
 1. They are much more difficult to compute.
 2. They can't be slotted into the Gaussian RBF, the power
 exponential, and the Matérn functions to give suitable kernels.^[In contrast to 
-Wasserstein distances between univariate distributions, Wasserstein distances 
+Wasserstein distance of order 2 between univariate distributions, Wasserstein distances 
 between multivariate distributions aren't Hilbertian.]
 
 One option is to work with Wasserstein distances between 
 **marginal distributions**.
 For instance, if the distributions you're working with live in three dimensions,
 you compute Wasserstein distances between the three corresponding dimensions.
-One possible disadvantage is that two distributions may look completely
-different from one another yet have the same marginal distributions:
+You can construct kernels using the resulting three distances
+and combine these into a single kernel.
+
+One drawback of relying on marginal distributions only is 
+that two distributions may look completely different from one another 
+yet have the same marginal distributions:
 
 ```{r, echo = FALSE}
 #| fig-cap: "These two bivariate distributions have the same marginals."
+#| fig-height: 3.5
+#| fig-width: 6.8
 par(mfrow = c(1, 2))
 n <- 200
 x <- rnorm(n)
@@ -634,6 +651,11 @@ plot(x, y, asp = 1)
 plot(sort(x), sort(y), asp = 1, xlab = "x", ylab = "y")
 par(mfrow = c(1, 1))
 ```
+
+A kernel based on marginal distributions only couldn't tell distributions
+with the same marginals but different joint distributions apart -- and it's 
+possible that the relevant signal isn't contained in the marginals but
+rather in how the different components are related to each other.
 
 An alternative is to use the so-called **sliced Wasserstein distance** 
 (of order $p = 2$):
@@ -655,18 +677,21 @@ the projections, and average them.
 **Advantages of the sliced Wasserstein distance:**
 
 1. It is fairly cheap to estimate.
-2. It is a valid distance between probability distributions with finite second moment. (This includes all empirical distributions.)
+2. It is a valid distance between probability distributions with finite second moment. 
+(This includes all empirical distributions.)
 3. This distance can be slotted into the Gaussian RBF, power exponential and 
 Matérn functions to give a valid kernel.
-4. It takes into account the entire distributions, not just the marginals.
+4. It takes into account the entire distributions, not just their marginals.
 
 **Disadvantages:**
 
 1. It takes into account the _entire_ distributions... including aspects that 
 aren't relevant for the regression (or classification) task, degrading performance of the downstream model.
+This isn't much of a problem when using kernels based on marginal distributions only:
+when fitting the model, the irrelevant margins will get downweighted, minimising their impact on the prediction.
 2. It is **scale-sensitive**: if you express one component of a distribution 
 on a different scale (e.g., cm instead of inches), the downstream model will perform differently.
-3. You can't really draw input-output plots like in the applet above...^[In principle, it should be possible to apply multidimensional scaling in order to draw some kind of plot.]
+3. You can't really draw input-output plots like in the applet above...^[In principle, it should be possible to apply multidimensional scaling in order to draw _some_ kind of plot. But it's a far cry from a nice scatterplot.]
 
 _Note:_ Chapter 5 of my [Master's thesis](https://github.com/janhove/mscthesis/) 
 is essentially on the second problem.
@@ -713,13 +738,22 @@ It may even be possible to use Wasserstein distances between lexical profiles
 to carry out something akin to a _t_-test (i.e., using the distributions as
 outcomes in a group comparison rather than as predictors).
 
+That said, I don't expect these different approaches to result in huge differences.
+The main advantage of the distributional approach is that it would sidestep
+some arbitrary decisions (e.g., cut-offs for lexical frequency bands)
+and that it could distinguish between lexical frequency profiles with different
+shapes yet with the same summary statistics.
+
+Two considerable disadvantages would be a loss of interpretability
+and the need to retain the training data when making predictions for new inputs.
+
 ## Comparisons of vowel distributions
 
-* E.g., for each speaker, measure the degree of overlap between the cloud 
+* E.g., for each speaker, measure the degree of overlap between the F1/F2/F3/duration clouds 
 of /e/ and /ɛ/ realisations using Wasserstein/sliced Wasserstein.
 Then compare these degrees of overlap between groups.
 * Compare the clouds of /u/ realisations between speakers?
 * L2 and L1 speakers produce /ɛ/ sounds. Compute the **barycentre** of the L1 vowel clouds
-(roughly, the average L1 vowel cloud). Compute distances between 
+(roughly, the average L1 vowel cloud)? Compute distances between 
 L2 vowel clouds and this barycentre.
 * Compute distances between L1 and L2 vowel clouds within a speaker?
