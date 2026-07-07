@@ -256,7 +256,7 @@ window.Quarto = {
 
 <section id="concept-1-kernel-methods" class="level1">
 <h1>Concept 1: Kernel methods</h1>
-<p>Certain statistical tools, including <strong>Gaussian process regression</strong> (GPR; see below) and <strong>support vector machines</strong> (SVM), don’t require the predictors <span class="math inline">\(x_1, \dots, x_n\)</span> to be represented explicitly (for instance, as numerical vectors) and rely only on a notion of the pairwise <strong>similarities</strong> between the predictors. This similarity is expressed by means of a <strong>kernel</strong> <span class="math inline">\(k\)</span> that takes in two predictors and outputs a number expressing the similarity between them. There exists a whole host of different functions that may serve as kernels.</p>
+<p>Certain statistical tools, including <strong>Gaussian process regression</strong> (GPR; see below) and <strong>support vector machines</strong> (SVM), don’t require the predictors <span class="math inline">\(x_1, \dots, x_n\)</span> to be represented explicitly (for instance, as numerical vectors). Instead, they rely only on a notion of the pairwise <strong>similarities</strong> between the predictors. This similarity is expressed by means of a <strong>kernel</strong> <span class="math inline">\(k\)</span> that takes in two predictors and outputs a number expressing the similarity between them. There exists a whole host of different functions that may serve as kernels.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -269,7 +269,7 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>The basic idea behind Gaussian process regression is that you model the outputs (i.e., the dependent variables) <span class="math inline">\(Y_1, \dots, Y_n\)</span> as a realisation of an <span class="math inline">\(n\)</span>-variate Gaussian (= Normal) distribution. The kernel matrix <span class="math inline">\(\boldsymbol{K}\)</span>, which contains the pairwise kernel values <span class="math inline">\(k(x_i, x_j), 1 \leq i, j \leq n\)</span>, serves as the covariance matrix of this <span class="math inline">\(n\)</span>-variate Gaussian distribution.</p>
+<p>The basic idea behind Gaussian process regression is that you model the outputs (i.e., the dependent variables) <span class="math inline">\(Y_1, \dots, Y_n\)</span> as a realisation of an <span class="math inline">\(n\)</span>-variate Gaussian (= Normal) distribution. The kernel matrix <span class="math inline">\(\boldsymbol{K}\)</span>, which contains the pairwise kernel values <span class="math inline">\(k(x_i, x_j), 1 \leq i, j \leq n\)</span>, serves as the covariance matrix of this <span class="math inline">\(n\)</span>-variate Gaussian distribution. That is, it expresses the variance of each output <span class="math inline">\(Y_i\)</span> as well as how strongly the different outputs are correlated with each other.</p>
 <p>The illustrations below shows some possible (a priori) realisations of <span class="math inline">\(\boldsymbol{Y} = (Y_1, \dots, Y_n)\)</span> for different choices of kernel:</p>
 <ul>
 <li>The <strong>linear kernel</strong> essentially enables the data to be modelled in terms of a linear regression model.</li>
@@ -279,24 +279,27 @@ window.Quarto = {
 <li>The <strong>Matérn(3/2) kernel</strong> can fit somewhat more smoothly varying functions.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting function</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x)), <span class="at">Sigma =</span> K)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[<span class="dv">1</span>, ], <span class="at">ylim =</span> <span class="fu">range</span>(Y), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> main)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[i, ], <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">col =</span> cols[i])</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictor data and distances between them</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.2</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"-"</span>) <span class="sc">|&gt;</span> <span class="fu">abs</span>()</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear kernel</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>K_linear <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"*"</span>)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear, <span class="at">main =</span> <span class="st">"Linear kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random seed</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026-07-07</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting function</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x)), <span class="at">Sigma =</span> K)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[<span class="dv">1</span>, ], <span class="at">ylim =</span> <span class="fu">range</span>(Y), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> main)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[i, ], <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">col =</span> cols[i])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictor data and distances between them</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.2</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"-"</span>) <span class="sc">|&gt;</span> <span class="fu">abs</span>()</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear kernel</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>K_linear <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"*"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear, <span class="at">main =</span> <span class="st">"Linear kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -304,7 +307,7 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Periodic kernel</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Periodic kernel - note that the period is the same for all curves</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>K_periodic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sin</span>(D)<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_periodic, <span class="at">main =</span> <span class="st">"Periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -345,9 +348,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Kernels can be combined with each other, for instance through summation or pointwise multiplication.</p>
+<p>Kernels can be combined with each other, for instance through conical combinations or pointwise multiplication.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">+</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear + periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Conical combinations</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, <span class="fl">0.5</span><span class="sc">*</span>K_linear <span class="sc">+</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear + periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -355,7 +359,7 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">+</span> K_matern12, <span class="at">main =</span> <span class="st">"Linear + Matérn kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, <span class="fl">0.3</span><span class="sc">*</span>K_linear <span class="sc">+</span> <span class="fl">1.2</span><span class="sc">*</span>K_matern12, <span class="at">main =</span> <span class="st">"Linear + Matérn kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -363,7 +367,8 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">*</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear * periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pointwise multiplication</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear <span class="sc">*</span> K_periodic, <span class="at">main =</span> <span class="st">"Linear * periodic kernel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -383,8 +388,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>There are a lot of possibilities to define a suitable kernel <span class="math inline">\(k\)</span>; see for instance <a href="anhosu.com/post/kernels-r/">https://anhosu.com/post/kernels-r/</a>. The kernels that will be most relevant to us are those that depend only on the pairwise <strong>distances</strong> <span class="math inline">\(d(x_i, x_j)\)</span> between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, <span class="math inline">\(1 \leq i, j \leq n\)</span>. Such kernels are known as <strong>stationary kernels</strong>.</p>
-<p>In the Shiny applet below, the inputs <span class="math inline">\(x_1, \dots, x_n\)</span> are real numbers. The usual (Euclidean) pairwise distance between them is <span class="math display">\[d(x_i, x_j) = |x_i - x_j|,\]</span> for <span class="math inline">\(1 \leq i, j \leq n\)</span>. This distance affords analysts several possibilities to build a stationary kernel.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>There are a lot of possibilities to define a suitable kernel <span class="math inline">\(k\)</span>; see for instance <a href="anhosu.com/post/kernels-r/">https://anhosu.com/post/kernels-r/</a>. The kernels that will be most relevant to us are those that depend only on the pairwise <strong>distances</strong> <span class="math inline">\(d(x_i, x_j)\)</span> between <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, <span class="math inline">\(1 \leq i, j \leq n\)</span>. Such kernels are known as <strong>stationary kernels</strong>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>In the Shiny applet below, the inputs <span class="math inline">\(x_1, \dots, x_n\)</span> are real numbers. The usual (Euclidean) pairwise distance between them is <span class="math display">\[d(x_i, x_j) = |x_i - x_j|,\]</span> for <span class="math inline">\(1 \leq i, j \leq n\)</span>. This distance affords analysts several possibilities to build a stationary kernel.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>Here are a few options:</p>
 <ol type="1">
 <li><p>The <strong>Gaussian radial basis function</strong> (RBF), also called the <strong>squared exponential</strong>: <span class="math display">\[k(x_i, x_j) = s^2\exp\left(-\frac{d^2(x_i, x_j)}{2t^2}\right)\]</span> with hyperparameter <span class="math inline">\(s^2, t\)</span>.</p></li>
@@ -410,6 +415,9 @@ library(corrplot)
 rbf &lt;- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D^2 / (2 * length_scale^2))
 }
+powerexp &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D^2 / (2 * length_scale^2))^0.5)
+}
 matern12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D / (2 * length_scale))
 }
@@ -424,6 +432,7 @@ matern52 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
 
 kernel_list &lt;- list(
   "Squared exponential" = rbf,
+  "Power exponential (κ = 0.5)" = powerexp,
   "Matérn 1/2"          = matern12,
   "Matérn 3/2"          = matern32,
   "Matérn 5/2"          = matern52
@@ -547,8 +556,7 @@ ui &lt;- page_sidebar(
         conditionalPanel(
           "input.x0_mode === 'manual'",
           textInput("manual_x0", "x positions (comma-separated):", 
-                    value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 
-                              1, 2, 3, 4, 5, 6, 7, 8, 9")
+            value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
         )
       )
     ),
@@ -812,7 +820,7 @@ shinyApp(ui, server)</code></pre>
 </section>
 <section id="concept-2-distributions-as-inputs" class="level1">
 <h1>Concept 2: Distributions as inputs</h1>
-<p>For common methods such as linear regression or random forests, the inputs are represented as numeric vectors (i.e., vectors in <span class="math inline">\(\mathbb{R}^d\)</span>). However, not all data structures naturally occur as vectors:</p>
+<p>For common methods such as linear regression or random forests, the inputs are represented as numeric vectors. However, not all data structures naturally occur as vectors:</p>
 <div class="columns">
 <div class="column" style="width:25%;">
 <div class="quarto-figure quarto-figure-center">
@@ -825,32 +833,33 @@ shinyApp(ui, server)</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="wordembeddings.png" class="img-fluid figure-img"></p>
-<figcaption>Word meanings can be represented as vectors in <span class="math inline">\(\mathbb{R}^d\)</span>, so document contents can be thought of as point clouds in <span class="math inline">\(\mathbb{R}^d\)</span>.</figcaption>
+<figcaption>Word meanings can be represented as numeric vectors, so document contents can be thought of as point clouds.</figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="frequencyprofile.svg" class="img-fluid figure-img"></p>
-<figcaption>The lexical frequency profile of a text can be represented as the empirical distribution of the Zipf values (~ frequencies) of the word occurring in the text.</figcaption>
+<figcaption>The lexical frequency profile of a text can be represented as the empirical distribution of the frequencies (here: Zipf values) of the words occurring in the text.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>In all of these cases, you can try to represent certain characteristics of the objects (e.g., the mean Zipf value) in <strong>feature vectors</strong> which can then be input into linear regression, random forests, etc. While this inevitably results in a loss of information, the hope is that the feature vector captures the relevant aspects.</p>
-<p>One alternative is to either treat the objects as <strong>probability distributions</strong> or to encode them as probability distributions in the hopes that this loses less relevant information than a representation by means of a feature vector does. For lexical frequency profiles and point clouds, this representation as a probability distribution is immediate: You treat the lexical frequency profile or the point cloud as an empirical distribution. For graphs, it takes a bit more work.</p>
+<p>One alternative is to either treat or encode the objects as <strong>probability distributions</strong> in the hopes that this loses less relevant information than a representation by means of a feature vector does. For lexical frequency profiles and point clouds, this representation as a probability distribution is immediate: You treat the lexical frequency profile or the point cloud as an empirical distribution. For graphs, this takes a bit more work, but useful encodings exist.</p>
 </section>
 <section id="concept-3-distances-between-distributions" class="level1">
 <h1>Concept 3: Distances between distributions</h1>
-<p>The goal is now to apply kernel methods using inputs that are represented as distributions. To this end, we need a suitable distance metric between probability distributions. When dealing with <strong>univariate distributions</strong>, it turns out that the so-called <strong>Wasserstein distance of order <span class="math inline">\(p = 2\)</span></strong> is useful in the sense that it can be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The goal is now to apply kernel methods using inputs that are represented as distributions. To this end, we need a suitable distance metric between probability distributions. When dealing with <strong>univariate distributions</strong>, it turns out that the so-called <strong>Wasserstein distance of order <span class="math inline">\(p = 2\)</span></strong> is useful in the sense that it can be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <p>Informally, the Wasserstein distance between probability distributions <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span> expresses what the least amount of effort is that you need to expend in order to shift about the probability mass of distribution <span class="math inline">\(P\)</span> so that it corresponds to that of distribution <span class="math inline">\(Q\)</span>. For the Wasserstein distance of order <span class="math inline">\(p = 2\)</span>, ‘effort’ is defined in terms of squared distances.</p>
 <p>Computing the Wasserstein distances between univariate empirical distributions can be done pretty cheaply and essentially boils down to running two sorting operations.</p>
 <p>When working with <strong>multivariate distributions</strong>, however, Wasserstein distances are no longer attractive:</p>
 <ol type="1">
 <li>They are much more difficult to compute.</li>
-<li>They can’t be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li>They can’t be slotted into the Gaussian RBF, the power exponential, and the Matérn functions to give suitable kernels.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
 </ol>
-<p>One option is to work with Wasserstein distances between <strong>marginal distributions</strong>. For instance, if the distributions you’re working with live in three dimensions, you compute Wasserstein distances between the three corresponding dimensions. One possible disadvantage is that two distributions may look completely different from one another yet have the same marginal distributions:</p>
+<p>One option is to work with Wasserstein distances between <strong>marginal distributions</strong>. For instance, if the distributions you’re working with live in three dimensions, you compute Wasserstein distances between the three corresponding dimensions. You can construct kernels using the resulting three distances and combine these into a single kernel.</p>
+<p>One drawback of relying on marginal distributions only is that two distributions may look completely different from one another yet have the same marginal distributions:</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -861,6 +870,7 @@ shinyApp(ui, server)</code></pre>
 </div>
 </div>
 </div>
+<p>A kernel based on marginal distributions only couldn’t tell distributions with the same marginals but different joint distributions apart – and it’s possible that the relevant signal isn’t contained in the marginals but rather in how the different components are related to each other.</p>
 <p>An alternative is to use the so-called <strong>sliced Wasserstein distance</strong> (of order <span class="math inline">\(p = 2\)</span>):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -875,13 +885,13 @@ shinyApp(ui, server)</code></pre>
 <li>It is fairly cheap to estimate.</li>
 <li>It is a valid distance between probability distributions with finite second moment. (This includes all empirical distributions.)</li>
 <li>This distance can be slotted into the Gaussian RBF, power exponential and Matérn functions to give a valid kernel.</li>
-<li>It takes into account the entire distributions, not just the marginals.</li>
+<li>It takes into account the entire distributions, not just their marginals.</li>
 </ol>
 <p><strong>Disadvantages:</strong></p>
 <ol type="1">
-<li>It takes into account the <em>entire</em> distributions… including aspects that aren’t relevant for the regression (or classification) task, degrading performance of the downstream model.</li>
+<li>It takes into account the <em>entire</em> distributions… including aspects that aren’t relevant for the regression (or classification) task, degrading performance of the downstream model. This isn’t much of a problem when using kernels based on marginal distributions only: when fitting the model, the irrelevant margins will get downweighted, minimising their impact on the prediction.</li>
 <li>It is <strong>scale-sensitive</strong>: if you express one component of a distribution on a different scale (e.g., cm instead of inches), the downstream model will perform differently.</li>
-<li>You can’t really draw input-output plots like in the applet above…<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
+<li>You can’t really draw input-output plots like in the applet above…<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></li>
 </ol>
 <p><em>Note:</em> Chapter 5 of my <a href="https://github.com/janhove/mscthesis/">Master’s thesis</a> is essentially on the second problem.</p>
 <p>I wrote the <a href="https://janhove.github.io/slicer"><code>slicer</code></a> package to carry out sliced Wasserstein computations.</p>
@@ -915,13 +925,15 @@ shinyApp(ui, server)</code></pre>
 </figure>
 </div>
 <p>More generally, it may be interesting to take a closer look at the literature on representing lexical frequency profiles (Nation and Laufer, etc.) and see if working with the distributions directly (instead of using summaries and frequency bands) buys us something. It may even be possible to use Wasserstein distances between lexical profiles to carry out something akin to a <em>t</em>-test (i.e., using the distributions as outcomes in a group comparison rather than as predictors).</p>
+<p>That said, I don’t expect these different approaches to result in huge differences. The main advantage of the distributional approach is that it would sidestep some arbitrary decisions (e.g., cut-offs for lexical frequency bands) and that it could distinguish between lexical frequency profiles with different shapes yet with the same summary statistics.</p>
+<p>Two considerable disadvantages would be a loss of interpretability and the need to retain the training data when making predictions for new inputs.</p>
 </section>
 <section id="comparisons-of-vowel-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="comparisons-of-vowel-distributions">Comparisons of vowel distributions</h2>
 <ul>
-<li>E.g., for each speaker, measure the degree of overlap between the cloud of /e/ and /ɛ/ realisations using Wasserstein/sliced Wasserstein. Then compare these degrees of overlap between groups.</li>
+<li>E.g., for each speaker, measure the degree of overlap between the F1/F2/F3/duration clouds of /e/ and /ɛ/ realisations using Wasserstein/sliced Wasserstein. Then compare these degrees of overlap between groups.</li>
 <li>Compare the clouds of /u/ realisations between speakers?</li>
-<li>L2 and L1 speakers produce /ɛ/ sounds. Compute the <strong>barycentre</strong> of the L1 vowel clouds (roughly, the average L1 vowel cloud). Compute distances between L2 vowel clouds and this barycentre.</li>
+<li>L2 and L1 speakers produce /ɛ/ sounds. Compute the <strong>barycentre</strong> of the L1 vowel clouds (roughly, the average L1 vowel cloud)? Compute distances between L2 vowel clouds and this barycentre.</li>
 <li>Compute distances between L1 and L2 vowel clouds within a speaker?</li>
 </ul>
 
@@ -933,10 +945,11 @@ shinyApp(ui, server)</code></pre>
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>You can define other kinds of distance between real numbers, for instance <span class="math inline">\(d(x_i, x_j) = 1\)</span> if <span class="math inline">\(x_i = x_j\)</span> and <span class="math inline">\(d(x_i, x_j) = 0\)</span> if <span class="math inline">\(x_i \neq x_j\)</span>. But these wouldn’t necessarily allow you to build useful kernels.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The more specific reason is that it can be shown that the Wasserstein distance of order 2 between univariate distribution is a so-called Hilbertian distance, and Hilbertian distances can be slotted into these functions to obtain suitable kernels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In contrast to Wasserstein distances between univariate distributions, Wasserstein distances between multivariate distributions aren’t Hilbertian.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>In principle, it should be possible to apply multidimensional scaling in order to draw some kind of plot.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>The linear kernel used in the info box, for instance, is not a stationary kernel: The kernel value corresponding to <span class="math inline">\(x_i = 4\)</span> and <span class="math inline">\(x_j = 5\)</span> is <span class="math inline">\(k(4, 5) = 20\)</span>, whereas for <span class="math inline">\(x_i = 1\)</span> and <span class="math inline">\(x_j = 2\)</span>, we have <span class="math inline">\(k(1, 2) = 2\)</span>. The values that this kernel produces, then, depend not only on the distance between the objects, but also on their position in the space in which they live. The reason why stationary kernels are of interest to us is that the objects we want to work with don’t live in a space where the notions of both ‘positions’ and ‘distances’ makes sense. Rather, they merely live in a space in which we can say something about pairwise distances between objects.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You can define other kinds of distance between real numbers, for instance <span class="math inline">\(d(x_i, x_j) = 1\)</span> if <span class="math inline">\(x_i = x_j\)</span> and <span class="math inline">\(d(x_i, x_j) = 0\)</span> if <span class="math inline">\(x_i \neq x_j\)</span>. But these wouldn’t necessarily allow you to build useful kernels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The more specific reason is that it can be shown that the Wasserstein distance of order 2 between univariate distribution is a so-called Hilbertian distance, and Hilbertian distances can be slotted into these functions to obtain suitable kernels.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In contrast to Wasserstein distance of order 2 between univariate distributions, Wasserstein distances between multivariate distributions aren’t Hilbertian.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>In principle, it should be possible to apply multidimensional scaling in order to draw <em>some</em> kind of plot. But it’s a far cry from a nice scatterplot.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
