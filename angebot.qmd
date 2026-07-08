@@ -1,5 +1,5 @@
 ---
-title: "Kurse und Beratung"
+title: "Kursangebote und Beratung"
 toc: true
 toc-depth: 4
 ---
@@ -8,6 +8,7 @@ Wie schärft man eine Forschungsfrage?
 Wie plant man eine Studie, die sie beantwortet? 
 Wie analysiert und präsentiert man die Daten -- 
 und wie liest man andere Forschungsberichte kritisch? 
+
 Diese Fragen begleiten meine Lehr- und Forschungstätigkeit seit über 15 Jahren.
 Als Sprachwissenschaftler mit einem BSc in Informatik,
 einem MSc in Statistik und Data Science
@@ -30,15 +31,17 @@ schreiben Sie mir gerne unverbindlich unter
 [janvanhove@gmail.com](janvanhove@gmail.com).
 
 ## Kurse für Doktoratsprogramme und Winter und Summer Schools
-In diesen Kursen werden allgemeine Prinzipien für die Analyse und Aufbereitung
-von quantitativen Daten vermittelt,
-die sowohl für neue als auch für routinierte Forschende relevant sind.
-Diese Prinzipien werden anhand von Datensätzen illustriert,
-die ich den Teilnehmenden zur Verfügung stelle.
-Wenn Sie sich wünschen, dass die Datensätze der Kursteilnehmenden selber genauer
-unter die Lupe genommen werden,
-so eignen sich die Formate [Sprechstunden](#sprechstunden) und 
-[Methoden- und Statistikberatung](#beratung) hierfür besser.
+Die Kurse vermitteln allgemeine Prinzipien, 
+wie quantitative Daten aufbereitet und analysiert werden können. 
+Diese Prinzipien sind sowohl für neue 
+als auch für routinierte Forschende relevant. 
+Sie werden in den Kursen anhand von Datensätzen illustriert, 
+die ich den Teilnehmenden zur Verfügung stelle. 
+Möchten Sie eigene Datensätze der Kursteilnehmenden analysieren, 
+eignen sich die Formate
+[Sprechstunden](#sprechstunden) 
+und [Methoden- und Statistikberatung](#beratung) 
+besser.
 
 ### Arbeiten mit Datensätzen in R {#datensätze}
 ::: columns
@@ -61,7 +64,7 @@ aus dem `tidyverse`.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 * Keine spezifischen Vorkenntnisse erforderlich.
 * Inhalt:
   - Datensätze aufbereiten, einlesen, abfragen, verknüpfen, zusammenfassen und umgestalten.
@@ -90,7 +93,7 @@ Wir arbeiten hauptsächlich mit dem R-Paket `ggplot2`.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Keine spezifischen Vorkenntnisse erforderlich, aber wenn die Teilnehmenden
   mit dem Inhalt des Kurses [Arbeiten mit Datensätzen in R](#datensätze)
@@ -124,7 +127,7 @@ besser verständlich sind.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Etwas Erfahrung mit Regressionsanalyse ist wünschenswert.
 * Inhalt:
@@ -161,7 +164,7 @@ intakten Gruppen angemessen entwirft und analysiert.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Etwas Erfahrung mit Signifikanztests wäre nützlich, 
   ist aber nicht zwingend nötig.
@@ -197,7 +200,7 @@ seine Parameterschätzungen richtig interpretiert.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Grundkenntnisse in deskriptiver Statistik (Mittel, Median, Varianz, Streudiagramm)
   werden vorausgesetzt.
@@ -218,9 +221,10 @@ seine Parameterschätzungen richtig interpretiert.
 Auch für Veranstaltungen, die über ein oder mehrere Semester verteilt sind,
 stehe ich nach Absprache gerne zur Verfügung.
 
-### Einführung in die Statistik
+
 ::: columns
 ::: {.column width="55%"}
+### Einführung in die Statistik
 Diese Lehrveranstaltung vermittelt anhand von Beispielen aus der angewandten
 Linguistik und benachbarten Disziplinen,
 wie man quantitative Daten sinnvoll auswertet und interpretiert,
@@ -234,7 +238,7 @@ ohne dabei in blinder Anwendung von Rezepten stecken zu bleiben.
 :::
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Für Anfängerinnen und Anfänger.
 * Inhalt:
@@ -261,7 +265,7 @@ die Möglichkeit, solche Lücken in einem informellen, kollegialen
 Rahmen zu schliessen.
 
 ::: {.callout-note collapse="true"}
-## Details
+## Weitere Infos
 
 * Für Teilnehmende mit statistischen Grundkenntnissen.
 * Die Themen können in Rücksprache mit der Organisation und den Teilnehmenden
@@ -272,7 +276,7 @@ Rahmen zu schliessen.
 * Wöchentlich oder zweiwöchentlich.
 :::
 
-## Individuelle Hilfe
+## Individuelle Unterstützung
 
 ### Sprechstunden an Ihrer Institution {#sprechstunden}
 Dank Sprechstunden vor Ort an Ihrer Institution
@@ -281,11 +285,7 @@ können Forschende, Studierende und andere Mitarbeitende
 individuell oder in kleinen Gruppen unkompliziert Rat und Feedback einholen,
 egal ob zum Studiendesign, zur Auswertung oder zur Darstellung der Ergebnisse.
 
-### Methoden- und Statistikberatung {#beratung}
-Wenn Sie punktuell individuelle Methoden- oder Statistikberatung suchen,
+### Beratung und Datenanalyse {#beratung}
+Wenn Sie punktuell individuelle Methoden- oder Statistikberatung suchen
+oder mich für die Datenanalyse Ihres Projektes in Anspruch nehmen möchten,
 so stehe ich auch auf Stundenbasis zur Verfügung.
-
-### Projektunterstützung
-Wenn Sie die Datenanalyse Ihres Projekts einem routinierten
-Sozialwissenschaftler und ausgebildetem Statistiker überlassen möchten,
-können Sie mich auf Stundenbasis oder für ein bestimmtes Pensum engagieren.
