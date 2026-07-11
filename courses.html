@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Methods and stats support – Jan Vanhove</title>
+<title>Courses – Jan Vanhove</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -138,8 +138,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#office-hours" id="toc-office-hours" class="nav-link active" data-scroll-target="#office-hours">Departmental office hours</a></li>
-  <li><a href="#consulting" id="toc-consulting" class="nav-link" data-scroll-target="#consulting">Consulting and data analyses</a></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link active" data-scroll-target="#datasets">Working with data sets in R</a></li>
+  <li><a href="#visualising-data-in-r" id="toc-visualising-data-in-r" class="nav-link" data-scroll-target="#visualising-data-in-r">Visualising data in R</a></li>
+  <li><a href="#visualising-models-and-their-uncertainty" id="toc-visualising-models-and-their-uncertainty" class="nav-link" data-scroll-target="#visualising-models-and-their-uncertainty">Visualising models and their uncertainty</a></li>
+  <li><a href="#design-and-analysis-of-experiments-with-intact-groups" id="toc-design-and-analysis-of-experiments-with-intact-groups" class="nav-link" data-scroll-target="#design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</a></li>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model">The general linear model</a></li>
   </ul>
 </nav>
     </div>
@@ -148,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Methods and stats support</h1>
+<h1 class="title">Courses</h1>
 </div>
 
 
@@ -165,80 +168,164 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>I offer two ways of getting help with methods and statistics: standing <a href="#office-hours"><strong>office hours</strong></a> at your institution for departments without an in-house methods person, and one-off <a href="#consulting"><strong>consulting</strong></a> for individual researchers or projects. Both cover much the same ground (research design, analysis, interpretation, reproducibility); the difference is mainly whether you’re looking for an ongoing arrangement from which the whole department may profit or help with a specific piece of work. Details and rates for each are below.</p>
-<p>I also offer one- and multi-day courses on statistics geared principally towards Master’s and Ph.D.&nbsp;students; see the <a href="./courses.html">Courses</a> for further information.</p>
-<section id="office-hours" class="level2">
-<h2 class="anchored" data-anchor-id="office-hours">Departmental office hours</h2>
-<p>If your department doesn’t have an in-house methods and stats person, I’d be happy to set up shop at your institution and organise regular office hours (e.g., one afternoon every fortnight). This way, faculty, associated researchers, and students can drop by to discuss any issue methodological or statistical, including:</p>
-<ul>
-<li>sharpening research questions and formulating them in statistical terms (usually the single most important aspect!);</li>
-<li>providing feedback on a study design or a write-up;</li>
-<li>running a sanity check on an analysis;</li>
-<li>finding a suitable data visualisation;</li>
-<li>interpreting model output;</li>
-<li>making sense of the methods or stats in a published study.</li>
-</ul>
-<p>This offer is not a substitute for supervision. Nor is it a rubber-stamping service that doles out seals of approval or a crisis management service that attempts to salvage some publishable result from a poorly designed study or to put a spin on findings deemed unfavourable to the researcher’s hypothesis. Instead, the goal is to make clear-eyed methodological and statistical thinking a standing habit in the department by acting as a sounding board that faculty, researchers, and students come back to from time to time for frank but constructive feedback.</p>
-<p>If you’re interested, get in touch by <a href="mailto:janvanhove@gmail.com">e-mail</a> so that we can work out the details.</p>
+<p>I offer one- and multi-day courses on data analysis, geared principally towards Master’s and PhD students, though they’re equally suitable for postdocs or faculty. Below are the courses I currently offer; get in touch by <a href="mailto:janvanhove@gmail.com">e-mail</a> if you’d like to discuss details, including tailoring courses for a specific group’s needs.</p>
+<p>The reference rates are CHF 800 for a half-day course and CHF 1,200 for a full-day course. This does not include transport or, where applicable, lodging. If a course needs to be tailored substantially to the specific participant group or if it needs to be designed from scratch, this may be reflected in the quote. But even if this doesn’t quite fit your budget, get in touch anyway: depending on timing and location, we may be able to work something out.</p>
+<p>Also see the <a href="./support.html">Methods and stats support</a> page if you’re looking for individual consulting or standing office hours rather than a structured course.</p>
+<section id="datasets" class="level2">
+<h2 class="anchored" data-anchor-id="datasets">Working with data sets in R</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Often, the most time-consuming part of a data analysis is getting the data into a format in which they can be analysed in the first place. This course covers principles for organising data sets, techniques for transforming them so that are amenable to analysis, as well as ways to query and summarise them. The course relies principally on the <code>tidyverse</code> suite for R.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/datasets.png" class="img-fluid"></p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details and rates
+<span class="screen-reader-only">Note</span>Details
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>On-site and therefore available only to institutions not farther than a 90-minute commute by public transport away from Bern.</li>
-<li>Sessions can be on appointment or one a first come, first serve basis and last for roughly 40 minutes.</li>
-<li>Reference rate for a four-hour block with up to two hours of prep and follow-up: CHF 850.</li>
-<li>Other durations possible.</li>
-<li>Bookable as a regular event (e.g., weekly, fortnightly) over a longer time frame (at least four months) rather than as a one-off.</li>
-<li>In English, German, French or Dutch.</li>
+<li>No prerequisites.</li>
+<li>Available as a half-day course including theory, worked examples and pen-and-paper exercises.</li>
+<li>A session covering practical exercises in R can be organised at a separate date in order to give participants some time to process the contents and have a stab at doing some exercises at their own pace.</li>
 </ul>
 </div>
 </div>
 </div>
 </section>
-<section id="consulting" class="level2">
-<h2 class="anchored" data-anchor-id="consulting">Consulting and data analyses</h2>
-<p>I’m happy to take on consulting work for researchers who need help with their research design, statistical analysis, or data interpretation. While my own experience is mostly in the social sciences, my statistical training extends beyond this.</p>
-<p>I can help you with:</p>
-<ul>
-<li>sharpening research questions and formulating them in statistical terms (usually the single most important aspect!);</li>
-<li>designing your study;</li>
-<li>stress-testing questionnaires;</li>
-<li>outlining or checking analysis plans;</li>
-<li>data wrangling;</li>
-<li>choosing effective visualisations;</li>
-<li>making sense of output;</li>
-<li>making your work reproducible and transparent: open data, open code, preregistrations, writing documentation;</li>
-<li>or even doing the entire analysis from start to finish;</li>
-<li>providing feedback on manuscripts.</li>
-</ul>
-<p>My goal isn’t to help you squeeze out a significant <em>p</em>-value or run analyses whose principal merit is that everyone in the field runs them. Rather, it is to help you design, run, and analyse studies that strike a suitable balance between technical correctness and accessibility to others in the field.</p>
-<p>If you’re interested, get in touch by <a href="mailto:janvanhove@gmail.com">e-mail</a>. If I think I can help you, we can arrange a short video call to discuss details.</p>
+<section id="visualising-data-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-data-in-r">Visualising data in R</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Both researchers and readers can glean more understanding from a well-chosen data visualisation than from a bunch of tables. This course teaches techniques for drawing informative data plots so that the participants and their readership may better understand what their data really look like. The main tool we’ll use is the <code>ggplot2</code> package for R.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/visualisation.svg" class="img-fluid"></p>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details and rates
+<span class="screen-reader-only">Note</span>Details
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>Both remote and, if the commute from Bern is feasible, on-site consulting are possible.</li>
-<li>Work can be billed per hour or at a fixed quote.</li>
-<li>Reference rate per hour: CHF 170.</li>
-<li>Oral consulting in English, German, French or Dutch; written products in English, German or Dutch.</li>
+<li>While no prerequisites are required to appreciate the main ideas, participants will be better able to draw their own plots if they are also familiar with the contents of the course <a href="#datasets">Working with data sets in R</a>.</li>
+<li>The techniques covered include histograms, kernel density estimation, boxplots, dotplots, scatterplots, trend lines, and facetting.</li>
+<li>Available as a half-day course including theory, worked examples and pen-and-paper exercises.</li>
+<li>A session covering practical exercises in R can be organised at a separate date in order to give participants some time to process the contents and have a stab at doing some exercises at their own pace.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="visualising-models-and-their-uncertainty" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-models-and-their-uncertainty">Visualising models and their uncertainty</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Statistical models are often quite opaque. Moreover, they yield estimates as opposed to exact answers. When models are reported solely in tables, erroneous interpretations are therefore bound to occur. This course teaches techniques for visualising statistical models and their uncertainty that will help make the participants’ models easier to interpret correctly.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/uncertainty.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Participants should have some basic practical experience with regression modelling.</li>
+<li>The course covers point estimates, pointwise and simultaneous confidence intervals and confidence bands, prediction intervals, bootstrapping techniques, visualising simple and multiple linear regression models, visualising interactions and non-linearities, visualising logistic regression. On request, further techniques related to the kinds of model the participants use can be discussed as can techniques from the realm of <em>interpretable machine learning</em>.</li>
+<li>Available as a half-day course with theory, worked examples, and pen-and-paper exercises.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="design-and-analysis-of-experiments-with-intact-groups" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In lots of intervention studies in education and applied linguistics, intact classes or schools are assigned to the conditions in their entirety. It is imperative that the analysis should reflect the fact that the participants weren’t assigned to the conditions on an individual basis, otherwise it is embarrassingly easy for the study to yield overly optimistic findings. This course explains why this is so and how experiments with intact groups can be designed and analysed appropriately.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/clusterrandomisation.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Some experience with basic statistics (including hypothesis testing) is helpful but not strictly required.</li>
+<li>The course covers the principle of randomisation as a basis for statistical inference, exact and approximate hypothesis test, one-factorial, two-factorial and mixed designs for intact groups, the design effect and the intra-class correlation, simple and more complex analytical techniques, and the use of control variables.</li>
+<li>Available as a half-day course with theory, worked examples, and paper-and-pencil exercises.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="the-general-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-linear-model">The general linear model</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>The general linear model is the workhorse of quantitative data analysis. Common procedures such as <em>t</em>-tests, ANOVA and linear regression can be understood as instances of this models, and other procedures such as logistic regression, mixed-effects models and generalised additive models are generalisations of it. Participants will learn how the general linear models works, how the parameter estimates it produces should be interpreted, and how the uncertainty about these estimates can be expressed.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/regression.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>This course assumes familiarity with descriptive statistics (e.g., mean, median, variance, scatterplot).</li>
+<li>This is a three-day course that includes theory, worked examples, paper-and-pencil exercises and practical exercises in R. Ideally, it is scheduled over the course of a few weeks so that the participants can let the concepts sink in and try their hand at some exercises.</li>
 </ul>
 </div>
 </div>
