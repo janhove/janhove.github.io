@@ -1,0 +1,105 @@
+---
+title: "Methods and stats support"
+toc: true
+toc-depth: 4
+---
+
+I offer two ways of getting help with methods and statistics: 
+standing [**office hours**](#office-hours) 
+at your institution for departments without an in-house methods person, 
+and one-off [**consulting**](#consulting) for individual researchers or projects. 
+Both cover much the same ground (research design, analysis, interpretation, reproducibility);
+the difference is mainly whether you're looking for an ongoing arrangement 
+from which the whole department may profit
+or help with a specific piece of work.
+Details and rates for each are below.
+
+I also offer one- and multi-day courses on statistics 
+geared principally towards Master's and Ph.D. students;
+see the [Courses](courses.qmd) for further information.
+
+## Departmental office hours {#office-hours}
+If your department doesn't have an in-house methods and stats person,
+I'd be happy to set up shop at your institution and organise regular
+office hours (e.g., one afternoon every fortnight).
+This way, faculty, associated researchers, and students can drop by
+to discuss any issue methodological or statistical, including:
+
+* sharpening research questions and formulating them in statistical terms 
+(usually the single most important aspect!);
+* providing feedback on a study design or a write-up;
+* running a sanity check on an analysis;
+* finding a suitable data visualisation;
+* interpreting model output;
+* making sense of the methods or stats in a published study.
+
+This offer is not a substitute for supervision.
+Nor is it a rubber-stamping service that doles out seals of approval
+or a crisis management service that attempts 
+to salvage some publishable result from a poorly designed study
+or to put a spin on findings deemed unfavourable to the researcher's hypothesis.
+Instead, the goal is to make clear-eyed methodological and statistical thinking
+a standing habit in the department by acting as a sounding board
+that faculty, researchers, and students come back to from time to time
+for frank but constructive feedback.
+
+If you're interested, 
+get in touch by [e-mail](mailto:janvanhove@gmail.com)
+so that we can work out the details.
+
+::: {.callout-note collapse="true"}
+## Details and rates
+* On-site and therefore available only to institutions not farther 
+than a 90-minute commute by public transport away from Bern.
+* Sessions can be on appointment or one a first come, first serve basis
+and last for roughly 40 minutes.
+* Reference rate for a four-hour block 
+with up to two hours of prep and follow-up: CHF 850.
+* Other durations possible.
+* Bookable as a regular event (e.g., weekly, fortnightly) over a longer
+time frame (at least four months) rather than as a one-off.
+* In English, German, French or Dutch.
+:::
+
+## Consulting and data analyses {#consulting}
+I'm happy to take on consulting work for researchers who need help with
+their research design, statistical analysis, or data interpretation.
+While my own experience is mostly in the social sciences,
+my statistical training extends beyond this.
+
+I can help you with:
+
+* sharpening research questions and formulating them in statistical terms
+(usually the single most important aspect!);
+* designing your study;
+* stress-testing questionnaires;
+* outlining or checking analysis plans;
+* data wrangling;
+* choosing effective visualisations;
+* making sense of output;
+* making your work reproducible and transparent:
+open data, 
+open code, 
+preregistrations,
+writing documentation;
+* or even doing the entire analysis from start to finish;
+* providing feedback on manuscripts.
+
+My goal isn't to help you squeeze out a significant _p_-value
+or run analyses whose principal merit is that everyone in the field runs them.
+Rather, it is to help you design, run, and analyse studies
+that strike a suitable balance between technical correctness and accessibility
+to others in the field.
+
+If you're interested, get in touch by [e-mail](mailto:janvanhove@gmail.com).
+If I think I can help you, we can arrange a short video call to discuss details.
+
+::: {.callout-note collapse="true"}
+## Details and rates
+* Both remote and, if the commute from Bern is feasible, on-site consulting
+are possible.
+* Work can be billed per hour or at a fixed quote.
+* Reference rate per hour: CHF 170.
+* Oral consulting in English, German, French or Dutch;
+written products in English, German or Dutch.
+:::
