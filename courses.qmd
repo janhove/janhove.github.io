@@ -11,18 +11,87 @@ Below are the courses I currently offer; get in touch by [e-mail](mailto:janvanh
 if you'd like to discuss details, including tailoring 
 courses for a specific group's needs.
 
-The reference rates are CHF 800 for a half-day course
-and CHF 1,200 for a full-day course.
-This does not include transport or, where applicable, lodging.
-If a course needs to be tailored substantially to the specific participant
-group or if it needs to be designed from scratch, this may be reflected
-in the quote.
-But even if this doesn't quite fit your budget, get in touch anyway:
-depending on timing and location, we may be able to work something out.
-
 Also see the [Methods and stats support](support.qmd) page
 if you're looking for individual consulting 
 or standing office hours rather than a structured course.
+
+::: {.callout-note collapse="true"}
+## Rates
+The reference rates are CHF 800 for a half-day course
+and CHF 1,200 for a full-day course.
+This does not include transport or, 
+where applicable, lodging.
+If a course needs to be tailored substantially 
+to the specific participant
+group or if it needs to be designed from scratch, 
+this may be reflected in the quote.
+But even if this doesn't quite fit your budget, **get in touch anyway**:
+depending on timing and location, we may be able to work something out.
+:::
+
+## The general linear model
+::: columns
+::: {.column width="55%"}
+The general linear model is the workhorse of quantitative data analysis.
+Common procedures such as _t_-tests, ANOVA and linear regression can be 
+understood as instances of this models,
+and other procedures such as logistic regression, mixed-effects models
+and generalised additive models are generalisations of it.
+Participants will learn how the general linear models works,
+how the parameter estimates it produces should be interpreted,
+and how the uncertainty about these estimates can be expressed.
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="40%"}
+![](figs/regression.svg)
+:::
+:::
+
+::: {.callout-note collapse="true"}
+## Details
+* This course assumes familiarity with descriptive statistics
+(e.g., mean, median, variance, scatterplot).
+* This is a three-day course that includes theory, worked examples,
+paper-and-pencil exercises and practical exercises in R. 
+Ideally, it is scheduled over the course
+of a few weeks so that the participants can let the concepts sink in 
+and try their hand at some exercises.
+:::
+
+## Design and analysis of experiments with intact groups
+::: columns
+::: {.column width="55%"}
+In lots of intervention studies in education and applied linguistics,
+intact classes or schools are assigned to the conditions in
+their entirety. 
+It is imperative that the analysis should reflect the fact that the 
+participants weren't assigned to the conditions on an individual basis,
+otherwise it is embarrassingly easy for the study to yield overly optimistic
+findings.
+This course explains why this is so and how experiments with intact groups
+can be designed and analysed appropriately.
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="40%"}
+![](figs/clusterrandomisation.svg)
+:::
+:::
+
+::: {.callout-note collapse="true"}
+## Details
+* Some experience with basic statistics (including hypothesis testing)
+is helpful but not strictly required.
+* The course covers the principle of randomisation as a basis for
+statistical inference, exact and approximate hypothesis test,
+one-factorial, two-factorial and mixed designs for intact groups,
+the design effect and the intra-class correlation,
+simple and more complex analytical techniques,
+and the use of control variables.
+* Available as a half-day course with theory, worked examples,
+and paper-and-pencil exercises.
+:::
 
 ## Working with data sets in R {#datasets}
 ::: columns
@@ -117,68 +186,4 @@ use can be discussed as can techniques from the realm of
 _interpretable machine learning_.
 * Available as a half-day course with theory, worked examples, and 
 pen-and-paper exercises.
-:::
-
-## Design and analysis of experiments with intact groups
-::: columns
-::: {.column width="55%"}
-In lots of intervention studies in education and applied linguistics,
-intact classes or schools are assigned to the conditions in
-their entirety. 
-It is imperative that the analysis should reflect the fact that the 
-participants weren't assigned to the conditions on an individual basis,
-otherwise it is embarrassingly easy for the study to yield overly optimistic
-findings.
-This course explains why this is so and how experiments with intact groups
-can be designed and analysed appropriately.
-:::
-::: {.column width="5%"}
-:::
-::: {.column width="40%"}
-![](figs/clusterrandomisation.svg)
-:::
-:::
-
-::: {.callout-note collapse="true"}
-## Details
-* Some experience with basic statistics (including hypothesis testing)
-is helpful but not strictly required.
-* The course covers the principle of randomisation as a basis for
-statistical inference, exact and approximate hypothesis test,
-one-factorial, two-factorial and mixed designs for intact groups,
-the design effect and the intra-class correlation,
-simple and more complex analytical techniques,
-and the use of control variables.
-* Available as a half-day course with theory, worked examples,
-and paper-and-pencil exercises.
-:::
-
-## The general linear model
-::: columns
-::: {.column width="55%"}
-The general linear model is the workhorse of quantitative data analysis.
-Common procedures such as _t_-tests, ANOVA and linear regression can be 
-understood as instances of this models,
-and other procedures such as logistic regression, mixed-effects models
-and generalised additive models are generalisations of it.
-Participants will learn how the general linear models works,
-how the parameter estimates it produces should be interpreted,
-and how the uncertainty about these estimates can be expressed.
-:::
-::: {.column width="5%"}
-:::
-::: {.column width="40%"}
-![](figs/regression.svg)
-:::
-:::
-
-::: {.callout-note collapse="true"}
-## Details
-* This course assumes familiarity with descriptive statistics
-(e.g., mean, median, variance, scatterplot).
-* This is a three-day course that includes theory, worked examples,
-paper-and-pencil exercises and practical exercises in R. 
-Ideally, it is scheduled over the course
-of a few weeks so that the participants can let the concepts sink in 
-and try their hand at some exercises.
 :::
