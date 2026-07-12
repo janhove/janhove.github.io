@@ -138,11 +138,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#datasets" id="toc-datasets" class="nav-link active" data-scroll-target="#datasets">Working with data sets in R</a></li>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link active" data-scroll-target="#the-general-linear-model">The general linear model</a></li>
+  <li><a href="#design-and-analysis-of-experiments-with-intact-groups" id="toc-design-and-analysis-of-experiments-with-intact-groups" class="nav-link" data-scroll-target="#design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</a></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Working with data sets in R</a></li>
   <li><a href="#visualising-data-in-r" id="toc-visualising-data-in-r" class="nav-link" data-scroll-target="#visualising-data-in-r">Visualising data in R</a></li>
   <li><a href="#visualising-models-and-their-uncertainty" id="toc-visualising-models-and-their-uncertainty" class="nav-link" data-scroll-target="#visualising-models-and-their-uncertainty">Visualising models and their uncertainty</a></li>
-  <li><a href="#design-and-analysis-of-experiments-with-intact-groups" id="toc-design-and-analysis-of-experiments-with-intact-groups" class="nav-link" data-scroll-target="#design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</a></li>
-  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model">The general linear model</a></li>
   </ul>
 </nav>
     </div>
@@ -169,8 +169,86 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>I offer one- and multi-day courses on data analysis, geared principally towards Master’s and PhD students, though they’re equally suitable for postdocs or faculty. Below are the courses I currently offer; get in touch by <a href="mailto:janvanhove@gmail.com">e-mail</a> if you’d like to discuss details, including tailoring courses for a specific group’s needs.</p>
-<p>The reference rates are CHF 800 for a half-day course and CHF 1,200 for a full-day course. This does not include transport or, where applicable, lodging. If a course needs to be tailored substantially to the specific participant group or if it needs to be designed from scratch, this may be reflected in the quote. But even if this doesn’t quite fit your budget, get in touch anyway: depending on timing and location, we may be able to work something out.</p>
 <p>Also see the <a href="./support.html">Methods and stats support</a> page if you’re looking for individual consulting or standing office hours rather than a structured course.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Rates
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The reference rates are CHF 800 for a half-day course and CHF 1,200 for a full-day course. This does not include transport or, where applicable, lodging. If a course needs to be tailored substantially to the specific participant group or if it needs to be designed from scratch, this may be reflected in the quote. But even if this doesn’t quite fit your budget, <strong>get in touch anyway</strong>: depending on timing and location, we may be able to work something out.</p>
+</div>
+</div>
+</div>
+<section id="the-general-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-linear-model">The general linear model</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>The general linear model is the workhorse of quantitative data analysis. Common procedures such as <em>t</em>-tests, ANOVA and linear regression can be understood as instances of this models, and other procedures such as logistic regression, mixed-effects models and generalised additive models are generalisations of it. Participants will learn how the general linear models works, how the parameter estimates it produces should be interpreted, and how the uncertainty about these estimates can be expressed.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/regression.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>This course assumes familiarity with descriptive statistics (e.g., mean, median, variance, scatterplot).</li>
+<li>This is a three-day course that includes theory, worked examples, paper-and-pencil exercises and practical exercises in R. Ideally, it is scheduled over the course of a few weeks so that the participants can let the concepts sink in and try their hand at some exercises.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="design-and-analysis-of-experiments-with-intact-groups" class="level2">
+<h2 class="anchored" data-anchor-id="design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>In lots of intervention studies in education and applied linguistics, intact classes or schools are assigned to the conditions in their entirety. It is imperative that the analysis should reflect the fact that the participants weren’t assigned to the conditions on an individual basis, otherwise it is embarrassingly easy for the study to yield overly optimistic findings. This course explains why this is so and how experiments with intact groups can be designed and analysed appropriately.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="figs/clusterrandomisation.svg" class="img-fluid"></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Details
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Some experience with basic statistics (including hypothesis testing) is helpful but not strictly required.</li>
+<li>The course covers the principle of randomisation as a basis for statistical inference, exact and approximate hypothesis test, one-factorial, two-factorial and mixed designs for intact groups, the design effect and the intra-class correlation, simple and more complex analytical techniques, and the use of control variables.</li>
+<li>Available as a half-day course with theory, worked examples, and paper-and-pencil exercises.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
 <section id="datasets" class="level2">
 <h2 class="anchored" data-anchor-id="datasets">Working with data sets in R</h2>
 <div class="columns">
@@ -183,7 +261,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -192,7 +270,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>No prerequisites.</li>
@@ -215,7 +293,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -224,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>While no prerequisites are required to appreciate the main ideas, participants will be better able to draw their own plots if they are also familiar with the contents of the course <a href="#datasets">Working with data sets in R</a>.</li>
@@ -248,7 +326,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -257,75 +335,12 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li>Participants should have some basic practical experience with regression modelling.</li>
 <li>The course covers point estimates, pointwise and simultaneous confidence intervals and confidence bands, prediction intervals, bootstrapping techniques, visualising simple and multiple linear regression models, visualising interactions and non-linearities, visualising logistic regression. On request, further techniques related to the kinds of model the participants use can be discussed as can techniques from the realm of <em>interpretable machine learning</em>.</li>
 <li>Available as a half-day course with theory, worked examples, and pen-and-paper exercises.</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="design-and-analysis-of-experiments-with-intact-groups" class="level2">
-<h2 class="anchored" data-anchor-id="design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>In lots of intervention studies in education and applied linguistics, intact classes or schools are assigned to the conditions in their entirety. It is imperative that the analysis should reflect the fact that the participants weren’t assigned to the conditions on an individual basis, otherwise it is embarrassingly easy for the study to yield overly optimistic findings. This course explains why this is so and how experiments with intact groups can be designed and analysed appropriately.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/clusterrandomisation.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>Some experience with basic statistics (including hypothesis testing) is helpful but not strictly required.</li>
-<li>The course covers the principle of randomisation as a basis for statistical inference, exact and approximate hypothesis test, one-factorial, two-factorial and mixed designs for intact groups, the design effect and the intra-class correlation, simple and more complex analytical techniques, and the use of control variables.</li>
-<li>Available as a half-day course with theory, worked examples, and paper-and-pencil exercises.</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<section id="the-general-linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-linear-model">The general linear model</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>The general linear model is the workhorse of quantitative data analysis. Common procedures such as <em>t</em>-tests, ANOVA and linear regression can be understood as instances of this models, and other procedures such as logistic regression, mixed-effects models and generalised additive models are generalisations of it. Participants will learn how the general linear models works, how the parameter estimates it produces should be interpreted, and how the uncertainty about these estimates can be expressed.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/regression.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>This course assumes familiarity with descriptive statistics (e.g., mean, median, variance, scatterplot).</li>
-<li>This is a three-day course that includes theory, worked examples, paper-and-pencil exercises and practical exercises in R. Ideally, it is scheduled over the course of a few weeks so that the participants can let the concepts sink in and try their hand at some exercises.</li>
 </ul>
 </div>
 </div>
