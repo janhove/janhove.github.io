@@ -1,0 +1,328 @@
+---
+title: "Testing sharp and weak null hypotheses in randomised experiments"
+date: "2026-11-09"
+categories: [assumptions, experiments, design features, nonparametric tests, R, significance]
+format:
+  html:
+    code-fold: true
+    message: false
+---
+
+In a [previous post](../2025-11-09-population-randomisation/),
+I explained how randomisation tests work and 
+why they are a sensible choice when analysing the data from a randomised
+experiments with a null hypothesis test.
+In this post, I want to take a closer look at the distinction between 
+so-called **sharp** (Fisherian) and **weak** (Neymanian) null hypotheses
+and how they can be tested.
+This post is in a way a synopsis of chapters 3, 4, and 8
+of Ding's (2024) _First course in causal inference_.
+
+## Recap: Randomisation tests of the sharp null hypothesis
+Under the randomisation model, we posit that there are two 
+potential outcomes $y_i(0)$ and $y_i(1)$ for each participant $i = 1, \dots, m$
+in a randomised experiment with two conditions, only one of which is observed:
+
+* either $y_i(0)$ if the $i$-th participant is assigned to the first condition;
+* or $y_i(1)$ if the participant is assigned to the second condition.
+
+According to Fisher's **sharp null hypothesis**, 
+there is no differential treatment effect for _any_ of the participants:
+
+$$H_{oS}: y_i(0) = y_i(1) \text{ for } 1 \leq i \leq m.$$
+
+As I've explained [before](../2025-11-09-population-randomisation/),
+this sharp null hypothesis can be tested exactly by means of a randomisation test
+using _any_ definable test statistic.
+This test statistic could be the observed mean difference between the two
+conditions, the observed difference between the condition medians,
+the probability of superiority -- anything the analyst deems sensible.
+
+A test statistic that I did not use in the other blog post
+but that is important now
+is the **studentised mean difference**:
+
+$$
+  t := \frac{\widehat{y}(1) - \widehat{y}(0)}{\sqrt{\widehat{V}}}.
+$$
+
+In this equation, $\widehat{y}(0), \widehat{y}(1)$ are the condition means in the first
+and second condition, respectively, 
+and $\widehat{V}$ is defined as
+
+$$
+  \widehat{V} := \frac{\widehat{S}^2(0)}{n_0} + \frac{\widehat{S}^2(1)}{n_1},
+$$
+
+where $\widehat{S}^2(0)$ and $n_0$ are the sample variance and the group size
+in the first condition
+and $\widehat{S}^2(1)$ and $n_1$ are the sample variance and the group size
+in the second condition.
+Incidentally, 
+this definition of $t$ agrees with the one used in Welch's $t$-test.
+
+The following code snippet defines a function for computing 
+the studentised mean difference. 
+I've also copied the function for running a randomisation test 
+from the other blog post.
+
+```{r}
+studentised_mean_diff <- function(x, group) {
+  v_hat <- var(x[group == 1]) / length(x[group == 1]) + 
+    var(x[group == 0]) / length(x[group == 0])
+  (mean(x[group == 1]) - mean(x[group == 0])) / sqrt(v_hat)
+}
+
+randomisation_test <- function(
+    # Randomisation test of sharp null in two-group comparison.
+    x,           # outcome
+    group,       # grouping variable
+    fun,         # function for computing test statistic from x and group
+    delta = 0,   # delta for sharp null hypothesis
+    alternative = "two_sided", # two-sided, left-sided or right-sided p-value?
+    M = 19999,   # number of new randomisations generated
+    plot = TRUE, # plot histogram of test statistic under H0?
+    ...          # parameters passed to histogram
+) {
+  test_stat <- fun(x, group)
+  x[group == 1] <- x[group == 1] - delta
+  test_stat_H0 <- replicate(M, {
+    fun(x, sample(group))
+  })
+  test_stat_H0 <- c(test_stat, test_stat_H0)
+  
+  if (plot) {
+    hist(test_stat_H0, ...)
+    abline(v = test_stat, lwd = 2)
+  }
+  
+  p_left <- mean(test_stat_H0 <= test_stat)
+  if (substr(alternative, 1, 1) == "l") return(p_left)
+  
+  p_right <-mean(test_stat_H0 >= test_stat)
+  if (substr(alternative, 1, 1) == "r") return(p_right)
+  
+  min(2 * min(p_left, p_right), 1)
+}
+```
+
+These functions can be used like so:
+```{r}
+#| code-fold: show
+# Define some data
+d <- structure(list(
+  Group = c(0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0,
+            1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0), 
+  Outcome = c(7, 8, 9.5, 8.5, 7.5, 9, 8, 7.5, 10, 8, 8.5, 
+              8, 9, 10.5, 8, 9, 7.5, 9, 9.5, 11, 8, 8, 7.5, 9, 9.5, 8.5, 8.5)), 
+  class = "data.frame", row.names = seq_len(27))
+
+# Randomisation test with studentised mean difference
+randomisation_test(d$Outcome, d$Group, studentised_mean_diff, plot = FALSE)
+```
+
+Randomisation testing pretty easily achieves exact finite-sample inference
+for the sharp null hypothesis and can straightforwardly be justified in
+randomised experiments.
+However, two drawbacks in particular bear mentioning.
+
+The first concerns the construction of sensible **confidence sets**.
+It _is_ possible to construct confidence sets for, for instance,
+a constant treatment shift $\delta$.
+This involves testing the sharp null hypothesis that the differential
+treatment effect is $\delta$ for all participants:
+
+$$
+H_{oS}(\delta): y_i(1) = y_i(0) + \delta \text{ for } 1 \leq i \leq m.
+$$
+A $(1-\alpha)$ confidence set for the constant treatment shift is then
+given by the set of all $\delta$ for which $H_{oS}$ cannot be rejected at the
+$\alpha$ level.
+
+<!-- * Exact finite-sample inference easily achieved by means of randomisation tests. -->
+<!-- * Can construct CI for additive effect by testing -->
+
+<!-- and taking a as the $1 - \alpha$ confidence set those $\delta$ values -->
+<!-- for which $H_o(\delta)$ is not rejected at level $\alpha$. -->
+<!-- (Similarly for multiplicative effects.) -->
+
+<!-- Problem with CI: May be empty. Unrealistic that any non-zero effect should -->
+<!-- be the same in all units. -->
+
+<!-- ## The weak null hypothesis -->
+<!-- The sharp null hypothesis posits that none of the units shows any -->
+<!-- differential treatment effect. -->
+<!-- Weak form: the _average_ treatment effect is zero. That is, -->
+<!-- we define -->
+<!-- $$\frac{1}{m}\sum_{i=1}^m y_i(0) =: \overline y(0)$$ -->
+<!-- and -->
+<!-- $$\frac{1}{m}\sum_{i=1}^m y_i(1) =: \overline y(1)$$ -->
+<!-- and posit the null hypothesis that -->
+<!-- $$H_{oW}: \overline y(1) - \overline y(1) =: \tau = 0.$$ -->
+<!-- For each participant, we observe either $y_i(0)$ or $y_i(1)$, -->
+<!-- so we don't observe $\overline y(0)$ or $\overline y(1)$ either. -->
+<!-- Instead, we estimate $\widehat \tau$. -->
+
+
+
+<!-- Define $\overline Y(1) := n^{-1}\sum_i Y_i(1)$ -->
+<!-- and $\overline Y(0) := n^{-1}\sum_i Y_i(0)$. -->
+
+<!-- Can show that  -->
+<!-- $\widehat V$ is a conservative estimator of $\text{Var}(\widehat \tau)$. -->
+<!-- Under some conditions, it can be shown that  -->
+<!-- the distribution of -->
+
+<!-- \[ -->
+<!--   \frac{\widehat \tau - \tau}{\sqrt{\text{Var}(\widehat \tau)}} -->
+<!-- \] -->
+
+<!-- is approximately standard normal for large enough samples (Ding 2024, Theorem 4.2). -->
+
+<!-- Since $\widehat V$ conservatively estimates $\text{Var}(\widehat \tau)$, -->
+<!-- an asymptotically conservative $(1 - \alpha)$ confidence interval for $\tau$ -->
+<!-- can be constructed as -->
+
+<!-- \[ -->
+<!--   \widehat{\tau} \pm z_{1 - \alpha} \sqrt{\widehat{V}}}. -->
+<!-- \] -->
+
+<!-- An asymptotic $p$-value is obtained by comparing  -->
+<!-- $(\widehat{\tau} - \tau)/\sqrt{\widehat{V}}$ to a standard normal distribution. -->
+
+
+<!-- ```{r} -->
+<!-- d <- read.csv("Klein2014_gambler.csv") |>  -->
+<!--   filter(Sample == "brasilia") |>  -->
+<!--   filter(!is.na(RollsImagined)) -->
+<!-- d$n.Condition <- ifelse(d$Condition == "three6", 1, 0) -->
+<!-- d |>  -->
+<!--   ggplot(aes(x = Condition, y = RollsImagined)) + -->
+<!--   geom_boxplot(outlier.shape = NA) + -->
+<!--   geom_point(shape = 1, position = position_jitter(width = 0.1, height = 0)) + -->
+<!--   scale_x_discrete(name = "Condition", -->
+<!--     limits = c("two6", "three6"), labels = c("two sixes", "three sixes")) + -->
+<!--   ylab("Number of previous rolls imagined") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+
+<!-- randomisation_test <- function( -->
+<!--     # Randomisation test of sharp null in two-group comparison. -->
+<!--     x,           # outcome -->
+<!--     group,       # grouping variable -->
+<!--     fun,         # function for computing test statistic from x and group -->
+<!--     delta = 0,   # delta for sharp null hypothesis -->
+<!--     alternative = "two_sided", # two-sided, left-sided or right-sided p-value? -->
+<!--     M = 19999,   # number of new randomisations generated -->
+<!--     plot = TRUE, # plot histogram of test statistic under H0? -->
+<!--     ...          # parameters passed to histogram -->
+<!-- ) { -->
+<!--   test_stat <- fun(x, group) -->
+<!--   x[group == 1] <- x[group == 1] - delta -->
+<!--   test_stat_H0 <- replicate(M, { -->
+<!--     fun(x, sample(group)) -->
+<!--   }) -->
+<!--   test_stat_H0 <- c(test_stat, test_stat_H0) -->
+
+<!--   if (plot) { -->
+<!--     hist(test_stat_H0, ...) -->
+<!--     abline(v = test_stat, lwd = 2) -->
+<!--   } -->
+
+<!--   p_left <- mean(test_stat_H0 <= test_stat) -->
+<!--   if (substr(alternative, 1, 1) == "l") return(p_left) -->
+
+<!--   p_right <-mean(test_stat_H0 >= test_stat) -->
+<!--   if (substr(alternative, 1, 1) == "r") return(p_right) -->
+
+<!--   min(2 * min(p_left, p_right), 1) -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- set.seed(2026-07-09) # the day I wrote this -->
+<!-- randomisation_test(d$RollsImagined, d$n.Condition, studentised_mean_diff,  -->
+<!--   breaks = 50, xlab = "Studentised mean difference",  -->
+<!--   main = "Distribution under H0") -->
+<!-- ``` -->
+
+<!-- Asymptotic Neyman test for weak null hypothesis: -->
+
+```{r}
+neyman_test <- function(
+    # Asymptotic test of weak null in two-group comparison.
+    x, 
+    group, 
+    alternative = "two_sided"
+) {
+  test_statistic <- studentised_mean_diff(x, group)
+
+  p_left <- pnorm(test_statistic, lower.tail = TRUE)
+  if (substr(alternative, 1, 1) == "l") return(p_left)
+
+  p_right <- pnorm(test_statistic, lower.tail = FALSE)
+  if (substr(alternative, 1, 1) == "r") return(p_right)
+
+  min(2 * min(p_left, p_right), 1)
+}
+
+# Alternatively, use Welch' t-test.
+```
+
+<!-- The  -->
+
+<!-- ```{r} -->
+<!-- #| results: asis -->
+<!-- # Let's do this for all samples: -->
+
+<!-- d <- read.csv("Klein2014_gambler.csv") |>  -->
+<!--   filter(!is.na(RollsImagined)) -->
+<!-- d$n.Condition <- ifelse(d$Condition == "three6", 1, 0) -->
+
+<!-- pvals_HoF <- rep(0, length(unique(d$Sample))) -->
+<!-- pvals_HoN <- rep(0, length(unique(d$Sample))) -->
+
+<!-- for (i in seq_along(unique(d$Sample))) { -->
+<!--   my_sample <- unique(d$Sample)[[i]] -->
+<!--   d_sample <- d |> filter(Sample == my_sample) -->
+<!--   pvals_HoF[[i]] <- randomisation_test(d_sample$RollsImagined, d_sample$n.Condition,  -->
+<!--     studentised_mean_diff, breaks = 50,  -->
+<!--     xlab = "Studentised mean difference",  -->
+<!--     main = paste("Distribution under HoF in the", my_sample, "sample")) -->
+<!--   pvals_HoN[[i]] <- neyman_test(d_sample$RollsImagined, d_sample$n.Condition) -->
+<!-- } -->
+
+<!-- ``` -->
+
+## Simulation
+
+```{r}
+simulate_sharp <- function() {
+  
+}
+```
+
+```{r}
+simulate_weak <- function() {
+  
+}
+```
+
+
+
+
+## Reference
+Ding, Peng.
+2024.
+_A first course in causal inference_.
+Boca Raton, FL: CRC Press.
+Also available from [arXiv.org](https://doi.org/10.48550/arXiv.2305.18793).
+
+## Software versions
+```{r}
+devtools::session_info("attached")
+```
+
