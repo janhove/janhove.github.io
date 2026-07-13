@@ -434,7 +434,7 @@ background-color: null;
 font-style: inherit;">FALSE</span>)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1024</code></pre>
+<pre><code>[1] 0.0996</code></pre>
 </div>
 </div>
 <p>Randomisation testing pretty easily achieves exact finite-sample inference for the strong null hypothesis and can straightforwardly be justified in randomised experiments. However, two drawbacks in particular bear mentioning.</p>
