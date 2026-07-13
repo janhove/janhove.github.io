@@ -4,14 +4,25 @@ toc: true
 toc-depth: 4
 ---
 
-I offer two ways of getting help with methods and statistics: 
-standing [**office hours**](#office-hours) 
-at your institution for departments without an in-house methods person, 
-and one-off [**consulting**](#consulting) for individual researchers or projects. 
-Both cover much the same ground (research design, analysis, interpretation, reproducibility);
-the difference is mainly whether you're looking for an ongoing arrangement 
+I offer two ways of getting help with research methods 
+and quantitative data analysis: 
+standing [**office hours**](#office-hours) at your institution 
+for departments without a dedicated methods specialist, 
+and one-off [**consulting**](#consulting) for individual researchers 
+or projects. 
+While I'd gladly discuss technical details involving statistical
+techniques and software,
+I may be of particular help already at an earlier stage
+in the research process: 
+clarifying research questions, 
+assessing study designs, 
+figuring out what kinds of conclusions the resulting data 
+will be able to support,
+and generally asking pesky questions and helping to resolve them.
+The difference between both offers is mainly 
+whether you're looking for an ongoing arrangement 
 from which the whole department may profit
-or help with a specific piece of work.
+or help with a particular study.
 Details and rates for each are below.
 
 I also offer one- and multi-day courses on statistics 
@@ -19,29 +30,32 @@ geared principally towards Master's and Ph.D. students;
 see the [Courses](courses.qmd) for further information.
 
 ## Departmental office hours {#office-hours}
-If your department doesn't have an in-house methods and stats person,
+Departments with no dedicated methods specialist 
+may find that researchers repeatedly run into similar difficulties: 
+formulating answerable questions, 
+assessing whether a design supports a particular claim, 
+tailoring a model to a question and interpreting its output, 
+or communicating uncertainty while highlighting important trends. 
 I'd be happy to set up shop at your institution and organise regular
 office hours (e.g., one afternoon every fortnight).
-This way, faculty, associated researchers, and students can drop by
-to discuss any issue methodological or statistical, including:
+This way, faculty, associated researchers, and students can drop 
+by to discuss any issue methodological or statistical
+before they become serious problems.
+
+Here I some things I could help you with:
 
 * sharpening research questions and formulating them in statistical terms 
-(usually the single most important aspect!);
+(usually _the_ single most important aspect!);
 * providing feedback on a study design or a write-up;
 * running a sanity check on an analysis;
 * finding a suitable data visualisation;
 * interpreting model output;
 * making sense of the methods or stats in a published study.
 
-This offer is not a substitute for supervision.
-Nor is it a rubber-stamping service that doles out seals of approval
-or a crisis management service that attempts 
-to salvage some publishable result from a poorly designed study
-or to put a spin on findings deemed unfavourable to the researcher's hypothesis.
-Instead, the goal is to make clear-eyed methodological and statistical thinking
-a standing habit in the department by acting as a sounding board
-that faculty, researchers, and students come back to from time to time
-for frank but constructive feedback.
+The aim is not to take over supervision 
+or to rescue projects at the eleventh hour. 
+Rather, it is to provide researchers with independent 
+methodological feedback throughout the research process.
 
 If you're interested, 
 get in touch by [e-mail](mailto:janvanhove@gmail.com)
@@ -70,7 +84,7 @@ my statistical training extends beyond this.
 I can help you with:
 
 * sharpening research questions and formulating them in statistical terms
-(usually the single most important aspect!);
+(usually _the_ single most important aspect!);
 * designing your study;
 * stress-testing questionnaires;
 * outlining or checking analysis plans;
@@ -86,10 +100,11 @@ writing documentation;
 * providing feedback on manuscripts.
 
 My goal isn't to help you squeeze out a significant _p_-value
-or run analyses whose principal merit is that everyone in the field runs them.
+or run analyses whose principal merit is 
+that everyone in the field runs them.
 Rather, it is to help you design, run, and analyse studies
-that strike a suitable balance between technical correctness and accessibility
-to others in the field.
+that strike a suitable balance between technical 
+correctness and accessibility to others in the field.
 
 If you're interested, get in touch by [e-mail](mailto:janvanhove@gmail.com).
 If I think I can help you, we can arrange a short video call to discuss details.
