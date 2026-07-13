@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2026-07-13">
+
+<title>Testing strong and weak null hypotheses in randomised experiments – Jan Vanhove</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-703c9532075cde06ab04a16b69a0e953.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#recap-randomisation-tests-of-the-strong-null-hypothesis" id="toc-recap-randomisation-tests-of-the-strong-null-hypothesis" class="nav-link active" data-scroll-target="#recap-randomisation-tests-of-the-strong-null-hypothesis">Recap: Randomisation tests of the strong null hypothesis</a></li>
+  <li><a href="#the-weak-null-hypothesis" id="toc-the-weak-null-hypothesis" class="nav-link" data-scroll-target="#the-weak-null-hypothesis">The weak null hypothesis</a></li>
+  <li><a href="#simulations" id="toc-simulations" class="nav-link" data-scroll-target="#simulations">Simulations</a></li>
+  <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">tl;dr</a></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Testing strong and weak null hypotheses in randomised experiments</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">assumptions</div>
+    <div class="quarto-category">experiments</div>
+    <div class="quarto-category">design features</div>
+    <div class="quarto-category">nonparametric tests</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">significance</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 13, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In a <a href="../2025-11-09-population-randomisation/">previous post</a>, I explained how randomisation tests work and why they are a sensible choice when analysing the data from a randomised experiments with a null hypothesis test. In this post, I want to take a closer look at the distinction between so-called <strong>strong</strong> or <strong>sharp</strong> (Fisherian) and <strong>weak</strong> (Neymanian) null hypotheses and how they can be tested. This post is in a way a synopsis of chapters 3, 4, and 8 of Ding’s (2024) <em>First course in causal inference</em>.</p>
+<section id="recap-randomisation-tests-of-the-strong-null-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="recap-randomisation-tests-of-the-strong-null-hypothesis">Recap: Randomisation tests of the strong null hypothesis</h2>
+<p>Under the randomisation model, we posit that there are two potential outcomes <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> for each unit <span class="math inline">\(i = 1, \dots, m\)</span> in a randomised experiment with two conditions, only one of which is observed:</p>
+<ul>
+<li>either <span class="math inline">\(y_i(0)\)</span> if the <span class="math inline">\(i\)</span>-th unit is assigned to the first condition;</li>
+<li>or <span class="math inline">\(y_i(1)\)</span> if the unit is assigned to the second condition.</li>
+</ul>
+<p>The quantities <span class="math inline">\(y_i(0), y_i(1), i = 1, \dots, m\)</span> are unknown but fixed quantities in the present set-up – they are <em>not</em> random variables. What are random variables are the data that are actually observed. The randomness is introduced by the random assignment of units to conditions.</p>
+<p>According to Fisher’s <strong>sharp null hypothesis</strong>, there is no differential treatment effect for <em>any</em> of the units:</p>
+<p><span class="math display">\[H_{oS}: y_i(0) = y_i(1) \text{ for } i = 1, \dots, m.\]</span></p>
+<p>As I’ve explained <a href="../2025-11-09-population-randomisation/">before</a>, this sharp null hypothesis can be tested exactly by means of a randomisation test using <em>any</em> definable test statistic. This test statistic could be the observed mean difference between the two conditions, the observed difference between the condition medians, the probability of superiority – anything the analyst deems sensible.</p>
+<p>A test statistic that I did not use in the other blog post but that is important now is the <strong>studentised mean difference</strong>:</p>
+<p><span class="math display">\[
+  t := \frac{\widehat{y}(1) - \widehat{y}(0)}{\sqrt{\widehat{V}}}.
+\]</span></p>
+<p>In this equation, <span class="math inline">\(\widehat{y}(0), \widehat{y}(1)\)</span> are the condition means in the first and second condition, respectively, and <span class="math inline">\(\widehat{V}\)</span> is defined as</p>
+<p><span class="math display">\[
+  \widehat{V} := \frac{\widehat{S}^2(0)}{n_0} + \frac{\widehat{S}^2(1)}{n_1},
+\]</span></p>
+<p>where <span class="math inline">\(\widehat{S}^2(0)\)</span> and <span class="math inline">\(n_0\)</span> are the sample variance and the group size in the first condition and <span class="math inline">\(\widehat{S}^2(1)\)</span> and <span class="math inline">\(n_1\)</span> are the sample variance and the group size in the second condition. Incidentally, this definition of <span class="math inline">\(t\)</span> agrees with the one used in Welch’s <em>t</em>-test, i.e., the <span class="math inline">\(t\)</span>-statistic you get when running R’s <code>t.test()</code> with the default parameter setting <code>var.equal = FALSE</code>.</p>
+<p>The following code snippet defines a function for computing the studentised mean difference.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>studentised_mean_diff <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  v_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">length</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">+</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">var</span>(x[group <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> <span class="fu">length</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])) <span class="sc">/</span> <span class="fu">sqrt</span>(v_hat)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>I’ve also copied the function for running a randomisation test from the other blog post.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>randomisation_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomisation test of sharp null in two-group comparison.</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    x,           <span class="co"># outcome</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    group,       <span class="co"># grouping variable (0 or 1)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fun,         <span class="co"># function for computing test statistic from x and group</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> <span class="dv">0</span>,   <span class="co"># delta for sharp null hypothesis</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two_sided"</span>, <span class="co"># two-sided, left-sided or right-sided p-value?</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">M =</span> <span class="dv">19999</span>,   <span class="co"># number of new randomisations generated</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="co"># plot histogram of test statistic under H0?</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    ...          <span class="co"># parameters passed to histogram</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  test_stat <span class="ot">&lt;-</span> <span class="fu">fun</span>(x, group)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  x[group <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> x[group <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">-</span> delta</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  test_stat_H0 <span class="ot">&lt;-</span> <span class="fu">replicate</span>(M, {</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fun</span>(x, <span class="fu">sample</span>(group))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  test_stat_H0 <span class="ot">&lt;-</span> <span class="fu">c</span>(test_stat, test_stat_H0)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (plot) {</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(test_stat_H0, ...)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="at">v =</span> test_stat, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  p_left <span class="ot">&lt;-</span> <span class="fu">mean</span>(test_stat_H0 <span class="sc">&lt;=</span> test_stat)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"l"</span>) <span class="fu">return</span>(p_left)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  p_right <span class="ot">&lt;-</span><span class="fu">mean</span>(test_stat_H0 <span class="sc">&gt;=</span> test_stat)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"r"</span>) <span class="fu">return</span>(p_right)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(p_left, p_right), <span class="dv">1</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>These functions can be used like so:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define some data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">list</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Group =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Outcome =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">8</span>, <span class="fl">9.5</span>, <span class="fl">8.5</span>, <span class="fl">7.5</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="fl">7.5</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="fl">8.5</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>              <span class="dv">8</span>, <span class="dv">9</span>, <span class="fl">10.5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="fl">7.5</span>, <span class="dv">9</span>, <span class="fl">9.5</span>, <span class="dv">11</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="fl">7.5</span>, <span class="dv">9</span>, <span class="fl">9.5</span>, <span class="fl">8.5</span>, <span class="fl">8.5</span>)), </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="st">"data.frame"</span>, <span class="at">row.names =</span> <span class="fu">seq_len</span>(<span class="dv">27</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Randomisation test with studentised mean difference</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, studentised_mean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1062</code></pre>
+</div>
+</div>
+<p>Randomisation testing pretty easily achieves exact finite-sample inference for the strong null hypothesis and can straightforwardly be justified in randomised experiments. However, two drawbacks in particular bear mentioning.</p>
+<p>The first concerns the construction of sensible <strong>confidence sets</strong>. It <em>is</em> possible to construct confidence sets for, for instance, a constant treatment shift <span class="math inline">\(\delta\)</span>. This involves testing the strong null hypothesis that the differential treatment effect is <span class="math inline">\(\delta\)</span> for all units:</p>
+<p><span class="math display">\[
+H_{oS}(\delta): y_i(1) = y_i(0) + \delta \text{ for } i = 1, \dots, m.
+\]</span> A <span class="math inline">\((1-\alpha)\)</span> confidence set for the constant treatment shift is then given by the set of all <span class="math inline">\(\delta\)</span> for which <span class="math inline">\(H_{oS}\)</span> cannot be rejected at the <span class="math inline">\(\alpha\)</span> level. Confidence sets for constant multiplicative effects (i.e., <span class="math inline">\(y_i(1) = \gamma y_i(0)\)</span> for <span class="math inline">\(1 \leq i \leq m\)</span>) can similarly be constructed.</p>
+<p>However, if the data are not compatible with such a constant additive (or multiplicative) effect, the confidence set may be empty. Moreover, since it often seems unrealistic that any non-zero effect should be the same in all units the <span class="math inline">\(\delta\)</span> (or <span class="math inline">\(\gamma\)</span>) parameter for which we construct a confidence set may have little bearing to reality.</p>
+<p>The second drawback of randomisation testing under Fisher’s strong null hypothesis is that it assumes no differential treatment effect for <em>any</em> unit. But perhaps we’re more interested in testing the less restrictive null hypothesis that there is no differential treatment effect <em>on average</em>.</p>
+</section>
+<section id="the-weak-null-hypothesis" class="level2">
+<h2 class="anchored" data-anchor-id="the-weak-null-hypothesis">The weak null hypothesis</h2>
+<p>Whereas the strong null hypothesis posits that <span class="math inline">\(y_i(1) = y_i(0)\)</span> for all units, the weak null hypothesis only posits that this is true <em>on average</em> in the sample. Let <span class="math display">\[\overline y(0) := \frac{1}{m}\sum_{i=1}^m y_i(0)\]</span> and <span class="math display">\[\overline y(1) := \frac{1}{m}\sum_{i=1}^m y_i(1)\]</span> denote the average outcomes if every unit in the experiment had been assigned to the first and to the second condition, respectively. Neyman’s weak null hypothesis posits that the difference <span class="math inline">\(\tau := \overline y(1) - \overline y(0)\)</span> between these average is zero: <span class="math display">\[H_{oW}: \tau = 0.\]</span> Fisher’s strong null hypothesis implies Neyman’s weak null hypothesis, but the latter can hold even if the former doesn’t, namely when the individual treatment effects aren’t all zero but happen to cancel each other out.</p>
+<p>For each unit, we observe either <span class="math inline">\(y_i(0)\)</span> or <span class="math inline">\(y_i(1)\)</span>, so we don’t observe <span class="math inline">\(\overline y(0), \overline y(1)\)</span> or <span class="math inline">\(\tau\)</span>, either. Instead, we estimate <span class="math inline">\(\tau\)</span> as sample mean difference between the outcomes observed in the first and second conditions: <span class="math display">\[\widehat \tau := \widehat y(1) - \widehat y(0).\]</span> It can be shown that in a randomised experiment in which <span class="math inline">\(y_i(0), y_i(1), i = 1, \dots, m\)</span> are treated as fixed quantities, the variance of the random quantity <span class="math inline">\(\widehat \tau\)</span> can be estimated conservatively as <span class="math display">\[
+  \widehat{V} = \frac{\widehat{S}^2(0)}{n_0} + \frac{\widehat{S}^2(1)}{n_1},
+\]</span> which is the quantity we used in the denominator of the studentised mean difference in the previous section (Ding 2024, Theorem 4.1). What we mean when we say that <span class="math inline">\(\widehat V\)</span> conservatively estimates the variance of <span class="math inline">\(\widehat \tau\)</span> is that the expected value of <span class="math inline">\(\widehat V\)</span> is at least as large as the variance of <span class="math inline">\(\widehat \tau\)</span>, i.e., <span class="math inline">\(\mathbb{E}(\widehat V) \geq \mathrm{Var}(\widehat \tau)\)</span>.</p>
+<p>Further, it can be shown that the quantity <span class="math display">\[
+  \frac{\widehat \tau - \tau}{\sqrt{\text{Var}(\widehat \tau)}}
+\]</span> has an asymptotic standard normal distribution under some regularity conditions (Ding 2024, Theorem 4.2). What this means is that, under some conditions, we can approximate the distribution of <span class="math inline">\((\widehat \tau - \tau)/\sqrt{\text{Var}(\widehat \tau)}\)</span> as a standard normal distribution and that this approximation will be more precise for large <span class="math inline">\(m\)</span>. If we knew what the value of <span class="math inline">\(\textrm{Var}(\widehat \tau)\)</span> was, this would enable us to construct an approximate <span class="math inline">\((1-\alpha)\)</span> confidence interval for <span class="math inline">\(\tau\)</span> as <span class="math display">\[\widehat \tau \pm z_{1 - \alpha/2}\sqrt{\textrm{Var}(\widehat \tau)},\]</span> where <span class="math inline">\(z_{1 - \alpha/2}\)</span> is the <span class="math inline">\((1-\alpha/2)\)</span> quantile of the standard normal distribution.</p>
+<p>Usually, we don’t know the value of <span class="math inline">\(\textrm{Var}(\widehat \tau)\)</span>, but since it is conservatively estimated by <span class="math inline">\(\widehat V\)</span>, we may use the latter in its stead to obtain the asymptotically conservative <span class="math inline">\((1 - \alpha)\)</span> <strong>confidence interval</strong> <span class="math display">\[\widehat \tau \pm z_{1 - \alpha/2}\sqrt{\widehat V}\]</span> for <span class="math inline">\(\tau\)</span>.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>neyman_ci <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group, <span class="at">conf_level =</span> <span class="fl">0.95</span>) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  y0_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  y1_hat <span class="ot">&lt;-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">1</span>])</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  v_hat <span class="ot">&lt;-</span> <span class="fu">var</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">/</span> <span class="fu">length</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">var</span>(x[group <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">/</span> <span class="fu">length</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> (<span class="dv">1</span> <span class="sc">-</span> conf_level)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  y1_hat <span class="sc">-</span> y0_hat <span class="sc">+</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">*</span> z <span class="sc">*</span> <span class="fu">sqrt</span>(v_hat)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>In our fictitious examples, a 95% confidence interval for <span class="math inline">\(\tau\)</span> can be computed as follows:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">neyman_ci</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.07260573  1.30593906</code></pre>
+</div>
+</div>
+<p>A similar confidence interval can be obtained using the Welch approach, which uses the same test statistic <span class="math inline">\((\widehat \tau - \tau)/\sqrt{\widehat V}\)</span>. In the Welch approach, this test statistic is compared not against the standard normal distribution but against some <em>t</em>-distribution. <em>t</em> distributions are wider than the standard normal distribution, but for large samples, they are similar. This explains why the following confidence interval obtained from the Welch approach is similar but wider than the one obtained from <code>neyman_test()</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(d<span class="sc">$</span>Outcome[d<span class="sc">$</span>Group <span class="sc">==</span> <span class="dv">1</span>], d<span class="sc">$</span>Outcome[d<span class="sc">$</span>Group <span class="sc">==</span> <span class="dv">0</span>])<span class="sc">$</span>conf.int</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.1077286  1.3410620
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<p>The Welch confidence interval is, however, derived from a different set of assumptions from the confidence interval from <code>neyman_ci()</code>, namely that the data are random samples from normally distributed populations. The Neyman confidence interval does not assume random sampling but random assignment.</p>
+<p>The asymptotic normality of <span class="math inline">\((\widehat \tau - \tau)/\sqrt{\text{Var}(\widehat \tau)}\)</span> and the conservativeness of <span class="math inline">\(\widehat V\)</span> as an estimator of <span class="math inline">\(\textrm{Var}(\widehat \tau)\)</span> can also be used to compute an asymptotically conservative <strong><em>p</em>-value</strong> by comparing <span class="math inline">\((\widehat \tau - \tau)/\sqrt{\widehat V}\)</span> to the quantiles of standard normal distribution. This is implemented in the <code>neyman_test()</code> function below.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>neyman_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Asymptotic test of weak null in two-group comparison.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    x,     <span class="co"># outcome</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    group, <span class="co"># grouping variable (0 or 1)</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two_sided"</span> <span class="co"># two-sided, left-sided or right-sided p-value?</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  test_statistic <span class="ot">&lt;-</span> <span class="fu">studentised_mean_diff</span>(x, group)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  p_left <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(test_statistic, <span class="at">lower.tail =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"l"</span>) <span class="fu">return</span>(p_left)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  p_right <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(test_statistic, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">substr</span>(alternative, <span class="dv">1</span>, <span class="dv">1</span>) <span class="sc">==</span> <span class="st">"r"</span>) <span class="fu">return</span>(p_right)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">min</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(p_left, p_right), <span class="dv">1</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>It can be used like so:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">neyman_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0795149</code></pre>
+</div>
+</div>
+<p>By the same logic as above, the <em>p</em>-value obtained from the Welch <em>t</em>-test will be similar but a bit larger than the one obtained from <code>neyman_test()</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(d<span class="sc">$</span>Outcome[d<span class="sc">$</span>Group <span class="sc">==</span> <span class="dv">1</span>], d<span class="sc">$</span>Outcome[d<span class="sc">$</span>Group <span class="sc">==</span> <span class="dv">0</span>])<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09180442</code></pre>
+</div>
+</div>
+<p>Interestingly, the randomisation test (as implemented in <code>randomisation_test()</code>) provides an asymptotically conservative test for the weak null hypothesis, provided that the studentised mean difference is used as the test statistic (Ding and Dasgupta 2017).</p>
+</section>
+<section id="simulations" class="level2">
+<h2 class="anchored" data-anchor-id="simulations">Simulations</h2>
+<p>Let’s run a few simulations to illustrate some of the points made above. For the simulation, I generate values for <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span>, <span class="math inline">\(i = 1, \dots, m\)</span>, in which the weak (but not the strong) null hypothesis is literally true. These data are treated as fixed. For <span class="math inline">\(n_0\)</span> randomly chosen units, we observe the <span class="math inline">\(y_i(0)\)</span> values; for the remaining <span class="math inline">\(n_1 = m - n_0\)</span> units, we observe the <span class="math inline">\(y_i(1)\)</span> values. For each full set of <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span>, the random assignment is carried out 500 times, and each time the data are analysed using four methods:</p>
+<ul>
+<li>A randomisation test using the mean difference <span class="math inline">\(\widehat y(1) - \widehat y(0)\)</span> as the test statistic.</li>
+<li>A randomisation test using the studentised mean difference <span class="math inline">\(\frac{\widehat y(1) - \widehat y(0)}{\sqrt{\widehat V}}\)</span> as the test statistic.</li>
+<li>A <span class="math inline">\(z\)</span>-test based on this studentised mean difference; that is, using the <code>neyman_test()</code> function.</li>
+<li>Welch’s <em>t</em>-test.</li>
+</ul>
+<p>For each <span class="math inline">\((n_0, n_1)\)</span> pair, ten full sets of <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> values are generated.</p>
+<p>The code snippet below contains the simulation function.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Packages</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="dv">12</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Random seed</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026-07-13</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation function</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>simulate_weak <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n0 =</span> <span class="dv">40</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">n1 =</span> <span class="dv">10</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">scenario =</span> <span class="st">"scenario"</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">runs =</span> <span class="dv">500</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">M =</span> <span class="dv">999</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct science table under weak null hypothesis</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  y0 <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n0 <span class="sc">+</span> n1, <span class="dv">4</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> <span class="fu">rpois</span>(n0 <span class="sc">+</span> n1, <span class="dv">12</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>  y0 <span class="ot">&lt;-</span> y0 <span class="sc">-</span> <span class="fu">mean</span>(y0)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>  y1 <span class="ot">&lt;-</span> y1 <span class="sc">-</span> <span class="fu">mean</span>(y1)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>  groups <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, n0), <span class="fu">rep</span>(<span class="dv">1</span>, n1))</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  mean_diff <span class="ot">&lt;-</span> <span class="cf">function</span>(x, group) {</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(x[group <span class="sc">==</span> <span class="dv">0</span>])</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Randomise 'runs' times and compute p-values</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  p_vals_meandiff <span class="ot">&lt;-</span> <span class="fu">numeric</span>(runs)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  p_vals_stud_meandiff <span class="ot">&lt;-</span> <span class="fu">numeric</span>(runs)</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  p_vals_neyman <span class="ot">&lt;-</span> <span class="fu">numeric</span>(runs)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>  p_vals_welch <span class="ot">&lt;-</span> <span class="fu">numeric</span>(runs)</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (run <span class="cf">in</span> <span class="fu">seq_len</span>(runs)) {</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>    group0 <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">seq_len</span>(n0 <span class="sc">+</span> n1), n0)</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>    group1 <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">seq_len</span>(n0 <span class="sc">+</span> n1), group0)</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>    outcome <span class="ot">&lt;-</span> <span class="fu">c</span>(y0[group0], y1[group1])</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    p_vals_meandiff[[run]] <span class="ot">&lt;-</span> <span class="fu">randomisation_test</span>(</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>      outcome, groups, mean_diff, <span class="at">M =</span> M, <span class="at">plot =</span> <span class="cn">FALSE</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    p_vals_stud_meandiff[[run]] <span class="ot">&lt;-</span> <span class="fu">randomisation_test</span>(</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>      outcome, groups, studentised_mean_diff, <span class="at">M =</span> M, <span class="at">plot =</span> <span class="cn">FALSE</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    p_vals_neyman[[run]] <span class="ot">&lt;-</span> <span class="fu">neyman_test</span>(outcome, groups)</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>    p_vals_welch[[run]] <span class="ot">&lt;-</span> <span class="fu">t.test</span>(outcome <span class="sc">~</span> groups)<span class="sc">$</span>p.value</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">scenario =</span> <span class="fu">rep</span>(scenario, <span class="dv">4</span> <span class="sc">*</span> runs),</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">run =</span> <span class="fu">rep</span>(<span class="fu">seq_len</span>(runs), <span class="dv">4</span>),</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"mean diff."</span>,</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"studentised m.d."</span>,</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Neyman"</span>,</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Welch"</span>), <span class="at">each =</span> runs),</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">pvalue =</span> <span class="fu">c</span>(p_vals_meandiff,</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>               p_vals_stud_meandiff,</span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a>               p_vals_neyman,</span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>               p_vals_welch)</span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>method <span class="ot">&lt;-</span> <span class="fu">factor</span>(d<span class="sc">$</span>method)</span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">levels</span>(d<span class="sc">$</span>method) <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean diff."</span>, <span class="st">"studentised m.d."</span>, <span class="st">"Neyman"</span>, <span class="st">"Welch"</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>  d</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>First, we consider fairly small groups, with <span class="math inline">\(n_0 = 20\)</span> and <span class="math inline">\(n_1 = 8\)</span>. <a href="#fig-20-8" class="quarto-xref">Figure&nbsp;1</a> shows cumulative probability plots of the 500 <em>p</em>-values generated for each method and each set of <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> values. The different curves within each facet show the curves for the different sets of <span class="math inline">\(y_i(0)\)</span> and <span class="math inline">\(y_i(1)\)</span> values. Importantly, for a significance test to be a valid test of the weak null hypothesis, these curves should all lie under the line <span class="math inline">\(y = x\)</span>, which is highlighted by a dashed black line. This is because for a random variable <span class="math inline">\(P\)</span> to be a valid <em>p</em>-value, it should satisfy <span class="math inline">\(\textrm{Prob}(P \leq \alpha) \leq \alpha\)</span> for all <span class="math inline">\(\alpha \in (0, 1)\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">simulate_weak</span>(<span class="at">n0 =</span> <span class="dv">20</span>, <span class="at">n1 =</span> <span class="dv">8</span>, <span class="at">scenario =</span> .x)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pvalue, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="fu">factor</span>(scenario), </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> <span class="fu">factor</span>(scenario))) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>() <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p-value"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cumulative probability"</span>) <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Paired"</span>) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">vars</span>(method)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of p-values under weak null hypothesis"</span>,</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Group sizes 20 and 8"</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-20-8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-20-8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-20-8-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-20-8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Distribution of p-values from four methods under the weak null hypothesis for ten fixed sets of potential outcomes (<span class="math inline">\(n_0 = 20, n_1 = 8\)</span>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As is evident from these plots, the three tests relying on the studentised mean difference (i.e., the second randomisation test, the Neyman test, and the Welch test) all yield valid tests for all sets of <span class="math inline">\(y\)</span>-values. This is not the case for the randomisation test in which the raw mean difference is used as the test statistic: for some sets of <span class="math inline">\(y\)</span>-values, this test is anti-conservative. (But this randomisation test still is a valid test of the <em>strong</em> null hypothesis; just not of the weak one.)</p>
+<p>Essentially the same results are obtained for larger group sizes, as shown <a href="#fig-80-32" class="quarto-xref">Figure&nbsp;2</a>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">simulate_weak</span>(<span class="at">n0 =</span> <span class="dv">80</span>, <span class="at">n1 =</span> <span class="dv">32</span>, <span class="at">scenario =</span> .x)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pvalue, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="fu">factor</span>(scenario), </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> <span class="fu">factor</span>(scenario))) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>() <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p-value"</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cumulative probability"</span>) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Paired"</span>) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">vars</span>(method)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of p-values under weak null hypothesis"</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Group sizes 80 and 32"</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-80-32" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-80-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-80-32-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-80-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Distribution of p-values from four methods under the weak null hypothesis for ten fixed sets of potential outcomes (<span class="math inline">\(n_0 = 80, n_1 = 32\)</span>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-10-4" class="quarto-xref">Figure&nbsp;3</a> illustrates that none of the approaches provides small-sample guarantees – the approaches that worked for the group sizes above are approximations based on asymptotic behaviour. Still, at least for the <span class="math inline">\(y\)</span>-values I generated, the Neyman and Welch approaches seem to perform reasonably well.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">simulate_weak</span>(<span class="at">n0 =</span> <span class="dv">10</span>, <span class="at">n1 =</span> <span class="dv">4</span>, <span class="at">scenario =</span> .x)) <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pvalue, </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="fu">factor</span>(scenario), </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">group =</span> <span class="fu">factor</span>(scenario))) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_ecdf</span>() <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"p-value"</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cumulative probability"</span>) <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">"Paired"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">vars</span>(method)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of p-values under weak null hypothesis"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Group sizes 10 and 4"</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-10-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-10-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-10-4-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Distribution of p-values from four methods under the weak null hypothesis for ten fixed sets of potential outcomes (<span class="math inline">\(n_0 = 10, n_1 = 4\)</span>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<p>For a two-group comparison stemming from a completely randomised experiment in which no covariates are taken into account, we may draw the following conclusions.</p>
+<ol type="1">
+<li>The randomisation test (as implemented in <code>randomisation_test()</code>) is finite-sample exact for the strong (or sharp) Fisherian null hypothesis of no differential treatment effect for any unit. ‘Finite-sample exact’ means that it is is a valid test that does not rely on asymptotic results to provide approximations. Moreover, this holds for <em>any</em> test statistic used.</li>
+<li>The randomisation test is also asymptotically conservative for the weak Neymanian null hypothesis of no differential treatment effect on average, provided that the studentised mean difference is used as the test statistic. For other test statistics, such as the mean difference, this property may not hold.</li>
+<li>Asymptotically conservative tests and confidence intervals for the average differential treatment effect <span class="math inline">\(\tau = \overline y(1) - \overline y(0)\)</span> may be obtained by comparing the studentised mean difference against a standard normal distribution (<code>neyman_test()</code>) or by running a Welch <em>t</em>-test.</li>
+<li>If you’re interested in testing both the strong and the weak null hypothesis, a randomisation test using the studentised mean difference gives you both an exact test of the strong null hypothesis and an approximate test of the weak null hypothesis.</li>
+</ol>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<p>Ding, Peng. 2024. <em>A first course in causal inference</em>. Boca Raton, FL: CRC Press. Also available from <a href="https://doi.org/10.48550/arXiv.2305.18793">arXiv.org</a>.</p>
+<p>Ding, Peng and Tirthankar Dasgupta. 2017. <a href="https://doi.org/10.1093/biomet/asx059">A randomization-based perspective on analysis of variance: a test statistic robust to treatment effect heterogeneity</a>. <em>Biometrika</em> 105(1). 45–56.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>(<span class="st">"attached"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.6.1 (2026-06-24)
+ os       Ubuntu 24.04.4 LTS
+ system   x86_64, linux-gnu
+ ui       X11
+ language (EN)
+ collate  C.UTF-8
+ ctype    C.UTF-8
+ tz       UTC
+ date     2026-07-13
+ pandoc   3.1.3 @ /usr/bin/ (via rmarkdown)
+ quarto   1.9.38 @ /usr/local/bin/quarto
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package   * version date (UTC) lib source
+ dplyr     * 1.2.1   2026-04-03 [1] RSPM
+ forcats   * 1.0.1   2025-09-25 [1] RSPM
+ ggplot2   * 4.0.3   2026-04-22 [1] RSPM
+ lubridate * 1.9.5   2026-02-04 [1] RSPM
+ purrr     * 1.2.2   2026-04-10 [1] RSPM
+ readr     * 2.2.0   2026-02-19 [1] RSPM
+ stringr   * 1.6.0   2025-11-04 [1] RSPM
+ tibble    * 3.3.1   2026-01-11 [1] RSPM
+ tidyr     * 1.3.2   2025-12-19 [1] RSPM
+ tidyverse * 2.0.0   2023-02-22 [1] RSPM
+
+ [1] /home/runner/work/_temp/Library
+ [2] /opt/R/4.6.1/lib/R/site-library
+ [3] /opt/R/4.6.1/lib/R/library
+ * ── Packages attached to the search path.
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
