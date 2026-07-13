@@ -21,13 +21,7 @@ jobs:
       - name: Install R packages (cached)
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          packages: |
-            corrplot
-            knitr
-            rmarkdown
-            shinylive
           cache: true
-          dependencies: 'c("Depends", "Imports")'
             
       - name: Set up Julia (cached)
         uses: julia-actions/setup-julia@v2
