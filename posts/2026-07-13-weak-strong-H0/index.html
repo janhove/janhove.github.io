@@ -264,9 +264,9 @@ window.Quarto = {
 <li>or <span class="math inline">\(y_i(1)\)</span> if the unit is assigned to the second condition.</li>
 </ul>
 <p>The quantities <span class="math inline">\(y_i(0), y_i(1), i = 1, \dots, m\)</span> are unknown but fixed quantities in the present set-up – they are <em>not</em> random variables. What are random variables are the data that are actually observed. The randomness is introduced by the random assignment of units to conditions.</p>
-<p>According to Fisher’s <strong>sharp null hypothesis</strong>, there is no differential treatment effect for <em>any</em> of the units:</p>
+<p>According to Fisher’s <strong>strong null hypothesis</strong>, there is no differential treatment effect for <em>any</em> of the units:</p>
 <p><span class="math display">\[H_{oS}: y_i(0) = y_i(1) \text{ for } i = 1, \dots, m.\]</span></p>
-<p>As I’ve explained <a href="../2025-11-09-population-randomisation/">before</a>, this sharp null hypothesis can be tested exactly by means of a randomisation test using <em>any</em> definable test statistic. This test statistic could be the observed mean difference between the two conditions, the observed difference between the condition medians, the probability of superiority – anything the analyst deems sensible.</p>
+<p>As I’ve explained <a href="../2025-11-09-population-randomisation/">before</a>, this strong null hypothesis can be tested exactly by means of a randomisation test using <em>any</em> definable test statistic. This test statistic could be the observed mean difference between the two conditions, the observed difference between the condition medians, the probability of superiority – anything the analyst deems sensible.</p>
 <p>A test statistic that I did not use in the other blog post but that is important now is the <strong>studentised mean difference</strong>:</p>
 <p><span class="math display">\[
   t := \frac{\widehat{y}(1) - \widehat{y}(0)}{\sqrt{\widehat{V}}}.
@@ -292,11 +292,11 @@ window.Quarto = {
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>randomisation_test <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomisation test of sharp null in two-group comparison.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomisation test of strong null in two-group comparison.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    x,           <span class="co"># outcome</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    group,       <span class="co"># grouping variable (0 or 1)</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fun,         <span class="co"># function for computing test statistic from x and group</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> <span class="dv">0</span>,   <span class="co"># delta for sharp null hypothesis</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> <span class="dv">0</span>,   <span class="co"># delta for strong null hypothesis</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">alternative =</span> <span class="st">"two_sided"</span>, <span class="co"># two-sided, left-sided or right-sided p-value?</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">M =</span> <span class="dv">19999</span>,   <span class="co"># number of new randomisations generated</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot =</span> <span class="cn">TRUE</span>, <span class="co"># plot histogram of test statistic under H0?</span></span>
@@ -340,7 +340,7 @@ window.Quarto = {
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, studentised_mean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1062</code></pre>
+<pre><code>[1] 0.1024</code></pre>
 </div>
 </div>
 <p>Randomisation testing pretty easily achieves exact finite-sample inference for the strong null hypothesis and can straightforwardly be justified in randomised experiments. However, two drawbacks in particular bear mentioning.</p>

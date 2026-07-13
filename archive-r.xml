@@ -29,9 +29,9 @@
 <li>or <img src="https://latex.codecogs.com/png.latex?y_i(1)"> if the unit is assigned to the second condition.</li>
 </ul>
 <p>The quantities <img src="https://latex.codecogs.com/png.latex?y_i(0),%20y_i(1),%20i%20=%201,%20%5Cdots,%20m"> are unknown but fixed quantities in the present set-up – they are <em>not</em> random variables. What are random variables are the data that are actually observed. The randomness is introduced by the random assignment of units to conditions.</p>
-<p>According to Fisher’s <strong>sharp null hypothesis</strong>, there is no differential treatment effect for <em>any</em> of the units:</p>
+<p>According to Fisher’s <strong>strong null hypothesis</strong>, there is no differential treatment effect for <em>any</em> of the units:</p>
 <p><img src="https://latex.codecogs.com/png.latex?H_%7BoS%7D:%20y_i(0)%20=%20y_i(1)%20%5Ctext%7B%20for%20%7D%20i%20=%201,%20%5Cdots,%20m."></p>
-<p>As I’ve explained <a href="../2025-11-09-population-randomisation/">before</a>, this sharp null hypothesis can be tested exactly by means of a randomisation test using <em>any</em> definable test statistic. This test statistic could be the observed mean difference between the two conditions, the observed difference between the condition medians, the probability of superiority – anything the analyst deems sensible.</p>
+<p>As I’ve explained <a href="../2025-11-09-population-randomisation/">before</a>, this strong null hypothesis can be tested exactly by means of a randomisation test using <em>any</em> definable test statistic. This test statistic could be the observed mean difference between the two conditions, the observed difference between the condition medians, the probability of superiority – anything the analyst deems sensible.</p>
 <p>A test statistic that I did not use in the other blog post but that is important now is the <strong>studentised mean difference</strong>:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%20%20t%20:=%20%5Cfrac%7B%5Cwidehat%7By%7D(1)%20-%20%5Cwidehat%7By%7D(0)%7D%7B%5Csqrt%7B%5Cwidehat%7BV%7D%7D%7D.%0A"></p>
 <p>In this equation, <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%7By%7D(0),%20%5Cwidehat%7By%7D(1)"> are the condition means in the first and second condition, respectively, and <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%7BV%7D"> is defined as</p>
@@ -115,7 +115,7 @@ font-weight: bold;
 font-style: inherit;">function</span>(</span>
 <span id="cb2-2">    <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># Randomisation test of sharp null in two-group comparison.</span></span>
+font-style: inherit;"># Randomisation test of strong null in two-group comparison.</span></span>
 <span id="cb2-3">    x,           <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># outcome</span></span>
@@ -131,7 +131,7 @@ font-style: inherit;">delta =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>,   <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># delta for sharp null hypothesis</span></span>
+font-style: inherit;"># delta for strong null hypothesis</span></span>
 <span id="cb2-7">    <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">alternative =</span> <span class="st" style="color: #20794D;
@@ -434,7 +434,7 @@ background-color: null;
 font-style: inherit;">FALSE</span>)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1062</code></pre>
+<pre><code>[1] 0.1024</code></pre>
 </div>
 </div>
 <p>Randomisation testing pretty easily achieves exact finite-sample inference for the strong null hypothesis and can straightforwardly be justified in randomised experiments. However, two drawbacks in particular bear mentioning.</p>
