@@ -33,13 +33,13 @@ in the present set-up -- they are _not_ random variables.
 What are random variables are the data that are actually observed.
 The randomness is introduced by the random assignment of units to conditions.
 
-According to Fisher's **sharp null hypothesis**, 
+According to Fisher's **strong null hypothesis**, 
 there is no differential treatment effect for _any_ of the units:
 
 $$H_{oS}: y_i(0) = y_i(1) \text{ for } i = 1, \dots, m.$$
 
 As I've explained [before](../2025-11-09-population-randomisation/),
-this sharp null hypothesis can be tested exactly 
+this strong null hypothesis can be tested exactly 
 by means of a randomisation test using _any_ definable test statistic.
 This test statistic could be the observed mean difference between the two
 conditions, the observed difference between the condition medians,
@@ -86,11 +86,11 @@ from the other blog post.
 
 ```{r}
 randomisation_test <- function(
-    # Randomisation test of sharp null in two-group comparison.
+    # Randomisation test of strong null in two-group comparison.
     x,           # outcome
     group,       # grouping variable (0 or 1)
     fun,         # function for computing test statistic from x and group
-    delta = 0,   # delta for sharp null hypothesis
+    delta = 0,   # delta for strong null hypothesis
     alternative = "two_sided", # two-sided, left-sided or right-sided p-value?
     M = 19999,   # number of new randomisations generated
     plot = TRUE, # plot histogram of test statistic under H0?
