@@ -25,6 +25,7 @@ jobs:
             knitr
             rmarkdown
             shinylive
+            tidyverse
             corrplot
           cache: true
 
