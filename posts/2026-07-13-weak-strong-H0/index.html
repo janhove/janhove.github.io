@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-703c9532075cde06ab04a16b69a0e953.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-c5a6b28e783d8ef760ff9987e39e62c9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -208,7 +208,7 @@ window.Quarto = {
   <li><a href="#the-weak-null-hypothesis" id="toc-the-weak-null-hypothesis" class="nav-link" data-scroll-target="#the-weak-null-hypothesis">The weak null hypothesis</a></li>
   <li><a href="#simulations" id="toc-simulations" class="nav-link" data-scroll-target="#simulations">Simulations</a></li>
   <li><a href="#tldr" id="toc-tldr" class="nav-link" data-scroll-target="#tldr">tl;dr</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#software-versions" id="toc-software-versions" class="nav-link" data-scroll-target="#software-versions">Software versions</a></li>
   </ul>
 </nav>
@@ -340,7 +340,7 @@ window.Quarto = {
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">randomisation_test</span>(d<span class="sc">$</span>Outcome, d<span class="sc">$</span>Group, studentised_mean_diff, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0996</code></pre>
+<pre><code>[1] 0.1027</code></pre>
 </div>
 </div>
 <p>Randomisation testing pretty easily achieves exact finite-sample inference for the strong null hypothesis and can straightforwardly be justified in randomised experiments. However, two drawbacks in particular bear mentioning.</p>
@@ -429,7 +429,7 @@ attr(,"conf.level")
 <pre><code>[1] 0.0795149</code></pre>
 </div>
 </div>
-<p>By the same logic as above, the <em>p</em>-value obtained from the Welch <em>t</em>-test will be similar but a bit larger than the one obtained from <code>neyman_test()</code>:</p>
+<p>By the same logic as above, the <em>p</em>-value obtained from the Welch <em>t</em>-test will be similar but a bit wider than the one obtained from <code>neyman_test()</code>:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -640,8 +640,8 @@ Figure&nbsp;3: Distribution of p-values from four methods under the weak null hy
 <li>If you’re interested in testing both the strong and the weak null hypothesis, a randomisation test using the studentised mean difference gives you both an exact test of the strong null hypothesis and an approximate test of the weak null hypothesis.</li>
 </ol>
 </section>
-<section id="reference" class="level2">
-<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <p>Ding, Peng. 2024. <em>A first course in causal inference</em>. Boca Raton, FL: CRC Press. Also available from <a href="https://doi.org/10.48550/arXiv.2305.18793">arXiv.org</a>.</p>
 <p>Ding, Peng and Tirthankar Dasgupta. 2017. <a href="https://doi.org/10.1093/biomet/asx059">A randomization-based perspective on analysis of variance: a test statistic robust to treatment effect heterogeneity</a>. <em>Biometrika</em> 105(1). 45–56.</p>
 </section>
@@ -663,7 +663,7 @@ Figure&nbsp;3: Distribution of p-values from four methods under the weak null hy
  collate  C.UTF-8
  ctype    C.UTF-8
  tz       UTC
- date     2026-07-13
+ date     2026-07-15
  pandoc   3.1.3 @ /usr/bin/ (via rmarkdown)
  quarto   1.9.38 @ /usr/local/bin/quarto
 
