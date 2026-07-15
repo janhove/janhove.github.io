@@ -296,7 +296,7 @@ neyman_test(d$Outcome, d$Group)
 ```
 
 By the same logic as above, the _p_-value obtained from the Welch _t_-test
-will be similar but a bit larger than the one obtained from `neyman_test()`:
+will be similar but a bit wider than the one obtained from `neyman_test()`:
 ```{r}
 #| code-fold: show
 t.test(d$Outcome[d$Group == 1], d$Outcome[d$Group == 0])$p.value
@@ -522,7 +522,7 @@ a randomisation test using the studentised mean difference gives you both
 an exact test of the strong null hypothesis and an approximate test
 of the weak null hypothesis.
 
-## Reference
+## References
 Ding, Peng.
 2024.
 _A first course in causal inference_.
