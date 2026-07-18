@@ -86,6 +86,7 @@ I can help you with:
 * sharpening research questions and formulating them in statistical terms
 (usually _the_ single most important aspect!);
 * designing your study;
+* writing grant applications;
 * stress-testing questionnaires;
 * outlining or checking analysis plans;
 * data wrangling;

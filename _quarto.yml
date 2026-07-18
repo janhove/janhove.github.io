@@ -7,11 +7,15 @@ project:
 website:
   title: "Jan Vanhove"
   site-url: https://janhove.github.io
-  description: "I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind."
+  description: "I blog about research design and statistics, often using examples from research on language learning."
   navbar:
     right:
       - text: About
         href: about.qmd
+      - text: Methods and stats support
+        href: support.qmd
+      - text: Courses
+        href: courses.qmd
       - text: Blog archive
         href: archive.qmd 
       - text: Teaching resources

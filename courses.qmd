@@ -4,15 +4,17 @@ toc: true
 toc-depth: 4
 ---
 
-I offer one- and multi-day courses on data analysis, 
+I offer one- and multi-day courses on quantitative methodology and data analysis, 
 geared principally towards Master's and PhD students, 
-though they're equally suitable for postdocs or faculty. 
-Below are the courses I currently offer; get in touch by [e-mail](mailto:janvanhove@gmail.com) 
-if you'd like to discuss details, including tailoring 
-courses for a specific group's needs.
+though they are equally suitable for postdocs or faculty. 
+
+Below are the courses for which material is readily available
+and that I can teach at fairly short notice.
+Additional courses may be developed on request.
+Get in touch by [e-mail](mailto:janvanhove@gmail.com) to discuss details.
 
 Also see the [Methods and stats support](support.qmd) page
-if you're looking for individual consulting 
+if you are looking for individual consulting 
 or standing office hours rather than a structured course.
 
 ::: {.callout-note collapse="true"}

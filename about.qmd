@@ -19,10 +19,17 @@ about:
 ---
 
 I'm a senior lecturer
-at the [Department of Multilingualism and Foreign Language Education](https://www.unifr.ch/pluriling/en/) 
-at the University of Fribourg in Switzerland.
-I'm also a saxophonist and occasional songwriter 
-with [Beat Moustache](https://beatmoustache.ch), 
+at the 
+[Department of Multilingualism and Foreign Language Education](https://www.unifr.ch/pluriling/en/) 
+at the University of Fribourg in Switzerland,
+where I teach courses on second and foreign language learning
+as well as on quantitative methodology and statistics.
+I also assist researchers with research design, data analysis, and 
+the interpretation of empirical findings.
+
+In my spare time, I enjoy exploring the Swiss countryside,
+and I play the saxophone and occasionally write songs for 
+[Beat Moustache](https://beatmoustache.ch), 
 a ska-pop band that mostly plays original songs in the Bernese dialect.
 
 ## Education

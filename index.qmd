@@ -10,6 +10,7 @@ page-layout: full
 title-block-banner: false
 ---
 
-I blog about statistics and research design with an audience consisting of researchers in bilingualism, multilingualism, and applied linguistics in mind.
+I blog about research design and statistics,
+often using examples from research on language learning.
 
 # Latest blog posts
