@@ -17,6 +17,10 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
+        
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages("shinylive", repos="https://cloud.r-project.org")'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
