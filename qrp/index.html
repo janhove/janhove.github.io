@@ -230,17 +230,17 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
 <p>You can use the app below to reproduce some of the simulations from Simmons et al.’s (2011) <em>False-positive psychology</em>. The app simulates the following behaviour:</p>
 <ul>
-<li><p>A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.</p></li>
-<li><p>Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: <span class="math inline">\(r = 0.5\)</span>).</p></li>
-<li><p>The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:</p>
+<li>A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.</li>
+<li>Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: <span class="math inline">\(r = 0.5\)</span>).</li>
+<li>The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:
 <ul>
 <li>The first time s/he analyses the first variable separately.</li>
 <li>Then s/he analyses the second variable separately.</li>
 <li>Finally, s/he averages the first and second variable per participant and analyses these averages in a third significance test.</li>
 </ul></li>
-<li><p>If none of these three significance tests return a significant result (i.e., if none returns <span class="math inline">\(p &lt; 0.05\)</span>), s/he recruits a couple of additional participants (default: 10) and analyses the data anew.</p></li>
-<li><p>S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).</p></li>
-<li><p>S/he writes up the results of his study, reporting only the <strong>lowest</strong> of the p-values s/he obtained.</p></li>
+<li>If none of these three significance tests return a significant result (i.e., if none returns <span class="math inline">\(p &lt; 0.05\)</span>), s/he recruits a couple of additional participants (default: 10) and analyses the data anew.</li>
+<li>S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).</li>
+<li>S/he writes up the results of his study, reporting only the <strong>lowest</strong> of the p-values s/he obtained.</li>
 </ul>
 </section>
 <section id="simulation" class="level2">
@@ -421,12 +421,12 @@ shinyApp(ui = ui, server = server)</code></pre>
 <h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
 <p>Before running the simulation to answer each question, first reason through what will happen.</p>
 <ol type="1">
-<li><p>Increase the ‘maximum number of additional participants in each group’ to 30. Leave the other settings at their default values. How will the graphs change?</p></li>
-<li><p>Leaving all other settings as they currently are, what will happen if instead of analysing the data after 10 new participants per condition, they’re analysed after 5 new participants per condition? Or after just 2 new participants per condition?</p></li>
-<li><p>What will happen when the correlation between the two outcome variables becomes weaker (e.g., <span class="math inline">\(r = 0.1\)</span> instead of <span class="math inline">\(r = 0.5\)</span>)? Why?</p></li>
-<li><p>What will happen when the correlation between the two outcome variables becomes stronger (e.g., <span class="math inline">\(r = 0.95\)</span>)? Why?</p></li>
-<li><p>For which combination of the different parameters will you obtain the highest Type-I error?</p></li>
-<li><p>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role?</p></li>
+<li>Increase the ‘maximum number of additional participants in each group’ to 30. Leave the other settings at their default values. How will the graphs change?</li>
+<li>Leaving all other settings as they currently are, what will happen if instead of analysing the data after 10 new participants per condition, they’re analysed after 5 new participants per condition? Or after just 2 new participants per condition?</li>
+<li>What will happen when the correlation between the two outcome variables becomes weaker (e.g., <span class="math inline">\(r = 0.1\)</span> instead of <span class="math inline">\(r = 0.5\)</span>)? Why?</li>
+<li>What will happen when the correlation between the two outcome variables becomes stronger (e.g., <span class="math inline">\(r = 0.95\)</span>)? Why?</li>
+<li>For which combination of the different parameters will you obtain the highest Type-I error?</li>
+<li>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role?</li>
 </ol>
 </section>
 <section id="reference" class="level2">
