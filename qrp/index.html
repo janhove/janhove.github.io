@@ -250,7 +250,7 @@ window.Quarto = {
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| standalone: true
-#| viewerHeight: 500
+#| viewerHeight: 900
 
 library(shiny)
 library(shinythemes)
@@ -412,7 +412,7 @@ server &lt;- function(input, output) {
         subtitle = ""
       )
     
-    gridExtra::grid.arrange(p1, p2, ncol = 2)
+    gridExtra::grid.arrange(p1, p2, ncol = 1)
   })
 }
 
