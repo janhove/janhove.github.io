@@ -18,20 +18,14 @@ Simmons et al.'s (2011) _False-positive psychology_.
 The app simulates the following behaviour:
 
 * A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.
-
 * Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: $r = 0.5$).
-
 * The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:
-
   - The first time s/he analyses the first variable separately.
   - Then s/he analyses the second variable separately.
   - Finally, s/he averages the first and second variable per participant and analyses these averages in a third significance test.
-
 * If none of these three significance tests return a significant result (i.e., if none returns $p < 0.05$), 
 s/he recruits a couple of additional participants (default: 10) and analyses the data anew.
-
 * S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).
-
 * S/he writes up the results of his study, reporting only the **lowest** of the p-values s/he obtained.
 
 ## Simulation
@@ -216,22 +210,17 @@ first reason through what will happen.
 1. Increase the 'maximum number of additional participants in each group' to 30. 
 Leave the other settings at their default values. 
 How will the graphs change?
-
 2. Leaving all other settings as they currently are, what will
 happen if instead of analysing the data after 10 new participants
 per condition, they're analysed after 5 new participants per
 condition? Or after just 2 new participants per condition?
-    
 3. What will happen when the correlation between the two 
 outcome variables becomes weaker (e.g., $r = 0.1$ instead
 of $r = 0.5$)? Why?
-    
 4. What will happen when the correlation between the two
 outcome variables becomes stronger (e.g., $r = 0.95$)? Why?
-    
 5. For which combination of the different parameters will
 you obtain the highest Type-I error?
-    
 6. For which combination of the different parameters will
 you find a Type-I error rate of about 5%? 
 Are there any parameters that don't play a role?
