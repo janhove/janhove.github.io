@@ -37,7 +37,7 @@ This takes a while.
 
 ```{shinylive-r}
 #| standalone: true
-#| viewerHeight: 900
+#| viewerHeight: 750
 
 library(shiny)
 library(shinythemes)
@@ -134,7 +134,7 @@ ui <- fluidPage(
     ),
     
     mainPanel(
-      plotOutput("pValueDistribution", width = "900px", height = "400px")
+      plotOutput("pValueDistribution", width = "450px", height = "750px")
     )
   )
 )
