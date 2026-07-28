@@ -37,7 +37,7 @@ This takes a while.
 
 ```{shinylive-r}
 #| standalone: true
-#| viewerHeight: 500
+#| viewerHeight: 900
 
 library(shiny)
 library(shinythemes)
@@ -199,7 +199,7 @@ server <- function(input, output) {
         subtitle = ""
       )
     
-    gridExtra::grid.arrange(p1, p2, ncol = 2)
+    gridExtra::grid.arrange(p1, p2, ncol = 1)
   })
 }
 
