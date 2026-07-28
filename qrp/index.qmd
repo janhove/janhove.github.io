@@ -37,7 +37,7 @@ This takes a while.
 
 ```{shinylive-r}
 #| standalone: true
-#| viewerHeight: 750
+#| viewerHeight: 850
 
 library(shiny)
 library(shinythemes)
