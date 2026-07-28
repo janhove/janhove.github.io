@@ -5,3 +5,4 @@ _site/
 **/*_cache/
 simulation_results/
 .positai
+posts/**/*.html

@@ -17,18 +17,6 @@ jobs:
         with:
           r-version: 'release'
           use-public-rspm: true
-      
-      - name: Install R packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: |
-            devtools
-            knitr
-            rmarkdown
-            shinylive
-            tidyverse
-            corrplot
-          cache: true
 
       - name: Set up Julia (cached)
         uses: julia-actions/setup-julia@v2
