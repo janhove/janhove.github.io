@@ -10,6 +10,8 @@ filters:
   - shinylive
 embed-resources: false
 engine: knitr
+execute:
+  freeze: auto
 ---
 
 ## Explanation
