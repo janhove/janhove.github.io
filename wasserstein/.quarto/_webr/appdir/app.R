@@ -6,6 +6,9 @@ library(corrplot)
 rbf <- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D^2 / (2 * length_scale^2))
 }
+powerexp <- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D^2 / (2 * length_scale^2))^0.5)
+}
 matern12 <- function(D, length_scale = 1, scaling_factor = 1) {
   scaling_factor * exp(-D / (2 * length_scale))
 }
@@ -20,6 +23,7 @@ matern52 <- function(D, length_scale = 1, scaling_factor = 1) {
 
 kernel_list <- list(
   "Squared exponential" = rbf,
+  "Power exponential (κ = 0.5)" = powerexp,
   "Matérn 1/2"          = matern12,
   "Matérn 3/2"          = matern32,
   "Matérn 5/2"          = matern52
@@ -143,8 +147,7 @@ ui <- page_sidebar(
         conditionalPanel(
           "input.x0_mode === 'manual'",
           textInput("manual_x0", "x positions (comma-separated):", 
-                    value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 
-                              1, 2, 3, 4, 5, 6, 7, 8, 9")
+            value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
         )
       )
     ),

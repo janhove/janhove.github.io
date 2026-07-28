@@ -16,10 +16,9 @@ theme_jv <- function(font_size = 9) {
 theme_set(theme_jv(14))
 
 # p-value function
-situation_AB.fnc <- function(min_n = 20,
-                             max_n = 30,
-                             add = 10,
-                             r = 0.50) {
+situation_AB.fnc <- function(
+    min_n = 20, max_n = 30, add = 10, r = 0.50
+) {
   group <- rep(c(-0.5, 0.5), times = max_n)
   
   outcomes <- MASS::mvrnorm(
@@ -44,8 +43,10 @@ situation_AB.fnc <- function(min_n = 20,
     if (p_value < 0.05) break
     if (n > max_n) break
     
-    tests <- summary(lm(cbind(outcome1, outcome2, average) ~ group,
-                        data = df[1:(2 * n), ]))
+    tests <- summary(
+      lm(cbind(outcome1, outcome2, average) ~ group,
+         data = df[1:(2 * n), ])
+      )
     
     p_1 <- tests[[1]]$coefficients[2, 4]
     p_2 <- tests[[2]]$coefficients[2, 4]
@@ -59,10 +60,9 @@ situation_AB.fnc <- function(min_n = 20,
     if (max_n <= min_n) break
   }
   
-  return(p_value)
+  p_value
 }
 
-# Define UI
 ui <- fluidPage(
   theme = shinytheme("united"),
   titlePanel("False-positive psychology"),
@@ -98,7 +98,6 @@ ui <- fluidPage(
   )
 )
 
-# Define server logic
 server <- function(input, output) {
   generate_p_values <- eventReactive(input$go, {
     n_sims <- 1000
@@ -112,7 +111,7 @@ server <- function(input, output) {
           add = input$n_add,
           r = input$r
         )
-        if (i %% 25 == 0) incProgress(25 / n_sims)
+        incProgress(1 / n_sims)
       }
     })
     
