@@ -62,9 +62,24 @@ situation_AB.fnc <- function(
       lm(cbind(outcome1, outcome2, average) ~ sex*group,
          data = df[1:(2 * n), ])
       )
-      p_4 <- interaction[[1]]$coefficients[4, 4]
-      p_5 <- interaction[[2]]$coefficients[4, 4]
-      p_6 <- interaction[[3]]$coefficients[4, 4]
+      p_4 <- tryCatch(
+        {
+          interaction[[1]]$coefficients[4, 4]
+        },
+        error = function(msg) { 1 }
+      )
+      p_5 <- tryCatch(
+        {
+          interaction[[2]]$coefficients[4, 4]
+        },
+        error = function(msg) 1
+      )
+      p_6 <- tryCatch(
+        {
+          interaction[[3]]$coefficients[4, 4]
+        },
+        error = function(msg) 1
+      )
       p_value <- min(c(p_value, p_4, p_5, p_6))
     }
     
