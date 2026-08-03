@@ -185,10 +185,11 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#explanation" id="toc-explanation" class="nav-link active" data-scroll-target="#explanation">Explanation</a></li>
+  <li><a href="#context" id="toc-context" class="nav-link active" data-scroll-target="#context">Context</a></li>
   <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#further-comments" id="toc-further-comments" class="nav-link" data-scroll-target="#further-comments">Further comments</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -226,25 +227,33 @@ window.Quarto = {
 </header>
 
 
-<section id="explanation" class="level2">
-<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
-<p>You can use the app below to reproduce some of the simulations from Simmons et al.’s (2011) <em>False-positive psychology</em>. The app simulates the following behaviour:</p>
+<section id="context" class="level2">
+<h2 class="anchored" data-anchor-id="context">Context</h2>
+<p>Simmons et al.&nbsp;(2011) showed, by means of a few simulations as well as a real example, that it is embarrassingly easy to produce statistically significant findings even if the data are nothing but noise. In principle, at most 5% of studies that produce pure noise should return statistical significance. But researchers may be ‘flexible’ about their studies’ goals and designs:</p>
+<ul>
+<li>They may collect multiple outcome variables and not exactly be sure which one they’re truly interested in beforehand.</li>
+<li>They may not have specified in advance if they are interested in difference between the conditions, or in whether the differences between the conditions are more pronounced in one subgroup (e.g., men) than in another (e.g., women).</li>
+<li>They may not have specified in advance how many participants they’re going to recruit. Instead, they may first recruit a smallish number (e.g., 20 per condition), and if the results don’t pan out, collect a few more and analyse the data again.</li>
+</ul>
+<p>Simmons et al.&nbsp;investigated the impact of these and a few other sources of researcher flexibility on how p-values are distributed if the study actually produces pure noise (i.e., if the null hypothesis is literally true). Based on their article, I wrote an app (embedded in this page) that allows you to reproduce and think through some of Simmons et al.’s results.</p>
+</section>
+<section id="simulation" class="level2">
+<h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
+<p>You can use the app below to reproduce some of the simulations from Simmons et al.’s (2011) <em>False-positive psychology</em>. (A play on words on the field of ‘positive psychology’ and ‘false-positive’ findings.) The app simulates the following behaviour:</p>
 <ul>
 <li>A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.</li>
-<li>Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: <span class="math inline">\(r = 0.5\)</span>).</li>
+<li>Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: r = 0.5).</li>
 <li>The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:
 <ul>
 <li>The first time s/he analyses the first variable separately.</li>
 <li>Then s/he analyses the second variable separately.</li>
 <li>Finally, s/he averages the first and second variable per participant and analyses these averages in a third significance test.</li>
 </ul></li>
-<li>If none of these three significance tests return a significant result (i.e., if none returns <span class="math inline">\(p &lt; 0.05\)</span>), s/he recruits a couple of additional participants (default: 10) and analyses the data anew.</li>
+<li>Optionally, s/he checks for the three outcome variables (first variable, second variable, and their average) if condition interacts with the participants’ sex. That is, s/he checks if, regardless of whether s/he found a significant condition effect overall, the condition effect may be more pronounced in men than in women, or vice versa. (About half of the simulated participants are men, and about half are women.) This yields another three significance tests.</li>
+<li>If none of these three (or six) significance tests return a significant result (i.e., if none returns <em>p</em> &lt; 0.05), s/he recruits a couple of additional participants (default: 10) and analyses the data anew.</li>
 <li>S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).</li>
-<li>S/he writes up the results of his study, reporting only the <strong>lowest</strong> of the p-values s/he obtained.</li>
+<li>S/he writes up the results of the final iteration, reporting only the <strong>lowest</strong> of the p-values s/he obtained in this final iteration. That is, the simulation assumes that only the most favourable result from the final analysis is reported; previous unsuccessful analyses are not disclosed.</li>
 </ul>
-</section>
-<section id="simulation" class="level2">
-<h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
 <p>Please have some patience: This app simulates and analyses a large number of datasets. This takes a while.</p>
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
@@ -269,13 +278,15 @@ theme_jv &lt;- function(font_size = 9) {
 }
 theme_set(theme_jv(14))
 
-# p-value function
 situation_AB.fnc &lt;- function(
-    min_n = 20, max_n = 30, add = 10, r = 0.50
+    min_n = 20, max_n = 30, add = 10, r = 0.50, 
+    check_interaction = FALSE
 ) {
   group &lt;- rep(c(-0.5, 0.5), times = max_n)
+  sex &lt;- rep(c(-0.5, 0.5), each = max_n)
+  sex &lt;- sample(sex)
   
-  outcomes &lt;- MASS::mvrnorm(
+  outcomes &lt;- mvrnorm(
     n = 2 * max_n,
     mu = c(0, 0),
     Sigma = matrix(c(1, r, r, 1), nrow = 2)
@@ -285,6 +296,7 @@ situation_AB.fnc &lt;- function(
   
   df &lt;- data.frame(
     group = group,
+    sex = sex,
     outcome1 = outcomes[, 1],
     outcome2 = outcomes[, 2],
     average = average
@@ -294,19 +306,30 @@ situation_AB.fnc &lt;- function(
   p_value &lt;- Inf
   
   repeat {
-    if (p_value &lt; 0.05) break
+    if (p_value &lt;= 0.05) break
     if (n &gt; max_n) break
     
-    tests &lt;- summary(
+    no_interaction &lt;- summary(
       lm(cbind(outcome1, outcome2, average) ~ group,
          data = df[1:(2 * n), ])
       )
     
-    p_1 &lt;- tests[[1]]$coefficients[2, 4]
-    p_2 &lt;- tests[[2]]$coefficients[2, 4]
-    p_3 &lt;- tests[[3]]$coefficients[2, 4]
+    p_1 &lt;- no_interaction[[1]]$coefficients[2, 4]
+    p_2 &lt;- no_interaction[[2]]$coefficients[2, 4]
+    p_3 &lt;- no_interaction[[3]]$coefficients[2, 4]
     
     p_value &lt;- min(c(p_1, p_2, p_3))
+    
+    if (check_interaction) {
+      interaction &lt;- summary(
+      lm(cbind(outcome1, outcome2, average) ~ sex*group,
+         data = df[1:(2 * n), ])
+      )
+      p_4 &lt;- interaction[[1]]$coefficients[4, 4]
+      p_5 &lt;- interaction[[2]]$coefficients[4, 4]
+      p_6 &lt;- interaction[[3]]$coefficients[4, 4]
+      p_value &lt;- min(c(p_value, p_4, p_5, p_6))
+    }
     
     n &lt;- n + add
     
@@ -343,18 +366,28 @@ ui &lt;- fluidPage(
         "Correlation between the dependent variables:",
         min = -1, max = 1, step = 0.05, value = 0.5
       ),
+      checkboxInput(
+        "check_interaction",
+        "Check for interaction of condition with sex?",
+        value = FALSE
+      ),
+      numericInput(
+        "n_sims",
+        "Number of simulations:",
+        min = 100, value = 1000, step = 100
+      ),
       actionButton("go", "Simulate!")
     ),
     
     mainPanel(
-      plotOutput("pValueDistribution", width = "450px", height = "750px")
+      plotOutput("pValueDistribution", width = "450px", height = "350px")
     )
   )
 )
 
 server &lt;- function(input, output) {
   generate_p_values &lt;- eventReactive(input$go, {
-    n_sims &lt;- 1000
+    n_sims &lt;- input$n_sims
     p_values &lt;- numeric(n_sims)
     
     withProgress(message = "Simulating experiments", value = 0, {
@@ -363,7 +396,8 @@ server &lt;- function(input, output) {
           min_n = input$min_n,
           max_n = input$min_n + input$max_add,
           add = input$n_add,
-          r = input$r
+          r = input$r,
+          check_interaction = input$check_interaction
         )
         incProgress(1 / n_sims)
       }
@@ -386,7 +420,7 @@ server &lt;- function(input, output) {
       xlab("p-value") +
       ylab("Number of simulations") +
       labs(
-        title = paste("Distribution of lowest p-values in", nrow(df), "experiments"),
+        title = paste("p-values obtained in", nrow(df), "experiments"),
         subtitle = paste(
           "Type I error:", round(false_positive_rate, 2),
           "\u00B1", round(margin_of_error, 2)
@@ -394,25 +428,7 @@ server &lt;- function(input, output) {
       ) +
       theme(legend.position = "none")
     
-    significant_only &lt;- df %&gt;%
-      filter(p_values &lt; 0.05) %&gt;%
-      mutate(p_group = cut(p_values, breaks = seq(0, 0.05, 0.01))) %&gt;%
-      group_by(p_group) %&gt;%
-      summarise(n = n()) %&gt;%
-      ungroup()
-    
-    p2 &lt;- ggplot(significant_only, aes(x = p_group, y = n)) +
-      geom_path(group = 1) +
-      geom_point() +
-      xlab("p-value") +
-      ylab("Number of simulations") +
-      expand_limits(y = 0) +
-      labs(
-        title = paste("Distribution of the", sum(p_values &lt; 0.05), "p-values below 0.05"),
-        subtitle = ""
-      )
-    
-    gridExtra::grid.arrange(p1, p2, ncol = 1)
+    print(p1)
   })
 }
 
@@ -426,13 +442,28 @@ shinyApp(ui = ui, server = server)</code></pre>
 <li>Leaving all other settings as they currently are, what will happen if instead of analysing the data after 10 new participants per condition, they’re analysed after 5 new participants per condition? Or after just 2 new participants per condition?</li>
 <li>What will happen when the correlation between the two outcome variables becomes weaker (e.g., <span class="math inline">\(r = 0.1\)</span> instead of <span class="math inline">\(r = 0.5\)</span>)? Why?</li>
 <li>What will happen when the correlation between the two outcome variables becomes stronger (e.g., <span class="math inline">\(r = 0.95\)</span>)? Why?</li>
-<li>For which combination of the different parameters will you obtain the highest Type-I error?</li>
-<li>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role?</li>
+<li>What will happen if the researcher also check for an interaction of condition with sex?</li>
+<li>For which combination of the different parameters will you obtain the highest Type-I error? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
+<li>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
 </ol>
 </section>
-<section id="reference" class="level2">
-<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<section id="further-comments" class="level2">
+<h2 class="anchored" data-anchor-id="further-comments">Further comments</h2>
+<p>First, the Type-I error rate found in the simulations may _under_estimate the problem as several common sources of researcher flexibility (often called ‘researcher degrees of freedom’ in the literature) are not accounted for in the simulation:</p>
+<ul>
+<li><p>We accounted for there being <em>only</em> three ways of defining the primary outcome variable. In many studies, there may be considerably more plausible ways to define the primary outcome. See, for instance, von der Malsburg and Angele (2017)</p></li>
+<li><p>We assumed a design with just two conditions, whereas Simmons et al.’s simulation included three conditions, one of which could be dropped from the analysis if this helped produce a significant result.</p></li>
+<li><p>We considered interactions with only a single additional variable; in practice, several such interactions could be tested.</p></li>
+<li><p>We didn’t transform the outcome in any way; in practice, researchers could try out different ways of transforming the data.</p></li>
+<li><p>We didn’t decide to throw out some data points for whatever reason (e.g., because they are outliers).</p></li>
+</ul>
+<p>Second, you shouldn’t take the simulation’s set-up to suggest that researchers consciously try out different analytical strategies in quite the predictable and orderly fashion that is implemented in the simulation. Rather, as Gelman and Loken (2013) point out, may take several of the decisions alluded to above based on an informal look at the data rather than on a series of formal statistics tests. This doesn’t solve the underlying problem that undisclosed flexibility in data analysis renders published <em>p</em>-values even more difficult to interpret than they would have been without.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Gelman, Andrew and Eric Loken. 2013. <a href="https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf">The garden of forking paths: Why multiple comparisons can be a problem, even when there is no “fishing expedition” or “p-hacking” and the research hypothesis was posited ahead of time.</a></p>
 <p>Simmons, Joseph P., Leif D. Nelson and Uri Simonsohn. 2011. <a href="https://doi.org/10.1177/0956797611417632">False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant.</a> <em>Psychological Science</em> 22(11). 1359–1366.</p>
+<p>von der Malsburg, Titus and Bernhard Angele. 2017. <a href="https://doi.org/10.1016/j.jml.2016.10.003">False positives and other statistical errors in standard analyses of eye movements in reading.</a> <em>Journal of Memory and Language</em> 94. 119–133.</p>
 
 
 </section>
