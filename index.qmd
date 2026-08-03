@@ -10,7 +10,9 @@ page-layout: full
 title-block-banner: false
 ---
 
-I blog about research design and statistics,
+I [blog](archive.qmd) about research design and statistics,
 often using examples from research on language learning.
+I also offer [training](courses.qmd) and [support](support.qmd)
+in quantitative methodology, research design, and data analysis.
 
 # Latest blog posts

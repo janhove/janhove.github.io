@@ -14,23 +14,72 @@ execute:
   freeze: auto
 ---
 
-## Explanation
-You can use the app below to reproduce some of the simulations from 
-Simmons et al.'s (2011) _False-positive psychology_. 
-The app simulates the following behaviour:
+## Context
+Simmons et al. (2011) showed, 
+by means of a few simulations as well as a real example, 
+that it is embarrassingly easy to produce statistically significant findings 
+even if the data are nothing but noise.
+In principle, at most 5% of studies that produce pure noise should 
+return statistical significance.
+But researchers may be 'flexible' about their studies' goals and designs:
 
-* A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.
-* Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: $r = 0.5$).
-* The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:
-  - The first time s/he analyses the first variable separately.
-  - Then s/he analyses the second variable separately.
-  - Finally, s/he averages the first and second variable per participant and analyses these averages in a third significance test.
-* If none of these three significance tests return a significant result (i.e., if none returns $p < 0.05$), 
-s/he recruits a couple of additional participants (default: 10) and analyses the data anew.
-* S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).
-* S/he writes up the results of his study, reporting only the **lowest** of the p-values s/he obtained.
+* They may collect multiple outcome variables and not exactly be sure which
+  one they're truly interested in beforehand.
+* They may not have specified in advance if they are interested in difference
+  between the conditions, or in whether the differences between the conditions
+  are more pronounced in one subgroup (e.g., men) than in another (e.g., women).
+* They may not have specified in advance how many participants they're going
+  to recruit. Instead, they may first recruit a smallish number (e.g.,
+  20 per condition), and if the results don't pan out, collect a few more
+  and analyse the data again.
+  
+Simmons et al. investigated the impact of these and a few other sources
+of researcher flexibility on how p-values are distributed if the study
+actually produces pure noise (i.e., if the null hypothesis is literally true).
+Based on their article, I wrote an app (embedded in this page) that allows you
+to reproduce and think through some of Simmons et al.'s results.
 
 ## Simulation
+You can use the app below to reproduce some of the simulations from 
+Simmons et al.'s (2011) _False-positive psychology_.
+(A play on words on the field of 'positive psychology' and 'false-positive' findings.)
+The app simulates the following behaviour:
+
+* A researcher recruits a number of participants (default: 20) 
+  who are randomly assigned to one of two conditions.
+* Two outcome variables are measured per participant. 
+  These variables may be correlated with each other 
+  (default correlation: r = 0.5).
+* The researcher analyses both variables with separate significance tests 
+  to check if they differ significantly between the two conditions. 
+  S/he does this three times:
+  - The first time s/he analyses the first variable separately.
+  - Then s/he analyses the second variable separately.
+  - Finally, s/he averages the first and second variable per participant and 
+    analyses these averages in a third significance test.
+* Optionally, s/he checks for the three outcome variables 
+  (first variable, second variable, and their average)
+  if condition interacts with the participants' sex.
+  That is, s/he checks if, regardless of whether s/he found a significant
+  condition effect overall, the condition effect may be more pronounced in
+  men than in women, or vice versa.
+  (About half of the simulated participants are men, and about half are
+  women.)
+  This yields another three significance tests.
+* If none of these three (or six) significance tests return a significant result 
+  (i.e., if none returns _p_ < 0.05), 
+  s/he recruits a couple of additional participants (default: 10) 
+  and analyses the data anew.
+* S/he keeps on recruiting and analysing data until 
+  at least one significance test yields a significant result or 
+  until s/he reaches the maximum number of participants s/he can pay 
+  (whichever comes first).
+* S/he writes up the results of the final iteration, 
+  reporting only the **lowest** of the p-values s/he obtained in this
+  final iteration. That is, the simulation assumes that only the most
+  favourable result from the final analysis is reported;
+  previous unsuccessful analyses are not disclosed.
+
 Please have some patience: 
 This app simulates and analyses a large number of datasets. 
 This takes a while.
@@ -56,13 +105,15 @@ theme_jv <- function(font_size = 9) {
 }
 theme_set(theme_jv(14))
 
-# p-value function
 situation_AB.fnc <- function(
-    min_n = 20, max_n = 30, add = 10, r = 0.50
+    min_n = 20, max_n = 30, add = 10, r = 0.50, 
+    check_interaction = FALSE
 ) {
   group <- rep(c(-0.5, 0.5), times = max_n)
+  sex <- rep(c(-0.5, 0.5), each = max_n)
+  sex <- sample(sex)
   
-  outcomes <- MASS::mvrnorm(
+  outcomes <- mvrnorm(
     n = 2 * max_n,
     mu = c(0, 0),
     Sigma = matrix(c(1, r, r, 1), nrow = 2)
@@ -72,6 +123,7 @@ situation_AB.fnc <- function(
   
   df <- data.frame(
     group = group,
+    sex = sex,
     outcome1 = outcomes[, 1],
     outcome2 = outcomes[, 2],
     average = average
@@ -81,19 +133,30 @@ situation_AB.fnc <- function(
   p_value <- Inf
   
   repeat {
-    if (p_value < 0.05) break
+    if (p_value <= 0.05) break
     if (n > max_n) break
     
-    tests <- summary(
+    no_interaction <- summary(
       lm(cbind(outcome1, outcome2, average) ~ group,
          data = df[1:(2 * n), ])
       )
     
-    p_1 <- tests[[1]]$coefficients[2, 4]
-    p_2 <- tests[[2]]$coefficients[2, 4]
-    p_3 <- tests[[3]]$coefficients[2, 4]
+    p_1 <- no_interaction[[1]]$coefficients[2, 4]
+    p_2 <- no_interaction[[2]]$coefficients[2, 4]
+    p_3 <- no_interaction[[3]]$coefficients[2, 4]
     
     p_value <- min(c(p_1, p_2, p_3))
+    
+    if (check_interaction) {
+      interaction <- summary(
+      lm(cbind(outcome1, outcome2, average) ~ sex*group,
+         data = df[1:(2 * n), ])
+      )
+      p_4 <- interaction[[1]]$coefficients[4, 4]
+      p_5 <- interaction[[2]]$coefficients[4, 4]
+      p_6 <- interaction[[3]]$coefficients[4, 4]
+      p_value <- min(c(p_value, p_4, p_5, p_6))
+    }
     
     n <- n + add
     
@@ -130,18 +193,28 @@ ui <- fluidPage(
         "Correlation between the dependent variables:",
         min = -1, max = 1, step = 0.05, value = 0.5
       ),
+      checkboxInput(
+        "check_interaction",
+        "Check for interaction of condition with sex?",
+        value = FALSE
+      ),
+      numericInput(
+        "n_sims",
+        "Number of simulations:",
+        min = 100, value = 1000, step = 100
+      ),
       actionButton("go", "Simulate!")
     ),
     
     mainPanel(
-      plotOutput("pValueDistribution", width = "450px", height = "750px")
+      plotOutput("pValueDistribution", width = "450px", height = "350px")
     )
   )
 )
 
 server <- function(input, output) {
   generate_p_values <- eventReactive(input$go, {
-    n_sims <- 1000
+    n_sims <- input$n_sims
     p_values <- numeric(n_sims)
     
     withProgress(message = "Simulating experiments", value = 0, {
@@ -150,7 +223,8 @@ server <- function(input, output) {
           min_n = input$min_n,
           max_n = input$min_n + input$max_add,
           add = input$n_add,
-          r = input$r
+          r = input$r,
+          check_interaction = input$check_interaction
         )
         incProgress(1 / n_sims)
       }
@@ -173,7 +247,7 @@ server <- function(input, output) {
       xlab("p-value") +
       ylab("Number of simulations") +
       labs(
-        title = paste("Distribution of lowest p-values in", nrow(df), "experiments"),
+        title = paste("p-values obtained in", nrow(df), "experiments"),
         subtitle = paste(
           "Type I error:", round(false_positive_rate, 2),
           "\u00B1", round(margin_of_error, 2)
@@ -181,25 +255,7 @@ server <- function(input, output) {
       ) +
       theme(legend.position = "none")
     
-    significant_only <- df %>%
-      filter(p_values < 0.05) %>%
-      mutate(p_group = cut(p_values, breaks = seq(0, 0.05, 0.01))) %>%
-      group_by(p_group) %>%
-      summarise(n = n()) %>%
-      ungroup()
-    
-    p2 <- ggplot(significant_only, aes(x = p_group, y = n)) +
-      geom_path(group = 1) +
-      geom_point() +
-      xlab("p-value") +
-      ylab("Number of simulations") +
-      expand_limits(y = 0) +
-      labs(
-        title = paste("Distribution of the", sum(p_values < 0.05), "p-values below 0.05"),
-        subtitle = ""
-      )
-    
-    gridExtra::grid.arrange(p1, p2, ncol = 1)
+    print(p1)
   })
 }
 
@@ -211,26 +267,78 @@ Before running the simulation to answer each question,
 first reason through what will happen.
 
 1. Increase the 'maximum number of additional participants in each group' to 30. 
-Leave the other settings at their default values. 
-How will the graphs change?
+   Leave the other settings at their default values. 
+   How will the graphs change?
 2. Leaving all other settings as they currently are, what will
-happen if instead of analysing the data after 10 new participants
-per condition, they're analysed after 5 new participants per
-condition? Or after just 2 new participants per condition?
+   happen if instead of analysing the data after 10 new participants
+   per condition, they're analysed after 5 new participants per
+   condition? Or after just 2 new participants per condition?
 3. What will happen when the correlation between the two 
-outcome variables becomes weaker (e.g., $r = 0.1$ instead
-of $r = 0.5$)? Why?
+   outcome variables becomes weaker (e.g., $r = 0.1$ instead
+   of $r = 0.5$)? Why?
 4. What will happen when the correlation between the two
-outcome variables becomes stronger (e.g., $r = 0.95$)? Why?
-5. For which combination of the different parameters will
-you obtain the highest Type-I error?
+   outcome variables becomes stronger (e.g., $r = 0.95$)? Why?
+5. What will happen if the researcher also check for an interaction of condition
+   with sex?
 6. For which combination of the different parameters will
-you find a Type-I error rate of about 5%? 
-Are there any parameters that don't play a role?
+   you obtain the highest Type-I error?
+   (The number of simulations doesn't count as a parameter. 
+   The results will take longer to be compute but will be more accurate 
+   for a larger number of simulations.)
+7. For which combination of the different parameters will
+   you find a Type-I error rate of about 5%? 
+   Are there any parameters that don't play a role?
+   (The number of simulations doesn't count as a parameter. 
+   The results will take longer to be compute but will be more 
+   accurate for a larger number of simulations.)
+   
+## Further comments
+First, the Type-I error rate found in the simulations may _under_estimate the problem
+as several common sources of researcher flexibility (often called
+'researcher degrees of freedom' in the literature) are not accounted for in
+the simulation:
 
-## Reference
+* We accounted for there being _only_ three ways of defining the primary 
+  outcome variable. In many studies, there may be considerably more plausible
+  ways to define the primary outcome. See, for instance, 
+  von der Malsburg and Angele (2017)
+  
+* We assumed a design with just two conditions, whereas Simmons et al.'s
+  simulation included three conditions, one of which could be dropped
+  from the analysis if this helped produce a significant result.
+  
+* We considered interactions with only a single additional variable;
+  in practice, several such interactions could be tested.
+  
+* We didn't transform the outcome in any way; in practice, researchers could
+  try out different ways of transforming the data.
+  
+* We didn't decide to throw out some data points for whatever reason
+  (e.g., because they are outliers).
+
+Second, you shouldn't take the simulation's set-up to suggest that researchers
+consciously try out different analytical strategies in quite the predictable
+and orderly fashion that is implemented in the simulation.
+Rather, as Gelman and Loken (2013) point out, may take several of the decisions 
+alluded to above based on an informal look at the data rather than on a series
+of formal statistics tests.
+This doesn't solve the underlying problem that undisclosed flexibility in 
+data analysis renders published _p_-values even more difficult to interpret
+than they would have been without.
+
+## References
+Gelman, Andrew and Eric Loken.
+2013.
+[The garden of forking paths: Why multiple comparisons can be a problem, even when there is no "fishing expedition" or "p-hacking" and the research hypothesis was posited ahead of time.](https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf)
+
 Simmons, Joseph P., Leif D. Nelson and Uri Simonsohn.
 2011.
 [False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant.](https://doi.org/10.1177/0956797611417632)
 _Psychological Science_ 22(11).
 1359--1366.
+
+von der Malsburg, Titus and Bernhard Angele.
+2017.
+[False positives and other statistical errors in standard analyses of eye movements in reading.](https://doi.org/10.1016/j.jml.2016.10.003)
+_Journal of Memory and Language_ 94.
+119--133.

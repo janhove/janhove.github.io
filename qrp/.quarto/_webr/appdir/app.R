@@ -15,13 +15,15 @@ theme_jv <- function(font_size = 9) {
 }
 theme_set(theme_jv(14))
 
-# p-value function
 situation_AB.fnc <- function(
-    min_n = 20, max_n = 30, add = 10, r = 0.50
+    min_n = 20, max_n = 30, add = 10, r = 0.50, 
+    check_interaction = FALSE
 ) {
   group <- rep(c(-0.5, 0.5), times = max_n)
+  sex <- rep(c(-0.5, 0.5), each = max_n)
+  sex <- sample(sex)
   
-  outcomes <- MASS::mvrnorm(
+  outcomes <- mvrnorm(
     n = 2 * max_n,
     mu = c(0, 0),
     Sigma = matrix(c(1, r, r, 1), nrow = 2)
@@ -31,6 +33,7 @@ situation_AB.fnc <- function(
   
   df <- data.frame(
     group = group,
+    sex = sex,
     outcome1 = outcomes[, 1],
     outcome2 = outcomes[, 2],
     average = average
@@ -40,19 +43,30 @@ situation_AB.fnc <- function(
   p_value <- Inf
   
   repeat {
-    if (p_value < 0.05) break
+    if (p_value <= 0.05) break
     if (n > max_n) break
     
-    tests <- summary(
+    no_interaction <- summary(
       lm(cbind(outcome1, outcome2, average) ~ group,
          data = df[1:(2 * n), ])
       )
     
-    p_1 <- tests[[1]]$coefficients[2, 4]
-    p_2 <- tests[[2]]$coefficients[2, 4]
-    p_3 <- tests[[3]]$coefficients[2, 4]
+    p_1 <- no_interaction[[1]]$coefficients[2, 4]
+    p_2 <- no_interaction[[2]]$coefficients[2, 4]
+    p_3 <- no_interaction[[3]]$coefficients[2, 4]
     
     p_value <- min(c(p_1, p_2, p_3))
+    
+    if (check_interaction) {
+      interaction <- summary(
+      lm(cbind(outcome1, outcome2, average) ~ sex*group,
+         data = df[1:(2 * n), ])
+      )
+      p_4 <- interaction[[1]]$coefficients[4, 4]
+      p_5 <- interaction[[2]]$coefficients[4, 4]
+      p_6 <- interaction[[3]]$coefficients[4, 4]
+      p_value <- min(c(p_value, p_4, p_5, p_6))
+    }
     
     n <- n + add
     
@@ -89,18 +103,28 @@ ui <- fluidPage(
         "Correlation between the dependent variables:",
         min = -1, max = 1, step = 0.05, value = 0.5
       ),
+      checkboxInput(
+        "check_interaction",
+        "Check for interaction of condition with sex?",
+        value = FALSE
+      ),
+      numericInput(
+        "n_sims",
+        "Number of simulations:",
+        min = 100, value = 1000, step = 100
+      ),
       actionButton("go", "Simulate!")
     ),
     
     mainPanel(
-      plotOutput("pValueDistribution", width = "900px", height = "400px")
+      plotOutput("pValueDistribution", width = "450px", height = "350px")
     )
   )
 )
 
 server <- function(input, output) {
   generate_p_values <- eventReactive(input$go, {
-    n_sims <- 1000
+    n_sims <- input$n_sims
     p_values <- numeric(n_sims)
     
     withProgress(message = "Simulating experiments", value = 0, {
@@ -109,7 +133,8 @@ server <- function(input, output) {
           min_n = input$min_n,
           max_n = input$min_n + input$max_add,
           add = input$n_add,
-          r = input$r
+          r = input$r,
+          check_interaction = input$check_interaction
         )
         incProgress(1 / n_sims)
       }
@@ -132,7 +157,7 @@ server <- function(input, output) {
       xlab("p-value") +
       ylab("Number of simulations") +
       labs(
-        title = paste("Distribution of lowest p-values in", nrow(df), "experiments"),
+        title = paste("p-values obtained in", nrow(df), "experiments"),
         subtitle = paste(
           "Type I error:", round(false_positive_rate, 2),
           "\u00B1", round(margin_of_error, 2)
@@ -140,25 +165,7 @@ server <- function(input, output) {
       ) +
       theme(legend.position = "none")
     
-    significant_only <- df %>%
-      filter(p_values < 0.05) %>%
-      mutate(p_group = cut(p_values, breaks = seq(0, 0.05, 0.01))) %>%
-      group_by(p_group) %>%
-      summarise(n = n()) %>%
-      ungroup()
-    
-    p2 <- ggplot(significant_only, aes(x = p_group, y = n)) +
-      geom_path(group = 1) +
-      geom_point() +
-      xlab("p-value") +
-      ylab("Number of simulations") +
-      expand_limits(y = 0) +
-      labs(
-        title = paste("Distribution of the", sum(p_values < 0.05), "p-values below 0.05"),
-        subtitle = ""
-      )
-    
-    gridExtra::grid.arrange(p1, p2, ncol = 2)
+    print(p1)
   })
 }
 

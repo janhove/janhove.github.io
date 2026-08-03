@@ -42,20 +42,22 @@ This way, faculty, associated researchers, and students can drop
 by to discuss any issue methodological or statistical
 before they become serious problems.
 
-Here I some things I could help you with:
+Here I some of the things I could help you with:
 
 * sharpening research questions and formulating them in statistical terms 
 (usually _the_ single most important aspect!);
-* providing feedback on a study design or a write-up;
+* providing feedback on a study design, an application, or a write-up;
 * running a sanity check on an analysis;
-* finding a suitable data visualisation;
+* finding suitable data visualisations;
+* fitting complex models---and simpler ones, too;
 * interpreting model output;
-* making sense of the methods or stats in a published study.
+* making sense of the methods or stats in a published study that you don't
+  quite get or that you're skeptical about.
 
-The aim is not to take over supervision 
-or to rescue projects at the eleventh hour. 
-Rather, it is to provide researchers with independent 
-methodological feedback throughout the research process.
+My aim isn't to replace supervisors, to rescue projects at the eleventh hour,
+or to squeeze out a significant _p_-value from the advisees' data.
+Rather, it is to provide researchers with independent methodological 
+and statistical feedback throughout their research projects.
 
 If you're interested, 
 get in touch by [e-mail](mailto:janvanhove@gmail.com)
@@ -86,23 +88,22 @@ I can help you with:
 * sharpening research questions and formulating them in statistical terms
 (usually _the_ single most important aspect!);
 * designing your study;
-* writing grant applications;
 * stress-testing questionnaires;
 * outlining or checking analysis plans;
-* data wrangling;
+* writing grant applications;
 * choosing effective visualisations;
-* making sense of output;
-* making your work reproducible and transparent:
+* making sense of model output;
+* making your work reproducible and transparent through
 open data, 
 open code, 
 preregistrations,
-writing documentation;
-* or even doing the entire analysis from start to finish;
-* providing feedback on manuscripts.
+and documentation;
+* data wrangling;
+* providing feedback on manuscripts;
+* or even doing the entire analysis from start to finish.
 
 My goal isn't to help you squeeze out a significant _p_-value
-or run analyses whose principal merit is 
-that everyone in the field runs them.
+or run analyses whose principal merit is that everyone in the field runs them.
 Rather, it is to help you design, run, and analyse studies
 that strike a suitable balance between technical 
 correctness and accessibility to others in the field.
