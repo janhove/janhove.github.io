@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jan Vanhove">
-<meta name="dcterms.date" content="2026-08-04">
+<meta name="dcterms.date" content="2026-07-09">
 
-<title>False-positive psychology – Jan Vanhove</title>
+<title>A quick introduction to Gaussian process regression – Jan Vanhove</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -28,31 +28,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ef9afd74c936c907027de2a6fad25a4d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<meta name="shinylive:serviceworker_dir" content="..">
-<script src="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/run-python-blocks.js" type="module"></script>
-<link href="../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/shinylive.css" rel="stylesheet">
-<link href="../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ef9afd74c936c907027de2a6fad25a4d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -89,6 +119,8 @@ ul.task-list li input[type="checkbox"] {
 
   gtag('config', 'G-7PMKN7SZET');
 </script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -120,7 +152,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -130,7 +162,7 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Jan Vanhove</span>
     </a>
   </div>
@@ -141,31 +173,31 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../support.html"> 
+    <a class="nav-link" href="../../support.html"> 
 <span class="menu-text">Methods and stats support</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../courses.html"> 
+    <a class="nav-link" href="../../courses.html"> 
 <span class="menu-text">Courses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../archive.html"> 
+    <a class="nav-link" href="../../archive.html"> 
 <span class="menu-text">Blog archive</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../resources.html"> 
+    <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Teaching resources</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../publications.html"> 
+    <a class="nav-link" href="../../publications.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../archive.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -177,7 +209,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -185,25 +217,26 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#context" id="toc-context" class="nav-link active" data-scroll-target="#context">Context</a></li>
-  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  <li><a href="#further-comments" id="toc-further-comments" class="nav-link" data-scroll-target="#further-comments">Further comments</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#references-and-further-reading" id="toc-references-and-further-reading" class="nav-link active" data-scroll-target="#references-and-further-reading">References and further reading</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session info</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">False-positive psychology</h1>
-</div>
+<h1 class="title">A quick introduction to Gaussian process regression</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Gaussian processes</div>
+    <div class="quarto-category">predictive modelling</div>
+  </div>
+  </div>
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -215,7 +248,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 4, 2026</p>
+      <p class="date">July 9, 2026</p>
     </div>
   </div>
   
@@ -227,260 +260,131 @@ window.Quarto = {
 </header>
 
 
-<section id="context" class="level2">
-<h2 class="anchored" data-anchor-id="context">Context</h2>
-<p>Simmons et al.&nbsp;(2011) showed, by means of a few simulations as well as a real example, that it is embarrassingly easy to produce statistically significant findings even if the data are nothing but noise. In principle, at most 5% of studies that produce pure noise should return statistical significance. But researchers may be ‘flexible’ about their studies’ goals and designs:</p>
-<ul>
-<li>They may collect multiple outcome variables and not exactly be sure which one they’re truly interested in beforehand.</li>
-<li>They may not have specified in advance if they are interested in difference between the conditions, or in whether the differences between the conditions are more pronounced in one subgroup (e.g., men) than in another (e.g., women).</li>
-<li>They may not have specified in advance how many participants they’re going to recruit. Instead, they may first recruit a smallish number (e.g., 20 per condition), and if the results don’t pan out, collect a few more and analyse the data again.</li>
-</ul>
-<p>Simmons et al.&nbsp;investigated the impact of these and a few other sources of researcher flexibility on how p-values are distributed if the study actually produces pure noise (i.e., if the null hypothesis is literally true). Based on their article, I wrote an app (embedded in this page) that allows you to reproduce and think through some of Simmons et al.’s results.</p>
-</section>
-<section id="simulation" class="level2">
-<h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
-<p>You can use the app below to reproduce some of the simulations from Simmons et al.’s (2011) <em>False-positive psychology</em>. (A play on words on the field of ‘positive psychology’ and ‘false-positive’ findings.) The app simulates the following behaviour:</p>
-<ul>
-<li>A researcher recruits a number of participants (default: 20) who are randomly assigned to one of two conditions.</li>
-<li>Two outcome variables are measured per participant. These variables may be correlated with each other (default correlation: r = 0.5).</li>
-<li>The researcher analyses both variables with separate significance tests to check if they differ significantly between the two conditions. S/he does this three times:
-<ul>
-<li>The first time s/he analyses the first variable separately.</li>
-<li>Then s/he analyses the second variable separately.</li>
-<li>Finally, s/he averages the first and second variable per participant and analyses these averages in a third significance test.</li>
-</ul></li>
-<li>Optionally, s/he checks for the three outcome variables (first variable, second variable, and their average) if condition interacts with the participants’ sex. That is, s/he checks if, regardless of whether s/he found a significant condition effect overall, the condition effect may be more pronounced in men than in women, or vice versa. (About half of the simulated participants are men, and about half are women.) This yields another three significance tests.</li>
-<li>If none of these three (or six) significance tests return a significant result (i.e., if none returns <em>p</em> &lt; 0.05), s/he recruits a couple of additional participants (default: 10) and analyses the data anew.</li>
-<li>S/he keeps on recruiting and analysing data until at least one significance test yields a significant result or until s/he reaches the maximum number of participants s/he can pay (whichever comes first).</li>
-<li>S/he writes up the results of the final iteration, reporting only the <strong>lowest</strong> of the p-values s/he obtained in this final iteration. That is, the simulation assumes that only the most favourable result from the final analysis is reported; previous unsuccessful analyses are not disclosed.</li>
-</ul>
-<p>Please have some patience: This app simulates and analyses a large number of datasets. This takes a while.</p>
-<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
-#|   shinylive does not work in self-contained HTML documents.
-#|   Please set `embed-resources: false` in your metadata.
-#| standalone: true
-#| viewerHeight: 850
-
-library(shiny)
-library(shinythemes)
-library(ggplot2)
-library(dplyr)
-library(MASS)
-library(gridExtra)
-
-theme_jv &lt;- function(font_size = 9) {
-  theme_bw(base_size = font_size) %+replace%
-    theme(
-      panel.grid = element_blank(),
-      axis.ticks = element_line(colour = "black"),
-      axis.text = element_text(colour = "black")
-    )
-}
-theme_set(theme_jv(14))
-
-situation_AB.fnc &lt;- function(
-    min_n = 20, max_n = 30, add = 10, r = 0.50, 
-    check_interaction = FALSE
-) {
-  group &lt;- rep(c(-0.5, 0.5), times = max_n)
-  sex &lt;- rep(c(-0.5, 0.5), each = max_n)
-  sex &lt;- sample(sex)
-  
-  outcomes &lt;- mvrnorm(
-    n = 2 * max_n,
-    mu = c(0, 0),
-    Sigma = matrix(c(1, r, r, 1), nrow = 2)
-  )
-  
-  average &lt;- rowMeans(outcomes)
-  
-  df &lt;- data.frame(
-    group = group,
-    sex = sex,
-    outcome1 = outcomes[, 1],
-    outcome2 = outcomes[, 2],
-    average = average
-  )
-  
-  n &lt;- min_n
-  p_value &lt;- Inf
-  
-  repeat {
-    if (p_value &lt;= 0.05) break
-    if (n &gt; max_n) break
-    
-    no_interaction &lt;- summary(
-      lm(cbind(outcome1, outcome2, average) ~ group,
-         data = df[1:(2 * n), ])
-      )
-    
-    p_1 &lt;- no_interaction[[1]]$coefficients[2, 4]
-    p_2 &lt;- no_interaction[[2]]$coefficients[2, 4]
-    p_3 &lt;- no_interaction[[3]]$coefficients[2, 4]
-    
-    p_value &lt;- min(c(p_1, p_2, p_3))
-    
-    if (check_interaction) {
-      interaction &lt;- summary(
-      lm(cbind(outcome1, outcome2, average) ~ sex*group,
-         data = df[1:(2 * n), ])
-      )
-      p_4 &lt;- tryCatch(
-        {
-          interaction[[1]]$coefficients[4, 4]
-        },
-        error = function(msg) { 1 }
-      )
-      p_5 &lt;- tryCatch(
-        {
-          interaction[[2]]$coefficients[4, 4]
-        },
-        error = function(msg) 1
-      )
-      p_6 &lt;- tryCatch(
-        {
-          interaction[[3]]$coefficients[4, 4]
-        },
-        error = function(msg) 1
-      )
-      p_value &lt;- min(c(p_value, p_4, p_5, p_6))
-    }
-    
-    n &lt;- n + add
-    
-    if (add &lt;= 0) break
-    if (max_n &lt;= min_n) break
-  }
-  
-  p_value
-}
-
-ui &lt;- fluidPage(
-  theme = shinytheme("united"),
-  titlePanel("False-positive psychology"),
-  
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput(
-        "min_n",
-        "Minimum number of participants in each group:",
-        min = 5, max = 100, value = 20, step = 1
-      ),
-      sliderInput(
-        "max_add",
-        "Maximum number of additional participants in each group:",
-        min = 0, max = 50, value = 10, step = 1
-      ),
-      sliderInput(
-        "n_add",
-        "After how many new participants per group should the data be analysed again?",
-        min = 0, max = 50, value = 10, step = 1
-      ),
-      sliderInput(
-        "r",
-        "Correlation between the dependent variables:",
-        min = -1, max = 1, step = 0.05, value = 0.5
-      ),
-      checkboxInput(
-        "check_interaction",
-        "Check for interaction of condition with sex?",
-        value = FALSE
-      ),
-      numericInput(
-        "n_sims",
-        "Number of simulations:",
-        min = 100, value = 1000, step = 100
-      ),
-      actionButton("go", "Simulate!")
-    ),
-    
-    mainPanel(
-      plotOutput("pValueDistribution", width = "450px", height = "350px")
-    )
-  )
-)
-
-server &lt;- function(input, output) {
-  generate_p_values &lt;- eventReactive(input$go, {
-    n_sims &lt;- input$n_sims
-    p_values &lt;- numeric(n_sims)
-    
-    withProgress(message = "Simulating experiments", value = 0, {
-      for (i in seq_len(n_sims)) {
-        p_values[i] &lt;- situation_AB.fnc(
-          min_n = input$min_n,
-          max_n = input$min_n + input$max_add,
-          add = input$n_add,
-          r = input$r,
-          check_interaction = input$check_interaction
-        )
-        incProgress(1 / n_sims)
-      }
-    })
-    
-    p_values
-  })
-  
-  output$pValueDistribution &lt;- renderPlot({
-    p_values &lt;- generate_p_values()
-    df &lt;- data.frame(p_values)
-    false_positive_rate &lt;- mean(p_values &lt; 0.05)
-    margin_of_error &lt;-
-      1.96 * sqrt(false_positive_rate * (1 - false_positive_rate) / length(p_values))
-    
-    p1 &lt;- ggplot(df, aes(x = p_values, fill = factor(p_values &lt; 0.05))) +
-      geom_histogram(colour = "black", breaks = seq(0, 1, by = 0.05)) +
-      scale_fill_manual(values = c("#2b83ba", "#d7191c")) +
-      geom_hline(yintercept = nrow(df) * 0.05, linetype = "dashed") +
-      xlab("p-value") +
-      ylab("Number of simulations") +
-      labs(
-        title = paste("p-values obtained in", nrow(df), "experiments"),
-        subtitle = paste(
-          "Type I error:", round(false_positive_rate, 2),
-          "\u00B1", round(margin_of_error, 2)
-        )
-      ) +
-      theme(legend.position = "none")
-    
-    print(p1)
-  })
-}
-
-shinyApp(ui = ui, server = server)</code></pre>
-</section>
-<section id="exercises" class="level2">
-<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
-<p>Before running the simulation to answer each question, first reason through what will happen.</p>
+<p>For my Master’s thesis in statistics, I took a closer look at a method that allows you to do predictive regression modelling when the inputs are represented as probability distributions.</p>
 <ol type="1">
-<li>Increase the ‘maximum number of additional participants in each group’ to 30. Leave the other settings at their default values. How will the graphs change?</li>
-<li>Leaving all other settings as they currently are, what will happen if instead of analysing the data after 10 new participants per condition, they’re analysed after 5 new participants per condition? Or after just 2 new participants per condition?</li>
-<li>What will happen when the correlation between the two outcome variables becomes weaker (e.g., <span class="math inline">\(r = 0.1\)</span> instead of <span class="math inline">\(r = 0.5\)</span>)? Why?</li>
-<li>What will happen when the correlation between the two outcome variables becomes stronger (e.g., <span class="math inline">\(r = 0.95\)</span>)? Why?</li>
-<li>What will happen if the researcher also check for an interaction of condition with sex?</li>
-<li>For which combination of the different parameters will you obtain the highest Type-I error? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
-<li>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
+<li><p>Predictive model, here: for solving regression problems.</p></li>
+<li><p>Goal: explain basic logic.</p></li>
 </ol>
+<p>The goal of this blog post is to introduce the nuts and bolts of Gaussian process regression.</p>
+<p>Assume that for any finite collection of outputs <span class="math inline">\(Y_1, \dots, Y_n\)</span>, the vector <span class="math inline">\(\boldsymbol{Y} = (Y_1, \dots, Y_n)^{\top}\)</span> has an <span class="math inline">\(n\)</span>-variate Gaussian (i.e., Normal) distribution: <span class="math display">\[\boldsymbol Y \sim \mathcal{N}_n(\boldsymbol \mu, \boldsymbol \Sigma),\]</span> where <span class="math inline">\(\boldsymbol \mu\)</span> is the distribution’s <span class="math inline">\(n\)</span>-valued mean vector and <span class="math inline">\(\boldsymbol \Sigma\)</span> is its <span class="math inline">\(n \times n\)</span> covariance matrix.</p>
+<p>For simplicity, we assume that the mean vector of this distribution is <span class="math inline">\(\boldsymbol{0}\)</span>. The <span class="math inline">\((i,j)\)</span>-th element of <span class="math inline">\(\boldsymbol \Sigma\)</span> expresses the covariance of the <span class="math inline">\(i\)</span>-th and <span class="math inline">\(j\)</span>-th element of <span class="math inline">\(\boldsymbol Y\)</span>.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting functions -----------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x)), <span class="at">Sigma =</span> K)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[<span class="dv">1</span>, ], <span class="at">ylim =</span> <span class="fu">range</span>(Y), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="fu">expression</span>(<span class="fu">italic</span>(x)), </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">expression</span>(<span class="fu">italic</span>(y)), </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> main)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[i, ], <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">col =</span> cols[i])</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plot_corr <span class="ot">&lt;-</span> <span class="cf">function</span>(K, <span class="at">main =</span> <span class="st">""</span>) {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  corrplot<span class="sc">::</span><span class="fu">corrplot</span>(<span class="fu">cov2cor</span>(K),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">title =</span> main, <span class="at">tl.pos =</span> <span class="st">"n"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot kernels -----------------------------------------------------------------</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">no.readonly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Random seed</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026-07-07</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictor data and distances between them</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.2</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"-"</span>) <span class="sc">|&gt;</span> <span class="fu">abs</span>()</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear kernel with an offset</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>K_linear <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"*"</span>) <span class="sc">+</span> <span class="fu">matrix</span>(<span class="dv">1</span>, <span class="at">nrow =</span> <span class="fu">length</span>(x), <span class="at">ncol =</span> <span class="fu">length</span>(x))</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_corr</span>(K_linear, <span class="at">main =</span> <span class="st">"Linear kernel"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_linear, <span class="at">main =</span> <span class="st">"Linear kernel"</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Periodic kernel</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>K_periodic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sin</span>(D)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_periodic, <span class="at">main =</span> <span class="st">"Periodic kernel"</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># RBF kernel</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>K_rbf <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_rbf, <span class="at">main =</span> <span class="st">"Gaussian RBF kernel"</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Matérn 1/2 kernel</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>K_matern12 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_matern12, <span class="at">main =</span> <span class="st">"Matérn(1/2) kernel"</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Matérn 3/2 kernel</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>K_matern32 <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">3</span>) <span class="sc">*</span> D) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sqrt</span>(<span class="dv">3</span>)<span class="sc">*</span>D)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_matern32, <span class="at">main =</span> <span class="st">"Matérn(3/2) kernel"</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Matérn 5/2 kernel</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>K_matern52 <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">sqrt</span>(<span class="dv">5</span>) <span class="sc">*</span> D <span class="sc">+</span> <span class="dv">5</span> <span class="sc">*</span> D<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">3</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sqrt</span>(<span class="dv">5</span>)<span class="sc">*</span>D)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_gpr</span>(x, K_matern52, <span class="at">main =</span> <span class="st">"Matérn(5/2) kernel"</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-kernels-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernels-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-kernels-1.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernels-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A scatterplot to which we want to add a trend line.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div id="fig-kernels-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kernels-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-kernels-2.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kernels-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A scatterplot to which we want to add a trend line.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="references-and-further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="references-and-further-reading">References and further reading</h2>
 </section>
-<section id="further-comments" class="level2">
-<h2 class="anchored" data-anchor-id="further-comments">Further comments</h2>
-<p>First, the Type-I error rate found in the simulations may, in fact, <em>underestimate</em> the problem as several common sources of researcher flexibility (often called <em>researcher degrees of freedom</em> in the literature) are not accounted for in the simulation:</p>
-<ul>
-<li><p>We accounted for there being <em>only</em> three ways of defining the primary outcome variable. In many studies, there may be considerably more plausible ways to define the primary outcome.</p></li>
-<li><p>We assumed a design with just two conditions, whereas Simmons et al.’s simulation included three conditions, one of which could be dropped from the analysis if this helped produce a significant result.</p></li>
-<li><p>We considered interactions with only a single additional variable; in practice, several such interactions could be tested.</p></li>
-<li><p>We didn’t transform the outcome in any way; in practice, researchers could try out different ways of transforming the data.</p></li>
-<li><p>We didn’t decide to throw out some data points for whatever reason (e.g., because they are outliers).</p></li>
-</ul>
-<p>See van der Malsburg and Angele (2017) and Roettger (2019) for further discussion of these issues in the language sciences.</p>
-<p>Second, you shouldn’t take the simulation’s set-up to suggest that researchers consciously try out different analytical strategies in quite the predictable and orderly fashion that is implemented in the simulation. Rather, as Gelman and Loken (2013) point out, may take several of the decisions alluded to above based on an informal look at the data rather than on a series of formal statistics tests. This doesn’t solve the underlying problem that undisclosed flexibility in data analysis renders published <em>p</em>-values even more difficult to interpret than they would have been without.</p>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p>Gelman, Andrew and Eric Loken. 2013. <a href="https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf">The garden of forking paths: Why multiple comparisons can be a problem, even when there is no “fishing expedition” or “p-hacking” and the research hypothesis was posited ahead of time.</a></p>
-<p>Roettger, Timo B. 2019. <a href="https://doi.org/10.5334/labphon.147">Research degrees of freedom in phonetic research.</a> <em>Laboratory Phonology</em> 10(1).</p>
-<p>Simmons, Joseph P., Leif D. Nelson and Uri Simonsohn. 2011. <a href="https://doi.org/10.1177/0956797611417632">False-positive psychology: Undisclosed flexibility in data collection and analysis allows presenting anything as significant.</a> <em>Psychological Science</em> 22(11). 1359–1366.</p>
-<p>von der Malsburg, Titus and Bernhard Angele. 2017. <a href="https://doi.org/10.1016/j.jml.2016.10.003">False positives and other statistical errors in standard analyses of eye movements in reading.</a> <em>Journal of Memory and Language</em> 94. 119–133.</p>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session info</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">session_info</span>(<span class="st">"attached"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in system2("quarto", "-V", stdout = TRUE, env = paste0("TMPDIR=", :
+running command '"quarto"
+TMPDIR=C:/Users/VanhoveJ/AppData/Local/Temp/Rtmpi4kf6j/file986acf401f -V' had
+status 1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.5.0 (2025-04-11 ucrt)
+ os       Windows 11 x64 (build 26200)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_United Kingdom.utf8
+ ctype    English_United Kingdom.utf8
+ tz       Europe/Zurich
+ date     2026-07-09
+ pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+ quarto   NA @ C:\\Users\\VanhoveJ\\AppData\\Local\\Programs\\Quarto\\bin\\quarto.exe
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
 
 
 </section>
