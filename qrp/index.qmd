@@ -289,10 +289,10 @@ first reason through what will happen.
    per condition, they're analysed after 5 new participants per
    condition? Or after just 2 new participants per condition?
 3. What will happen when the correlation between the two 
-   outcome variables becomes weaker (e.g., $r = 0.1$ instead
-   of $r = 0.5$)? Why?
+   outcome variables becomes weaker (e.g., r = 0.1 instead
+   of r = 0.5)? Why?
 4. What will happen when the correlation between the two
-   outcome variables becomes stronger (e.g., $r = 0.95$)? Why?
+   outcome variables becomes stronger (e.g., r = 0.95)? Why?
 5. What will happen if the researcher also check for an interaction of condition
    with sex?
 6. For which combination of the different parameters will
@@ -316,17 +316,13 @@ the simulation:
 * We accounted for there being _only_ three ways of defining the primary 
   outcome variable. In many studies, there may be considerably more plausible
   ways to define the primary outcome.
-  
 * We assumed a design with just two conditions, whereas Simmons et al.'s
   simulation included three conditions, one of which could be dropped
   from the analysis if this helped produce a significant result.
-  
 * We considered interactions with only a single additional variable;
   in practice, several such interactions could be tested.
-  
 * We didn't transform the outcome in any way; in practice, researchers could
   try out different ways of transforming the data.
-  
 * We didn't decide to throw out some data points for whatever reason
   (e.g., because they are outliers).
   
