@@ -90,35 +90,6 @@ ul.task-list li input[type="checkbox"] {
   gtag('config', 'G-7PMKN7SZET');
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -455,8 +426,8 @@ shinyApp(ui = ui, server = server)</code></pre>
 <ol type="1">
 <li>Increase the ‘maximum number of additional participants in each group’ to 30. Leave the other settings at their default values. How will the graphs change?</li>
 <li>Leaving all other settings as they currently are, what will happen if instead of analysing the data after 10 new participants per condition, they’re analysed after 5 new participants per condition? Or after just 2 new participants per condition?</li>
-<li>What will happen when the correlation between the two outcome variables becomes weaker (e.g., <span class="math inline">\(r = 0.1\)</span> instead of <span class="math inline">\(r = 0.5\)</span>)? Why?</li>
-<li>What will happen when the correlation between the two outcome variables becomes stronger (e.g., <span class="math inline">\(r = 0.95\)</span>)? Why?</li>
+<li>What will happen when the correlation between the two outcome variables becomes weaker (e.g., r = 0.1 instead of r = 0.5)? Why?</li>
+<li>What will happen when the correlation between the two outcome variables becomes stronger (e.g., r = 0.95)? Why?</li>
 <li>What will happen if the researcher also check for an interaction of condition with sex?</li>
 <li>For which combination of the different parameters will you obtain the highest Type-I error? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
 <li>For which combination of the different parameters will you find a Type-I error rate of about 5%? Are there any parameters that don’t play a role? (The number of simulations doesn’t count as a parameter. The results will take longer to be compute but will be more accurate for a larger number of simulations.)</li>
@@ -466,11 +437,11 @@ shinyApp(ui = ui, server = server)</code></pre>
 <h2 class="anchored" data-anchor-id="further-comments">Further comments</h2>
 <p>First, the Type-I error rate found in the simulations may, in fact, <em>underestimate</em> the problem as several common sources of researcher flexibility (often called <em>researcher degrees of freedom</em> in the literature) are not accounted for in the simulation:</p>
 <ul>
-<li><p>We accounted for there being <em>only</em> three ways of defining the primary outcome variable. In many studies, there may be considerably more plausible ways to define the primary outcome.</p></li>
-<li><p>We assumed a design with just two conditions, whereas Simmons et al.’s simulation included three conditions, one of which could be dropped from the analysis if this helped produce a significant result.</p></li>
-<li><p>We considered interactions with only a single additional variable; in practice, several such interactions could be tested.</p></li>
-<li><p>We didn’t transform the outcome in any way; in practice, researchers could try out different ways of transforming the data.</p></li>
-<li><p>We didn’t decide to throw out some data points for whatever reason (e.g., because they are outliers).</p></li>
+<li>We accounted for there being <em>only</em> three ways of defining the primary outcome variable. In many studies, there may be considerably more plausible ways to define the primary outcome.</li>
+<li>We assumed a design with just two conditions, whereas Simmons et al.’s simulation included three conditions, one of which could be dropped from the analysis if this helped produce a significant result.</li>
+<li>We considered interactions with only a single additional variable; in practice, several such interactions could be tested.</li>
+<li>We didn’t transform the outcome in any way; in practice, researchers could try out different ways of transforming the data.</li>
+<li>We didn’t decide to throw out some data points for whatever reason (e.g., because they are outliers).</li>
 </ul>
 <p>See van der Malsburg and Angele (2017) and Roettger (2019) for further discussion of these issues in the language sciences.</p>
 <p>Second, you shouldn’t take the simulation’s set-up to suggest that researchers consciously try out different analytical strategies in quite the predictable and orderly fashion that is implemented in the simulation. Rather, as Gelman and Loken (2013) point out, may take several of the decisions alluded to above based on an informal look at the data rather than on a series of formal statistics tests. This doesn’t solve the underlying problem that undisclosed flexibility in data analysis renders published <em>p</em>-values even more difficult to interpret than they would have been without.</p>
