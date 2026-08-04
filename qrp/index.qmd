@@ -1,7 +1,7 @@
 ---
 title: "False-positive psychology"
 author: "Jan Vanhove"
-date: "2026/07/28"
+date: "2026/08/04"
 format:
   html:
     page-layout: full
@@ -308,15 +308,14 @@ first reason through what will happen.
    accurate for a larger number of simulations.)
    
 ## Further comments
-First, the Type-I error rate found in the simulations may _under_estimate the problem
-as several common sources of researcher flexibility (often called
-'researcher degrees of freedom' in the literature) are not accounted for in
+First, the Type-I error rate found in the simulations may, in fact, _underestimate_ 
+the problem as several common sources of researcher flexibility (often called
+_researcher degrees of freedom_ in the literature) are not accounted for in
 the simulation:
 
 * We accounted for there being _only_ three ways of defining the primary 
   outcome variable. In many studies, there may be considerably more plausible
-  ways to define the primary outcome. See, for instance, 
-  von der Malsburg and Angele (2017)
+  ways to define the primary outcome.
   
 * We assumed a design with just two conditions, whereas Simmons et al.'s
   simulation included three conditions, one of which could be dropped
@@ -330,6 +329,9 @@ the simulation:
   
 * We didn't decide to throw out some data points for whatever reason
   (e.g., because they are outliers).
+  
+See van der Malsburg and Angele (2017) and Roettger (2019)
+for further discussion of these issues in the language sciences.
 
 Second, you shouldn't take the simulation's set-up to suggest that researchers
 consciously try out different analytical strategies in quite the predictable
@@ -345,6 +347,11 @@ than they would have been without.
 Gelman, Andrew and Eric Loken.
 2013.
 [The garden of forking paths: Why multiple comparisons can be a problem, even when there is no "fishing expedition" or "p-hacking" and the research hypothesis was posited ahead of time.](https://sites.stat.columbia.edu/gelman/research/unpublished/p_hacking.pdf)
+
+Roettger, Timo B.
+2019.
+[Research degrees of freedom in phonetic research.](https://doi.org/10.5334/labphon.147)
+_Laboratory Phonology_ 10(1).
 
 Simmons, Joseph P., Leif D. Nelson and Uri Simonsohn.
 2011.

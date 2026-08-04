@@ -1,0 +1,82 @@
+---
+title: "Comparing neset models, or: When `anova()`doesn't do ANOVA"
+date: "2026-06-02"
+draft: true
+categories: [assumptions, bootstrapping, logistic regression, mixed-effects models, multiple regression, R]
+format:
+  html:
+    code-fold: true
+    message: false
+    df-print: paged
+    fig-width: 8
+    fig-height: 6
+    fig-align: center
+knitr:
+  opts_chunk:
+    out.width: "100%"
+---
+
+```{r}
+data(savings, package = "faraway")
+```
+
+
+```{r}
+mod0.lm <- lm(sr ~ dpi, data = savings)
+mod1.lm <- update(mod0.lm, . ~ . + pop15 + pop75)
+mod2.lm <- update(mod1.lm, . ~ . + ddpi)
+```
+
+
+```{r}
+#| code-fold: show
+summary(mod0.lm)$coefficients
+summary(mod1.lm)$coefficients
+summary(mod2.lm)$coefficients
+```
+
+```{r}
+anova(mod0.lm, mod1.lm, mod2.lm)
+```
+
+Permutation test for mod0.lm vs mod1.lm.
+
+```{r}
+H0_dat <- savings
+H0_fvals <- replicate(19999, {
+  H0_dat[, c("pop15", c("pop75"))] <- savings[sample(1:nrow(savings)), c("pop15", c("pop75"))]
+  H0_mod1.lm <- update(mod0.lm, . ~ . + pop15 + pop75, data = H0_dat)
+  anova(mod0.lm, H0_mod1.lm)[2, 5]
+})
+fval <- anova(mod0.lm, mod1.lm)[2, 5]
+(sum(H0_fvals >= fval) + 1) / 20000
+```
+
+```{r}
+hist(H0_fvals)
+abline(v = anova(mod0.lm, mod1.lm)[2, 5], col = "darkred")
+```
+
+```{r}
+H0_dat <- savings
+H0_fvals <- replicate(19999, {
+  H0_dat$ddpi <- savings[sample(1:nrow(savings)), "ddpi"]
+  H0_mod2.lm <- update(mod1.lm, . ~ . + ddpi, data = H0_dat)
+  anova(mod1.lm, H0_mod2.lm)[2, 5]
+})
+fval <- anova(mod1.lm, mod2.lm)[2, 5]
+hist(H0_fvals)
+abline(v = fval, col = "darkred")
+(sum(H0_fvals >= fval) + 1) / 20000
+```
+
+
+## $F$ tests for linear models
+Tests for coefficients: `summary(mod.lm)$coefficients`.
+
+Sequential test (model comparison): `anova(mod1)`.
+
+Equivalently: `anova(mod0, mod1, test = "F")`.
+
+Assumptions.
+

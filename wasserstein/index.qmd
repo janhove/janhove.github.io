@@ -9,6 +9,7 @@ format:
 filters:
   - shinylive
 embed-resources: false
+freeze: auto
 ---
 
 # Concept 1: Kernel methods

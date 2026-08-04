@@ -1,0 +1,165 @@
+---
+title: ""
+date: "2026-06-03"
+categories: [Gaussian processes, predictive modelling, Wasserstein distances]
+format:
+  html:
+    code-fold: true
+    message: false
+    df-print: paged
+    fig-width: 8
+    fig-height: 6
+    fig-align: center
+knitr:
+  opts_chunk:
+    out.width: "100%"
+---
+
+Lexical frequency as predictor of text quality ratings.
+Typically summarised as scalar (e.g., average log-frequency)
+or binned as lexical frequency profile.
+
+But frequency distributions may have same scalar summaries yet differ
+considerably in their shape.
+Further, binning is based on arbitrary choices (number of bins, cut-offs).
+
+Alternative: use distributions as predictors.
+
+Example: German data.
+
+(1) Frequency distributions (Zipf).
+(2) Mean Zipf.
+(3) Frequency bands à la Nation & Laufer.
+
+Construct kernels. Use Gaussian process regression. Compare performance.
+
+```{r}
+library(slicer)
+library(tidyverse)
+
+# Scalar inputs and output
+d <- read_csv("german_summary.csv") |> 
+  select(TextType, Time, Batch, 
+         contains("LemmaFreq"), LemmameanZipf, LemmameanZipfUnique,
+         meanRating)
+
+# Each text as a distribution
+load("word_distributions_matrix.Rda")
+length(matrix_list)
+colnames(matrix_list[[314]])
+matrix_list[[314]]
+```
+
+```{r}
+test_idx <- which(d$Batch %in% c("F", "G", "I", "N"))
+training_idx <- (1:nrow(d))[-test_idx]
+```
+
+### Mean Zipf values (unique and not unique)
+```{r}
+mean_zipf_dist <- outer(d$LemmameanZipf, d$LemmameanZipf, "-") |> abs()
+mean_unique_zipf_dist <- outer(d$LemmameanZipfUnique , d$LemmameanZipfUnique , "-") |> abs()
+```
+
+```{r}
+# training data
+plot(meanRating ~ LemmameanZipf, data = d[training_idx, ],
+     xlab = "mean Zipf (lemma-based)", ylab = "Mean rating")
+plot(meanRating ~ LemmameanZipfUnique, data = d[training_idx, ],
+     xlab = "mean Zipf (unique lemma-based)", ylab = "Mean rating")
+```
+
+
+```{r}
+mean_zipf_gpr <- fit_gpr(D2 = mean_zipf_dist^2, training_idx, test_idx,
+  y_train = d$meanRating[training_idx], y_test = d$meanRating[test_idx],
+  runs = 10L)
+plot(d$LemmameanZipf[test_idx], mean_zipf_gpr$test_predictions)
+mean_unique_zipf_gpr <- fit_gpr(D2 = mean_unique_zipf_dist^2, training_idx, test_idx,
+  y_train = d$meanRating[training_idx], y_test = d$meanRating[test_idx],
+  runs = 10L)
+plot(d$LemmameanZipfUnique[test_idx], mean_unique_zipf_gpr$test_predictions)
+# RMSE: 0.99
+```
+
+### Comparison of frequency bands
+```{r}
+d$LemmaFreqTop1000 <- d[, 4:13] |> rowSums()
+top1000_dist <- outer(d$LemmaFreqTop1000, d$LemmaFreqTop1000, "-") |> abs()
+top2000_dist <- outer(d$LemmaFreq2000, d$LemmaFreq2000, "-") |> abs()
+lfp_dist <- list(top1000_dist^2, top2000_dist^2)
+plot(meanRating ~ LemmaFreqTop1000, data = d[training_idx, ],
+     xlab = "Proportion in Top 1000", ylab = "Mean rating")
+plot(meanRating ~ LemmaFreq2000, data = d[training_idx, ],
+     xlab = "Proportion in Band 1001-2000", ylab = "Mean rating")
+```
+
+```{r}
+lfp_gpr <- fit_gpr(D2 = lfp_dist, training_idx, test_idx,
+  y_train = d$meanRating[training_idx], y_test = d$meanRating[test_idx],
+  runs = 10L)
+# $RMSE
+# [1] 1.049372
+# 
+# $length_scale
+# [1] 8.965691e-02 9.390859e-16
+# 
+# $scaling_factor
+# [1] 0.2483085 0.3552805
+# 
+# $noise_variance
+# [1] 1.002978
+# 
+# $nll
+# [1] 1226.377
+```
+
+
+### Entire distributions
+```{r}
+e_vect <- function(i, n) {
+  if (i == 0) {
+    return(c(1, rep(0, n - 1)))
+  }
+  if (i == n) {
+    return(c(rep(0, n - 1), 1))
+  }
+  c(rep(0, i - 1), 1, rep(0, n - i))
+}
+
+thetas <- matrix(
+  c(
+    e_vect(13, 21) # frequency information
+  ), 
+  nrow = 1, byrow = TRUE)
+zipf_distances <- compute_all_distances(
+  matrix_list, thetas, verbose = TRUE, keep_projections = TRUE
+)
+
+distribution_gpr <- fit_gpr(D2 = zipf_distances, training_idx, test_idx,
+  y_train = d$meanRating[training_idx], y_test = d$meanRating[test_idx],
+  runs = 10L)
+# $RMSE
+# [1] 0.9280229
+# 
+# $length_scale
+# [1] 0.3431806
+# 
+# $scaling_factor
+# [1] 1.413498
+# 
+# $noise_variance
+# [1] 0.7332158
+# 
+# $nll
+# [1] 1154.967
+```
+
+
+## References
+
+## Session info
+```{r}
+devtools::session_info("attached")
+```
+
