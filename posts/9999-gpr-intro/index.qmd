@@ -16,6 +16,7 @@ knitr:
 filters:
   - shinylive
 embed-resources: false
+draft: true
 ---
 
 For my Master's thesis in statistics,

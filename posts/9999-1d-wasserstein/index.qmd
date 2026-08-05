@@ -13,6 +13,7 @@ format:
 knitr:
   opts_chunk:
     out.width: "100%"
+draft: true
 ---
 
 Lexical frequency as predictor of text quality ratings.
