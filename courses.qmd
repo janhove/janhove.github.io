@@ -6,7 +6,7 @@ toc-depth: 4
 
 I offer one- and multi-day courses on 
 quantitative methods and data analysis, 
-geared principally towards Master's and PhD students, 
+geared principally towards Master's and Ph.D. students, 
 though they are equally suitable for postdocs or faculty. 
 
 Below are the courses for which material is readily available

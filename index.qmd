@@ -10,8 +10,13 @@ page-layout: full
 title-block-banner: false
 ---
 
+I'm a senior lecturer with the Department of Multilingualism
+at the University of Fribourg,
+with a focus on quantitative research methods.
+
 I [blog](archive.qmd) about research design and statistics,
 often using examples from research on language learning.
+
 I also offer [training](courses.qmd) and [support](support.qmd)
 in quantitative methodology, research design, and data analysis.
 

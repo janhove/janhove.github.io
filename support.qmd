@@ -25,7 +25,8 @@ from which the whole department may profit
 or help with a particular study.
 Details and rates for each are below.
 
-I also offer one- and multi-day courses on statistics 
+I also offer one- and multi-day
+courses on quantitative methods and data analysis 
 geared principally towards Master's and Ph.D. students;
 see the [Courses](courses.qmd) for further information.
 
