@@ -10,7 +10,631 @@
 <atom:link href="https://janhove.github.io/archive-r.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about research design and statistics, often using examples from research on language learning.</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 13 Jul 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 12 Aug 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Model comparisons for mixed-effects regression, or: When anova() doesn’t do ANOVA</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-08-12-model-comparisons/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I recently reviewed a paper in which the authors wrote that they compared two mixed-effects models using ANOVA (analysis of variance). That wasn’t quite right, though: while they did use R’s <code>anova()</code> function to compare their two models, this function doesn’t actually run an ANOVA when the models being compared are mixed-effects models. Below, I explain what the <code>anova()</code> function actually does, why you should take its output with a pinch of salt, and how you can obtain more accurate results.</p>
+<section id="where-the-anova-function-got-its-name" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-anova-function-got-its-name">Where the <code>anova()</code> function got its name</h2>
+<p>It’s entirely reasonable to assume that comparing mixed-effects models using <code>anova()</code> involves, well, ANOVA. The function is a bit of a misnomer, however, and it is instructive to reconstruct where it got its name from. To do this, we need to consider how model comparisons for the more everyday general linear model can be carried out.</p>
+<p>I’ll use some data that’s built-in into R to fit two models. These models are nested in the sense that every parameter that is estimated in model <code>m0</code> is also estimated in model <code>m1</code>, but not vice versa:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">options</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">show.signif.stars =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(swiss) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># see ?swiss for details</span></span>
+<span id="cb1-4">m0 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Fertility <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Agriculture, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> swiss)</span>
+<span id="cb1-5">m1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Fertility <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Agriculture <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Education, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> swiss)</span></code></pre></div></div>
+</details>
+</div>
+<p>When we apply <code>anova()</code> to the larger model (<code>m1</code>), we obtain a standard analysis of variance table that shows a partitioning of the variability in the outcome:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m1)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"894.8391","3":"894.83910","4":"9.959583","5":"2.885792e-03","_rn_":"Agriculture"},{"1":"1","2":"2329.8458","3":"2329.84581","4":"25.931246","5":"7.104842e-06","_rn_":"Education"},{"1":"44","2":"3953.2700","3":"89.84705","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>The sums of squares reported are sequential sums of squares (so-called Type-I sums of squares, in typical intransparent statistics lingo). This means that the <code>Education</code> variable accounted for an additional 2329.8 units of sum of squares beyond what was already accounted for by the <code>Agriculture</code> variable.<sup>1</sup></p>
+<p>Informally, the <em>F</em>-test for the <code>Education</code> predictor tests if this predictor can account for more variance than would be expected if <code>Education</code> did not have any linear association with <code>Fertility</code> once the linear effect of <code>Agriculture</code> on <code>Fertility</code> has been accounted for. The <em>F</em>-test is finite-sample exact if the model’s errors are identically and independently sampled from a normal distribution. If the errors are independent but not necessarily stem from the same normal distribution, then, by and large, the <em>F</em>-test is still serviceable as a large-sample approximation.<sup>2</sup></p>
+<p>Now, the variance partitioning above doesn’t explicitly involve <code>m0</code>. But it’s there implicitly: We’re effectively comparing a model with <code>Agriculture</code> and <code>Education</code> as predictors to a model that only has <code>Agriculture</code> as a predictor. We can make this comparison more explicit by feeding both models to the <code>anova()</code> function:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m0, m1)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Res.Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["RSS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Sum of Sq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"45","2":"6283.116","3":"NA","4":"NA","5":"NA","6":"NA","_rn_":"1"},{"1":"44","2":"3953.270","3":"1","4":"2329.846","5":"25.93125","6":"7.104842e-06","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>The result is the same. This explains why the function for comparing two nested linear models is called <code>anova()</code>.</p>
+<p>The advantage of this second use of <code>anova()</code> is that it allows you to fit several predictors at once and check if these new predictors jointly earn their keep:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">m2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lm</span>(Fertility <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> Agriculture <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Education <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Examination <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> Infant.Mortality, </span>
+<span id="cb4-2">         <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> swiss)</span></code></pre></div></div>
+</details>
+</div>
+<p>A sum of squares partitioning lists each predictor separately:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m2)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Df"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"894.8391","3":"894.83910","4":"14.72264","5":"4.123081e-04","_rn_":"Agriculture"},{"1":"1","2":"2329.8458","3":"2329.84581","4":"38.33258","5":"2.106993e-07","_rn_":"Education"},{"1":"1","2":"772.3451","3":"772.34511","4":"12.70727","5":"9.243532e-04","_rn_":"Examination"},{"1":"1","2":"628.1741","3":"628.17405","4":"10.33525","5":"2.510814e-03","_rn_":"Infant.Mortality"},{"1":"42","2":"2552.7508","3":"60.77978","4":"NA","5":"NA","_rn_":"Residuals"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>The model comparison tests the joint contribution of the three additional predictors.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m0, m2)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Res.Df"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["RSS"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Sum of Sq"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["F"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Pr(>F)"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"45","2":"6283.116","3":"NA","4":"NA","5":"NA","6":"NA","_rn_":"1"},{"1":"42","2":"2552.751","3":"3","4":"3730.365","5":"20.45837","6":"2.512437e-08","_rn_":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="comparing-mixed-effects-models" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-mixed-effects-models">Comparing mixed-effects models</h2>
+<p>Let’s now turn to comparisons of nested mixed-effects models, specifically mixed-effects models with the same random effects but where the fixed-effect parameters estimated in the null model are a subset of those in the larger model. I use a dataset on the academic performance of primary school children that was used by Faraway (2006), but I whittle down the dataset to just 12 schools and one school year to make the point clearer.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(lme4)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix</code></pre>
+</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2026-08-12</span>)</span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data</span>(jsp, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">package =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"faraway"</span>)</span>
+<span id="cb9-3">selected_schools <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sample</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">levels</span>(jsp<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>school), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>)</span>
+<span id="cb9-4">jspr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">subset</span>(jsp, year <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> school <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> selected_schools)</span></code></pre></div></div>
+</details>
+</div>
+<p>The goal is to model the pupils’ <code>math</code> performance in terms of their intelligence as measured by the <code>raven</code> test and the <code>social</code> class of their father, represented here as a factor with nine levels. The question is whether <code>raven</code> interacts with <code>social</code> class in terms of their effects on <code>math</code> performance. To that end, two models are fitted, both of which take into account that the pupils are nested in schools by means of random effects:<sup>3</sup></p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">m0 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(math <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb10-2">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr)</span>
+<span id="cb10-3">m1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(math <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb10-4">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr)</span></code></pre></div></div>
+</details>
+</div>
+<p>We can apply <code>anova()</code> to model <code>m1</code>, but this doesn’t actually run an <em>F</em>-test. The reason is that it’s not clear what the correct number of degrees of freedom for the residual sum of squares should be.<sup>4</sup></p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m1)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["int"],"align":["right"]},{"label":["Sum Sq"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mean Sq"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["F value"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"2452.8443","3":"2452.84425","4":"84.900612","_rn_":"raven"},{"1":"8","2":"416.1601","3":"52.02001","4":"1.800575","_rn_":"social"},{"1":"8","2":"371.2732","3":"46.40915","4":"1.606366","_rn_":"raven:social"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>But like before, we can use <code>anova()</code> to obtain a model comparison:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m0, m1)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>refitting model(s) with ML (instead of REML)</code></pre>
+</div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["npar"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["AIC"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["BIC"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["logLik"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["-2*log(L)"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Chisq"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"12","2":"1604.315","3":"1646.716","4":"-790.1575","5":"1580.315","6":"NA","7":"NA","8":"NA","_rn_":"m0"},{"1":"20","2":"1606.903","3":"1677.571","4":"-783.4516","5":"1566.903","6":"13.41173","7":"8","8":"0.09844655","_rn_":"m1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>Despite being called <code>anova()</code>, this function, when applied to two or more mixed-effects models, runs a <strong>likelihood ratio test</strong>. First, both models, which were fitted using restricted maximum likelihood originally, are refitted using (standard) maximum likelihood for reasons discussed by Faraway (2006, Chapter 8). Then, the likelihood of the data is computed under both models. Call these <img src="https://latex.codecogs.com/png.latex?L_0"> and <img src="https://latex.codecogs.com/png.latex?L_1">, respectively. According to a theorem due to Wilks (1938), the quantity [ T := -2 () = -2(L_0 - L_1) ] is approximately <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2">-distributed in large samples under the null hypothesis, with the degrees of freedom equalling the number of additional parameters in the larger model.</p>
+<p>The output above gives us <img src="https://latex.codecogs.com/png.latex?%5Clog%20L_0%20=%20-789.53"> and <img src="https://latex.codecogs.com/png.latex?%5Clog%20L_1%20=%20-782.82">, from which we obtain <img src="https://latex.codecogs.com/png.latex?-2%20%5Clog%5Cleft(%5Cfrac%7BL_0%7D%7BL_1%7D%5Cright)%20=%2013.419">. This value is then compared against the theoretical asymptotic distribution, i.e., a <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2"> distribution with 8 degrees of freedom, resulting in a <em>p</em>-value of 0.098:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pchisq</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">13.419</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">df =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lower.tail =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.09822333</code></pre>
+</div>
+</div>
+<p>Since the quantity <img src="https://latex.codecogs.com/png.latex?L_0/L_1"> is a ratio of likelihoods, the test is called a <strong>likelihood ratio test</strong> (LRT).</p>
+<p>The operative words in the preceding explanation are <em>approximately</em> and <em>asymptotic</em>. What these words mean is that, under the null hypothesis, the quantity <img src="https://latex.codecogs.com/png.latex?T"> isn’t actually <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2">-distributed—but for ever larger samples, the discrepancies between its distribution and the relevant <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2"> distribution become ever more negligible. Unfortunately, there is no sensible answer to the question of which sample size is `large enough’, and the actual distribution of <img src="https://latex.codecogs.com/png.latex?T"> may differ noticeably from a <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2"> distribution in practice.</p>
+<p>This is why it is recommended to <strong>simulate</strong> the distribution of <img src="https://latex.codecogs.com/png.latex?T"> under the null hypothesis rather than assume the asymptotics have kicked in sufficiently. To achieve this, we can use <strong>parametric bootstrapping</strong>, that is, we simulate new outcomes from the null model (<code>m0</code>), refit the null model and the larger model using these simulated data, and extract the test statistic <img src="https://latex.codecogs.com/png.latex?T"> from the model comparison. We do this a couple of thousand times, and then compare the test statistic that we actually obtained against the distribution of the test statistics obtained via simulation.</p>
+<p>The following code snippet estimates the null distribution of the LRT statistic:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Refit models using (standard) maximum likelihood</span></span>
+<span id="cb16-2">m0 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(math <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb16-3">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">REML =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb16-4">m1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(math <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb16-5">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">REML =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb16-6"></span>
+<span id="cb16-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Obtain LRT statistic from model comparison</span></span>
+<span id="cb16-8">observed_stat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(m0, m1)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>]</span>
+<span id="cb16-9"></span>
+<span id="cb16-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Simulate 2,000 datasets from null model</span></span>
+<span id="cb16-11">M <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span></span>
+<span id="cb16-12">simdat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">simulate</span>(m0, M)</span>
+<span id="cb16-13"></span>
+<span id="cb16-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fit models to simulated data; extract LRT stats</span></span>
+<span id="cb16-15">ctrl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmerControl</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">check.conv.singular =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore"</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fewer warnings in output</span></span>
+<span id="cb16-16">LRTs <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">numeric</span>(M)</span>
+<span id="cb16-17"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq_len</span>(M)) {</span>
+<span id="cb16-18">  H0_m0 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(simdat[, i] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb16-19">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">REML =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">control =</span> ctrl)</span>
+<span id="cb16-20">  H0_m1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">lmer</span>(simdat[, i] <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> raven <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> social <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span>school),</span>
+<span id="cb16-21">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> jspr, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">REML =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">control =</span> ctrl)</span>
+<span id="cb16-22">  LRTs[i] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">anova</span>(H0_m0, H0_m1)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>]</span>
+<span id="cb16-23">}</span></code></pre></div></div>
+</details>
+</div>
+<p>Figure&nbsp;1 reveals pretty pronounced discrepancies between the test statistic’s estimated null distribution and its asymptotic null distribution.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ecdf</span>(LRTs), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"darkred"</span>,</span>
+<span id="cb17-2">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Simulated vs asymptotic LRT null distribution"</span>,</span>
+<span id="cb17-3">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"T"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cumulative probability"</span>)</span>
+<span id="cb17-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pchisq</span>(x, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>)</span>
+<span id="cb17-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abline</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">v =</span> observed_stat, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#008cba"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-simulated-asymptotic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-simulated-asymptotic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-08-12-model-comparisons/index_files/figure-html/fig-simulated-asymptotic-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simulated-asymptotic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The black curve shows the distribution function of the <img src="https://latex.codecogs.com/png.latex?%5Cchi%5E2"> distribution with 8 degrees of freedom, which is the asymptotic distribution of the likelihood ratio test statistic in our example. The red curve shows the estimated distribution function of the test statistic under the null distribution. The difference is quite substantial. The test statistic that was actually observed is highlighted by the dashed vertical line.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A <em>p</em>-value can be obtained by computing the number of test statistics simulated under the null hypothesis that are at least as large as the test statistic that we obtained for our actual data:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(LRTs <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> observed_stat)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1215</code></pre>
+</div>
+</div>
+<p>So rather than <img src="https://latex.codecogs.com/png.latex?p%20=%200.098">, we obtain <img src="https://latex.codecogs.com/png.latex?p%20=%200.12">.</p>
+<p>Incidentally, while it’s also possible to compare nested linear models using a likelihood ratio test, there is little upside to doing so: asymptotically, the <em>F</em>-test and the likelihood ratio test will converge to the same result, but the <em>F</em>-test will do so more quickly than the likelihood ratio test. So you can just stick to the <em>F</em>-test instead. The parametric bootstrap approach, which is useful for comparing mixed-effects models, has no added value when comparing linear models.</p>
+</section>
+<section id="tldr" class="level2">
+<h2 class="anchored" data-anchor-id="tldr">tl;dr</h2>
+<p>When applied to a single linear model, <code>anova()</code> runs an ANOVA. To the extent that the model’s assumptions aren’t met, the results of this ANOVA are approximate but generally quite accurate.</p>
+<p>When applied to two or more nested linear models, <code>anova()</code> runs a model comparison by means of an <em>F</em>-test, the results of which coincide with those of an ANOVA—hence the function’s name.</p>
+<p>When applied to two or more nested mixed-effects models, <code>anova()</code> runs a model comparison by means of an asymptotic likelihood ratio test. <em>Even if</em> the models’ assumptions are met, the results of this test are approximate. Parametric bootstrapping can be used to obtain more accurate results.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Faraway, Julian. 2006. <em>Extending the linear model with R: Generalized linear, mixed effects and nonparametric regression models.</em> Boca Raton, FL: Chapman &amp; Hall/CRC.</p>
+<p>Wilks, Samuel S. 1938. <a href="https://doi.org/10.1214/aoms/1177732360">The large-sample distribution of the likelihood ratio for testing composite hypotheses.</a> <em>The Annals of Mathematical Statistics</em> 9(1). 60–62.</p>
+</section>
+<section id="software-versions" class="level2">
+<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1">devtools<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">session_info</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.6.1 (2026-06-24 ucrt)
+ os       Windows 11 x64 (build 26200)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  English_United Kingdom.utf8
+ ctype    English_United Kingdom.utf8
+ tz       Europe/Zurich
+ date     2026-08-12
+ pandoc   3.8.3 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+ quarto   1.9.38 @ C:\\Users\\VanhoveJ\\AppData\\Local\\Programs\\Quarto\\bin\\quarto.exe
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package * version date (UTC) lib source
+ lme4    * 2.0-6   2026-07-16 [1] CRAN (R 4.6.1)
+ Matrix  * 1.7-5   2026-03-21 [2] CRAN (R 4.6.1)
+
+ [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.6
+ [2] C:/Program Files/R/R-4.6.1/library
+ * ── Packages attached to the search path.
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>If we switched the order of the predictors in the <code>lm()</code> call, we’d obtain a different partitioning. The reason is that any variance in the outcome that could have been assigned to either <code>Education</code> or <code>Agriculture</code> would now be fully assigned to <code>Education</code> rather than to <code>Agriculture</code> as in model <code>m1</code>.↩︎</p></li>
+<li id="fn2"><p>When in doubt, you could try a permutation test. But in my experience, as long as the model is a relevant one, these asymptotics kick in pretty quickly. Hence: <a href="https://janhove.github.io/posts/2019-04-11-assumptions-relevance/"><em>Before worrying about model assumptions, think about model relevance</em></a>.↩︎</p></li>
+<li id="fn3"><p>I ignore the nesting of pupils in classes for the sake of simplicity.↩︎</p></li>
+<li id="fn4"><p>You can squeeze out a <em>p</em>-value from this table if you must using the <code>lmerTest</code> package. But the tests this package implements are approximations.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>assumptions</category>
+  <category>mixed-effects models</category>
+  <category>multiple regression</category>
+  <category>R</category>
+  <category>significance</category>
+  <guid>https://janhove.github.io/posts/2026-08-12-model-comparisons/</guid>
+  <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Testing strong and weak null hypotheses in randomised experiments</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -2140,16 +2764,10 @@ font-style: inherit;">session_info</span>(<span class="st" style="color: #20794D
 background-color: null;
 font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in system2("quarto", "-V", stdout = TRUE, env = paste0("TMPDIR=", :
-running command '"quarto"
-TMPDIR=C:/Users/VanhoveJ/AppData/Local/Temp/RtmpqGZ5bQ/file19a412c1715d -V' had
-status 1</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
- version  R version 4.5.0 (2025-04-11 ucrt)
+ version  R version 4.6.1 (2026-06-24 ucrt)
  os       Windows 11 x64 (build 26200)
  system   x86_64, mingw32
  ui       RTerm
@@ -2157,25 +2775,25 @@ status 1</code></pre>
  collate  English_United Kingdom.utf8
  ctype    English_United Kingdom.utf8
  tz       Europe/Zurich
- date     2026-06-03
- pandoc   3.1.1 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
- quarto   NA @ C:\\Users\\VanhoveJ\\AppData\\Local\\Programs\\Quarto\\bin\\quarto.exe
+ date     2026-08-12
+ pandoc   3.8.3 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+ quarto   1.9.38 @ C:\\Users\\VanhoveJ\\AppData\\Local\\Programs\\Quarto\\bin\\quarto.exe
 
 ─ Packages ───────────────────────────────────────────────────────────────────
  package   * version date (UTC) lib source
- dplyr     * 1.2.1   2026-04-03 [1] CRAN (R 4.5.3)
- forcats   * 1.0.1   2025-09-25 [1] CRAN (R 4.5.3)
- ggplot2   * 4.0.3   2026-04-22 [1] CRAN (R 4.5.3)
- lubridate * 1.9.5   2026-02-04 [1] CRAN (R 4.5.3)
- purrr     * 1.0.4   2025-02-05 [1] CRAN (R 4.5.0)
- readr     * 2.2.0   2026-02-19 [1] CRAN (R 4.5.3)
- stringr   * 1.6.0   2025-11-04 [1] CRAN (R 4.5.3)
- tibble    * 3.2.1   2023-03-20 [1] CRAN (R 4.5.0)
- tidyr     * 1.3.2   2025-12-19 [1] CRAN (R 4.5.3)
- tidyverse * 2.0.0   2023-02-22 [1] CRAN (R 4.5.3)
+ dplyr     * 1.2.1   2026-04-03 [1] CRAN (R 4.6.1)
+ forcats   * 1.0.1   2025-09-25 [1] CRAN (R 4.6.1)
+ ggplot2   * 4.0.3   2026-04-22 [1] CRAN (R 4.6.1)
+ lubridate * 1.9.5   2026-02-04 [1] CRAN (R 4.6.1)
+ purrr     * 1.2.2   2026-04-10 [1] CRAN (R 4.6.1)
+ readr     * 2.2.0   2026-02-19 [1] CRAN (R 4.6.1)
+ stringr   * 1.6.0   2025-11-04 [1] CRAN (R 4.6.1)
+ tibble    * 3.3.1   2026-01-11 [1] CRAN (R 4.6.1)
+ tidyr     * 1.3.2   2025-12-19 [1] CRAN (R 4.6.1)
+ tidyverse * 2.0.0   2023-02-22 [1] CRAN (R 4.6.1)
 
- [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.5
- [2] C:/Program Files/R/R-4.5.0/library
+ [1] C:/Users/VanhoveJ/AppData/Local/R/win-library/4.6
+ [2] C:/Program Files/R/R-4.6.1/library
  * ── Packages attached to the search path.
 
 ──────────────────────────────────────────────────────────────────────────────</code></pre>
@@ -22971,581 +23589,6 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div></div>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2019-04-16-walkthrough-p-value/</guid>
   <pubDate>Tue, 16 Apr 2019 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Guarantees in the long run vs. interpreting the data at hand: Two analyses of clustered data</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2019-01-14-clustered-data-different-results/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>An analytical procedure may have excellent long-run properties but still produce nonsensical results in individual cases. I recently encountered a real-life illustration of this, but since those data aren’t mine, I’ll use simulated data with similar characteristics for this blog post.</p>
-<section id="the-data" class="level2">
-<h2 class="anchored" data-anchor-id="the-data">The data</h2>
-<p>The illustration occurred for a study with clustered data (pupils in classes) in which there were only one or two clusters per condition. In the dataset that I simulated, there are three classes that were assigned in their entirety to either the control condition (1 class) or the intervention condition (2 classes):</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Read in data</span></span>
-<span id="cb1-2">d <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">read.csv</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"http://homeweb.unifr.ch/VanhoveJ/Pub/Data/simulated_clustered_data.csv"</span>)</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Pupils per class and per condition</span></span>
-<span id="cb1-5"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">xtabs</span>(<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> class <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> group_class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> d)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     group_class
-class control intervention
-    1      17            0
-    2       0           13
-    3       0           18</code></pre>
-</div>
-</div>
-<p>Crucially, the clusters in the data need to be taken into consideration during the analysis (see Vanhove 2015). Having just one or two clusters per condition is far from ideal, but this dataset is, in principle, analysable. Let’s start by plotting the data:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(tidyverse)</span>
-<span id="cb3-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ggplot</span>(d,</span>
-<span id="cb3-3">       <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">factor</span>(class),</span>
-<span id="cb3-4">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y =</span> outcome,</span>
-<span id="cb3-5">           <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">fill =</span> group_class)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb3-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_boxplot</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">outlier.shape =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">NA</span>) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb3-7">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">geom_point</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">position_jitter</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span>)) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb3-8">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">xlab</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"class"</span>)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2019-01-14-clustered-data-different-results/index_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img"></p>
-<figcaption><strong>Figure 1.</strong> Simulated data for a cluster-randomised experiment in which one class (= cluster) was assigned to the control condition and two were assigned to the intervention condition.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="analysis-1-a-hierarchical-model" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-1-a-hierarchical-model">Analysis 1: A hierarchical model</h2>
-<p>One option is to analyse these data in a hierarchical (mixed-effects) model in which random effects are used to account for class-to-class variability. Based on the present dataset, this variability is in fact estimated to be non-existent: the estimated standard deviation of the distribution of class effects is essentially 0 (0.00003). This seems implausible - not least of all because I simulated data with a class effect. The estimated intervention effect, meanwhile is -0.24 with a standard error of 0.31, which means that the intervention effect is not significant in this analysis (<em>t</em>(1) = 0.77, <em>p</em> = 0.58).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">library</span>(nlme)</span>
-<span id="cb4-2">lme_fit <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lme</span>(outcome <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> group_class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">random =</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|</span>class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> d)</span>
-<span id="cb4-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">summary</span>(lme_fit)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Linear mixed-effects model fit by REML
-  Data: d 
-    AIC   BIC logLik
-  146.2 153.5 -69.11
-
-Random effects:
- Formula: ~1 | class
-        (Intercept) Residual
-StdDev:   3.079e-05    1.016
-
-Fixed effects:  outcome ~ group_class 
-                          Value Std.Error DF t-value p-value
-(Intercept)              0.1793    0.2463 45  0.7278  0.4705
-group_classintervention -0.2370    0.3065  1 -0.7734  0.5809
- Correlation: 
-                        (Intr)
-group_classintervention -0.804
-
-Standardized Within-Group Residuals:
-    Min      Q1     Med      Q3     Max 
--2.1958 -0.4982 -0.1049  0.5869  2.5309 
-
-Number of Observations: 48
-Number of Groups: 3 </code></pre>
-</div>
-</div>
-<p>This procedure is somewhat too conservative, which means that the p-values it produces tend to be too large. Alternatively, you could fit the mixed-effects model using the <code>lmer()</code> function from the <code>lme4</code> package, but then you have to take care that your p-values aren’t too low. But in practical terms, this doesn’t matter much: with a t-value of 0.77, you’re never going to end up with a p-value anywhere close to 0.05.</p>
-</section>
-<section id="analysis-2-a-t-test-on-the-group-means" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-2-a-t-test-on-the-group-means">Analysis 2: A t-test on the group means</h2>
-<p>If mixed-effects models aren’t your thing, you may be tempted to run an analysis that is both easy to report and perfectly accounts for the effect of clustering on inferential statistics: you’d compute the mean outcome per class and then run a t-test on the class means instead. This procedure has excellent long-run properties: it returns a significant result for the intervention effect in 5% of cases when no such effect exists. That is, it isn’t too liberal (as t-test on the individual-level data would be) nor too conservative (like the analysis with <code>lme()</code>). (Incidentally, an analysis on individual level data would give you pretty much the same result as the <code>lme_fit</code> model above for the present data – but as a <em>procedure</em> it’s much too liberal.)</p>
-<p>For the present data, this means that we first compute our three class means and then run a t-test on these three means (i.e., a t-test with one degree of freedom).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Compute summary per class (cluster):</span></span>
-<span id="cb6-2"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  mean outcome, standard deviation of outcome,</span></span>
-<span id="cb6-3"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">#  n data points, estimated standard error of mean outcome</span></span>
-<span id="cb6-4">d_summary <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> d <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span> </span>
-<span id="cb6-5">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">group_by</span>(class, group_class) <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span> </span>
-<span id="cb6-6">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">summarise</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">mean_outcome =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(outcome),</span>
-<span id="cb6-7">            <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">sd_outcome =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sd</span>(outcome),</span>
-<span id="cb6-8">            <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">n =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">n</span>(),</span>
-<span id="cb6-9">            <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">se_mean =</span> sd_outcome <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">n</span>()),</span>
-<span id="cb6-10">            <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">.groups =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"drop"</span>)</span>
-<span id="cb6-11">d_summary</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 6
-  class group_class  mean_outcome sd_outcome     n se_mean
-  &lt;int&gt; &lt;chr&gt;               &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-1     1 control            0.179       1.30     17   0.315
-2     2 intervention      -0.0587      0.864    13   0.240
-3     3 intervention      -0.0571      0.825    18   0.194</code></pre>
-</div>
-</div>
-<p>I write the t-test in the form of a linear model as the output is more informative.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># t-test on class means</span></span>
-<span id="cb8-2">ttest_fit <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">lm</span>(mean_outcome <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">~</span> group_class, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">data =</span> d_summary)</span>
-<span id="cb8-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">summary</span>(ttest_fit)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = mean_outcome ~ group_class, data = d_summary)
-
-Residuals:
-        1         2         3 
- 7.69e-20 -7.87e-04  7.87e-04 
-
-Coefficients:
-                        Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept)              0.17926    0.00111     161   0.0040
-group_classintervention -0.23717    0.00136    -174   0.0037
-
-Residual standard error: 0.00111 on 1 degrees of freedom
-Multiple R-squared:     1,  Adjusted R-squared:     1 
-F-statistic: 3.03e+04 on 1 and 1 DF,  p-value: 0.00366</code></pre>
-</div>
-</div>
-<p>The estimated intervention effect is still -0.24, but now the standard error is merely 0.001, yielding a t-value of a whopping 174. Even with one degree of freedom, this corresponds to a highly significant effect (p = 0.004). (The data were simulated without an intervention effect, so this is a Type-I error. But you wouldn’t know this.)</p>
-</section>
-<section id="which-analysis-is-better" class="level2">
-<h2 class="anchored" data-anchor-id="which-analysis-is-better">Which analysis is better?</h2>
-<p>So we’ve got two analyses that are both defensible but give rise to wildly different inferences. The estimate for the class-by-class variability in the <code>lme()</code> fit seems implausibly small, but the estimated intervention effect and its standard error wouldn’t raise any eyebrows. By contrast, the t-test on the class means seems to produce absurdly low standard errors – not to mention a ridiculous R² value of 1. Yet it is this latter procedure that has the better long-run characteristics. So which analysis is the better one?</p>
-<p>The boring answer is that it depends on what you’re looking for in an analysis. The second analysis yields a very low p-value, but it would be incorrect to say that it is <em>too</em> low: If you simulate lots and lots of datasets similar in structure to the one analysed (clustered data with one and two clusters per condition, respectively) and without any intervention effect present, this procedure will only find a p-value lower than 0.05 in 5% of cases, and it’ll only find a p-value lower than 0.004 in 0.4% of cases. If you analyse those same simulated datasets using <code>lme()</code>, you may not find a single significant result (I didn’t in 20,000 simulations). So if the long-run behaviour of the analytical procedure is your chief concern, running a t-test on the class means is the better option.</p>
-<p>You may, however, also be interested in estimating the intervention effect and, crucially, quantifying your uncertainty about this estimate in the form of a standard error or confidence interval. In this respect, the hierarchical model produces a more plausible result - even though for want of data, this uncertainty estimate may be highly inaccurate.</p>
-<p>(The actual simulation-to-simulation variation was such that 90% of the estimated intervention effects lay between -0.83 and 0.83, a range of 1.65 units. The 90% confidence interval for the intervention effect in <code>ttest_fit</code> ranges from -0.25 to -0.23, for a range of merely 0.02 units. For <code>lme_fit</code>, it ranges from -2.17 to 1.70, for a range of 3.87 units. So the true accuracy lies pretty much half-way between these two estimates. But in real life, you’d only have the confidence intervals to go by, and one spanning merely 0.02 units would be considerably more suspicious than one spanning nearly 4 units. Incidentally, if you fit the same model using <code>lme4</code>’s <code>lmer()</code> function, you get a 90% confidence interval from -0.74 to 0.26, though with a couple of warnings.)</p>
-</section>
-<section id="whats-causing-the-problem" class="level2">
-<h2 class="anchored" data-anchor-id="whats-causing-the-problem">What’s causing the problem?</h2>
-<p>The ridiculously low standard errors and huge R² values in <code>ttest_fit</code> are consequences of the small residuals that this model produces:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">resid</span>(ttest_fit)</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         1          2          3 
- 7.691e-20 -7.869e-04  7.869e-04 </code></pre>
-</div>
-</div>
-<p>The first value is the residual for the class that served as the single control class. The corresponding fitted value equals the class mean, so the residual is 0 (which is what the ‘e-20’ part essentially means). The second and third value are the residuals for the classes that served as the intervention classes. Their fitted values equal the mean of both class means, and the residuals are the deviations from that mean of means. Since these class means are so similar, the deviations are small, too. Crucially, the similarity in the means of classes 2 and 3 is atypical: Based on the variability <em>within</em> each class, we’d expect their means to differ more than they do.</p>
-<p>To demonstrate this, let’s first compute the standard deviation of these two class means:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sd</span>(d_summary<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>mean_outcome[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>])</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.001113</code></pre>
-</div>
-</div>
-<p>Now we take bootstrap samples within classes 2 and 3, compute their respective means, and compute the standard deviation of these means.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Split off classes 2 and 3</span></span>
-<span id="cb14-2">class2 <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> d <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">filter</span>(class <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb14-3">class3 <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> d <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">filter</span>(class <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>)</span>
-<span id="cb14-4"></span>
-<span id="cb14-5"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Bootstrap the outcomes of class 2 and take the mean</span></span>
-<span id="cb14-6"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Bootstrap the outcomes of class 3 and take the mean</span></span>
-<span id="cb14-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Output the standard deviation of the bootstrapped means</span></span>
-<span id="cb14-8">sds <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">replicate</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">20000</span>, {</span>
-<span id="cb14-9">  mean_bs_class2 <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sample</span>(class2<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>outcome, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>))</span>
-<span id="cb14-10">  mean_bs_class3 <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sample</span>(class3<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>outcome, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">replace =</span> <span class="cn" style="color: #8f5902;
-background-color: null;
-font-style: inherit;">TRUE</span>))</span>
-<span id="cb14-11">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sd</span>(<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">c</span>(mean_bs_class2, mean_bs_class3))</span>
-<span id="cb14-12">}</span>
-<span id="cb14-13">)</span>
-<span id="cb14-14"></span>
-<span id="cb14-15"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Plot the standard deviations of the bootstrapped means</span></span>
-<span id="cb14-16"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">hist</span>(sds, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"grey"</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">breaks =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)</span>
-<span id="cb14-17"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">abline</span>(<span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">v =</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sd</span>(d_summary<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>mean_outcome[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>]), <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">col =</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"red"</span>, <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span></code></pre></div></div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://janhove.github.io/posts/2019-01-14-clustered-data-different-results/index_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid figure-img"></p>
-<figcaption><em>Figure 2.</em> Bootstrapping the outcomes within each class demonstrates that the class means are more similar to each other than they ordinarily would be.</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>As Figure 2 shows, given the variability within each class, you would typically expect their class means to differ considerably more than they actually do. In fact, only in about 0.4% of bootstrap runs did the class means differ less than in our dataset.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mean</span>(sds <span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">sd</span>(d_summary<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">$</span>mean_outcome[<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>]))</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.00365</code></pre>
-</div>
-</div>
-<p>The <code>ttest_fit</code> model doesn’t know that the class means are much more similar to each other than they normally would be, so it doesn’t account for this. (Mind you, if only the long-run behaviour of the model is of importance, it doesn’t <em>need</em> to know this.)</p>
-</section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
-<p>It isn’t unheard of that different defensible analyses of the same data lead to different inferences (see, e.g., Poarch et al., 2018, and Silberzahn et al., 2018). But I think it’s instructive to come across a case where the objectives of achieving the desired long-run behaviour and of sensibly interpreting the data that were actually observed clash.</p>
-<p>If I had to analyse a dataset like this one in earnest, I would look into fitting a Bayesian model with reasonably informed priors in order to offset the lack of information present in the data. (A hierarchical model with <code>brms</code>’s default priors experiences convergence issues.) If that doesn’t work, I’d probably fit a frequentist hierarchical model (using <code>lme</code> or <code>lmer()</code>) as the results it yields are more plausible in the present case than that those of the class mean analysis.</p>
-<p>Oh, and I’d rant to whoever collected these data that they should’ve dropped by before running the study :) I’d then have told them that it would be great if they could collect data in two or three more classes. Or that it might perhaps be possible to assign half of the pupils within each class to each condition. Still, they were extremely unlucky that the class means were so similar given the within-class variance.</p>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<p>Gregory J. Poarch, Jan Vanhove and Raphael Berthele. 2018. <a href="https://doi.org/10.1177/1367006918763132">The effect of bidialectalism on executive function.</a> <em>International Journal of Bilingualism</em>.</p>
-<p>R. Silberzahn et al.. 2018. <a href="https://doi.org/10.1177/2515245917747646">Many analysts, one data set: Making transparent how variations in analytic choices affect results.</a> <em>Advances in Methods and Practices in Psychological Science</em> 1(3). 337-356.</p>
-<p>Jan Vanhove. 2015. <a href="http://dx.doi.org/10.14746/ssllt.2015.5.1.7">Analyzing randomized controlled interventions: Three notes for applied linguists.</a> <em>Studies in Second Language Learning and Teaching</em> 5(1). 135-152.</p>
-</section>
-<section id="software-versions" class="level2">
-<h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
-<p>Please note that I reran the code on this page on August 6, 2023.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">devtools<span class="sc" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">session_info</span>()</span></code></pre></div></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>─ Session info ───────────────────────────────────────────────────────────────
- setting  value
- version  R version 4.5.1 (2025-06-13)
- os       Ubuntu 22.04.5 LTS
- system   x86_64, linux-gnu
- ui       X11
- language en_US
- collate  en_US.UTF-8
- ctype    en_US.UTF-8
- tz       Europe/Zurich
- date     2025-09-24
- pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
-
-─ Packages ───────────────────────────────────────────────────────────────────
- package      * version date (UTC) lib source
- cachem         1.1.0   2024-05-16 [1] CRAN (R 4.5.1)
- callr          3.7.6   2024-03-25 [1] CRAN (R 4.5.1)
- cli            3.6.5   2025-04-23 [1] CRAN (R 4.5.1)
- crayon         1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
- devtools       2.4.5   2022-10-11 [1] CRAN (R 4.5.1)
- digest         0.6.37  2024-08-19 [1] CRAN (R 4.5.1)
- dplyr        * 1.1.4   2023-11-17 [1] CRAN (R 4.5.1)
- ellipsis       0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
- evaluate       1.0.4   2025-06-18 [1] CRAN (R 4.5.1)
- farver         2.1.2   2024-05-13 [1] CRAN (R 4.5.1)
- fastmap        1.2.0   2024-05-15 [1] CRAN (R 4.5.1)
- forcats      * 1.0.0   2023-01-29 [1] CRAN (R 4.5.1)
- fs             1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
- generics       0.1.4   2025-05-09 [1] CRAN (R 4.5.1)
- ggplot2      * 3.5.2   2025-04-09 [1] CRAN (R 4.5.1)
- glue           1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
- gtable         0.3.6   2024-10-25 [1] CRAN (R 4.5.1)
- hms            1.1.3   2023-03-21 [1] CRAN (R 4.5.1)
- htmltools      0.5.8.1 2024-04-04 [1] CRAN (R 4.5.1)
- htmlwidgets    1.6.4   2023-12-06 [1] CRAN (R 4.5.1)
- httpuv         1.6.16  2025-04-16 [1] CRAN (R 4.5.1)
- jsonlite       2.0.0   2025-03-27 [1] CRAN (R 4.5.1)
- knitr          1.50    2025-03-16 [1] CRAN (R 4.5.1)
- labeling       0.4.3   2023-08-29 [1] CRAN (R 4.5.1)
- later          1.4.2   2025-04-08 [1] CRAN (R 4.5.1)
- lattice        0.22-5  2023-10-24 [4] CRAN (R 4.3.1)
- lifecycle      1.0.4   2023-11-07 [1] CRAN (R 4.5.1)
- lubridate    * 1.9.4   2024-12-08 [1] CRAN (R 4.5.1)
- magrittr       2.0.3   2022-03-30 [1] CRAN (R 4.5.1)
- memoise        2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
- mime           0.10    2021-02-13 [2] CRAN (R 4.0.2)
- miniUI         0.1.2   2025-04-17 [1] CRAN (R 4.5.1)
- nlme         * 3.1-168 2025-03-31 [4] CRAN (R 4.4.3)
- pillar         1.10.2  2025-04-05 [1] CRAN (R 4.5.1)
- pkgbuild       1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
- pkgconfig      2.0.3   2019-09-22 [2] CRAN (R 4.2.0)
- pkgload        1.4.0   2024-06-28 [1] CRAN (R 4.5.1)
- prettyunits    1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
- processx       3.8.6   2025-02-21 [1] CRAN (R 4.5.1)
- profvis        0.4.0   2024-09-20 [1] CRAN (R 4.5.1)
- promises       1.3.3   2025-05-29 [1] CRAN (R 4.5.1)
- ps             1.9.1   2025-04-12 [1] CRAN (R 4.5.1)
- purrr        * 1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
- R6             2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
- RColorBrewer   1.1-3   2022-04-03 [1] CRAN (R 4.5.1)
- Rcpp           1.0.14  2025-01-12 [1] CRAN (R 4.5.1)
- readr        * 2.1.5   2024-01-10 [1] CRAN (R 4.5.1)
- remotes        2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
- rlang          1.1.6   2025-04-11 [1] CRAN (R 4.5.1)
- rmarkdown      2.29    2024-11-04 [1] CRAN (R 4.5.1)
- rstudioapi     0.17.1  2024-10-22 [1] CRAN (R 4.5.1)
- scales         1.4.0   2025-04-24 [1] CRAN (R 4.5.1)
- sessioninfo    1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
- shiny          1.10.0  2024-12-14 [1] CRAN (R 4.5.1)
- stringi        1.7.6   2021-11-29 [2] CRAN (R 4.2.0)
- stringr      * 1.5.1   2023-11-14 [1] CRAN (R 4.5.1)
- tibble       * 3.3.0   2025-06-08 [1] CRAN (R 4.5.1)
- tidyr        * 1.3.1   2024-01-24 [1] CRAN (R 4.5.1)
- tidyselect     1.2.1   2024-03-11 [1] CRAN (R 4.5.1)
- tidyverse    * 2.0.0   2023-02-22 [1] CRAN (R 4.5.1)
- timechange     0.3.0   2024-01-18 [1] CRAN (R 4.5.1)
- tzdb           0.5.0   2025-03-15 [1] CRAN (R 4.5.1)
- urlchecker     1.0.1   2021-11-30 [1] CRAN (R 4.5.1)
- usethis        3.1.0   2024-11-26 [1] CRAN (R 4.5.1)
- utf8           1.2.2   2021-07-24 [2] CRAN (R 4.2.0)
- vctrs          0.6.5   2023-12-01 [1] CRAN (R 4.5.1)
- withr          3.0.2   2024-10-28 [1] CRAN (R 4.5.1)
- xfun           0.52    2025-04-02 [1] CRAN (R 4.5.1)
- xtable         1.8-4   2019-04-21 [1] CRAN (R 4.5.1)
- yaml           2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
-
- [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
- [2] /usr/local/lib/R/site-library
- [3] /usr/lib/R/site-library
- [4] /usr/lib/R/library
-
-──────────────────────────────────────────────────────────────────────────────</code></pre>
-</div>
-</div>
-
-
-</section>
-
- ]]></description>
-  <category>R</category>
-  <category>mixed-effects models</category>
-  <category>cluster-randomised experiments</category>
-  <guid>https://janhove.github.io/posts/2019-01-14-clustered-data-different-results/</guid>
-  <pubDate>Mon, 14 Jan 2019 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
