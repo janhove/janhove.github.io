@@ -14,7 +14,7 @@ format:
 
 When I want to compare the distribution of some more or less continuous
 variable between two or more groups, 
-the [boxplot](2016-06-21-drawing-a-boxplot/) is my default graph of
+the [boxplot](../2016-06-21-drawing-a-boxplot/) is my default graph of
 choice.
 They compactly summarise a distribution in five numbers:
 the minimum,
@@ -27,7 +27,7 @@ But boxplots can also be deceptive.
 One important reason for this is that two distributions can be represented by the same
 boxplot yet be qualitatively different.
 This is why I encourage students and colleagues
-to [overlay the individual data points](2016-06-21-drawing-a-boxplot/#adding-the-individual-data-points) 
+to [overlay the individual data points](../2016-06-21-drawing-a-boxplot/#adding-the-individual-data-points) 
 when using boxplots, as this helps to ward off some common misinterpretations
 and may reveal some additional structure in the data.
 
@@ -35,8 +35,7 @@ To further drive this point home, I thought it'd be useful to have an R function
 that can generate quite radically different distributions that would
 produce identical boxplots---in much the same way
 that I wrote a function that outputs different bivariate distributions
-yielding the same correlation coefficient ([_What data patterns can lie behind a correlation coefficient?
-_](2016-11-21-what-correlations-look-like/index.qmd)).
+yielding the same correlation coefficient ([_What data patterns can lie behind a correlation coefficient?_](../2016-11-21-what-correlations-look-like/)).
 
 The next code snippet defines such a function, `boxplot_data()`.
 It takes, among other inputs,
