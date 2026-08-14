@@ -5,6 +5,7 @@ project:
     - datasets/**
 
 website:
+  draft-mode: unlinked
   title: "Jan Vanhove"
   site-url: https://janhove.github.io
   description: "I blog about research design and statistics, often using examples from research on language learning."
