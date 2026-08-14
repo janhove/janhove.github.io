@@ -335,18 +335,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>In the next snippet, I define the function <code>draw_boxplots()</code>, which uses <code>boxplot_data()</code> to generate six datasets with identical five-number summaries and then plots them.</p>
+<p>In the next snippet, I define the function <code>draw_boxplots()</code>, which uses <code>boxplot_data()</code> to generate six datasets with identical five-number summaries and then plots them. By default, 60 data points (<code>4 * k</code>, with <code>k = 15</code>) are generated for each dataset.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>draw_boxplots <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">k =</span> <span class="dv">15</span>, <span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">7</span>, <span class="dv">13</span>, <span class="dv">27</span>, <span class="dv">55</span>), </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_mean =</span> <span class="cn">TRUE</span>, <span class="at">show_data =</span> <span class="cn">FALSE</span>, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">4.1</span>, <span class="dv">1</span>), <span class="at">las =</span> <span class="dv">1</span>, ...) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">show_mean =</span> <span class="cn">TRUE</span>, <span class="at">show_data =</span> <span class="cn">FALSE</span>, <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="fl">4.1</span>, <span class="dv">1</span>), <span class="at">las =</span> <span class="dv">1</span>, ...) {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot 6 identical boxplots with different underlying distributions.</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  draw_boxplot <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">show_mean =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="cn">NULL</span>) {</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">boxplot</span>(x, <span class="at">main =</span> main, <span class="at">at =</span> <span class="dv">1</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> <span class="fu">jitter</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(x)), <span class="dv">4</span>), <span class="at">y =</span> x)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (show_mean) <span class="fu">points</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="fu">mean</span>(x), <span class="at">col =</span> <span class="st">"darkred"</span>, <span class="at">pch =</span> <span class="dv">8</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (show_mean) <span class="fu">points</span>(<span class="at">x =</span> <span class="dv">1</span>, <span class="fu">mean</span>(x), <span class="at">col =</span> <span class="st">"darkred"</span>, <span class="at">pch =</span> <span class="dv">8</span>, <span class="at">cex =</span> <span class="fl">1.8</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  five_numbers <span class="ot">&lt;-</span> <span class="fu">sort</span>(five_numbers)</span>
@@ -451,7 +451,7 @@ Figure&nbsp;1: Six fairly standard boxplots but with different underlying distri
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">13</span>, <span class="dv">27</span>, <span class="dv">55</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">13</span>, <span class="dv">27</span>, <span class="dv">55</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-2" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -470,7 +470,7 @@ Figure&nbsp;2: The first quartile is also the minimum.
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="fl">6.5</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>, <span class="fl">6.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-3" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -489,7 +489,7 @@ Figure&nbsp;3: The median is also the minimum.
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="dv">3</span>, <span class="fl">4.9</span>, <span class="dv">5</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="dv">3</span>, <span class="fl">4.9</span>, <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-4" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -507,7 +507,7 @@ Figure&nbsp;4: A large box and tiny whiskers means that most data is concentrate
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.1</span>, <span class="dv">3</span>, <span class="fl">3.5</span>, <span class="dv">5</span>), <span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_boxplots</span>(<span class="at">five_numbers =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.1</span>, <span class="dv">3</span>, <span class="fl">3.5</span>, <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-5" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -522,6 +522,7 @@ Figure&nbsp;5: And a compact box means that the data are more densely distribute
 </div>
 </div>
 </div>
+<p>The data underlying the boxplots can be inspected by setting the parameter <code>show_data</code> to <code>TRUE</code>.</p>
 <p>Hopefully this convinces someone somewhere to add individual data points to their boxplots!</p>
 <section id="software-versions" class="level2">
 <h2 class="anchored" data-anchor-id="software-versions">Software versions</h2>
