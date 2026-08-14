@@ -8,8 +8,8 @@ format:
     code-fold: show
     message: false
     df-print: paged
-    fig-width: 4
-    fig-height: 7
+    fig-width: 6
+    fig-height: 9
 ---
 
 When I want to compare the distribution of some more or less continuous
