@@ -6,7 +6,7 @@ categories: [graphs, R]
 format:
   html:
     code-fold: show
-    message: false
+    message: true
     df-print: paged
     fig-width: 6
     fig-height: 9
@@ -147,17 +147,18 @@ boxplot_data <- function(
 In the next snippet, I define the function `draw_boxplots()`,
 which uses `boxplot_data()` to generate six datasets 
 with identical five-number summaries and then plots them.
+By default, 60 data points (`4 * k`, with `k = 15`) are generated for each dataset.
 
 ```{r}
 #| code-fold: true
 draw_boxplots <- function(k = 15, five_numbers = c(0, 7, 13, 27, 55), 
-  show_mean = TRUE, show_data = FALSE, mfrow = c(2, 3), mar = c(1, 3, 4.1, 1), las = 1, ...) {
+  show_mean = TRUE, show_data = FALSE, mfrow = c(3, 2), mar = c(1, 3, 4.1, 1), las = 1, ...) {
   # Plot 6 identical boxplots with different underlying distributions.
   
   draw_boxplot <- function(x, show_mean = TRUE, main = NULL) {
     boxplot(x, main = main, at = 1)
     points(x = jitter(rep(1, length(x)), 4), y = x)
-    if (show_mean) points(x = 1, mean(x), col = "darkred", pch = 8)
+    if (show_mean) points(x = 1, mean(x), col = "darkred", pch = 8, cex = 1.8)
   }
   
   five_numbers <- sort(five_numbers)
@@ -255,7 +256,7 @@ the first quartile and the minimum coincide.
 ```{r}
 #| label: fig-2
 #| fig-cap: "The first quartile is also the minimum."
-draw_boxplots(five_numbers = c(0, 0, 13, 27, 55), mfrow = c(3, 2))
+draw_boxplots(five_numbers = c(0, 0, 13, 27, 55))
 ```
 
 The situation is even worse in @fig-3: Now the _median_ and the minimum coincide.
@@ -264,7 +265,7 @@ The situation is even worse in @fig-3: Now the _median_ and the minimum coincide
 ```{r}
 #| label: fig-3
 #| fig-cap: "The median is also the minimum."
-draw_boxplots(five_numbers = c(0, 0, 0, 3, 6.5), mfrow = c(3, 2))
+draw_boxplots(five_numbers = c(0, 0, 0, 3, 6.5))
 ```
 
 @fig-4 and @fig-5 highlight a counterintuitive aspect of boxplots:
@@ -275,14 +276,17 @@ clustered around the median.
 ```{r}
 #| label: fig-4
 #| fig-cap: "A large box and tiny whiskers means that most data is concentrated near the extremes."
-draw_boxplots(five_numbers = c(0.2, 0.3, 3, 4.9, 5), mfrow = c(3, 2))
+draw_boxplots(five_numbers = c(0.2, 0.3, 3, 4.9, 5))
 ```
 
 ```{r}
 #| label: fig-5
 #| fig-cap: "And a compact box means that the data are more densely distributed in the middle 50% of the distribution."
-draw_boxplots(five_numbers = c(0.2, 2.1, 3, 3.5, 5), mfrow = c(3, 2))
+draw_boxplots(five_numbers = c(0.2, 2.1, 3, 3.5, 5))
 ```
+
+The data underlying the boxplots can be inspected by setting
+the parameter `show_data` to `TRUE`.
 
 Hopefully this convinces someone somewhere to add individual data points
 to their boxplots!
