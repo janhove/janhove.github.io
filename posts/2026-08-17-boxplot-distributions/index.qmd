@@ -576,6 +576,7 @@ that are obtained when using the default settings.
 ```{r}
 #| label: fig-1
 #| fig-cap: "Six distributions with identical boxplots but with different underlying distributions. The red stars show the distributions' means."
+#| classes: preview-image
 draw_boxplots()
 ```
 
