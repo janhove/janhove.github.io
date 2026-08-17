@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2026-08-17-boxplot-distributions/index.html",
       "/posts/2026-08-12-model-comparisons/index.html",
       "/posts/2026-07-13-weak-strong-H0/index.html",
       "/posts/2026-06-03-nested-effects/index.html",
@@ -100,6 +101,7 @@
   {
     "listing": "/archive.html",
     "items": [
+      "/posts/2026-08-17-boxplot-distributions/index.html",
       "/posts/2026-08-12-model-comparisons/index.html",
       "/posts/2026-07-13-weak-strong-H0/index.html",
       "/posts/2026-06-03-nested-effects/index.html",
