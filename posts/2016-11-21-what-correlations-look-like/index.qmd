@@ -4,17 +4,17 @@ date: "2016-11-21"
 categories: [effect sizes, graphs, correlational studies, non-linearities, R]
 ---
 
-In this post, I want to, first, help you to improve your intuition of what data patterns correlation coefficients can represent 
+In this post, I want to, first, help you to improve your 
+intuition of what data patterns correlation coefficients can represent 
 and, second, hammer home the point that to sensibly interpret a correlation coefficient, 
 you need the corresponding scatterplot.
 
-
 ## The briefest of introductions to correlation coefficients
-
 If you haven't dealt with correlation coefficients much, 
 a correlation coefficient, abbreviated as _r_, is a number between -1 and 1 
 that captures the strength of the linear relationship between two numeric variables.
-For instance, say you've asked 30 people about their weight and body height and plot these 30 (weight, height)-pairs in a scatterplot.
+For instance, say you've asked 30 people about their weight and body height and 
+plot these 30 (weight, height)-pairs in a scatterplot.
 
 * If all 30 data points fall perfectly on an increasing line, then the correlation between these two variables will be _r_ = 1.  
 
@@ -37,7 +37,7 @@ and without more information (ideally in the form of a scatterplot),
 the researchers themselves and their readers have no way of knowing which one.
 
 To illustrate this, 
-I've written an `R` function, [`plot_r()`](http://janhove.github.io/RCode/plot_r.R), 
+I wrote an `R` function, [`plot_r()`](https://janhove.github.io/cannonball/reference/plot_r.html), 
 that takes as its input a correlation coefficient and a sample size 
 and outputs 16 quite different scatterplots that are all characterised by the same correlation coefficient.
 Below I first show and comment on how scatterplots for correlation coefficients of 
@@ -46,9 +46,10 @@ Then, for those of you who don't use `R`, I provide scatterplots for a couple of
 so you can develop a sense of what the patterns underlying these correlation coefficients could look like.
 
 ## What _r_ = 0.5 might look like
-
-First, `source()` the `plot_r()` function or [download](http://janhove.github.io/RCode/plot_r.R). 
-Then, in `R`, you can draw scatterplots corresponding to a correlation coefficient of _r_ = 0.5 and 50 observations like this. 
+~~First, `source()` the `plot_r()` function or [download](http://janhove.github.io/RCode/plot_r.R).~~
+<i>Install the `cannonball` package, which contains the `plot_r()` function.</i>
+Then, in `R`, you can draw scatterplots corresponding to a correlation coefficient of _r_ = 0.5 
+and 50 observations like this. 
 (You'll end up with a different set of scatterplots as the scatterplots are created randomly.)
 
 **Update (2023-08-08):** The `plot_r()` function is now also part of the `cannonball` package
@@ -59,8 +60,7 @@ set.seed(20-11-2016)
 ```
 
 ```{r, fig.width = 8, fig.height = 8, echo = TRUE, warning = FALSE, message = FALSE}
-source("http://janhove.github.io/RCode/plot_r.R")
-plot_r(r = 0.5, n = 50)
+cannonball::plot_r(r = 0.5, n = 50)
 ```
 
 ### Some comments
@@ -154,7 +154,7 @@ but we're clearly talking about a different pattern than in plots (1) and (2).
 ## What _r_ = 0 might look like
 
 ```{r, fig.width = 8, fig.height = 8, echo = TRUE, warning = FALSE, message = FALSE}
-plot_r(r = 0, n = 50)
+cannonball::plot_r(r = 0, n = 50)
 ```
 
 ### Some comments
@@ -169,12 +169,12 @@ this doesn't seem to be the case in this example, though.
 
 ### A weak positive correlation: _r_ = 0.1
 ```{r, fig.width = 8, fig.height = 8, echo = TRUE, warning = FALSE, message = FALSE}
-plot_r(r = 0.1, n = 50)
+cannonball::plot_r(r = 0.1, n = 50)
 ```
 
 ### A strong negative correlation: _r_ = -0.9
 ```{r, fig.width = 8, fig.height = 8, echo = TRUE, warning = FALSE, message = FALSE}
-plot_r(r = -0.9, n = 50)
+cannonball::plot_r(r = -0.9, n = 50)
 ```
 
 ## Storing the data
@@ -182,13 +182,11 @@ If you want to store the data underlying one or all of the plots, you can set th
 
 ```{r, eval = FALSE}
 # Show data for plot 11 (not run)
-plot_r(r = 0.4, n = 10, showdata = 11)
+cannonball::plot_r(r = 0.4, n = 10, showdata = 11)
 # Show data for all plots (not run)
-plot_r(r = 0.8, n = 15, showdata = "all")
+cannonball::plot_r(r = 0.8, n = 15, showdata = "all")
 ```
 
-
-<!-- ## Conclusions -->
 I hope the `plot_r()` function helps you to develop a feel for what correlation coefficients
 may actually represent 
 and that this post may convince more researchers to **draw scatterplots** before running any correlation analyses---or regression analyses, for that matter---and to actually **show them** when reporting correlations.
@@ -197,4 +195,3 @@ and that this post may convince more researchers to **draw scatterplots** before
 ```{r}
 devtools::session_info()
 ```
-
