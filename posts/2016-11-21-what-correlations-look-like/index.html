@@ -262,15 +262,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="one-correlation-coefficient-can-represent-any-number-of-patterns" class="level2">
 <h2 class="anchored" data-anchor-id="one-correlation-coefficient-can-represent-any-number-of-patterns">One correlation coefficient can represent any number of patterns</h2>
 <p>Correlation coefficients are popular among researchers because they allow them to summarise the relationship between two variables in a single number. However, a given correlation coefficient can represent any number of patterns between two variables, and without more information (ideally in the form of a scatterplot), the researchers themselves and their readers have no way of knowing which one.</p>
-<p>To illustrate this, I’ve written an <code>R</code> function, <a href="http://janhove.github.io/RCode/plot_r.R"><code>plot_r()</code></a>, that takes as its input a correlation coefficient and a sample size and outputs 16 quite different scatterplots that are all characterised by the same correlation coefficient. Below I first show and comment on how scatterplots for correlation coefficients of 0.5 and 0 based on 50 pairs might look like. Then, for those of you who don’t use <code>R</code>, I provide scatterplots for a couple of other correlation coefficients so you can develop a sense of what the patterns underlying these correlation coefficients could look like.</p>
+<p>To illustrate this, I wrote an <code>R</code> function, <a href="https://janhove.github.io/cannonball/reference/plot_r.html"><code>plot_r()</code></a>, that takes as its input a correlation coefficient and a sample size and outputs 16 quite different scatterplots that are all characterised by the same correlation coefficient. Below I first show and comment on how scatterplots for correlation coefficients of 0.5 and 0 based on 50 pairs might look like. Then, for those of you who don’t use <code>R</code>, I provide scatterplots for a couple of other correlation coefficients so you can develop a sense of what the patterns underlying these correlation coefficients could look like.</p>
 </section>
 <section id="what-r-0.5-might-look-like" class="level2">
 <h2 class="anchored" data-anchor-id="what-r-0.5-might-look-like">What <em>r</em> = 0.5 might look like</h2>
-<p>First, <code>source()</code> the <code>plot_r()</code> function or <a href="http://janhove.github.io/RCode/plot_r.R">download</a>. Then, in <code>R</code>, you can draw scatterplots corresponding to a correlation coefficient of <em>r</em> = 0.5 and 50 observations like this. (You’ll end up with a different set of scatterplots as the scatterplots are created randomly.)</p>
+<p><del>First, <code>source()</code> the <code>plot_r()</code> function or <a href="http://janhove.github.io/RCode/plot_r.R">download</a>.</del> <i>Install the <code>cannonball</code> package, which contains the <code>plot_r()</code> function.</i> Then, in <code>R</code>, you can draw scatterplots corresponding to a correlation coefficient of <em>r</em> = 0.5 and 50 observations like this. (You’ll end up with a different set of scatterplots as the scatterplots are created randomly.)</p>
 <p><strong>Update (2023-08-08):</strong> The <code>plot_r()</code> function is now also part of the <code>cannonball</code> package for R, which you can download from <a href="https://github.com/janhove/cannonball">GitHub</a>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"http://janhove.github.io/RCode/plot_r.R"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.5</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.5</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -309,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-r-0-might-look-like" class="level2">
 <h2 class="anchored" data-anchor-id="what-r-0-might-look-like">What <em>r</em> = 0 might look like</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -328,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a-weak-positive-correlation-r-0.1" class="level3">
 <h3 class="anchored" data-anchor-id="a-weak-positive-correlation-r-0.1">A weak positive correlation: <em>r</em> = 0.1</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.1</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.1</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -341,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a-strong-negative-correlation-r--0.9" class="level3">
 <h3 class="anchored" data-anchor-id="a-strong-negative-correlation-r--0.9">A strong negative correlation: <em>r</em> = -0.9</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="sc">-</span><span class="fl">0.9</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="sc">-</span><span class="fl">0.9</span>, <span class="at">n =</span> <span class="dv">50</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -357,11 +356,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you want to store the data underlying one or all of the plots, you can set the optional <code>showdata</code> parameter to either <code>all</code> or a number between 1 and 16 corresponding to one of the plots:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Show data for plot 11 (not run)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.4</span>, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">showdata =</span> <span class="dv">11</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.4</span>, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">showdata =</span> <span class="dv">11</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Show data for all plots (not run)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.8</span>, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">showdata =</span> <span class="st">"all"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>cannonball<span class="sc">::</span><span class="fu">plot_r</span>(<span class="at">r =</span> <span class="fl">0.8</span>, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">showdata =</span> <span class="st">"all"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<!-- ## Conclusions -->
 <p>I hope the <code>plot_r()</code> function helps you to develop a feel for what correlation coefficients may actually represent and that this post may convince more researchers to <strong>draw scatterplots</strong> before running any correlation analyses—or regression analyses, for that matter—and to actually <strong>show them</strong> when reporting correlations.</p>
 </section>
 <section id="software-versions" class="level2">
@@ -372,62 +370,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
  version  R version 4.5.1 (2025-06-13)
- os       Ubuntu 22.04.5 LTS
+ os       Ubuntu 25.10
  system   x86_64, linux-gnu
  ui       X11
- language en_US
+ language (EN)
  collate  en_US.UTF-8
  ctype    en_US.UTF-8
  tz       Europe/Zurich
- date     2025-10-09
- pandoc   2.12 @ /home/jan/miniconda3/bin/ (via rmarkdown)
+ date     2026-08-17
+ pandoc   3.8.3 @ /usr/lib/rstudio/resources/app/bin/quarto/bin/tools/x86_64/ (via rmarkdown)
+ quarto   1.9.38 @ /usr/local/bin/quarto
 
 ─ Packages ───────────────────────────────────────────────────────────────────
  package     * version date (UTC) lib source
  cachem        1.1.0   2024-05-16 [1] CRAN (R 4.5.1)
- callr         3.7.6   2024-03-25 [1] CRAN (R 4.5.1)
- cli           3.6.5   2025-04-23 [1] CRAN (R 4.5.1)
- crayon        1.5.1   2022-03-26 [2] CRAN (R 4.2.0)
- devtools      2.4.5   2022-10-11 [1] CRAN (R 4.5.1)
+ cannonball    2025-02 2025-10-27 [1] Github (janhove/cannonball@627a15e)
+ cli           3.6.6   2026-04-09 [1] CRAN (R 4.5.1)
+ devtools      2.5.2   2026-04-30 [1] CRAN (R 4.5.1)
  digest        0.6.37  2024-08-19 [1] CRAN (R 4.5.1)
- ellipsis      0.3.2   2021-04-29 [2] CRAN (R 4.2.0)
- evaluate      1.0.4   2025-06-18 [1] CRAN (R 4.5.1)
+ ellipsis      0.3.3   2026-04-04 [1] CRAN (R 4.5.1)
+ evaluate      1.0.5   2025-08-27 [1] CRAN (R 4.5.1)
  fastmap       1.2.0   2024-05-15 [1] CRAN (R 4.5.1)
- fs            1.5.2   2021-12-08 [2] CRAN (R 4.2.0)
- glue          1.6.2   2022-02-24 [2] CRAN (R 4.2.0)
+ fs            2.1.0   2026-04-18 [1] CRAN (R 4.5.1)
+ glue          1.8.0   2024-09-30 [1] CRAN (R 4.5.1)
  htmltools     0.5.8.1 2024-04-04 [1] CRAN (R 4.5.1)
  htmlwidgets   1.6.4   2023-12-06 [1] CRAN (R 4.5.1)
- httpuv        1.6.16  2025-04-16 [1] CRAN (R 4.5.1)
  jsonlite      2.0.0   2025-03-27 [1] CRAN (R 4.5.1)
  knitr         1.50    2025-03-16 [1] CRAN (R 4.5.1)
- later         1.4.2   2025-04-08 [1] CRAN (R 4.5.1)
- lifecycle     1.0.4   2023-11-07 [1] CRAN (R 4.5.1)
- magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.5.1)
- memoise       2.0.1   2021-11-26 [2] CRAN (R 4.2.0)
- mime          0.10    2021-02-13 [2] CRAN (R 4.0.2)
- miniUI        0.1.2   2025-04-17 [1] CRAN (R 4.5.1)
- pkgbuild      1.3.1   2021-12-20 [2] CRAN (R 4.2.0)
- pkgload       1.4.0   2024-06-28 [1] CRAN (R 4.5.1)
- prettyunits   1.1.1   2020-01-24 [2] CRAN (R 4.2.0)
- processx      3.8.6   2025-02-21 [1] CRAN (R 4.5.1)
- profvis       0.4.0   2024-09-20 [1] CRAN (R 4.5.1)
- promises      1.3.3   2025-05-29 [1] CRAN (R 4.5.1)
- ps            1.9.1   2025-04-12 [1] CRAN (R 4.5.1)
- purrr         1.0.4   2025-02-05 [1] CRAN (R 4.5.1)
- R6            2.5.1   2021-08-19 [2] CRAN (R 4.2.0)
- Rcpp          1.0.14  2025-01-12 [1] CRAN (R 4.5.1)
- remotes       2.4.2   2021-11-30 [2] CRAN (R 4.2.0)
- rlang         1.1.6   2025-04-11 [1] CRAN (R 4.5.1)
- rmarkdown     2.29    2024-11-04 [1] CRAN (R 4.5.1)
+ lifecycle     1.0.5   2026-01-08 [1] CRAN (R 4.5.1)
+ magrittr      2.0.4   2025-09-12 [1] CRAN (R 4.5.1)
+ memoise       2.0.1   2021-11-26 [1] CRAN (R 4.5.1)
+ pkgbuild      1.4.8   2025-05-26 [1] CRAN (R 4.5.1)
+ pkgload       1.5.3   2026-06-15 [1] CRAN (R 4.5.1)
+ purrr         1.1.0   2025-07-10 [1] CRAN (R 4.5.1)
+ R6            2.6.1   2025-02-15 [1] CRAN (R 4.5.1)
+ rlang         1.2.0   2026-04-06 [1] CRAN (R 4.5.1)
+ rmarkdown     2.30    2025-09-28 [1] CRAN (R 4.5.1)
  rstudioapi    0.17.1  2024-10-22 [1] CRAN (R 4.5.1)
- sessioninfo   1.2.2   2021-12-06 [2] CRAN (R 4.2.0)
- shiny         1.10.0  2024-12-14 [1] CRAN (R 4.5.1)
- urlchecker    1.0.1   2021-11-30 [1] CRAN (R 4.5.1)
- usethis       3.1.0   2024-11-26 [1] CRAN (R 4.5.1)
+ sessioninfo   1.2.3   2025-02-05 [1] CRAN (R 4.5.1)
+ usethis       3.2.1   2025-09-06 [1] CRAN (R 4.5.1)
  vctrs         0.6.5   2023-12-01 [1] CRAN (R 4.5.1)
- xfun          0.52    2025-04-02 [1] CRAN (R 4.5.1)
- xtable        1.8-4   2019-04-21 [1] CRAN (R 4.5.1)
- yaml          2.3.5   2022-02-21 [2] CRAN (R 4.2.0)
+ xfun          0.53    2025-08-19 [1] CRAN (R 4.5.1)
+ yaml          2.3.10  2024-07-26 [1] CRAN (R 4.5.1)
 
  [1] /home/jan/R/x86_64-pc-linux-gnu-library/4.5
  [2] /usr/local/lib/R/site-library
