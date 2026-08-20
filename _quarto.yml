@@ -3,6 +3,7 @@ project:
   resources:
     - datasets_graphs/**
     - datasets/**
+    - RCode/**
 
 website:
   draft-mode: unlinked
