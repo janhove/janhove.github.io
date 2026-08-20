@@ -4,6 +4,15 @@ date: "2019-09-11"
 categories: [R, multiple regression, assumptions, collinearity]
 ---
 
+::: {.callout-important}
+A slightly reworked version of this blog post was published in _Meta-Psychology_:
+
+Vanhove, Jan. 
+2021. 
+[Collinearity isn’t a disease that needs curing.](https://doi.org/10.15626/MP.2021.2548)
+_Meta-Psychology_ 5.
+:::
+
 Every now and again, some worried student or collaborator asks me whether they're "allowed" to fit a regression model in which some of the predictors are fairly strongly correlated with one another. Happily, most Swiss cantons have a laissez-faire policy with regard to fitting models with correlated predictors, so the answer to this question is "yes". Such an answer doesn't always set the student or collaborator at ease, so below you find my more elaborate answer.
 
 ```{r, echo = FALSE, message = FALSE}
@@ -583,7 +592,7 @@ ggplot(all_data,
 ```
 
 ## Software versions
-Please note that I reran the code on this page on August 6, 2023.
+Please note that I reran the code on this page on 20 August 2026.
 
 ```{r}
 devtools::session_info()
