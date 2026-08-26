@@ -9,8 +9,169 @@
 <link>https://janhove.github.io/archive.html</link>
 <atom:link href="https://janhove.github.io/archive.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about research design and statistics, often using examples from research on language learning.</description>
-<generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 17 Aug 2026 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.9.38</generator>
+<lastBuildDate>Tue, 25 Aug 2026 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>On superficially similar research questions</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-08-26-superficially-similar-questions/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Researchers often think they’ve clearly specified their research question when they haven’t. I encountered a case in point of this when I reviewed a manuscript a while back. Throughout this manuscript, the authors described the goal of their study in a few different ways. At first blush, these formulations seemed to express the same overarching objective, but on closer inspection, they corresponded to different statistical questions. The consequence was that the manuscript ended up reporting on a range of analyses without it being clear how they related to the study’s goal.</p>
+<p>In this blog post, I’ll use a generically worded version of this study to illustrate how similar-sounding research questions may be substantially different statistical questions. Throughout this illustration, I make a few simplifying assumptions that strip away many of the complications that you would have to grapple with in a real project. This, I think, is a useful technique when clarifying research questions: before you start to tackle the statistical intricacies, first consider how you would have to answer your research question as currently stated in a simplified scenario. This may help you realise what it is that you actually want to accomplish. Once that is clear, the analytical approach can be tailored to answer that question rather than some approximation of it.</p>
+<section id="setting" class="level2">
+<h2 class="anchored" data-anchor-id="setting">Setting</h2>
+<p>So as not to identify the study in question, I’ll only sketch the study in broad, generic strokes. The authors collected, for a set of units, two numerical predictors thought to reflect a property of these units. I’ll creatively call these predictors <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'">. The variable <img src="https://latex.codecogs.com/png.latex?X"> corresponds to a standard, well-established operationalisation of the property of interest; the variable <img src="https://latex.codecogs.com/png.latex?X'"> corresponds to an alternative operationalisation suggested by the authors. For each unit we also have a numerical outcome <img src="https://latex.codecogs.com/png.latex?Y">.</p>
+</section>
+<section id="objective" class="level2">
+<h2 class="anchored" data-anchor-id="objective">Objective</h2>
+<p>Throughout their article, the researchers formulated their objective in four different ways. I’ve paraphrased these in the same generic notation as above.</p>
+<p><strong>(F1)</strong> How well can we predict <img src="https://latex.codecogs.com/png.latex?Y"> using <img src="https://latex.codecogs.com/png.latex?X'">? (At the start of the introduction.)</p>
+<p><strong>(F2)</strong> How much better can we predict <img src="https://latex.codecogs.com/png.latex?Y"> if we also use <img src="https://latex.codecogs.com/png.latex?X'">? (At the end of the introduction.)</p>
+<p><strong>(F3)</strong> How large is the difference between the correlation between <img src="https://latex.codecogs.com/png.latex?X'"> and <img src="https://latex.codecogs.com/png.latex?Y"> and the one between <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?Y">? (At the end of the methods section.)</p>
+<p><strong>(F4)</strong> How much better can we predict <img src="https://latex.codecogs.com/png.latex?Y"> if we use <img src="https://latex.codecogs.com/png.latex?X'"> instead of <img src="https://latex.codecogs.com/png.latex?X">? (At the end of the methods section.)</p>
+<p>At some level, these four questions are really just variations on the same theme: Given that everyone uses <img src="https://latex.codecogs.com/png.latex?X"> to model <img src="https://latex.codecogs.com/png.latex?Y">, is the newly proposed <img src="https://latex.codecogs.com/png.latex?X'"> of any use?</p>
+<p>But as we’ll see, formulations (F1) through (F4) are different in the sense that, given the same data, you may end up with a different answer depending on which exact question you’re asking.</p>
+</section>
+<section id="simplifying-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="simplifying-assumptions">Simplifying assumptions</h2>
+<p>I will show that formulations (F1) through (F4) correspond to different statistical questions even under ideal circumstances in which many real-world complications do not occur. To this end, I make two simplifying assumptions.</p>
+<p><strong>(A1)</strong> We have an infinite amount of perfectly measured data.</p>
+<p>This assumption means that we don’t have to estimate anything or deal with sampling error: as long as we know what to compute, we can obtain the correct answer with infinite precision.</p>
+<p><strong>(A2)</strong> The predictors <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> have a joint multivariate distribution, and the outcome <img src="https://latex.codecogs.com/png.latex?Y"> is a weighted sum of these predictors with some Normal noise added to it. More specifically, the data-generating mechanism is as follows:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%20%20(X,%20X')%20&amp;%5Csim%20%5Ctextrm%7BMultiNormal%7D_2(%5Cboldsymbol%200,%20%5Cboldsymbol%20%5CSigma),%20%5C%5C%0A%20%20Y%20&amp;=%20%5Cbeta_XX%20+%20%5Cbeta_%7BX'%7DX'%20+%20%5Cvarepsilon,%20%5C%5C%0A%20%20%5Cvarepsilon%20&amp;%5Csim%20%5Ctextrm%7BNormal%7D(0,%20%5Csigma%5E2_%7B%5Cvarepsilon%7D),%0A%5Cend%7Balign*%7D%0A"> where <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma"> is a covariance matrix and where <img src="https://latex.codecogs.com/png.latex?%5Cvarepsilon"> and <img src="https://latex.codecogs.com/png.latex?(X,%20X')"> are independent.</p>
+<p>Assumption (A2) implies that the joint distribution of <img src="https://latex.codecogs.com/png.latex?(X,%20X',%20Y)"> is multivariate Normal, which simplifies calculations considerably. Further, assumptions (A1) and (A2) jointly imply that, for whatever values of <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma,%20%5Csigma%5E2_%7B%5Cvarepsilon%7D,%20%5Cbeta_X"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D"> we choose, the answers to (F1) through (F4) can be calculated precisely without any need for nuance in the form of sampling error, interactions, nonlinearities, etc.</p>
+<p>The only thing standing between us and the answer to the research question is figuring out what the research question really is.</p>
+<p>Under more realistic circumstances, additional complications will arise. But if the different formulations can already lead to different answers in this well-behaved multivariate Normal setting with perfect information, then they are clearly different for <em>conceptual</em> reasons rather than because of implementation details. At the end of the post, I’ll briefly discuss how more realistic assumptions can further exacerbate the differences between these formulations.</p>
+</section>
+<section id="identifying-the-relevant-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-the-relevant-comparisons">Identifying the relevant comparisons</h2>
+<p>Each formulation targets another comparison between two statistical quantities.</p>
+<section id="formulation-f1" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f1">Formulation (F1)</h3>
+<p>Formulation (F1) asks how well we can predict <img src="https://latex.codecogs.com/png.latex?Y"> given <img src="https://latex.codecogs.com/png.latex?X'">. Under our assumptions, a natural way to formalise this question is by comparing the variability of <img src="https://latex.codecogs.com/png.latex?Y"> (i.e., <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y)">) to the variability of <img src="https://latex.codecogs.com/png.latex?Y"> once you’ve accounted for <img src="https://latex.codecogs.com/png.latex?X'"> (i.e., <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X')">). The larger this reduction in variability, the better we can predict <img src="https://latex.codecogs.com/png.latex?Y"> given <img src="https://latex.codecogs.com/png.latex?X'">.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both quantities can be computed using standard formulae.</p>
+<p>First, the variance in <img src="https://latex.codecogs.com/png.latex?Y"> is <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Ctextrm%7BVar%7D(Y)%0A&amp;=%20%5Ctextrm%7BVar%7D(%5Cbeta_XX%20+%20%5Cbeta_%7BX'%7DX'%20+%20%5Cvarepsilon)%20%5C%5C%0A&amp;=%20%5Cbeta_X%5E2%20%5Ctextrm%7BVar%7D(X)%20+%20%5Cbeta_%7BX'%7D%5E2%20%5Ctextrm%7BVar%7D(X')%20+%202%5Cbeta_X%5Cbeta_%7BX'%7D%5Ctextrm%7BCov%7D(X,%20X')%20+%20%5Ctextrm%7BVar%7D(%5Cvarepsilon),%0A%5Cend%7Balign*%7D%0A"> where <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(X),%20%5Ctextrm%7BVar%7D(X')"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCov%7D(X,%20X')"> are entries in the covariance matrix <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma">.</p>
+<p>Second, the variance in <img src="https://latex.codecogs.com/png.latex?Y"> given <img src="https://latex.codecogs.com/png.latex?X'"> does not depend on the observed value of <img src="https://latex.codecogs.com/png.latex?X'"> and can be computed using the conditioning formula for multivariate Normal distributions:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Ctextrm%7BVar%7D(Y%7CX')%0A&amp;=%20%5Ctextrm%7BVar%7D(Y)%20-%20%5Cfrac%7B%5Ctextrm%7BCov%7D%5E2(X',%20Y)%7D%7B%5Ctextrm%7BVar%7D(X')%7D,%0A%5Cend%7Balign*%7D%0A"> where</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%20%20%5Ctextrm%7BCov%7D(X',%20Y)%0A%20%20&amp;=%20%5Ctextrm%7BCov%7D(X',%20%5Cbeta_XX%20+%20%5Cbeta_%7BX'%7DX'%20+%20%5Cvarepsilon)%20%5C%5C%0A%20%20&amp;=%20%5Cbeta_X%5Ctextrm%7BCov%7D(X,%20X')%20+%20%5Cbeta_%7BX'%7D%5Ctextrm%7BVar%7D(X').%0A%5Cend%7Balign*%7D%0A"></p>
+</div>
+</div>
+</div>
+<p>Under our assumptions, the quantities <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y)"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X')"> are equal if and only if <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCov%7D(X',%20Y)%20=%200">. This is the case in particular if both <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D%20=%200"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCov%7D(X,%20X')%20=%200">. The difference between these two quantities becomes large whenever <img src="https://latex.codecogs.com/png.latex?X'"> contains a lot of information about <img src="https://latex.codecogs.com/png.latex?Y">. This can be achieved, for instance, by picking highly correlated <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> or by setting <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X"> to 0 and <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D"> to a large absolute value.</p>
+<p>If Formulation (F1) is what you’re interested in, a sensible first port of call would be to compare the mean squared error of a simple regression model with <img src="https://latex.codecogs.com/png.latex?X'"> as its predictor to the mean squared error of an intercept-only model.</p>
+</section>
+<section id="formulation-f2" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f2">Formulation (F2)</h3>
+<p>Formulation (F2) asks how much better we can predict <img src="https://latex.codecogs.com/png.latex?Y"> if we <em>also</em> use <img src="https://latex.codecogs.com/png.latex?X'">. As a reviewer, I understood this to ask how much uncertainty in <img src="https://latex.codecogs.com/png.latex?Y"> remains after accounting for both <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> compared to after accounting only for <img src="https://latex.codecogs.com/png.latex?X">. Under our assumptions, this amounts to comparing <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X)"> to <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X,%20X')">.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The variance in <img src="https://latex.codecogs.com/png.latex?Y"> given both <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> is easy to compute:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%20%20%5Ctextrm%7BVar%7D(Y%20%7C%20X,%20X')%20=%20%5Ctextrm%7BVar%7D(%5Cvarepsilon)%20=%20%5Csigma%5E2_%7B%5Cvarepsilon%7D.%0A"></p>
+<p>The variance in <img src="https://latex.codecogs.com/png.latex?Y"> given only <img src="https://latex.codecogs.com/png.latex?X"> can be computed like we did above:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%20%20%5Ctextrm%7BVar%7D(Y%7CX)%0A%20%20&amp;=%20%5Ctextrm%7BVar%7D(Y)%20-%20%5Cfrac%7B%5Ctextrm%7BCov%7D%5E2(X,%20Y)%7D%7B%5Ctextrm%7BVar%7D(X)%7D%20%5C%5C%0A%20%20&amp;=%20%5Cbeta_%7BX%7D%5E2%20%5Ctextrm%7BVar%7D(X)%20+%20%5Cbeta_%7BX'%7D%5E2%20%5Ctextrm%7BVar%7D(X')%20+%202%5Cbeta_X%5Cbeta_%7BX'%7D%5Ctextrm%7BCov%7D(X,%20X')%20+%20%5Csigma%5E2_%7B%5Cvarepsilon%7D%20-%20%5Cfrac%7B%5Ctextrm%7BCov%7D%5E2(X,%20Y)%7D%7B%5Ctextrm%7BVar%7D(X)%7D.%0A%5Cend%7Balign*%7D%0A"></p>
+</div>
+</div>
+</div>
+<p>Some algebra reveals that the quantities <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%7CX)"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X,%20X')"> are equal if and only if <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D%20=%200"> or if the absolute correlation between <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> is maximal. The difference between these quantities can be made large by making <img src="https://latex.codecogs.com/png.latex?X'"> but not <img src="https://latex.codecogs.com/png.latex?X"> highly informative about <img src="https://latex.codecogs.com/png.latex?Y">. This can be achieved, for instance, by setting <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCov%7D(X,%20X')%20=%200">, <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%200"> and choosing large values for <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(X')">.</p>
+<p>If Formulation (F2) is what you’re interested in, a sensible approach is to compare the mean squared error of a multiple linear regression model with both <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> as predictors to the mean squared error of a simple linear regression model with only <img src="https://latex.codecogs.com/png.latex?X"> as its predictor.</p>
+</section>
+<section id="formulation-f3" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f3">Formulation (F3)</h3>
+<p>Formulation (F3) differs from the others in that it explicitly presupposes a particular statistical tool: correlation coefficients. Specifically, it targets the difference between the correlations <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCor%7D(X,%20Y)"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCor%7D(X',%20Y)">.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The correlation between <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?Y"> is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCor%7D(X,%20Y)%20=%20%5Cfrac%7B%5Ctextrm%7BCov%7D(X,%20Y)%7D%7B%5Csqrt%7B%5Ctextrm%7BVar%7D(X)%5Ctextrm%7BVar%7D(Y)%7D%7D%20=%20%5Cfrac%7B%5Cbeta_%7BX%7D%5Ctextrm%7BVar%7D(X)%20+%20%5Cbeta_%7BX'%7D%5Ctextrm%7BCov%7D(X,%20X')%20%7D%7B%5Csqrt%7B%5Ctextrm%7BVar%7D(X)%5Ctextrm%7BVar%7D(Y)%7D%7D;"> the one between <img src="https://latex.codecogs.com/png.latex?X'"> and <img src="https://latex.codecogs.com/png.latex?Y"> similarly is <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCor%7D(X',%20Y)%20=%20%5Cfrac%7B%5Cbeta_%7BX'%7D%5Ctextrm%7BVar%7D(X')%20+%20%5Cbeta_%7BX%7D%5Ctextrm%7BCov%7D(X,%20X')%20%7D%7B%5Csqrt%7B%5Ctextrm%7BVar%7D(X')%5Ctextrm%7BVar%7D(Y)%7D%7D."></p>
+</div>
+</div>
+</div>
+<p>The parameters can be chosen in many different ways in order to make these two quantities identical, with the simplest case being <img src="https://latex.codecogs.com/png.latex?X'%20=%20X">. If you want to make them as different from each other as possible, you could set <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma%20=%20%5Cbegin%7Bpmatrix%7D1%20&amp;%200%20%5C%5C%200%20&amp;%201%5Cend%7Bpmatrix%7D"> and pick <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%20-%5Cbeta_X'%20%5Cneq%200"> for large absolute values of <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X">.</p>
+<p>If Formulation (F3) is what you’re interested in, you need to compare two dependent correlations rather than run regression analyses.</p>
+</section>
+<section id="formulation-f4" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f4">Formulation (F4)</h3>
+<p>Formulation (F4) asks how much better <img src="https://latex.codecogs.com/png.latex?Y"> can be predicted given only <img src="https://latex.codecogs.com/png.latex?X'"> compared to when you’re only given <img src="https://latex.codecogs.com/png.latex?X">. Under our assumptions, a sensible comparison involves the quantities <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X)"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(Y%20%7C%20X')"> that we computed above.</p>
+<p>It’s easy to make these quantities coincide: simply set <img src="https://latex.codecogs.com/png.latex?X'%20=%20X">. The difference between them is large if <img src="https://latex.codecogs.com/png.latex?X'"> contains considerably more information about <img src="https://latex.codecogs.com/png.latex?Y"> than does <img src="https://latex.codecogs.com/png.latex?X">. This can be achieved, for instance, by setting <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BCov%7D(X,%20X')%20=%200">, <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%200"> and choosing large values for <img src="https://latex.codecogs.com/png.latex?%5Cbeta_%7BX'%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Ctextrm%7BVar%7D(X')">.</p>
+<p>If Formulation (F4) is what you’re interested in, a sensible first approach is to compare the mean squared errors of two simple regression models: one with <img src="https://latex.codecogs.com/png.latex?X"> as its predictor and one with <img src="https://latex.codecogs.com/png.latex?X'"> as its predictor.</p>
+</section>
+</section>
+<section id="formulations-f1-through-f4-are-different" class="level2">
+<h2 class="anchored" data-anchor-id="formulations-f1-through-f4-are-different">Formulations (F1) through (F4) are different</h2>
+<p>The four formulations may superficially seem interchangeable. To show that they are not, I’ll construct situations where some formulations indicate a difference whereas others do not.</p>
+<p>To show that Formulation (F1) differs from Formulations (F2) through (F4), consider the case where <img src="https://latex.codecogs.com/png.latex?X'"> and <img src="https://latex.codecogs.com/png.latex?X"> are the <em>same</em> variable and <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%20%5Cbeta_%7BX'%7D%20%5Cneq%200">. In this case, the comparison for Formulation (F1) will show that <img src="https://latex.codecogs.com/png.latex?X'"> is to some extent predictive of <img src="https://latex.codecogs.com/png.latex?Y">; the extent of this predictive usefulness can be made arbitrarily large. However, the comparisons for Formulations (F2) through (F4) will show no difference whatsoever. All of these comparisons target some difference between <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> in terms of how these predictors relate to <img src="https://latex.codecogs.com/png.latex?Y">, whereas Formulation (F1) only pertains to how well <img src="https://latex.codecogs.com/png.latex?X'"> predicts <img src="https://latex.codecogs.com/png.latex?Y">.</p>
+<p>Similarly, it can be shown that Formulation (F2) differs from Formulations (F3) and (F4). To this end, we can set, for instance,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma%20=%20%5Cbegin%7Bpmatrix%7D1%20&amp;%200%20%5C%5C%200%20&amp;%201%5Cend%7Bpmatrix%7D"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%20%5Cbeta_%7BX'%7D">. In this case, the predictor <img src="https://latex.codecogs.com/png.latex?X'"> contributes to the variance of <img src="https://latex.codecogs.com/png.latex?Y"> independently of <img src="https://latex.codecogs.com/png.latex?X">, which is precisely what the comparison implied by Formulation (F2) picks up on. However, Formulations (F3) and (F4) compare, in different ways, to what extent the contributions of <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> to <img src="https://latex.codecogs.com/png.latex?Y"> differ—and in this case, both predictors make exactly equal contributions.</p>
+<p>Finally, we can show that Formulations (F3) and (F4) differ. To see this, again use <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20%5CSigma%20=%20%5Cbegin%7Bpmatrix%7D1%20&amp;%200%20%5C%5C%200%20&amp;%201%5Cend%7Bpmatrix%7D"> and set <img src="https://latex.codecogs.com/png.latex?%5Cbeta_X%20=%20-%5Cbeta_%7BX'%7D%20%5Cneq%200">. Then the correlation coefficient for <img src="https://latex.codecogs.com/png.latex?X'"> and <img src="https://latex.codecogs.com/png.latex?Y"> will differ in sign from that for <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?Y">, which is what the comparison for Formulation (F3) will pick up on. But both <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> will predict <img src="https://latex.codecogs.com/png.latex?Y"> with equal accuracy, so the comparison for Formulation (F4) won’t reveal any differences.</p>
+<p>All four formulations, then, are conceptually distinct.</p>
+</section>
+<section id="further-complications" class="level2">
+<h2 class="anchored" data-anchor-id="further-complications">Further complications</h2>
+<p>The setting above is quite unrealistic. But the idealisation makes it <em>harder</em> rather than <em>easier</em> to come up with situations in which the four different formulations of the research goal give conflicting answers.</p>
+<p>For instance, while Formulations (F3) and (F4) are different, our multivariate Normal setting implies that any time the comparison for Formulation (F4) reveals a difference, then so will the comparison for Formulation (F3); just not the other way around. But once we consider settings where <img src="https://latex.codecogs.com/png.latex?(X,%20X',%20Y)"> does not have a multivariate Normal distribution, it’s easy to come up with examples where <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> differ in their predictive usefulness but where the correlation between each predictor and the outcome is zero; see the blog post <a href="../posts/2016-11-21-what-correlations-look-like/"><em>What data patterns can lie behind a correlation coefficient?</em></a> for examples where one variable is highly predictive of another yet not correlated with it.</p>
+<p>Further, you can open a whole can of worms by considering settings where <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> interact in their effect on <img src="https://latex.codecogs.com/png.latex?Y">, where these predictors do not have a multivariate Normal distribution, or where the noise does not follow the same Normal distribution for all units. In such settings, different measures of variability (e.g., the variance vs the mean absolute error) may yield different answers, the variability of <img src="https://latex.codecogs.com/png.latex?Y"> given <img src="https://latex.codecogs.com/png.latex?X"> needn’t be constant, and yet other complications may arise.</p>
+<p>Additionally, in real-life settings, the answers to any of these formulations won’t be as clear cut as they are in our idealised setting with infinite data as each numerical answer will come with some uncertainty attached to it. But before addressing such complications, we first need to be clear-eyed about what we want to figure out in the first place.</p>
+</section>
+<section id="so-whats-the-correct-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="so-whats-the-correct-formulation">So what’s the correct formulation?</h2>
+<p>Despite their lack of realism, I think there is some value in making simplifying assumptions and considering scenarios in which different answers will be given to different formulations of ostensibly the same research goal: stripping away some of the complications may help us better appreciate what it is we, or the researchers, are interested in.</p>
+<p>So, out of the four formulations, what’s the correct one?</p>
+<p>The boring answer is that it depends. But at the risk of committing the <a href="https://daniellakens.blogspot.com/2017/11/the-statisticians-fallacy.html">statisticians’ fallacy</a>, I’m going to go ahead and say that either Formulation (F2) or Formulation (F4) may be best aligned with what is likely to be the researchers’ objective:</p>
+<ul>
+<li>Formulation (F2) concerns the <em>added</em> value of predictor <img src="https://latex.codecogs.com/png.latex?X'"> and is suited if you’re interested in potentially recommending to other researchers that they should consider taking into account both <img src="https://latex.codecogs.com/png.latex?X"> and <img src="https://latex.codecogs.com/png.latex?X'"> when modelling <img src="https://latex.codecogs.com/png.latex?Y">.</li>
+<li>Formulation (F4) is suited if you’re interested in potentially recommending to other researchers that they should forego collecting or computing <img src="https://latex.codecogs.com/png.latex?X"> and use <img src="https://latex.codecogs.com/png.latex?X'"> instead when modelling <img src="https://latex.codecogs.com/png.latex?Y">.</li>
+</ul>
+<p>Nothing prevents the researchers from trying to answer the research questions underpinning both of these formulations; it’s just that they should be aware that these are two different research questions with potentially different answers.</p>
+<p>By contrast, Formulation (F1) seems premature. If it should turn out that the researchers are able to recommend that <img src="https://latex.codecogs.com/png.latex?X"> should no longer be used and that <img src="https://latex.codecogs.com/png.latex?X'"> is to be preferred, then it does become a sensible question to ask how good of a predictor of <img src="https://latex.codecogs.com/png.latex?Y"> <img src="https://latex.codecogs.com/png.latex?X'"> is in isolation. But this question cannot be answered using the same data set that is also used as the basis for this recommendation due to possible selection bias.</p>
+<p>As for Formulation (F3), finally, I fail to see a use-case for it that isn’t better addressed by Formulations (F2) or (F4). Generally, I’m quite skeptical of research questions phrased in terms of correlation coefficients as these often poorly summarise the relation between two variables.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Statistical analyses serve to answer statistical questions. It is imperative that these questions align closely with the substantive research questions. But quite often, research questions are vague or formulated in several logically distinct ways. Considering idealised settings that strip away real-world complications is useful for clarifying which statistical quantities are actually of interest. The whole rigmarole of fitting and refitting models, accounting for interactions, nonlinearities, dependencies, and what-have-you is only going to be of any use once you know what you’re looking for.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>research questions</category>
+  <guid>https://janhove.github.io/posts/2026-08-26-superficially-similar-questions/</guid>
+  <pubDate>Tue, 25 Aug 2026 22:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Different distributions, same boxplot</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -2732,7 +2893,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>graphs</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2026-08-17-boxplot-distributions/</guid>
-  <pubDate>Mon, 17 Aug 2026 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 16 Aug 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Model comparisons for mixed-effects regression, or: When anova() doesn’t do ANOVA</title>
@@ -3356,7 +3517,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2026-08-12-model-comparisons/</guid>
-  <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 11 Aug 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Testing strong and weak null hypotheses in randomised experiments</title>
@@ -4926,7 +5087,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2026-07-13-weak-strong-H0/</guid>
-  <pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 12 Jul 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>When interaction effects are hard to explain, try nested effects</title>
@@ -5539,7 +5700,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>tutorial</category>
   <guid>https://janhove.github.io/posts/2026-06-03-nested-effects/</guid>
-  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 02 Jun 2026 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>A quick introduction to isotonic regression</title>
@@ -6694,7 +6855,7 @@ Figure&nbsp;6: The PAVA is easily adapted to non-increasing trend lines. Data fr
   <category>non-linearities</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2026-05-29-isotonic-regression/</guid>
-  <pubDate>Fri, 29 May 2026 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 28 May 2026 22:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2026-05-29-isotonic-regression/thumbnail.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
@@ -8709,7 +8870,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2025-12-15-multilingualism-accelerated-ageing/</guid>
-  <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
+  <pubDate>Sun, 14 Dec 2025 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The population model and the randomisation model of statistical inference</title>
@@ -10336,7 +10497,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2025-11-09-population-randomisation/</guid>
-  <pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
+  <pubDate>Sat, 08 Nov 2025 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Clarifying research questions by sketching possible outcomes</title>
@@ -11578,7 +11739,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>research questions</category>
   <category>research design</category>
   <guid>https://janhove.github.io/posts/2025-10-10-mock-outcomes/</guid>
-  <pubDate>Fri, 10 Oct 2025 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 09 Oct 2025 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Exact significance tests for 2 × 2 tables</title>
@@ -13037,7 +13198,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2024-09-10-contingency-p-value/</guid>
-  <pubDate>Tue, 10 Sep 2024 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 09 Sep 2024 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>New and updated teaching resources</title>
@@ -13061,7 +13222,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
  ]]></description>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2024-09-04-updated-resources/</guid>
-  <pubDate>Wed, 04 Sep 2024 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 03 Sep 2024 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Piecewise regression</title>
@@ -14238,7 +14399,7 @@ font-style: inherit;">/</span> n_runs</span></code></pre></div></div>
   <category>piecewise regression</category>
   <category>non-linearities</category>
   <guid>https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/</guid>
-  <pubDate>Tue, 07 Mar 2023 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 06 Mar 2023 23:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/image.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 <item>
@@ -14986,7 +15147,7 @@ font-style: inherit;">*</span>ses</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-23-julia-tea-tasting/</guid>
-  <pubDate>Thu, 23 Feb 2023 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 22 Feb 2023 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: The Levenshtein algorithm</title>
@@ -15777,7 +15938,7 @@ font-style: inherit;">norm_lev_dist</span>.(german, dutch)</span></code></pre></
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-09-julia-levenshtein/</guid>
-  <pubDate>Thu, 09 Feb 2023 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 08 Feb 2023 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Generating the Fibonacci sequence</title>
@@ -16818,7 +16979,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2022-12-20-julia-fibonacci/</guid>
-  <pubDate>Tue, 20 Dec 2022 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 19 Dec 2022 23:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2022-12-20-julia-fibonacci/image.png" medium="image" type="image/png" height="101" width="144"/>
 </item>
 <item>
@@ -16853,7 +17014,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
   <category>silly tests</category>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2022-02-18-dont-do-things-you-dont-see-the-point-of/</guid>
-  <pubDate>Fri, 18 Feb 2022 00:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Feb 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>An R function for computing Levenshtein distances between texts using the word as the unit of comparison</title>
@@ -16934,7 +17095,7 @@ font-style: inherit;">obtain_edits</span>(textA, textB)</span></code></pre></div
  ]]></description>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2022-02-17-levenshtein/</guid>
-  <pubDate>Thu, 17 Feb 2022 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 16 Feb 2022 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The consequences of controlling for a post-treatment variable</title>
@@ -19589,7 +19750,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>R</category>
   <category>multiple regression</category>
   <guid>https://janhove.github.io/posts/2021-06-29-posttreatment/</guid>
-  <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
+  <pubDate>Mon, 28 Jun 2021 22:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2021-06-29-posttreatment/image.png" medium="image" type="image/png" height="115" width="144"/>
 </item>
 <item>
@@ -19628,7 +19789,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>research design</category>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2020-12-16-quant-meth/</guid>
-  <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 15 Dec 2020 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Capitalising on covariates in cluster-randomised experiments</title>
@@ -19676,58 +19837,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>cluster-randomised experiments</category>
   <category>preprint</category>
   <guid>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</guid>
-  <pubDate>Wed, 02 Sep 2020 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Tutorial: Visualising statistical uncertainty using model-based graphs</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2020-06-29-visualise-uncertainty/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I wrote a tutorial about visualising the statistical uncertainty in statistical models for a conference that took place a couple of months ago, and I’ve just realised that I’ve never advertised this tutorial in this blog. You can find the tutorial here: <a href="https://janhove.github.io/visualise_uncertainty">Visualising statistical uncertainty using model-based graphs</a>.</p>
-<p>Contents:</p>
-<ol type="1">
-<li>Why plot models, and why visualise uncertainty?</li>
-<li>The principle: An example with simple linear regression
-<ul>
-<li>Step 1: Fit the model</li>
-<li>Step 2: Compute the conditional means and confidence intervals</li>
-<li>Step 3: Plot!</li>
-</ul></li>
-<li>Predictions about individual cases vs.&nbsp;conditional means</li>
-<li>More examples
-<ul>
-<li>Several continuous predictors</li>
-<li>Dealing with categorical predictors</li>
-<li>t-tests are models, too</li>
-<li>Dealing with interactions</li>
-<li>Ordinary logistic regression</li>
-<li>Mixed-effects models</li>
-<li>Logistic mixed effects models</li>
-</ul></li>
-<li>Caveats
-<ul>
-<li>Other things may not be equal</li>
-<li>Your model may be misspecified</li>
-<li>Other models may yield different pictures</li>
-</ul></li>
-</ol>
-
-
-
- ]]></description>
-  <category>R</category>
-  <category>graphs</category>
-  <category>logistic regression</category>
-  <category>mixed-effects models</category>
-  <category>multiple regression</category>
-  <category>Bayesian statistics</category>
-  <category>brms</category>
-  <guid>https://janhove.github.io/posts/2020-06-29-visualise-uncertainty/</guid>
-  <pubDate>Mon, 29 Jun 2020 00:00:00 GMT</pubDate>
+  <pubDate>Tue, 01 Sep 2020 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2026-08-26">
+
+<title>On superficially similar research questions – Jan Vanhove</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2bcd031ed76f40c00e67790d12c8785c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../support.html"> 
+<span class="menu-text">Methods and stats support</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../courses.html"> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setting" id="toc-setting" class="nav-link active" data-scroll-target="#setting">Setting</a></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link" data-scroll-target="#objective">Objective</a></li>
+  <li><a href="#simplifying-assumptions" id="toc-simplifying-assumptions" class="nav-link" data-scroll-target="#simplifying-assumptions">Simplifying assumptions</a></li>
+  <li><a href="#identifying-the-relevant-comparisons" id="toc-identifying-the-relevant-comparisons" class="nav-link" data-scroll-target="#identifying-the-relevant-comparisons">Identifying the relevant comparisons</a>
+  <ul class="collapse">
+  <li><a href="#formulation-f1" id="toc-formulation-f1" class="nav-link" data-scroll-target="#formulation-f1">Formulation (F1)</a></li>
+  <li><a href="#formulation-f2" id="toc-formulation-f2" class="nav-link" data-scroll-target="#formulation-f2">Formulation (F2)</a></li>
+  <li><a href="#formulation-f3" id="toc-formulation-f3" class="nav-link" data-scroll-target="#formulation-f3">Formulation (F3)</a></li>
+  <li><a href="#formulation-f4" id="toc-formulation-f4" class="nav-link" data-scroll-target="#formulation-f4">Formulation (F4)</a></li>
+  </ul></li>
+  <li><a href="#formulations-f1-through-f4-are-different" id="toc-formulations-f1-through-f4-are-different" class="nav-link" data-scroll-target="#formulations-f1-through-f4-are-different">Formulations (F1) through (F4) are different</a></li>
+  <li><a href="#further-complications" id="toc-further-complications" class="nav-link" data-scroll-target="#further-complications">Further complications</a></li>
+  <li><a href="#so-whats-the-correct-formulation" id="toc-so-whats-the-correct-formulation" class="nav-link" data-scroll-target="#so-whats-the-correct-formulation">So what’s the correct formulation?</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">On superficially similar research questions</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">research questions</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 26, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Researchers often think they’ve clearly specified their research question when they haven’t. I encountered a case in point of this when I reviewed a manuscript a while back. Throughout this manuscript, the authors described the goal of their study in a few different ways. At first blush, these formulations seemed to express the same overarching objective, but on closer inspection, they corresponded to different statistical questions. The consequence was that the manuscript ended up reporting on a range of analyses without it being clear how they related to the study’s goal.</p>
+<p>In this blog post, I’ll use a generically worded version of this study to illustrate how similar-sounding research questions may be substantially different statistical questions. Throughout this illustration, I make a few simplifying assumptions that strip away many of the complications that you would have to grapple with in a real project. This, I think, is a useful technique when clarifying research questions: before you start to tackle the statistical intricacies, first consider how you would have to answer your research question as currently stated in a simplified scenario. This may help you realise what it is that you actually want to accomplish. Once that is clear, the analytical approach can be tailored to answer that question rather than some approximation of it.</p>
+<section id="setting" class="level2">
+<h2 class="anchored" data-anchor-id="setting">Setting</h2>
+<p>So as not to identify the study in question, I’ll only sketch the study in broad, generic strokes. The authors collected, for a set of units, two numerical predictors thought to reflect a property of these units. I’ll creatively call these predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span>. The variable <span class="math inline">\(X\)</span> corresponds to a standard, well-established operationalisation of the property of interest; the variable <span class="math inline">\(X'\)</span> corresponds to an alternative operationalisation suggested by the authors. For each unit we also have a numerical outcome <span class="math inline">\(Y\)</span>.</p>
+</section>
+<section id="objective" class="level2">
+<h2 class="anchored" data-anchor-id="objective">Objective</h2>
+<p>Throughout their article, the researchers formulated their objective in four different ways. I’ve paraphrased these in the same generic notation as above.</p>
+<p><strong>(F1)</strong> How well can we predict <span class="math inline">\(Y\)</span> using <span class="math inline">\(X'\)</span>? (At the start of the introduction.)</p>
+<p><strong>(F2)</strong> How much better can we predict <span class="math inline">\(Y\)</span> if we also use <span class="math inline">\(X'\)</span>? (At the end of the introduction.)</p>
+<p><strong>(F3)</strong> How large is the difference between the correlation between <span class="math inline">\(X'\)</span> and <span class="math inline">\(Y\)</span> and the one between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>? (At the end of the methods section.)</p>
+<p><strong>(F4)</strong> How much better can we predict <span class="math inline">\(Y\)</span> if we use <span class="math inline">\(X'\)</span> instead of <span class="math inline">\(X\)</span>? (At the end of the methods section.)</p>
+<p>At some level, these four questions are really just variations on the same theme: Given that everyone uses <span class="math inline">\(X\)</span> to model <span class="math inline">\(Y\)</span>, is the newly proposed <span class="math inline">\(X'\)</span> of any use?</p>
+<p>But as we’ll see, formulations (F1) through (F4) are different in the sense that, given the same data, you may end up with a different answer depending on which exact question you’re asking.</p>
+</section>
+<section id="simplifying-assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="simplifying-assumptions">Simplifying assumptions</h2>
+<p>I will show that formulations (F1) through (F4) correspond to different statistical questions even under ideal circumstances in which many real-world complications do not occur. To this end, I make two simplifying assumptions.</p>
+<p><strong>(A1)</strong> We have an infinite amount of perfectly measured data.</p>
+<p>This assumption means that we don’t have to estimate anything or deal with sampling error: as long as we know what to compute, we can obtain the correct answer with infinite precision.</p>
+<p><strong>(A2)</strong> The predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> have a joint multivariate distribution, and the outcome <span class="math inline">\(Y\)</span> is a weighted sum of these predictors with some Normal noise added to it. More specifically, the data-generating mechanism is as follows:</p>
+<p><span class="math display">\[
+\begin{align*}
+  (X, X') &amp;\sim \textrm{MultiNormal}_2(\boldsymbol 0, \boldsymbol \Sigma), \\
+  Y &amp;= \beta_XX + \beta_{X'}X' + \varepsilon, \\
+  \varepsilon &amp;\sim \textrm{Normal}(0, \sigma^2_{\varepsilon}),
+\end{align*}
+\]</span> where <span class="math inline">\(\boldsymbol \Sigma\)</span> is a covariance matrix and where <span class="math inline">\(\varepsilon\)</span> and <span class="math inline">\((X, X')\)</span> are independent.</p>
+<p>Assumption (A2) implies that the joint distribution of <span class="math inline">\((X, X', Y)\)</span> is multivariate Normal, which simplifies calculations considerably. Further, assumptions (A1) and (A2) jointly imply that, for whatever values of <span class="math inline">\(\boldsymbol \Sigma, \sigma^2_{\varepsilon}, \beta_X\)</span> and <span class="math inline">\(\beta_{X'}\)</span> we choose, the answers to (F1) through (F4) can be calculated precisely without any need for nuance in the form of sampling error, interactions, nonlinearities, etc.</p>
+<p>The only thing standing between us and the answer to the research question is figuring out what the research question really is.</p>
+<p>Under more realistic circumstances, additional complications will arise. But if the different formulations can already lead to different answers in this well-behaved multivariate Normal setting with perfect information, then they are clearly different for <em>conceptual</em> reasons rather than because of implementation details. At the end of the post, I’ll briefly discuss how more realistic assumptions can further exacerbate the differences between these formulations.</p>
+</section>
+<section id="identifying-the-relevant-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-the-relevant-comparisons">Identifying the relevant comparisons</h2>
+<p>Each formulation targets another comparison between two statistical quantities.</p>
+<section id="formulation-f1" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f1">Formulation (F1)</h3>
+<p>Formulation (F1) asks how well we can predict <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span>. Under our assumptions, a natural way to formalise this question is by comparing the variability of <span class="math inline">\(Y\)</span> (i.e., <span class="math inline">\(\textrm{Var}(Y)\)</span>) to the variability of <span class="math inline">\(Y\)</span> once you’ve accounted for <span class="math inline">\(X'\)</span> (i.e., <span class="math inline">\(\textrm{Var}(Y | X')\)</span>). The larger this reduction in variability, the better we can predict <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Both quantities can be computed using standard formulae.</p>
+<p>First, the variance in <span class="math inline">\(Y\)</span> is <span class="math display">\[
+\begin{align*}
+\textrm{Var}(Y)
+&amp;= \textrm{Var}(\beta_XX + \beta_{X'}X' + \varepsilon) \\
+&amp;= \beta_X^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \textrm{Var}(\varepsilon),
+\end{align*}
+\]</span> where <span class="math inline">\(\textrm{Var}(X), \textrm{Var}(X')\)</span> and <span class="math inline">\(\textrm{Cov}(X, X')\)</span> are entries in the covariance matrix <span class="math inline">\(\boldsymbol \Sigma\)</span>.</p>
+<p>Second, the variance in <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span> does not depend on the observed value of <span class="math inline">\(X'\)</span> and can be computed using the conditioning formula for multivariate Normal distributions:</p>
+<p><span class="math display">\[
+\begin{align*}
+\textrm{Var}(Y|X')
+&amp;= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X', Y)}{\textrm{Var}(X')},
+\end{align*}
+\]</span> where</p>
+<p><span class="math display">\[
+\begin{align*}
+  \textrm{Cov}(X', Y)
+  &amp;= \textrm{Cov}(X', \beta_XX + \beta_{X'}X' + \varepsilon) \\
+  &amp;= \beta_X\textrm{Cov}(X, X') + \beta_{X'}\textrm{Var}(X').
+\end{align*}
+\]</span></p>
+</div>
+</div>
+</div>
+<p>Under our assumptions, the quantities <span class="math inline">\(\textrm{Var}(Y)\)</span> and <span class="math inline">\(\textrm{Var}(Y | X')\)</span> are equal if and only if <span class="math inline">\(\textrm{Cov}(X', Y) = 0\)</span>. This is the case in particular if both <span class="math inline">\(\beta_{X'} = 0\)</span> and <span class="math inline">\(\textrm{Cov}(X, X') = 0\)</span>. The difference between these two quantities becomes large whenever <span class="math inline">\(X'\)</span> contains a lot of information about <span class="math inline">\(Y\)</span>. This can be achieved, for instance, by picking highly correlated <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> or by setting <span class="math inline">\(\beta_X\)</span> to 0 and <span class="math inline">\(\beta_{X'}\)</span> to a large absolute value.</p>
+<p>If Formulation (F1) is what you’re interested in, a sensible first port of call would be to compare the mean squared error of a simple regression model with <span class="math inline">\(X'\)</span> as its predictor to the mean squared error of an intercept-only model.</p>
+</section>
+<section id="formulation-f2" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f2">Formulation (F2)</h3>
+<p>Formulation (F2) asks how much better we can predict <span class="math inline">\(Y\)</span> if we <em>also</em> use <span class="math inline">\(X'\)</span>. As a reviewer, I understood this to ask how much uncertainty in <span class="math inline">\(Y\)</span> remains after accounting for both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> compared to after accounting only for <span class="math inline">\(X\)</span>. Under our assumptions, this amounts to comparing <span class="math inline">\(\textrm{Var}(Y | X)\)</span> to <span class="math inline">\(\textrm{Var}(Y | X, X')\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The variance in <span class="math inline">\(Y\)</span> given both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> is easy to compute:</p>
+<p><span class="math display">\[
+  \textrm{Var}(Y | X, X') = \textrm{Var}(\varepsilon) = \sigma^2_{\varepsilon}.
+\]</span></p>
+<p>The variance in <span class="math inline">\(Y\)</span> given only <span class="math inline">\(X\)</span> can be computed like we did above:</p>
+<p><span class="math display">\[
+\begin{align*}
+  \textrm{Var}(Y|X)
+  &amp;= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)} \\
+  &amp;= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \sigma^2_{\varepsilon} - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)}.
+\end{align*}
+\]</span></p>
+</div>
+</div>
+</div>
+<p>Some algebra reveals that the quantities <span class="math inline">\(\textrm{Var}(Y|X)\)</span> and <span class="math inline">\(\textrm{Var}(Y | X, X')\)</span> are equal if and only if <span class="math inline">\(\beta_{X'} = 0\)</span> or if the absolute correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> is maximal. The difference between these quantities can be made large by making <span class="math inline">\(X'\)</span> but not <span class="math inline">\(X\)</span> highly informative about <span class="math inline">\(Y\)</span>. This can be achieved, for instance, by setting <span class="math inline">\(\textrm{Cov}(X, X') = 0\)</span>, <span class="math inline">\(\beta_X = 0\)</span> and choosing large values for <span class="math inline">\(\beta_{X'}\)</span> and <span class="math inline">\(\textrm{Var}(X')\)</span>.</p>
+<p>If Formulation (F2) is what you’re interested in, a sensible approach is to compare the mean squared error of a multiple linear regression model with both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> as predictors to the mean squared error of a simple linear regression model with only <span class="math inline">\(X\)</span> as its predictor.</p>
+</section>
+<section id="formulation-f3" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f3">Formulation (F3)</h3>
+<p>Formulation (F3) differs from the others in that it explicitly presupposes a particular statistical tool: correlation coefficients. Specifically, it targets the difference between the correlations <span class="math inline">\(\textrm{Cor}(X, Y)\)</span> and <span class="math inline">\(\textrm{Cor}(X', Y)\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Formulae
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is</p>
+<p><span class="math display">\[\textrm{Cor}(X, Y) = \frac{\textrm{Cov}(X, Y)}{\sqrt{\textrm{Var}(X)\textrm{Var}(Y)}} = \frac{\beta_{X}\textrm{Var}(X) + \beta_{X'}\textrm{Cov}(X, X') }{\sqrt{\textrm{Var}(X)\textrm{Var}(Y)}};\]</span> the one between <span class="math inline">\(X'\)</span> and <span class="math inline">\(Y\)</span> similarly is <span class="math display">\[\textrm{Cor}(X', Y) = \frac{\beta_{X'}\textrm{Var}(X') + \beta_{X}\textrm{Cov}(X, X') }{\sqrt{\textrm{Var}(X')\textrm{Var}(Y)}}.\]</span></p>
+</div>
+</div>
+</div>
+<p>The parameters can be chosen in many different ways in order to make these two quantities identical, with the simplest case being <span class="math inline">\(X' = X\)</span>. If you want to make them as different from each other as possible, you could set <span class="math inline">\(\boldsymbol \Sigma = \begin{pmatrix}1 &amp; 0 \\ 0 &amp; 1\end{pmatrix}\)</span> and pick <span class="math inline">\(\beta_X = -\beta_X' \neq 0\)</span> for large absolute values of <span class="math inline">\(\beta_X\)</span>.</p>
+<p>If Formulation (F3) is what you’re interested in, you need to compare two dependent correlations rather than run regression analyses.</p>
+</section>
+<section id="formulation-f4" class="level3">
+<h3 class="anchored" data-anchor-id="formulation-f4">Formulation (F4)</h3>
+<p>Formulation (F4) asks how much better <span class="math inline">\(Y\)</span> can be predicted given only <span class="math inline">\(X'\)</span> compared to when you’re only given <span class="math inline">\(X\)</span>. Under our assumptions, a sensible comparison involves the quantities <span class="math inline">\(\textrm{Var}(Y | X)\)</span> and <span class="math inline">\(\textrm{Var}(Y | X')\)</span> that we computed above.</p>
+<p>It’s easy to make these quantities coincide: simply set <span class="math inline">\(X' = X\)</span>. The difference between them is large if <span class="math inline">\(X'\)</span> contains considerably more information about <span class="math inline">\(Y\)</span> than does <span class="math inline">\(X\)</span>. This can be achieved, for instance, by setting <span class="math inline">\(\textrm{Cov}(X, X') = 0\)</span>, <span class="math inline">\(\beta_X = 0\)</span> and choosing large values for <span class="math inline">\(\beta_{X'}\)</span> and <span class="math inline">\(\textrm{Var}(X')\)</span>.</p>
+<p>If Formulation (F4) is what you’re interested in, a sensible first approach is to compare the mean squared errors of two simple regression models: one with <span class="math inline">\(X\)</span> as its predictor and one with <span class="math inline">\(X'\)</span> as its predictor.</p>
+</section>
+</section>
+<section id="formulations-f1-through-f4-are-different" class="level2">
+<h2 class="anchored" data-anchor-id="formulations-f1-through-f4-are-different">Formulations (F1) through (F4) are different</h2>
+<p>The four formulations may superficially seem interchangeable. To show that they are not, I’ll construct situations where some formulations indicate a difference whereas others do not.</p>
+<p>To show that Formulation (F1) differs from Formulations (F2) through (F4), consider the case where <span class="math inline">\(X'\)</span> and <span class="math inline">\(X\)</span> are the <em>same</em> variable and <span class="math inline">\(\beta_X = \beta_{X'} \neq 0\)</span>. In this case, the comparison for Formulation (F1) will show that <span class="math inline">\(X'\)</span> is to some extent predictive of <span class="math inline">\(Y\)</span>; the extent of this predictive usefulness can be made arbitrarily large. However, the comparisons for Formulations (F2) through (F4) will show no difference whatsoever. All of these comparisons target some difference between <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> in terms of how these predictors relate to <span class="math inline">\(Y\)</span>, whereas Formulation (F1) only pertains to how well <span class="math inline">\(X'\)</span> predicts <span class="math inline">\(Y\)</span>.</p>
+<p>Similarly, it can be shown that Formulation (F2) differs from Formulations (F3) and (F4). To this end, we can set, for instance,</p>
+<p><span class="math display">\[\boldsymbol \Sigma = \begin{pmatrix}1 &amp; 0 \\ 0 &amp; 1\end{pmatrix}\]</span> and <span class="math inline">\(\beta_X = \beta_{X'}\)</span>. In this case, the predictor <span class="math inline">\(X'\)</span> contributes to the variance of <span class="math inline">\(Y\)</span> independently of <span class="math inline">\(X\)</span>, which is precisely what the comparison implied by Formulation (F2) picks up on. However, Formulations (F3) and (F4) compare, in different ways, to what extent the contributions of <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> to <span class="math inline">\(Y\)</span> differ—and in this case, both predictors make exactly equal contributions.</p>
+<p>Finally, we can show that Formulations (F3) and (F4) differ. To see this, again use <span class="math display">\[\boldsymbol \Sigma = \begin{pmatrix}1 &amp; 0 \\ 0 &amp; 1\end{pmatrix}\]</span> and set <span class="math inline">\(\beta_X = -\beta_{X'} \neq 0\)</span>. Then the correlation coefficient for <span class="math inline">\(X'\)</span> and <span class="math inline">\(Y\)</span> will differ in sign from that for <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, which is what the comparison for Formulation (F3) will pick up on. But both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> will predict <span class="math inline">\(Y\)</span> with equal accuracy, so the comparison for Formulation (F4) won’t reveal any differences.</p>
+<p>All four formulations, then, are conceptually distinct.</p>
+</section>
+<section id="further-complications" class="level2">
+<h2 class="anchored" data-anchor-id="further-complications">Further complications</h2>
+<p>The setting above is quite unrealistic. But the idealisation makes it <em>harder</em> rather than <em>easier</em> to come up with situations in which the four different formulations of the research goal give conflicting answers.</p>
+<p>For instance, while Formulations (F3) and (F4) are different, our multivariate Normal setting implies that any time the comparison for Formulation (F4) reveals a difference, then so will the comparison for Formulation (F3); just not the other way around. But once we consider settings where <span class="math inline">\((X, X', Y)\)</span> does not have a multivariate Normal distribution, it’s easy to come up with examples where <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> differ in their predictive usefulness but where the correlation between each predictor and the outcome is zero; see the blog post <a href="../posts/2016-11-21-what-correlations-look-like/"><em>What data patterns can lie behind a correlation coefficient?</em></a> for examples where one variable is highly predictive of another yet not correlated with it.</p>
+<p>Further, you can open a whole can of worms by considering settings where <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> interact in their effect on <span class="math inline">\(Y\)</span>, where these predictors do not have a multivariate Normal distribution, or where the noise does not follow the same Normal distribution for all units. In such settings, different measures of variability (e.g., the variance vs the mean absolute error) may yield different answers, the variability of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> needn’t be constant, and yet other complications may arise.</p>
+<p>Additionally, in real-life settings, the answers to any of these formulations won’t be as clear cut as they are in our idealised setting with infinite data as each numerical answer will come with some uncertainty attached to it. But before addressing such complications, we first need to be clear-eyed about what we want to figure out in the first place.</p>
+</section>
+<section id="so-whats-the-correct-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="so-whats-the-correct-formulation">So what’s the correct formulation?</h2>
+<p>Despite their lack of realism, I think there is some value in making simplifying assumptions and considering scenarios in which different answers will be given to different formulations of ostensibly the same research goal: stripping away some of the complications may help us better appreciate what it is we, or the researchers, are interested in.</p>
+<p>So, out of the four formulations, what’s the correct one?</p>
+<p>The boring answer is that it depends. But at the risk of committing the <a href="https://daniellakens.blogspot.com/2017/11/the-statisticians-fallacy.html">statisticians’ fallacy</a>, I’m going to go ahead and say that either Formulation (F2) or Formulation (F4) may be best aligned with what is likely to be the researchers’ objective:</p>
+<ul>
+<li>Formulation (F2) concerns the <em>added</em> value of predictor <span class="math inline">\(X'\)</span> and is suited if you’re interested in potentially recommending to other researchers that they should consider taking into account both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> when modelling <span class="math inline">\(Y\)</span>.</li>
+<li>Formulation (F4) is suited if you’re interested in potentially recommending to other researchers that they should forego collecting or computing <span class="math inline">\(X\)</span> and use <span class="math inline">\(X'\)</span> instead when modelling <span class="math inline">\(Y\)</span>.</li>
+</ul>
+<p>Nothing prevents the researchers from trying to answer the research questions underpinning both of these formulations; it’s just that they should be aware that these are two different research questions with potentially different answers.</p>
+<p>By contrast, Formulation (F1) seems premature. If it should turn out that the researchers are able to recommend that <span class="math inline">\(X\)</span> should no longer be used and that <span class="math inline">\(X'\)</span> is to be preferred, then it does become a sensible question to ask how good of a predictor of <span class="math inline">\(Y\)</span> <span class="math inline">\(X'\)</span> is in isolation. But this question cannot be answered using the same data set that is also used as the basis for this recommendation due to possible selection bias.</p>
+<p>As for Formulation (F3), finally, I fail to see a use-case for it that isn’t better addressed by Formulations (F2) or (F4). Generally, I’m quite skeptical of research questions phrased in terms of correlation coefficients as these often poorly summarise the relation between two variables.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Statistical analyses serve to answer statistical questions. It is imperative that these questions align closely with the substantive research questions. But quite often, research questions are vague or formulated in several logically distinct ways. Considering idealised settings that strip away real-world complications is useful for clarifying which statistical quantities are actually of interest. The whole rigmarole of fitting and refitting models, accounting for interactions, nonlinearities, dependencies, and what-have-you is only going to be of any use once you know what you’re looking for.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
