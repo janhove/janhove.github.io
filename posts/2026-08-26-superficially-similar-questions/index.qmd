@@ -1,5 +1,4 @@
 ---
-draft: true
 title: "On superficially similar research questions"
 date: "2026-08-26"
 categories: [research questions]
