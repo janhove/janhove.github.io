@@ -1,7 +1,7 @@
 ---
 draft: true
 title: "On superficially similar research questions"
-date: "2026-08-28"
+date: "2026-08-26"
 categories: [research questions]
 format:
   html:
@@ -167,7 +167,8 @@ $$
 :::
 
 Under our assumptions, the quantities $\textrm{Var}(Y)$ and $\textrm{Var}(Y | X')$ 
-are equal if and only if both $\beta_{X'} = 0$ \emph{and} $\textrm{Cov}(X, X') = 0$.
+are equal if and only if $\textrm{Cov}(X', Y) = 0$.
+This is the case in particular if both $\beta_{X'} = 0$ and $\textrm{Cov}(X, X') = 0$.
 The difference between these two quantities becomes large 
 whenever $X'$ contains a lot of information about $Y$.
 This can be achieved, for instance, by picking  highly correlated $X$ and $X'$ 
