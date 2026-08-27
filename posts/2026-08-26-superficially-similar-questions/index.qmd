@@ -14,31 +14,33 @@ format:
 Researchers often think they've clearly specified their research question
 when they haven't.
 I encountered a case in point of this when I reviewed a manuscript a while back.
-Throughout this manuscript, the authors described the goal of their study
-in a few different ways.
-At first blush, these formulations seemed to express the same overarching objective,
+Throughout this manuscript, 
+the authors described the goal of their study in a few different ways.
+At first blush, 
+these formulations seemed to express the same overarching objective,
 but on closer inspection, they corresponded to different statistical questions.
-The consequence was that the manuscript ended up reporting 
-on a range of analyses without it 
-being clear how they related to the study's goal.
+The consequence was that the manuscript ended up reporting
+on a range of analyses
+without it being clear how they related to the study's goal.
 
 In this blog post, I'll use a generically worded version of this study
 to illustrate how similar-sounding research questions may be substantially
 different statistical questions.
-Throughout this illustration, I make a few simplifying assumptions that strip
-away many of the complications that you would have to grapple with in a real
-project.
+Throughout this illustration, 
+I make a few simplifying assumptions that strip away 
+many of the complications that you would have to grapple with in a real project.
 This, I think, is a useful technique when clarifying research questions:
 before you start to tackle the statistical intricacies,
 first consider how you would have to answer your research question as currently stated
 in a simplified scenario.
 This may help you realise what it is that you actually want to accomplish. 
-Once that is clear, the analytical approach can be tailored 
+Once that is clear, you can tailor your analysis
 to answer that question rather than some approximation of it.
 
 ## Setting
 So as not to identify the study in question, I'll only sketch the study
 in broad, generic strokes.
+
 The authors collected, for a set of units, two numerical
 predictors thought to reflect a property of these units.
 I'll creatively call these predictors $X$ and $X'$.
@@ -83,7 +85,7 @@ with sampling error:
 as long as we know what to compute, we can obtain the correct answer with
 infinite precision.
 
-**(A2)** The predictors $X$ and $X'$ have a joint multivariate distribution,
+**(A2)** The predictors $X$ and $X'$ have a joint multivariate Normal distribution,
 and the outcome $Y$ is a weighted sum of these predictors with some Normal
 noise added to it. 
 More specifically, the data-generating mechanism is as follows:
@@ -103,10 +105,11 @@ is multivariate Normal, which simplifies calculations considerably.
 Further, assumptions (A1) and (A2) jointly imply that,
 for whatever values of $\boldsymbol \Sigma, \sigma^2_{\varepsilon}, \beta_X$
 and $\beta_{X'}$ we choose, the answers to (F1) through (F4) can be calculated
-precisely without any need for nuance in the form of sampling error,
-interactions, nonlinearities, etc.
+precisely without any need for nuance to make allowance for
+sampling error, interactions, nonlinearities, etc.
 
-The only thing standing between us and the answer to the research question
+The upshot of this is that 
+the only thing standing between us and the answer to the research question
 is figuring out what the research question really is.
 
 Under more realistic circumstances, additional complications will arise.
@@ -118,7 +121,7 @@ At the end of the post, I'll briefly discuss how more realistic assumptions
 can further exacerbate the differences between these formulations.
 
 ## Identifying the relevant comparisons
-Each formulation targets another comparison between two statistical quantities.
+Each formulation targets a different comparison between two statistical quantities.
 
 ### Formulation (F1)
 Formulation (F1) asks how well we can predict $Y$ given $X'$.
@@ -131,30 +134,32 @@ the better we can predict $Y$ given $X'$.
 
 ::: {.callout-note collapse="true"}
 ## Formulae
-Both quantities can be computed using standard formulae.
+<!-- Both quantities can be computed using standard formulae. -->
 
-First, the variance in $Y$ is
-$$
-\begin{align*}
-\textrm{Var}(Y) 
-&= \textrm{Var}(\beta_XX + \beta_{X'}X' + \varepsilon) \\
-&= \beta_X^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \textrm{Var}(\varepsilon),
-\end{align*}
-$$
-where $\textrm{Var}(X), \textrm{Var}(X')$ and $\textrm{Cov}(X, X')$ are entries
-in the covariance matrix $\boldsymbol \Sigma$.
+<!-- First, the variance in $Y$ is -->
+<!-- $$ -->
+<!-- \begin{align*} -->
+<!-- \textrm{Var}(Y)  -->
+<!-- &= \textrm{Var}(\beta_XX + \beta_{X'}X' + \varepsilon) \\ -->
+<!-- &= \beta_X^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \textrm{Var}(\varepsilon), -->
+<!-- \end{align*} -->
+<!-- $$ -->
+<!-- where $\textrm{Var}(X), \textrm{Var}(X')$ and $\textrm{Cov}(X, X')$ are entries -->
+<!-- in the covariance matrix $\boldsymbol \Sigma$. -->
 
-Second,
-the variance in $Y$ given $X'$ does not depend on the observed value of $X'$
+Since the distribution of $(X', Y)$ is multivariate Normal,
+the variance of $Y$ given $X'$ does not depend on the observed value of $X'$
 and can be computed using the conditioning formula for multivariate Normal distributions:
 
 $$
 \begin{align*}
 \textrm{Var}(Y|X') 
-&= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X', Y)}{\textrm{Var}(X')},
+&= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X', Y)}{\textrm{Var}(X')}.
 \end{align*}
 $$
-where
+From this, we obtain that $\textrm{Var}(Y|X') = \textrm{Var}(Y)$
+if and only if $\textrm{Cov}(X', Y) = 0$.
+This covariance can be computed explicitly:
 
 $$
 \begin{align*}
@@ -163,6 +168,8 @@ $$
   &= \beta_X\textrm{Cov}(X, X') + \beta_{X'}\textrm{Var}(X').
 \end{align*}
 $$
+The quantities $\textrm{Var}(X')$ and $\textrm{Cov}(X', Y)$ are entries
+in the covariance matrix $\boldsymbol \Sigma$.
 :::
 
 Under our assumptions, the quantities $\textrm{Var}(Y)$ and $\textrm{Var}(Y | X')$ 
@@ -200,27 +207,38 @@ $$
 \begin{align*}
   \textrm{Var}(Y|X) 
   &= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)} \\
-  &= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \sigma^2_{\varepsilon} - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)}.
+  &= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \sigma^2_{\varepsilon} - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)} \\
+  &= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') -     \frac{\left(\beta_X\textrm{Var}(X) + \beta_{X'}\textrm{Cov}(X, X')\right)^2}{\textrm{Var}(X)} + \sigma^2_{\varepsilon}\\
+  &= \beta_{X'}^2\left(\frac{\textrm{Var}(X)\textrm{Var}(X') - \textrm{Cov}^2(X, X')}{\textrm{Var}(X)}\right) + \sigma^2_{\varepsilon}.
 \end{align*}
 $$
+The difference between these two quantities, then, is
+$$
+\begin{align*}
+\textrm{Var}(Y|X) - \textrm{Var}(Y | X, X')
+&= \beta_{X'}^2\left(\frac{\textrm{Var}(X)\textrm{Var}(X') - \textrm{Cov}^2(X, X')}{\textrm{Var}(X)}\right).
+\end{align*} 
+$$
+The squared covariance between two variables is maximised when the two
+variables are correlated at $\pm 1$, in which case it is equal to the product
+of the variables' variances and this differences evaluates to 0.
 :::
 
 Some algebra reveals 
 that the quantities $\textrm{Var}(Y|X)$ and $\textrm{Var}(Y | X, X')$ 
 are equal if and only if 
 $\beta_{X'} = 0$ or 
-if the absolute correlation between $X$ and $X'$ is maximal.
+if the absolute correlation between $X$ and $X'$ is 1.
 The difference between these quantities can be made large
 by making $X'$ but not $X$ highly informative about $Y$.
 This can be achieved, for instance,
-by setting $\textrm{Cov}(X, X') = 0$,
-$\beta_X = 0$ and choosing large values for $\beta_{X'}$ and $\textrm{Var}(X')$.
+by setting $\textrm{Cov}(X, X') = 0$
+and choosing large values for $\beta_{X'}$ and $\textrm{Var}(X')$.
 
 If Formulation (F2) is what you're interested in,
 a sensible approach is to compare the mean squared error of a multiple linear regression model
 with both $X$ and $X'$ as predictors to the mean squared error of a simple
 linear regression model with only $X$ as its predictor.
-
 
 ### Formulation (F3)
 Formulation (F3) differs from the others in that it explicitly 
@@ -314,14 +332,20 @@ the four different formulations of the research goal give conflicting answers.
 For instance, while Formulations (F3) and (F4) are different,
 our multivariate Normal setting implies that any time the comparison for Formulation
 (F4) reveals a difference, then so will the comparison for Formulation (F3);
-just not the other way around.
+just not the other way around.[^1]
 But once we consider settings where $(X, X', Y)$ does not have a multivariate
 Normal distribution, it's easy to come up with examples
 where $X$ and $X'$ differ in their predictive usefulness
 but where the correlation between each predictor and the outcome is zero;
 see the blog post 
-[_What data patterns can lie behind a correlation coefficient?_](../posts/2016-11-21-what-correlations-look-like/)
+[_What data patterns can lie behind a correlation coefficient?_](../2016-11-21-what-correlations-look-like/)
 for examples where one variable is highly predictive of another yet not correlated with it.
+
+[^1]: $\textrm{Var}(Y|X) = \textrm{Var}(Y|X')$ is equivalent to
+$\textrm{Cor}^2(X, Y) = \textrm{Cor}^2(X', Y)$. So whenever the 
+the conditional variances differ, the correlations must differ.
+But if the correlations differ in sign but not in absolute value,
+then the conditional variances are identical.
 
 Further, you can open a whole can of worms by considering settings where
 $X$ and $X'$ interact in their effect on $Y$, 
@@ -354,9 +378,9 @@ I'm going to go ahead and say that either Formulation (F2) or Formulation (F4)
 may be best aligned with what is likely to be the researchers' objective:
 
 * Formulation (F2) concerns the _added_ value of predictor $X'$
-  and is suited if you're interested in potentially recommending to other researchers 
+  and is suited if they're interested in potentially recommending to other researchers 
   that they should consider taking into account both $X$ and $X'$ when modelling $Y$.
-* Formulation (F4) is suited if you're interested in potentially recommending to
+* Formulation (F4) is suited if they're interested in potentially recommending to
   other researchers that they should forego collecting or computing $X$
   and use $X'$ instead when modelling $Y$.
 
@@ -368,7 +392,7 @@ By contrast, Formulation (F1) seems premature.
 If it should turn out that the researchers are able to recommend that 
 $X$ should no longer be used and that $X'$ is to be preferred,
 then it does become a sensible question to ask how good of a predictor of $Y$
-$X'$ is in isolation.
+the variable $X'$ is in isolation.
 But this question cannot be answered using the same data set that is also used
 as the basis for this recommendation due to possible selection bias.
 
