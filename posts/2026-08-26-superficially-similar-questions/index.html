@@ -44,7 +44,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2bcd031ed76f40c00e67790d12c8785c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-b5cdc83d754cd650109f5c2e0467249f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -232,10 +232,11 @@ window.Quarto = {
 
 
 <p>Researchers often think they’ve clearly specified their research question when they haven’t. I encountered a case in point of this when I reviewed a manuscript a while back. Throughout this manuscript, the authors described the goal of their study in a few different ways. At first blush, these formulations seemed to express the same overarching objective, but on closer inspection, they corresponded to different statistical questions. The consequence was that the manuscript ended up reporting on a range of analyses without it being clear how they related to the study’s goal.</p>
-<p>In this blog post, I’ll use a generically worded version of this study to illustrate how similar-sounding research questions may be substantially different statistical questions. Throughout this illustration, I make a few simplifying assumptions that strip away many of the complications that you would have to grapple with in a real project. This, I think, is a useful technique when clarifying research questions: before you start to tackle the statistical intricacies, first consider how you would have to answer your research question as currently stated in a simplified scenario. This may help you realise what it is that you actually want to accomplish. Once that is clear, the analytical approach can be tailored to answer that question rather than some approximation of it.</p>
+<p>In this blog post, I’ll use a generically worded version of this study to illustrate how similar-sounding research questions may be substantially different statistical questions. Throughout this illustration, I make a few simplifying assumptions that strip away many of the complications that you would have to grapple with in a real project. This, I think, is a useful technique when clarifying research questions: before you start to tackle the statistical intricacies, first consider how you would have to answer your research question as currently stated in a simplified scenario. This may help you realise what it is that you actually want to accomplish. Once that is clear, you can tailor your analysis to answer that question rather than some approximation of it.</p>
 <section id="setting" class="level2">
 <h2 class="anchored" data-anchor-id="setting">Setting</h2>
-<p>So as not to identify the study in question, I’ll only sketch the study in broad, generic strokes. The authors collected, for a set of units, two numerical predictors thought to reflect a property of these units. I’ll creatively call these predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span>. The variable <span class="math inline">\(X\)</span> corresponds to a standard, well-established operationalisation of the property of interest; the variable <span class="math inline">\(X'\)</span> corresponds to an alternative operationalisation suggested by the authors. For each unit we also have a numerical outcome <span class="math inline">\(Y\)</span>.</p>
+<p>So as not to identify the study in question, I’ll only sketch the study in broad, generic strokes.</p>
+<p>The authors collected, for a set of units, two numerical predictors thought to reflect a property of these units. I’ll creatively call these predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span>. The variable <span class="math inline">\(X\)</span> corresponds to a standard, well-established operationalisation of the property of interest; the variable <span class="math inline">\(X'\)</span> corresponds to an alternative operationalisation suggested by the authors. For each unit we also have a numerical outcome <span class="math inline">\(Y\)</span>.</p>
 </section>
 <section id="objective" class="level2">
 <h2 class="anchored" data-anchor-id="objective">Objective</h2>
@@ -252,7 +253,7 @@ window.Quarto = {
 <p>I will show that formulations (F1) through (F4) correspond to different statistical questions even under ideal circumstances in which many real-world complications do not occur. To this end, I make two simplifying assumptions.</p>
 <p><strong>(A1)</strong> We have an infinite amount of perfectly measured data.</p>
 <p>This assumption means that we don’t have to estimate anything or deal with sampling error: as long as we know what to compute, we can obtain the correct answer with infinite precision.</p>
-<p><strong>(A2)</strong> The predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> have a joint multivariate distribution, and the outcome <span class="math inline">\(Y\)</span> is a weighted sum of these predictors with some Normal noise added to it. More specifically, the data-generating mechanism is as follows:</p>
+<p><strong>(A2)</strong> The predictors <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> have a joint multivariate Normal distribution, and the outcome <span class="math inline">\(Y\)</span> is a weighted sum of these predictors with some Normal noise added to it. More specifically, the data-generating mechanism is as follows:</p>
 <p><span class="math display">\[
 \begin{align*}
   (X, X') &amp;\sim \textrm{MultiNormal}_2(\boldsymbol 0, \boldsymbol \Sigma), \\
@@ -260,13 +261,13 @@ window.Quarto = {
   \varepsilon &amp;\sim \textrm{Normal}(0, \sigma^2_{\varepsilon}),
 \end{align*}
 \]</span> where <span class="math inline">\(\boldsymbol \Sigma\)</span> is a covariance matrix and where <span class="math inline">\(\varepsilon\)</span> and <span class="math inline">\((X, X')\)</span> are independent.</p>
-<p>Assumption (A2) implies that the joint distribution of <span class="math inline">\((X, X', Y)\)</span> is multivariate Normal, which simplifies calculations considerably. Further, assumptions (A1) and (A2) jointly imply that, for whatever values of <span class="math inline">\(\boldsymbol \Sigma, \sigma^2_{\varepsilon}, \beta_X\)</span> and <span class="math inline">\(\beta_{X'}\)</span> we choose, the answers to (F1) through (F4) can be calculated precisely without any need for nuance in the form of sampling error, interactions, nonlinearities, etc.</p>
-<p>The only thing standing between us and the answer to the research question is figuring out what the research question really is.</p>
+<p>Assumption (A2) implies that the joint distribution of <span class="math inline">\((X, X', Y)\)</span> is multivariate Normal, which simplifies calculations considerably. Further, assumptions (A1) and (A2) jointly imply that, for whatever values of <span class="math inline">\(\boldsymbol \Sigma, \sigma^2_{\varepsilon}, \beta_X\)</span> and <span class="math inline">\(\beta_{X'}\)</span> we choose, the answers to (F1) through (F4) can be calculated precisely without any need for nuance to make allowance for sampling error, interactions, nonlinearities, etc.</p>
+<p>The upshot of this is that the only thing standing between us and the answer to the research question is figuring out what the research question really is.</p>
 <p>Under more realistic circumstances, additional complications will arise. But if the different formulations can already lead to different answers in this well-behaved multivariate Normal setting with perfect information, then they are clearly different for <em>conceptual</em> reasons rather than because of implementation details. At the end of the post, I’ll briefly discuss how more realistic assumptions can further exacerbate the differences between these formulations.</p>
 </section>
 <section id="identifying-the-relevant-comparisons" class="level2">
 <h2 class="anchored" data-anchor-id="identifying-the-relevant-comparisons">Identifying the relevant comparisons</h2>
-<p>Each formulation targets another comparison between two statistical quantities.</p>
+<p>Each formulation targets a different comparison between two statistical quantities.</p>
 <section id="formulation-f1" class="level3">
 <h3 class="anchored" data-anchor-id="formulation-f1">Formulation (F1)</h3>
 <p>Formulation (F1) asks how well we can predict <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span>. Under our assumptions, a natural way to formalise this question is by comparing the variability of <span class="math inline">\(Y\)</span> (i.e., <span class="math inline">\(\textrm{Var}(Y)\)</span>) to the variability of <span class="math inline">\(Y\)</span> once you’ve accounted for <span class="math inline">\(X'\)</span> (i.e., <span class="math inline">\(\textrm{Var}(Y | X')\)</span>). The larger this reduction in variability, the better we can predict <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span>.</p>
@@ -282,28 +283,31 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Both quantities can be computed using standard formulae.</p>
-<p>First, the variance in <span class="math inline">\(Y\)</span> is <span class="math display">\[
-\begin{align*}
-\textrm{Var}(Y)
-&amp;= \textrm{Var}(\beta_XX + \beta_{X'}X' + \varepsilon) \\
-&amp;= \beta_X^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \textrm{Var}(\varepsilon),
-\end{align*}
-\]</span> where <span class="math inline">\(\textrm{Var}(X), \textrm{Var}(X')\)</span> and <span class="math inline">\(\textrm{Cov}(X, X')\)</span> are entries in the covariance matrix <span class="math inline">\(\boldsymbol \Sigma\)</span>.</p>
-<p>Second, the variance in <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span> does not depend on the observed value of <span class="math inline">\(X'\)</span> and can be computed using the conditioning formula for multivariate Normal distributions:</p>
+<!-- Both quantities can be computed using standard formulae. -->
+<!-- First, the variance in $Y$ is -->
+<!-- $$ -->
+<!-- \begin{align*} -->
+<!-- \textrm{Var}(Y)  -->
+<!-- &= \textrm{Var}(\beta_XX + \beta_{X'}X' + \varepsilon) \\ -->
+<!-- &= \beta_X^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \textrm{Var}(\varepsilon), -->
+<!-- \end{align*} -->
+<!-- $$ -->
+<!-- where $\textrm{Var}(X), \textrm{Var}(X')$ and $\textrm{Cov}(X, X')$ are entries -->
+<!-- in the covariance matrix $\boldsymbol \Sigma$. -->
+<p>Since the distribution of <span class="math inline">\((X', Y)\)</span> is multivariate Normal, the variance of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X'\)</span> does not depend on the observed value of <span class="math inline">\(X'\)</span> and can be computed using the conditioning formula for multivariate Normal distributions:</p>
 <p><span class="math display">\[
 \begin{align*}
 \textrm{Var}(Y|X')
-&amp;= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X', Y)}{\textrm{Var}(X')},
+&amp;= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X', Y)}{\textrm{Var}(X')}.
 \end{align*}
-\]</span> where</p>
+\]</span> From this, we obtain that <span class="math inline">\(\textrm{Var}(Y|X') = \textrm{Var}(Y)\)</span> if and only if <span class="math inline">\(\textrm{Cov}(X', Y) = 0\)</span>. This covariance can be computed explicitly:</p>
 <p><span class="math display">\[
 \begin{align*}
   \textrm{Cov}(X', Y)
   &amp;= \textrm{Cov}(X', \beta_XX + \beta_{X'}X' + \varepsilon) \\
   &amp;= \beta_X\textrm{Cov}(X, X') + \beta_{X'}\textrm{Var}(X').
 \end{align*}
-\]</span></p>
+\]</span> The quantities <span class="math inline">\(\textrm{Var}(X')\)</span> and <span class="math inline">\(\textrm{Cov}(X', Y)\)</span> are entries in the covariance matrix <span class="math inline">\(\boldsymbol \Sigma\)</span>.</p>
 </div>
 </div>
 </div>
@@ -334,13 +338,20 @@ window.Quarto = {
 \begin{align*}
   \textrm{Var}(Y|X)
   &amp;= \textrm{Var}(Y) - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)} \\
-  &amp;= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \sigma^2_{\varepsilon} - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)}.
+  &amp;= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') + \sigma^2_{\varepsilon} - \frac{\textrm{Cov}^2(X, Y)}{\textrm{Var}(X)} \\
+  &amp;= \beta_{X}^2 \textrm{Var}(X) + \beta_{X'}^2 \textrm{Var}(X') + 2\beta_X\beta_{X'}\textrm{Cov}(X, X') -     \frac{\left(\beta_X\textrm{Var}(X) + \beta_{X'}\textrm{Cov}(X, X')\right)^2}{\textrm{Var}(X)} + \sigma^2_{\varepsilon}\\
+  &amp;= \beta_{X'}^2\left(\frac{\textrm{Var}(X)\textrm{Var}(X') - \textrm{Cov}^2(X, X')}{\textrm{Var}(X)}\right) + \sigma^2_{\varepsilon}.
 \end{align*}
-\]</span></p>
+\]</span> The difference between these two quantities, then, is <span class="math display">\[
+\begin{align*}
+\textrm{Var}(Y|X) - \textrm{Var}(Y | X, X')
+&amp;= \beta_{X'}^2\left(\frac{\textrm{Var}(X)\textrm{Var}(X') - \textrm{Cov}^2(X, X')}{\textrm{Var}(X)}\right).
+\end{align*}
+\]</span> The squared covariance between two variables is maximised when the two variables are correlated at <span class="math inline">\(\pm 1\)</span>, in which case it is equal to the product of the variables’ variances and this differences evaluates to 0.</p>
 </div>
 </div>
 </div>
-<p>Some algebra reveals that the quantities <span class="math inline">\(\textrm{Var}(Y|X)\)</span> and <span class="math inline">\(\textrm{Var}(Y | X, X')\)</span> are equal if and only if <span class="math inline">\(\beta_{X'} = 0\)</span> or if the absolute correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> is maximal. The difference between these quantities can be made large by making <span class="math inline">\(X'\)</span> but not <span class="math inline">\(X\)</span> highly informative about <span class="math inline">\(Y\)</span>. This can be achieved, for instance, by setting <span class="math inline">\(\textrm{Cov}(X, X') = 0\)</span>, <span class="math inline">\(\beta_X = 0\)</span> and choosing large values for <span class="math inline">\(\beta_{X'}\)</span> and <span class="math inline">\(\textrm{Var}(X')\)</span>.</p>
+<p>Some algebra reveals that the quantities <span class="math inline">\(\textrm{Var}(Y|X)\)</span> and <span class="math inline">\(\textrm{Var}(Y | X, X')\)</span> are equal if and only if <span class="math inline">\(\beta_{X'} = 0\)</span> or if the absolute correlation between <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> is 1. The difference between these quantities can be made large by making <span class="math inline">\(X'\)</span> but not <span class="math inline">\(X\)</span> highly informative about <span class="math inline">\(Y\)</span>. This can be achieved, for instance, by setting <span class="math inline">\(\textrm{Cov}(X, X') = 0\)</span> and choosing large values for <span class="math inline">\(\beta_{X'}\)</span> and <span class="math inline">\(\textrm{Var}(X')\)</span>.</p>
 <p>If Formulation (F2) is what you’re interested in, a sensible approach is to compare the mean squared error of a multiple linear regression model with both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> as predictors to the mean squared error of a simple linear regression model with only <span class="math inline">\(X\)</span> as its predictor.</p>
 </section>
 <section id="formulation-f3" class="level3">
@@ -385,7 +396,7 @@ window.Quarto = {
 <section id="further-complications" class="level2">
 <h2 class="anchored" data-anchor-id="further-complications">Further complications</h2>
 <p>The setting above is quite unrealistic. But the idealisation makes it <em>harder</em> rather than <em>easier</em> to come up with situations in which the four different formulations of the research goal give conflicting answers.</p>
-<p>For instance, while Formulations (F3) and (F4) are different, our multivariate Normal setting implies that any time the comparison for Formulation (F4) reveals a difference, then so will the comparison for Formulation (F3); just not the other way around. But once we consider settings where <span class="math inline">\((X, X', Y)\)</span> does not have a multivariate Normal distribution, it’s easy to come up with examples where <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> differ in their predictive usefulness but where the correlation between each predictor and the outcome is zero; see the blog post <a href="../posts/2016-11-21-what-correlations-look-like/"><em>What data patterns can lie behind a correlation coefficient?</em></a> for examples where one variable is highly predictive of another yet not correlated with it.</p>
+<p>For instance, while Formulations (F3) and (F4) are different, our multivariate Normal setting implies that any time the comparison for Formulation (F4) reveals a difference, then so will the comparison for Formulation (F3); just not the other way around.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> But once we consider settings where <span class="math inline">\((X, X', Y)\)</span> does not have a multivariate Normal distribution, it’s easy to come up with examples where <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> differ in their predictive usefulness but where the correlation between each predictor and the outcome is zero; see the blog post <a href="../2016-11-21-what-correlations-look-like/"><em>What data patterns can lie behind a correlation coefficient?</em></a> for examples where one variable is highly predictive of another yet not correlated with it.</p>
 <p>Further, you can open a whole can of worms by considering settings where <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> interact in their effect on <span class="math inline">\(Y\)</span>, where these predictors do not have a multivariate Normal distribution, or where the noise does not follow the same Normal distribution for all units. In such settings, different measures of variability (e.g., the variance vs the mean absolute error) may yield different answers, the variability of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span> needn’t be constant, and yet other complications may arise.</p>
 <p>Additionally, in real-life settings, the answers to any of these formulations won’t be as clear cut as they are in our idealised setting with infinite data as each numerical answer will come with some uncertainty attached to it. But before addressing such complications, we first need to be clear-eyed about what we want to figure out in the first place.</p>
 </section>
@@ -395,11 +406,11 @@ window.Quarto = {
 <p>So, out of the four formulations, what’s the correct one?</p>
 <p>The boring answer is that it depends. But at the risk of committing the <a href="https://daniellakens.blogspot.com/2017/11/the-statisticians-fallacy.html">statisticians’ fallacy</a>, I’m going to go ahead and say that either Formulation (F2) or Formulation (F4) may be best aligned with what is likely to be the researchers’ objective:</p>
 <ul>
-<li>Formulation (F2) concerns the <em>added</em> value of predictor <span class="math inline">\(X'\)</span> and is suited if you’re interested in potentially recommending to other researchers that they should consider taking into account both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> when modelling <span class="math inline">\(Y\)</span>.</li>
-<li>Formulation (F4) is suited if you’re interested in potentially recommending to other researchers that they should forego collecting or computing <span class="math inline">\(X\)</span> and use <span class="math inline">\(X'\)</span> instead when modelling <span class="math inline">\(Y\)</span>.</li>
+<li>Formulation (F2) concerns the <em>added</em> value of predictor <span class="math inline">\(X'\)</span> and is suited if they’re interested in potentially recommending to other researchers that they should consider taking into account both <span class="math inline">\(X\)</span> and <span class="math inline">\(X'\)</span> when modelling <span class="math inline">\(Y\)</span>.</li>
+<li>Formulation (F4) is suited if they’re interested in potentially recommending to other researchers that they should forego collecting or computing <span class="math inline">\(X\)</span> and use <span class="math inline">\(X'\)</span> instead when modelling <span class="math inline">\(Y\)</span>.</li>
 </ul>
 <p>Nothing prevents the researchers from trying to answer the research questions underpinning both of these formulations; it’s just that they should be aware that these are two different research questions with potentially different answers.</p>
-<p>By contrast, Formulation (F1) seems premature. If it should turn out that the researchers are able to recommend that <span class="math inline">\(X\)</span> should no longer be used and that <span class="math inline">\(X'\)</span> is to be preferred, then it does become a sensible question to ask how good of a predictor of <span class="math inline">\(Y\)</span> <span class="math inline">\(X'\)</span> is in isolation. But this question cannot be answered using the same data set that is also used as the basis for this recommendation due to possible selection bias.</p>
+<p>By contrast, Formulation (F1) seems premature. If it should turn out that the researchers are able to recommend that <span class="math inline">\(X\)</span> should no longer be used and that <span class="math inline">\(X'\)</span> is to be preferred, then it does become a sensible question to ask how good of a predictor of <span class="math inline">\(Y\)</span> the variable <span class="math inline">\(X'\)</span> is in isolation. But this question cannot be answered using the same data set that is also used as the basis for this recommendation due to possible selection bias.</p>
 <p>As for Formulation (F3), finally, I fail to see a use-case for it that isn’t better addressed by Formulations (F2) or (F4). Generally, I’m quite skeptical of research questions phrased in terms of correlation coefficients as these often poorly summarise the relation between two variables.</p>
 </section>
 <section id="conclusion" class="level2">
@@ -409,7 +420,13 @@ window.Quarto = {
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><span class="math inline">\(\textrm{Var}(Y|X) = \textrm{Var}(Y|X')\)</span> is equivalent to <span class="math inline">\(\textrm{Cor}^2(X, Y) = \textrm{Cor}^2(X', Y)\)</span>. So whenever the the conditional variances differ, the correlations must differ. But if the correlations differ in sign but not in absolute value, then the conditional variances are identical.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

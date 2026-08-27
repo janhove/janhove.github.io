@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2bcd031ed76f40c00e67790d12c8785c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-b5cdc83d754cd650109f5c2e0467249f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="piecewise-regression" class="level2">
 <h2 class="anchored" data-anchor-id="piecewise-regression">Piecewise regression</h2>
 <p>Piecewise (or breakpoint) regression is a pretty self-descriptive term: it’s a regression model with an elbow in the function. For instance, in the graph below, the function relating <em>x</em> to <em>y</em> flattens for <em>x</em> values higher than 0.5.</p>
-<p><img src="../../figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-1.png" class="img-fluid"></p>
+<p><img src="../..\figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-1.png" class="img-fluid"></p>
 <p>What is important here is that the analyst has to specify at which <em>x</em> point the regression curve is allowed to change slopes – in the graph above, I had to specify the breakpoint parameter myself (see my <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0069172">article</a> on how this can be done).</p>
 </section>
 <section id="the-problem-increased-type-i-error-rates" class="level2">
@@ -256,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-data">The data</h2>
 <p>In my CPH article, I re-analysed two datasets from <a href="http://dx.doi.org/10.1017/S0142716410000056">DeKeyser et al.&nbsp;(2010)</a>. The specifics of these two datasets aren’t too important for our present purposes, so I’ll skip them. The two datasets are available <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010Israel.csv">here</a> (Israel data) and <a href="http://homeweb.unifr.ch/VanhoveJ/Pub/papers/CPH/DeKeyser2010NorthAmerica.csv">here</a> (North America data); the following plots show the relationship between the AOA (age of onset of L2 acquisition) and GJT (a measure of L2 proficiency) variables in both datasets.</p>
-<p><img src="../../figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-3.png" class="img-fluid"></p>
+<p><img src="../..\figs/2014-08-20-adjusted-pvalues-breakpoint-regression/unnamed-chunk-3.png" class="img-fluid"></p>
 <p>Piecewise regressions carried out using the a priori cut-off AOA values specified by DeKeyser et al.&nbsp;(AOA = 18) did not yield significant improvements over straightforward linear models ( <em>p</em> = 0.98 and 0.07 for the Israel and North America data, respectively). In a second series of analyses, I determined the optimal breakpoints following the approach suggested by Baayen. For the Israel data, the optimal breakpoint was located at AOA 6 but a piecewise model still failed to yield a significant improvement over a linear model ( <em>p</em> = 0.62). For the North America data, fitting a breakpoint at AOA 16 did yield such an improvement ( <em>p</em> = 0.047).</p>
 <p>As I looped through several breakpoints (from AOA 5 till 19), however, these <em>p</em>-values will be anti-conservative.</p>
 </section>
