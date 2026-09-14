@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2026-09-02">
 
-<title>Courses – Jan Vanhove</title>
+<title>On latent cluster analyses in applied linguistics – Jan Vanhove</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -29,23 +31,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ca2e1c130e42dc5088189c72e1fdc568.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-ca2e1c130e42dc5088189c72e1fdc568.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -82,19 +84,51 @@ ul.task-list li input[type="checkbox"] {
 
   gtag('config', 'G-7PMKN7SZET');
 </script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<meta name="quarto:status" content="draft">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Jan Vanhove</span>
     </a>
   </div>
@@ -105,31 +139,31 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./support.html"> 
+    <a class="nav-link" href="../../support.html"> 
 <span class="menu-text">Methods and stats support</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./courses.html" aria-current="page"> 
+    <a class="nav-link" href="../../courses.html"> 
 <span class="menu-text">Courses</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./archive.html"> 
+    <a class="nav-link" href="../../archive.html"> 
 <span class="menu-text">Blog archive</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./resources.html"> 
+    <a class="nav-link" href="../../resources.html"> 
 <span class="menu-text">Teaching resources</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./publications.html"> 
+    <a class="nav-link" href="../../publications.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./archive.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -149,11 +183,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link active" data-scroll-target="#the-general-linear-model">The general linear model</a></li>
-  <li><a href="#design-and-analysis-of-experiments-with-intact-groups" id="toc-design-and-analysis-of-experiments-with-intact-groups" class="nav-link" data-scroll-target="#design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</a></li>
-  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Working with data sets in R</a></li>
-  <li><a href="#visualising-data-in-r" id="toc-visualising-data-in-r" class="nav-link" data-scroll-target="#visualising-data-in-r">Visualising data in R</a></li>
-  <li><a href="#visualising-models-and-their-uncertainty" id="toc-visualising-models-and-their-uncertainty" class="nav-link" data-scroll-target="#visualising-models-and-their-uncertainty">Visualising models and their uncertainty</a></li>
+  <li><a href="#the-setup" id="toc-the-setup" class="nav-link active" data-scroll-target="#the-setup">The setup</a></li>
+  <li><a href="#question-1-are-the-clusters-real" id="toc-question-1-are-the-clusters-real" class="nav-link" data-scroll-target="#question-1-are-the-clusters-real">Question 1: Are the clusters real?</a>
+  <ul class="collapse">
+  <li><a href="#subquestion-1a-what-are-clusters-anyway" id="toc-subquestion-1a-what-are-clusters-anyway" class="nav-link" data-scroll-target="#subquestion-1a-what-are-clusters-anyway">Subquestion 1a: What are clusters, anyway?</a></li>
+  <li><a href="#subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" id="toc-subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" class="nav-link" data-scroll-target="#subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined">Subquestion 1b: How well can your method detect the clusters so defined?</a></li>
+  <li><a href="#an-example" id="toc-an-example" class="nav-link" data-scroll-target="#an-example">An example</a></li>
+  </ul></li>
+  <li><a href="#question-2-how-useful-are-the-clusters" id="toc-question-2-how-useful-are-the-clusters" class="nav-link" data-scroll-target="#question-2-how-useful-are-the-clusters">Question 2: How useful are the clusters?</a>
+  <ul class="collapse">
+  <li><a href="#compare-against-the-direct-model" id="toc-compare-against-the-direct-model" class="nav-link" data-scroll-target="#compare-against-the-direct-model">Compare against the direct model</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -162,14 +203,30 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Courses</h1>
-</div>
+<h1 class="title">On latent cluster analyses in applied linguistics</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">correlational studies</div>
+    <div class="quarto-category">research questions</div>
+  </div>
+  </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 2, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -179,184 +236,58 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>I offer one- and multi-day courses on quantitative methods and data analysis, geared principally towards Master’s and Ph.D.&nbsp;students, though they are equally suitable for postdocs or faculty.</p>
-<p>Below are the courses for which material is readily available and that I can teach at fairly short notice. I’d also gladly look into other topics for courses on request. If any of these courses tickles your interest, or if you have a proposal for another topic, drop me an <a href="mailto:janvanhove@gmail.com">e-mail</a> to discuss details.</p>
-<p>Incidentally, if you’re looking for individual consulting or standing department office hours rather than a structured course, check out the <a href="./support.html">Methods and stats support</a> page.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>I’ve been seeing more and more articles in applied linguistics that use clustering techniques to identify subgroups (often called ‘latent profiles’ or ‘latent classes’) of language learners on the basis of cognitive test or questionnaire data. Typically, the learners are then classified into clusters, and cluster membership is used as a predictor of a further outcome, such as performance on a language test. These studies have yet to convince me, first, that the problem they’re trying to solve is worth solving, and second, that they then actually solve it. My scepticism stems from a few conceptual issues with latent class/profile analysis (LCA/LPA) that these studies fail to address.</p>
+<section id="the-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-setup">The setup</h2>
+<p><a href="#fig-setup" class="quarto-xref">Figure&nbsp;1</a> represents the setup that researchers using LCA or LPA (or some other variant of latent cluster analysis) assume, be it tacitly or explicitly. For learners <span class="math inline">\(i = 1, \dots, N\)</span>, we observe a vector of cognitive test or questionnaire scores <span class="math inline">\(\boldsymbol Y_i = (Y_{i1}, \dots, Y_{iK})\)</span>. We assume that these observations depend on a latent (i.e., not directly observed) categorical variable <span class="math inline">\(X_i \in \{1, \dots, C\}\)</span>, where <span class="math inline">\(C\)</span> is a prespecified number of clusters. If <span class="math inline">\(X_i = c_i\)</span>, then this indicates that the <span class="math inline">\(i\)</span>-th learner belongs to cluster <span class="math inline">\(c_i\)</span>. Finally, we assume that <span class="math inline">\(X_i\)</span> may also influence some further outcome <span class="math inline">\(Z_i\)</span>, such as the learner’s performance or progress on a language test.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-setup" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-setup-1.svg" class="img-fluid figure-img">
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Rates
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>The reference rates are CHF 800 for a half-day course and CHF 1,200 for a full-day course. This does not include transport or, where applicable, lodging. If a course needs to be tailored substantially to the specific participant group or if it needs to be designed from scratch, this may be reflected in the quote. But even if this doesn’t quite fit your budget, <strong>get in touch anyway</strong>: depending on timing and location, we may be able to work something out.</p>
-</div>
-</div>
-</div>
-<section id="the-general-linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-linear-model">The general linear model</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>The general linear model is the workhorse of quantitative data analysis. Common procedures such as <em>t</em>-tests, ANOVA and linear regression can be understood as instances of this models, and other procedures such as logistic regression, mixed-effects models and generalised additive models are generalisations of it. Participants will learn how the general linear models works, how the parameter estimates it produces should be interpreted, and how the uncertainty about these estimates can be expressed.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/regression.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>This course assumes familiarity with descriptive statistics (e.g., mean, median, variance, scatterplot).</li>
-<li>This is a three-day course that includes theory, worked examples, paper-and-pencil exercises and practical exercises in R. Ideally, it is scheduled over the course of a few weeks so that the participants can let the concepts sink in and try their hand at some exercises.</li>
-</ul>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: DAG
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
+<p><a href="#fig-setup" class="quarto-xref">Figure&nbsp;1</a> encodes a crucial assumption: conditional on <span class="math inline">\(X\)</span>, the variables <span class="math inline">\(Y_1, \dots, Y_K, Z\)</span> are independent. In particular, this means that, once you know each learner’s value on <span class="math inline">\(X\)</span>, there is no information in the variables <span class="math inline">\(Y_1, \dots, Y_K\)</span> that could help you better predict their value on <span class="math inline">\(Z\)</span>.</p>
+<p>Incidentally, latent class analysis (LCA) refers to settings where the variables <span class="math inline">\(Y_1, \dots, Y_K\)</span> are all categorical; if these variables are all continuous, latent profile analysis (LPA) is the preferred term. Variants exist that allow for a mix of categorical and continuous <span class="math inline">\(Y\)</span> variables. For our purposes, the conceptual similarities between these approaches outweigh the differences.</p>
+<p>When researchers apply LCA, LPA or some other variant, at least one of the following two goals is typically claimed to have motivated the study.</p>
+<ol type="1">
+<li><strong>To identify the clusters in the data.</strong> This usually involves figuring out how many clusters <span class="math inline">\(C\)</span> there may be and characterising what learners ‘types’ or ‘profiles’ these correspond to.</li>
+<li><strong>To investigate the relation between the clusters and the outcome.</strong> To this end, researchers try to reconstruct each learner’s cluster membership (call it <span class="math inline">\(\hat c_i\)</span>) and use this to model <span class="math inline">\(Z\)</span>.</li>
+</ol>
+<p>I’ve found both of these goals to be undermotivated in the applied linguistics literature, which is why I suggest researchers first address the questions I ask below before fitting LCA, LPA or whatever to their data.</p>
 </section>
-<section id="design-and-analysis-of-experiments-with-intact-groups" class="level2">
-<h2 class="anchored" data-anchor-id="design-and-analysis-of-experiments-with-intact-groups">Design and analysis of experiments with intact groups</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>In lots of intervention studies in education and applied linguistics, intact classes or schools are assigned to the conditions in their entirety. It is imperative that the analysis should reflect the fact that the participants weren’t assigned to the conditions on an individual basis, otherwise it is embarrassingly easy for the study to yield overly optimistic findings. This course explains why this is so and how experiments with intact groups can be designed and analysed appropriately.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/clusterrandomisation.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>Some experience with basic statistics (including hypothesis testing) is helpful but not strictly required.</li>
-<li>The course covers the principle of randomisation as a basis for statistical inference, exact and approximate hypothesis test, one-factorial, two-factorial and mixed designs for intact groups, the design effect and the intra-class correlation, simple and more complex analytical techniques, and the use of control variables.</li>
-<li>Available as a half-day course with theory, worked examples, and paper-and-pencil exercises.</li>
-</ul>
-</div>
-</div>
-</div>
+<section id="question-1-are-the-clusters-real" class="level2">
+<h2 class="anchored" data-anchor-id="question-1-are-the-clusters-real">Question 1: Are the clusters real?</h2>
+<section id="subquestion-1a-what-are-clusters-anyway" class="level3">
+<h3 class="anchored" data-anchor-id="subquestion-1a-what-are-clusters-anyway">Subquestion 1a: What are clusters, anyway?</h3>
+<p>Hennig 2015</p>
 </section>
-<section id="datasets" class="level2">
-<h2 class="anchored" data-anchor-id="datasets">Working with data sets in R</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Often, the most time-consuming part of a data analysis is getting the data into a format in which they can be analysed in the first place. This course covers principles for organising data sets, techniques for transforming them so that are amenable to analysis, as well as ways to query and summarise them. The course relies principally on the <code>tidyverse</code> suite for R.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/datasets.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>No prerequisites.</li>
-<li>Available as a half-day course including theory, worked examples and pen-and-paper exercises.</li>
-<li>A session covering practical exercises in R can be organised at a separate date in order to give participants some time to process the contents and have a stab at doing some exercises at their own pace.</li>
-</ul>
-</div>
-</div>
-</div>
+<section id="subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" class="level3">
+<h3 class="anchored" data-anchor-id="subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined">Subquestion 1b: How well can your method detect the clusters so defined?</h3>
+<p>Including not hallucinating clusters that aren’t there. Stability?</p>
 </section>
-<section id="visualising-data-in-r" class="level2">
-<h2 class="anchored" data-anchor-id="visualising-data-in-r">Visualising data in R</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Both researchers and readers can glean more understanding from a well-chosen data visualisation than from a bunch of tables. This course teaches techniques for drawing informative data plots so that the participants and their readership may better understand what their data really look like. The main tool we’ll use is the <code>ggplot2</code> package for R.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/visualisation.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>While no prerequisites are required to appreciate the main ideas, participants will be better able to draw their own plots if they are also familiar with the contents of the course <a href="#datasets">Working with data sets in R</a>.</li>
-<li>The techniques covered include histograms, kernel density estimation, boxplots, dotplots, scatterplots, trend lines, and facetting.</li>
-<li>Available as a half-day course including theory, worked examples and pen-and-paper exercises.</li>
-<li>A session covering practical exercises in R can be organised at a separate date in order to give participants some time to process the contents and have a stab at doing some exercises at their own pace.</li>
-</ul>
-</div>
-</div>
-</div>
+<section id="an-example" class="level3">
+<h3 class="anchored" data-anchor-id="an-example">An example</h3>
+<p>Chen et al.</p>
 </section>
-<section id="visualising-models-and-their-uncertainty" class="level2">
-<h2 class="anchored" data-anchor-id="visualising-models-and-their-uncertainty">Visualising models and their uncertainty</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>Statistical models are often quite opaque. Moreover, they yield estimates as opposed to exact answers. When models are reported solely in tables, erroneous interpretations are therefore bound to occur. This course teaches techniques for visualising statistical models and their uncertainty that will help make the participants’ models easier to interpret correctly.</p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<p><img src="figs/uncertainty.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Details
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<ul>
-<li>Participants should have some basic practical experience with regression modelling.</li>
-<li>The course covers point estimates, pointwise and simultaneous confidence intervals and confidence bands, prediction intervals, bootstrapping techniques, visualising simple and multiple linear regression models, visualising interactions and non-linearities, visualising logistic regression. On request, further techniques related to the kinds of model the participants use can be discussed as can techniques from the realm of <em>interpretable machine learning</em>.</li>
-<li>Available as a half-day course with theory, worked examples, and pen-and-paper exercises.</li>
-</ul>
-</div>
-</div>
-</div>
+</section>
+<section id="question-2-how-useful-are-the-clusters" class="level2">
+<h2 class="anchored" data-anchor-id="question-2-how-useful-are-the-clusters">Question 2: How useful are the clusters?</h2>
+<p>Now let’s assume that you’ve ensured that <em>your</em> definition of clusters agrees with <em>your model’s</em> definition of clusters and that you’re pretty confident that you’ll be able to identify the clusters from the data. What NOW?</p>
+<section id="compare-against-the-direct-model" class="level3">
+<h3 class="anchored" data-anchor-id="compare-against-the-direct-model">Compare against the direct model</h3>
+<p>Compare the model <span class="math inline">\(Z \sim X\)</span> to <span class="math inline">\(Z \sim Y\)</span>.</p>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 
 
 </section>

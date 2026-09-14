@@ -9,8 +9,8 @@
 <link>https://janhove.github.io/archive.html</link>
 <atom:link href="https://janhove.github.io/archive.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about research design and statistics, often using examples from research on language learning.</description>
-<generator>quarto-1.9.38</generator>
-<lastBuildDate>Tue, 25 Aug 2026 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.10.18</generator>
+<lastBuildDate>Wed, 26 Aug 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>On superficially similar research questions</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -186,7 +186,7 @@
 </section></div> ]]></description>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2026-08-26-superficially-similar-questions/</guid>
-  <pubDate>Tue, 25 Aug 2026 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 26 Aug 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Different distributions, same boxplot</title>
@@ -2909,7 +2909,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>graphs</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2026-08-17-boxplot-distributions/</guid>
-  <pubDate>Sun, 16 Aug 2026 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 17 Aug 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Model comparisons for mixed-effects regression, or: When anova() doesn’t do ANOVA</title>
@@ -3533,7 +3533,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2026-08-12-model-comparisons/</guid>
-  <pubDate>Tue, 11 Aug 2026 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Testing strong and weak null hypotheses in randomised experiments</title>
@@ -5103,7 +5103,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2026-07-13-weak-strong-H0/</guid>
-  <pubDate>Sun, 12 Jul 2026 22:00:00 GMT</pubDate>
+  <pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>When interaction effects are hard to explain, try nested effects</title>
@@ -5716,7 +5716,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>tutorial</category>
   <guid>https://janhove.github.io/posts/2026-06-03-nested-effects/</guid>
-  <pubDate>Tue, 02 Jun 2026 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 03 Jun 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>A quick introduction to isotonic regression</title>
@@ -6871,7 +6871,7 @@ Figure&nbsp;6: The PAVA is easily adapted to non-increasing trend lines. Data fr
   <category>non-linearities</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2026-05-29-isotonic-regression/</guid>
-  <pubDate>Thu, 28 May 2026 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 29 May 2026 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2026-05-29-isotonic-regression/thumbnail.png" medium="image" type="image/png" height="108" width="144"/>
 </item>
 <item>
@@ -8886,7 +8886,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>correlational studies</category>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2025-12-15-multilingualism-accelerated-ageing/</guid>
-  <pubDate>Sun, 14 Dec 2025 23:00:00 GMT</pubDate>
+  <pubDate>Mon, 15 Dec 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The population model and the randomisation model of statistical inference</title>
@@ -10513,7 +10513,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2025-11-09-population-randomisation/</guid>
-  <pubDate>Sat, 08 Nov 2025 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Clarifying research questions by sketching possible outcomes</title>
@@ -11755,7 +11755,7 @@ font-style: inherit;">"attached"</span>)</span></code></pre></div></div>
   <category>research questions</category>
   <category>research design</category>
   <guid>https://janhove.github.io/posts/2025-10-10-mock-outcomes/</guid>
-  <pubDate>Thu, 09 Oct 2025 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 10 Oct 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Exact significance tests for 2 × 2 tables</title>
@@ -13214,7 +13214,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
   <category>R</category>
   <category>significance</category>
   <guid>https://janhove.github.io/posts/2024-09-10-contingency-p-value/</guid>
-  <pubDate>Mon, 09 Sep 2024 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 10 Sep 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>New and updated teaching resources</title>
@@ -13238,7 +13238,7 @@ font-style: inherit;">0.5</span>))</span></code></pre></div></div>
  ]]></description>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2024-09-04-updated-resources/</guid>
-  <pubDate>Tue, 03 Sep 2024 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 04 Sep 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Piecewise regression</title>
@@ -14415,7 +14415,7 @@ font-style: inherit;">/</span> n_runs</span></code></pre></div></div>
   <category>piecewise regression</category>
   <category>non-linearities</category>
   <guid>https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/</guid>
-  <pubDate>Mon, 06 Mar 2023 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 07 Mar 2023 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2023-03-07-julia-breakpoint-regression/image.png" medium="image" type="image/png" height="96" width="144"/>
 </item>
 <item>
@@ -15163,7 +15163,7 @@ font-style: inherit;">*</span>ses</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-23-julia-tea-tasting/</guid>
-  <pubDate>Wed, 22 Feb 2023 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 23 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: The Levenshtein algorithm</title>
@@ -15954,7 +15954,7 @@ font-style: inherit;">norm_lev_dist</span>.(german, dutch)</span></code></pre></
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2023-02-09-julia-levenshtein/</guid>
-  <pubDate>Wed, 08 Feb 2023 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 09 Feb 2023 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Adjusting to Julia: Generating the Fibonacci sequence</title>
@@ -16995,7 +16995,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
  ]]></description>
   <category>Julia</category>
   <guid>https://janhove.github.io/posts/2022-12-20-julia-fibonacci/</guid>
-  <pubDate>Mon, 19 Dec 2022 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 20 Dec 2022 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2022-12-20-julia-fibonacci/image.png" medium="image" type="image/png" height="101" width="144"/>
 </item>
 <item>
@@ -17030,7 +17030,7 @@ font-style: inherit;">""</span>)</span></code></pre></div></div>
   <category>silly tests</category>
   <category>research questions</category>
   <guid>https://janhove.github.io/posts/2022-02-18-dont-do-things-you-dont-see-the-point-of/</guid>
-  <pubDate>Thu, 17 Feb 2022 23:00:00 GMT</pubDate>
+  <pubDate>Fri, 18 Feb 2022 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>An R function for computing Levenshtein distances between texts using the word as the unit of comparison</title>
@@ -17111,7 +17111,7 @@ font-style: inherit;">obtain_edits</span>(textA, textB)</span></code></pre></div
  ]]></description>
   <category>R</category>
   <guid>https://janhove.github.io/posts/2022-02-17-levenshtein/</guid>
-  <pubDate>Wed, 16 Feb 2022 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 17 Feb 2022 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>The consequences of controlling for a post-treatment variable</title>
@@ -19766,7 +19766,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>R</category>
   <category>multiple regression</category>
   <guid>https://janhove.github.io/posts/2021-06-29-posttreatment/</guid>
-  <pubDate>Mon, 28 Jun 2021 22:00:00 GMT</pubDate>
+  <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2021-06-29-posttreatment/image.png" medium="image" type="image/png" height="115" width="144"/>
 </item>
 <item>
@@ -19805,7 +19805,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>research design</category>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2020-12-16-quant-meth/</guid>
-  <pubDate>Tue, 15 Dec 2020 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Capitalising on covariates in cluster-randomised experiments</title>
@@ -19853,7 +19853,7 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>cluster-randomised experiments</category>
   <category>preprint</category>
   <guid>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</guid>
-  <pubDate>Tue, 01 Sep 2020 22:00:00 GMT</pubDate>
+  <pubDate>Wed, 02 Sep 2020 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
