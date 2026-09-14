@@ -4,6 +4,7 @@ project:
     - datasets_graphs/**
     - datasets/**
     - RCode/**
+    - justification.pdf
 
 website:
   draft-mode: unlinked
