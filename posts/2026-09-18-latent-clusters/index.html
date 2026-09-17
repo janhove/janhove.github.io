@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jan Vanhove">
-<meta name="dcterms.date" content="2026-09-02">
+<meta name="dcterms.date" content="2026-09-18">
 
-<title>On latent cluster analyses in applied linguistics – Jan Vanhove</title>
+<title>Cluster analysis: A skeptic’s guide – Jan Vanhove</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -183,17 +183,14 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-setup" id="toc-the-setup" class="nav-link active" data-scroll-target="#the-setup">The setup</a></li>
-  <li><a href="#question-1-are-the-clusters-real" id="toc-question-1-are-the-clusters-real" class="nav-link" data-scroll-target="#question-1-are-the-clusters-real">Question 1: Are the clusters real?</a>
-  <ul class="collapse">
-  <li><a href="#subquestion-1a-what-are-clusters-anyway" id="toc-subquestion-1a-what-are-clusters-anyway" class="nav-link" data-scroll-target="#subquestion-1a-what-are-clusters-anyway">Subquestion 1a: What are clusters, anyway?</a></li>
-  <li><a href="#subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" id="toc-subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" class="nav-link" data-scroll-target="#subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined">Subquestion 1b: How well can your method detect the clusters so defined?</a></li>
-  <li><a href="#an-example" id="toc-an-example" class="nav-link" data-scroll-target="#an-example">An example</a></li>
-  </ul></li>
-  <li><a href="#question-2-how-useful-are-the-clusters" id="toc-question-2-how-useful-are-the-clusters" class="nav-link" data-scroll-target="#question-2-how-useful-are-the-clusters">Question 2: How useful are the clusters?</a>
-  <ul class="collapse">
-  <li><a href="#compare-against-the-direct-model" id="toc-compare-against-the-direct-model" class="nav-link" data-scroll-target="#compare-against-the-direct-model">Compare against the direct model</a></li>
-  </ul></li>
+  <li><a href="#refresher-what-is-cluster-analysis" id="toc-refresher-what-is-cluster-analysis" class="nav-link active" data-scroll-target="#refresher-what-is-cluster-analysis">Refresher: What is cluster analysis?</a></li>
+  <li><a href="#what-are-the-clusters-for" id="toc-what-are-the-clusters-for" class="nav-link" data-scroll-target="#what-are-the-clusters-for">What are the clusters for?</a></li>
+  <li><a href="#what-clusters-exactly" id="toc-what-clusters-exactly" class="nav-link" data-scroll-target="#what-clusters-exactly">What clusters, exactly?</a></li>
+  <li><a href="#does-the-pipeline-work" id="toc-does-the-pipeline-work" class="nav-link" data-scroll-target="#does-the-pipeline-work">Does the pipeline work?</a></li>
+  <li><a href="#what-does-the-solution-look-like" id="toc-what-does-the-solution-look-like" class="nav-link" data-scroll-target="#what-does-the-solution-look-like">What does the solution look like?</a></li>
+  <li><a href="#when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account" id="toc-when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account" class="nav-link" data-scroll-target="#when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account">When running follow-up analyses, how is the uncertainty in the cluster assignments taken into account?</a></li>
+  <li><a href="#was-it-worth-it" id="toc-was-it-worth-it" class="nav-link" data-scroll-target="#was-it-worth-it">Was it worth it?</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -203,7 +200,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">On latent cluster analyses in applied linguistics</h1>
+<h1 class="title">Cluster analysis: A skeptic’s guide</h1>
   <div class="quarto-categories">
     <div class="quarto-category">correlational studies</div>
     <div class="quarto-category">research questions</div>
@@ -224,7 +221,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 2, 2026</p>
+      <p class="date">September 18, 2026</p>
     </div>
   </div>
   
@@ -236,63 +233,127 @@ window.Quarto = {
 </header>
 
 
-<p>I’ve been seeing more and more articles in applied linguistics that use clustering techniques to identify subgroups (often called ‘latent profiles’ or ‘latent classes’) of language learners on the basis of cognitive test or questionnaire data. Typically, the learners are then classified into clusters, and cluster membership is used as a predictor of a further outcome, such as performance on a language test. These studies have yet to convince me, first, that the problem they’re trying to solve is worth solving, and second, that they then actually solve it. My scepticism stems from a few conceptual issues with latent class/profile analysis (LCA/LPA) that these studies fail to address.</p>
-<section id="the-setup" class="level2">
-<h2 class="anchored" data-anchor-id="the-setup">The setup</h2>
-<p><a href="#fig-setup" class="quarto-xref">Figure&nbsp;1</a> represents the setup that researchers using LCA or LPA (or some other variant of latent cluster analysis) assume, be it tacitly or explicitly. For learners <span class="math inline">\(i = 1, \dots, N\)</span>, we observe a vector of cognitive test or questionnaire scores <span class="math inline">\(\boldsymbol Y_i = (Y_{i1}, \dots, Y_{iK})\)</span>. We assume that these observations depend on a latent (i.e., not directly observed) categorical variable <span class="math inline">\(X_i \in \{1, \dots, C\}\)</span>, where <span class="math inline">\(C\)</span> is a prespecified number of clusters. If <span class="math inline">\(X_i = c_i\)</span>, then this indicates that the <span class="math inline">\(i\)</span>-th learner belongs to cluster <span class="math inline">\(c_i\)</span>. Finally, we assume that <span class="math inline">\(X_i\)</span> may also influence some further outcome <span class="math inline">\(Z_i\)</span>, such as the learner’s performance or progress on a language test.</p>
+<p>I’ve been seeing more and more articles in applied linguistics that use clustering techniques to identify subgroups (“profiles”, “classes”, “types”) of language learners on the basis of cognitive test or questionnaire data. Often, the learners are then classified into clusters, and cluster membership is used as a predictor of an outcome such as performance on a language test. I have yet to see a study in applied linguistics that convinces me that identifying and interpreting learner clusters adds value over treating learner differences as continuous. I’ll explain why that is.</p>
+<section id="refresher-what-is-cluster-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="refresher-what-is-cluster-analysis">Refresher: What is cluster analysis?</h2>
+<p>Cluster analysis refers to a host of unsupervised learning techniques. That’s technobabble for saying that we’re given lots of multivariate observations and we’re looking for a sensible way to group these observations into a handful of categories. Crucially, there are no observations for which we <em>know</em> which category they belong to. This makes the problem a different one from supervised learning, which is useful in situations in which you know the correct label for at least some of the observations.</p>
+<p>There are a <em>lot</em> of clustering algorithms, including <em>k</em>-means clustering, Gaussian mixture models, and latent profile and latent class analysis. It’s up to the user to specify which variables the clustering should be based on, to preprocess the data, and to set the desired number of clusters. The algorithms go about the task of identifying the desired number of clusters and of assigning the observations to these clusters in rather different ways and are bound to end up with different cluster assignments. I’ll come back to this point below.</p>
+</section>
+<section id="what-are-the-clusters-for" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-the-clusters-for">What are the clusters for?</h2>
+<p>Bauer and Curran (2004) distinguish between direct and indirect uses of cluster analysis. In <strong>direct uses</strong> of cluster analysis, the clusters themselves are of interest: researchers may want to figure out how many clusters there are, what proportion of observations (e.g., learners) belong to each cluster, where these clusters are located in the multivariate data space, etc. Cluster analysis, then, is used to discover some interesting structure in the data.</p>
+<p>By contrast, in <strong>indirect uses</strong> of cluster analysis, the researchers don’t really care about the clusters themselves. It may seem a bit strange at first to do cluster analysis if you don’t really care about the clusters. But let’s say you’re dealing with a wonky data distribution <span class="math inline">\(P\)</span> that is difficult to handle mathematically. Instead of handling <span class="math inline">\(P\)</span> itself, however, you can try to first approximate <span class="math inline">\(P\)</span> using a distribution <span class="math inline">\(\widehat P\)</span> that is a combination of distributions <span class="math inline">\(Q_1, \dots, Q_C, C \geq 2\)</span>, that are easier to handle: <span class="math display">\[P \approx \widehat P = \sum_{c = 1}^C\pi_cQ_c,\]</span> with weights <span class="math inline">\(\pi_c &gt; 0, c = 1, \dots C\)</span>, that satisfy <span class="math inline">\(\sum_{c=1}^C \pi_c = 1\)</span>. Distributions like <span class="math inline">\(\widehat P\)</span> are called <strong>mixture distributions</strong>, and if <span class="math inline">\(Q_1, \dots, Q_C\)</span> are Gaussian (i.e., Normal) distributions, they are called <strong>Gaussian mixtures</strong>. But neither the weights <span class="math inline">\(\pi_c\)</span> nor the mixture components <span class="math inline">\(Q_c\)</span> themselves are of any particular interest: they merely make it easier to do useful stuff related to <span class="math inline">\(P\)</span>, and there isn’t necessarily any implication that the mixture components (i.e., the clusters) carry any physical or cognitive meaning. For a nice example of such an indirect use of clustering algorithms, see Faul et al.&nbsp;(2026).</p>
+<p>Indirect uses of clustering are fairly forgiving. Since the goal is merely to obtain a mathematically tractable approximation to <span class="math inline">\(P\)</span>, it is not necessarily a problem if different clustering solutions partition the distribution in rather different ways, as they do in <a href="#fig-different-solutions" class="quarto-xref">Figure&nbsp;1</a>. In this case, the choice between competitive approximations may be guided by convenience: in some applications, solutions with fewer components may be preferred; in others, solutions with components of similar sizes or with components with diagonal covariance matrices may be easier to handle.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-setup" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-different-solutions" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-setup-1.svg" class="img-fluid figure-img">
+<div aria-describedby="fig-different-solutions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-different-solutions-1.svg" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-setup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: DAG
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-different-solutions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Two different but equally well-fitting Gaussian mixtures applied to the same data. In the left panel, the solution has two Gaussian components, within each of which the two variables are somewhat correlated. In the right panel, the solution has three Gaussian components, within each of which the variables are not correlated.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-setup" class="quarto-xref">Figure&nbsp;1</a> encodes a crucial assumption: conditional on <span class="math inline">\(X\)</span>, the variables <span class="math inline">\(Y_1, \dots, Y_K, Z\)</span> are independent. In particular, this means that, once you know each learner’s value on <span class="math inline">\(X\)</span>, there is no information in the variables <span class="math inline">\(Y_1, \dots, Y_K\)</span> that could help you better predict their value on <span class="math inline">\(Z\)</span>.</p>
-<p>Incidentally, latent class analysis (LCA) refers to settings where the variables <span class="math inline">\(Y_1, \dots, Y_K\)</span> are all categorical; if these variables are all continuous, latent profile analysis (LPA) is the preferred term. Variants exist that allow for a mix of categorical and continuous <span class="math inline">\(Y\)</span> variables. For our purposes, the conceptual similarities between these approaches outweigh the differences.</p>
-<p>When researchers apply LCA, LPA or some other variant, at least one of the following two goals is typically claimed to have motivated the study.</p>
-<ol type="1">
-<li><strong>To identify the clusters in the data.</strong> This usually involves figuring out how many clusters <span class="math inline">\(C\)</span> there may be and characterising what learners ‘types’ or ‘profiles’ these correspond to.</li>
-<li><strong>To investigate the relation between the clusters and the outcome.</strong> To this end, researchers try to reconstruct each learner’s cluster membership (call it <span class="math inline">\(\hat c_i\)</span>) and use this to model <span class="math inline">\(Z\)</span>.</li>
-</ol>
-<p>I’ve found both of these goals to be undermotivated in the applied linguistics literature, which is why I suggest researchers first address the questions I ask below before fitting LCA, LPA or whatever to their data.</p>
+<p>The situation is very different for direct uses of clustering. If we want to identify qualitatively distinct types of language learners based on some theoretical considerations, then a solution with two elliptical components (as in the left plot above) would have different consequences from a solution with three diagonal components (as in the right plot above). Further, even if competitive solutions have the same number of components, the shapes and sizes of the clusters may differ considerably between them, and learners may be assigned to different clusters in different solutions. If the cluster analysis serves a direct use, principled reasons for preferring one solution over another are needed.</p>
+<p>Hand (2026, chapter 7) makes a similar distinction between using cluster analysis for <strong>discovery</strong>, where the clusters are interpreted substantively, and <strong>imposition</strong>, where the clusters are used as a compression technique for practical purposes.</p>
+<p>In the social sciences, including applied linguistics, I suspect that most intended uses of cluster analysis are direct and discovery-oriented, in which case a few additional questions need to be addressed.</p>
 </section>
-<section id="question-1-are-the-clusters-real" class="level2">
-<h2 class="anchored" data-anchor-id="question-1-are-the-clusters-real">Question 1: Are the clusters real?</h2>
-<section id="subquestion-1a-what-are-clusters-anyway" class="level3">
-<h3 class="anchored" data-anchor-id="subquestion-1a-what-are-clusters-anyway">Subquestion 1a: What are clusters, anyway?</h3>
-<p>Hennig 2015</p>
+<section id="what-clusters-exactly" class="level2">
+<h2 class="anchored" data-anchor-id="what-clusters-exactly">What clusters, exactly?</h2>
+<p>When explaining what cluster analysis does, I refrained from defining what clusters are. The reason is simple: There is no generally accepted definition of a cluster.</p>
+<p>Hennig (2015) provides an excellent discussion of different notions of clusters and how these result in different suitable clustering techniques. Hand (2026, chapter 7) gives an example in which two different ways of conceptualising clusters results in partitionings that could hardly be any more different:</p>
+<ul>
+<li>In some applications, researchers may wish to minimise the maximum distance between observations assigned to the same cluster. This tends to result in fairly compact clusters that may, however, not have any separation between them.</li>
+<li>In other settings, researchers may prefer clusters in which each observation belongs to the same cluster as its closest neighbour. This may result in elongated clusters with a clean gap between them.</li>
+</ul>
+<p>Since there is no universal definition of what a cluster is, none of these solutions are wrong per se.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> But this makes it all the more important for researchers to define formally what their definition of a cluster is, discuss how this definition is meaningful in light of the substantive theory, and argue why the clustering algorithm chosen is suitable for detecting the clusters so defined.</p>
+<p>Admittedly, this is a tall order. But it is crucially important for users of clustering algorithms to appreciate how well their own notion of clusters aligns with that of the algorithm they’ve chosen. By way of an example, consider <strong>Latent Profile Analysis</strong> (LPA). As Bauer and Curran (2004) explain, LPA is based the assumption that the <span class="math inline">\(d\)</span>-dimensional distribution of the variables <span class="math inline">\(\boldsymbol Y = (Y_1, \dots, Y_d)\)</span> is a Gaussian mixture with <span class="math inline">\(C \geq 1\)</span> components, <em>within each of which the variables are independent!</em> Formally,</p>
+<p><span class="math display">\[
+\begin{align*}
+  \boldsymbol Y &amp;\sim P, \\
+  P &amp;= \sum_{c=1}^C\pi_c \mathcal{N}_d\left(\boldsymbol \mu_c,
+    \begin{pmatrix}
+    \sigma^2_{c1} &amp; 0 &amp; \cdots &amp; 0 \\
+    0             &amp; \sigma^2_{c2} &amp; \ddots &amp; 0 \\
+    \vdots &amp; \ddots &amp; \ddots &amp; \vdots \\
+    0      &amp;  0     &amp; \cdots &amp; \sigma^2_{cd}
+    \end{pmatrix}\right)
+\end{align*},
+\]</span> where <span class="math inline">\(\pi_c &gt; 0, c = 1, \dots, C\)</span>, and <span class="math inline">\(\sum_{c = 1}^C \pi_c = 1\)</span>.</p>
+<p>This is quite the assumption, and I’d like to see researchers justify explicitly that this is indeed what their own notion of clusters corresponds to. Just because the goal of a study is to identify “latent profiles” doesn’t mean that a tool called “Latent Profile Analysis” is most appropriate to the task.</p>
 </section>
-<section id="subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined" class="level3">
-<h3 class="anchored" data-anchor-id="subquestion-1b-how-well-can-your-method-detect-the-clusters-so-defined">Subquestion 1b: How well can your method detect the clusters so defined?</h3>
-<p>Including not hallucinating clusters that aren’t there. Stability?</p>
+<section id="does-the-pipeline-work" class="level2">
+<h2 class="anchored" data-anchor-id="does-the-pipeline-work">Does the pipeline work?</h2>
+<p>I agree with Harrell (2024) that the onus is on researchers to demonstrate that their data contains meaningful clusters. To this end, I’d like researchers, once they have clearly defined what they consider to be clusters and once they have <em>argued</em> why the tool they’ve chosen aligns well with this defintion, to demonstrate that their entire analytical pipeline does a reasonable job under realistic conditions.</p>
+<p>Ideally, I’d like for researchers to demonstrate that their pipeline works in a simulation study. Having defined what clusters are to them, researchers can generate realistic data sets in terms of their size, the number of clusters present, the structure of these clusters, and the granularity of the data that will be collected (e.g., using 5-point scales instead of perfectly continuous variables). They can then examine if their pipeline can reliably recover the intended clusters.</p>
+<p>Equally importantly, researchers ought to address the question: <em>If our theory is wrong, would we know?</em></p>
+<p>For instance, Chen et al.’s (2026) first research question is <em>Can L2 learners be profiled concerning their (…) strategy use and writing self-efficacy?</em> But it’s not clear to me how they could conceivably ever have answered <em>no</em> to this question—unless in the rather unrealistic scenario that none of their variables were correlated with one another. So, I’d like researchers to also generate realistic data sets in which there are, according to their own definition, no clusters, and see if their pipeline will accordingly not partition the data into clusters.</p>
+<p>Note that the point of such simulations is not merely to gauge whether the clustering algorithm chosen is appropriate. It is the entire workflow that is put to the test, including how the data are preprocessed and how the desired number of clusters is determined, when applied to data that isn’t infinitely fine-grained.</p>
+<p>Incidentally, on the topic of choosing the desired number of clusters, researchers typically compare different solutions and select a suitable one on the basis of several criteria, including both numerical and substantive ones. This may be quite sensible. But since this choice is rarely made algorithmically, it becomes difficult to evaluate the statistical consequences of deciding on the desired number of clusters only once the data are in. The simulation study should take this into account.</p>
 </section>
-<section id="an-example" class="level3">
-<h3 class="anchored" data-anchor-id="an-example">An example</h3>
-<p>Chen et al.</p>
+<section id="what-does-the-solution-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-the-solution-look-like">What does the solution look like?</h2>
+<p>Once a defensible clustering has been obtained, I’d like to <em>see</em> it.</p>
+<p>For low-dimensional data, a scatterplot matrix showing all bivariate relationships between the relevant variables in which the observations are coloured for their cluster memberships or in which projections of the mixture components are shown strikes me as a good start. For high-dimensional data, dimension-reduction techniques such as principal component analysis or multidimensional scaling may be useful.</p>
+<p>The purpose of the visualisation is two-fold. First, it allows for visual inspection of whether the model assumptions are plausible in the actual data. Second, they allow readers to assess if their own notion of clusters accords with that of the researchers and of the tool used. For instance, <a href="#fig-lpa" class="quarto-xref">Figure&nbsp;2</a> would allow readers and reviewers to realise that the clusters identified by a Latent Profile Analysis aren’t nicely demarcated and that they themselves might prefer not to partition the data in this way—or indeed at all.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lpa" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lpa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-lpa-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lpa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A visualisation of a LPA fit.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>More visualisation may also help researchers and readers alike to realise, first, that the group labels often attached to clusters (‘high-aptitude, highly motivated learners’) may not be apt for all learners in the cluster, and second, that clustering is fundamentally about carving up continuous data into categories.</p>
 </section>
+<section id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account" class="level2">
+<h2 class="anchored" data-anchor-id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account">When running follow-up analyses, how is the uncertainty in the cluster assignments taken into account?</h2>
+<p>Researchers often carry out follow-up analyses with the cluster assignments. For instance, Chen et al.&nbsp;(2026) compared the learners assigned to the different clusters in terms of their L2 writing performance, whereas Roehr-Brackin et al.&nbsp;(2024) wanted to see if cluster membership interacted with a pedagogical intervention type when learning L2 Polish grammar.</p>
+<p>But clustering algorithms don’t assign observations to clusters with absolute certainty: minor changes to the data elsewhere may cause some learners to be assigned to a different cluster, and some clustering algorithms reasonably assign cluster membership probabilistically. If cluster membership is used as a predictor in a follow-up ANOVA or regression model, I’d like or researchers to take into account the uncertainty about the membership assignments. Bakk and Kuha (2020) discuss the relevant literature.</p>
 </section>
-<section id="question-2-how-useful-are-the-clusters" class="level2">
-<h2 class="anchored" data-anchor-id="question-2-how-useful-are-the-clusters">Question 2: How useful are the clusters?</h2>
-<p>Now let’s assume that you’ve ensured that <em>your</em> definition of clusters agrees with <em>your model’s</em> definition of clusters and that you’re pretty confident that you’ll be able to identify the clusters from the data. What NOW?</p>
-<section id="compare-against-the-direct-model" class="level3">
-<h3 class="anchored" data-anchor-id="compare-against-the-direct-model">Compare against the direct model</h3>
-<p>Compare the model <span class="math inline">\(Z \sim X\)</span> to <span class="math inline">\(Z \sim Y\)</span>.</p>
+<section id="was-it-worth-it" class="level2">
+<h2 class="anchored" data-anchor-id="was-it-worth-it">Was it worth it?</h2>
+<p>Even if all the previous questions have been satisfactorily answered, I think researchers using clustering algorithms ought to address what all their effort has actually bought us.</p>
+<p>While some clustering algorithms (including Latent Profile Analysis) assume that the observed data are generated by the (latent) clusters, the <em>reconstructed</em> clusters are a function of the observed data. As a result, any cluster assignment <em>has</em> to discard information in the data. The question is not whether any information has been lost, but how much useful information has been discarded.</p>
+<p>For this reason, I think it is sensible, if cluster membership is used to model a distal outcome (e.g., L2 writing in Chen et al.’s study), for researchers to compare the resulting model with alternative models in which the variables that the clustering is based on are used directly. The latter models have to fit at least equally well as the former one does; the question becomes how much worse the cluster-based model fares. The reason why I think this is sensible is that my default assumption is that cognitive and attitudinal predictors affect outcomes such as L2 performance in a continuous rather than in a discrete way.</p>
 </section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>I appreciate that the questions asked above set a high bar. This is a consequence of the lack of a consensus of what clusters are in the first place, which ought to force researchers to clearly outline what their notion of clusters is, to argue why this notion is theoretically sensible, and to demonstrate that their analytical pipeline reconstructs clusters so defined if they are present and does not identify them if they are absent. This, I hope, should strike researchers wishing to apply clustering techniques to their own data as reasonable asks. Some of the other questions I’ve put forward are motivated by my own stance that cognitive and attitudinal predictors tend to have continuous rather than discrete effects on language learning outcomes.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
+<p>References prefixed with an asterisk are recommended reading for applied linguists and other social scientists thinking about applying clustering techniques to identify hidden classes in their data.</p>
+<p>Bakk, Zsuzsa &amp; Jouni Kuha. 2020. <a href="https://doi.org/10.1111/bmsp.12227">Relating latent class membership to external variables: An overview.</a> <em>British Journal of Mathematical and Statistical Psychology</em> 74. 340–362.</p>
+<p>*Bauer, Daniel J. &amp; Patrick J. Curran. 2004. <a href="https://doi.org/10.1037/1082-98X.9.1.3">The integration of continuous and discrete latent variable models: Potential problems and promising opportunities.</a> <em>Psychological Methods</em> 9(1). 3–29.</p>
+<p>Chen, Jing, Lawrence Jun Zhang &amp; Xiaotong Chen. 2026. <a href="https://doi.org/10.1177/13621688221134967">L2 learners’ self-regulated learning strategies and self-efficacy for writing achievement: A latent profile analysis.</a> <em>Language Teaching Research</em> 30(1). 14–35.</p>
+<p>Faul, Antoine, David Ginsbourger &amp; Ben Spycher. 2026. <a href="https://doi.org/10.48550/arXiv.2409.16003">Easy conditioning far beyond Gaussian.</a> <em>arXiv</em> 2409.16003.</p>
+<p>*Hand, David J. 2006. <a href="https://doi.org/10.1201/9781003726821"><em>What’s the question? Deciding what you really want to know.</em></a> Boca Raton, FL: CRC Press.</p>
+<p>Harrell, Frank. 2024. <a href="https://www.fharrell.com/post/cluster/">The burden of demonstrating statistical validity of clusters.</a> <em>Statistical Thinking</em> (blog), 6 October 2024.</p>
+<p>*Hennig, Christian. 2015. <a href="https://doi.org/10.1016/j.patrec.2015.04.009">What are the true clusters?</a> <em>Pattern Recognition Letters</em> 64. 53–62.</p>
+<p>Roehr-Brackin, Karen, Karoline Baranowska, Renato Pavlekovic &amp; Paweł Scheffler. 2024. <a href="https://doi.org/10.1111/modl.12963">The role of individual learner differences in explicit language instruction.</a> <em>The Modern Language Journal</em> 108. 815–845.</p>
+<p>Toffalini, Enrico, Paolo Girardi, David Giofrè &amp; Gianmarco Altoè. 2022. <a href="https://doi.org/10.1371/journal.pone.0269584"><em>Entia non sunt multiplicanda…</em> Shall I look for clusters in my cognitive data?</a> <em>PLoS ONE</em> 17(6). e0269584.</p>
 
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>In simulation studies, researchers often generate data from a known mixture model and study how well different algorithms can recover the components (e.g., Toffalini et al.&nbsp;2022). In doing so, these researchers define the clusters to be the components of the generating mixture model. But this doesn’t mean that cluster solutions that fail to recover the components are wrong: such solutions may be recovering clusters according to a different, yet equally sensible, definition of what a cluster is.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
