@@ -10,7 +10,134 @@
 <atom:link href="https://janhove.github.io/archive.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about research design and statistics, often using examples from research on language learning.</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Wed, 26 Aug 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Cluster analysis: A skeptic’s guide</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-09-18-latent-clusters/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve been seeing more and more articles in applied linguistics that use clustering techniques to identify subgroups (“profiles”, “classes”, “types”) of language learners on the basis of cognitive test or questionnaire data. Often, the learners are then classified into clusters, and cluster membership is used as a predictor of an outcome such as performance on a language test. I have yet to see a study in applied linguistics that convinces me that identifying and interpreting learner clusters adds value over treating learner differences as continuous. I’ll explain why that is.</p>
+<section id="refresher-what-is-cluster-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="refresher-what-is-cluster-analysis">Refresher: What is cluster analysis?</h2>
+<p>Cluster analysis refers to a host of unsupervised learning techniques. That’s technobabble for saying that we’re given lots of multivariate observations and we’re looking for a sensible way to group these observations into a handful of categories. Crucially, there are no observations for which we <em>know</em> which category they belong to. This makes the problem a different one from supervised learning, which is useful in situations in which you know the correct label for at least some of the observations.</p>
+<p>There are a <em>lot</em> of clustering algorithms, including <em>k</em>-means clustering, Gaussian mixture models, and latent profile and latent class analysis. It’s up to the user to specify which variables the clustering should be based on, to preprocess the data, and to set the desired number of clusters. The algorithms go about the task of identifying the clusters and of assigning the observations to them in rather different ways and are bound to end up with different cluster assignments. I’ll come back to this point below.</p>
+</section>
+<section id="what-are-the-clusters-for" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-the-clusters-for">What are the clusters for?</h2>
+<p>Bauer and Curran (2004) distinguish between direct and indirect uses of cluster analysis. In <strong>direct uses</strong> of cluster analysis, the clusters themselves are of interest: researchers may want to figure out how many clusters there are, what proportion of observations (e.g., learners) belong to each cluster, where these clusters are located in the multivariate data space, etc. Cluster analysis, then, is used to discover some interesting structure in the data.</p>
+<p>By contrast, in <strong>indirect uses</strong> of cluster analysis, the researchers don’t really care about the clusters themselves. It may seem a bit strange at first to do cluster analysis if you don’t really care about the clusters. But let’s say you’re dealing with a wonky data distribution <img src="https://latex.codecogs.com/png.latex?P"> that is difficult to handle mathematically. Instead of handling <img src="https://latex.codecogs.com/png.latex?P"> itself, however, you can try to first approximate <img src="https://latex.codecogs.com/png.latex?P"> using a distribution <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%20P"> that is a combination of distributions <img src="https://latex.codecogs.com/png.latex?Q_1,%20%5Cdots,%20Q_C,%20C%20%5Cgeq%202">, that are easier to handle: <img src="https://latex.codecogs.com/png.latex?P%20%5Capprox%20%5Cwidehat%20P%20=%20%5Csum_%7Bc%20=%201%7D%5EC%5Cpi_cQ_c,"> with weights <img src="https://latex.codecogs.com/png.latex?%5Cpi_c%20%3E%200,%20c%20=%201,%20%5Cdots%20C">, that satisfy <img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bc=1%7D%5EC%20%5Cpi_c%20=%201">. Distributions like <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%20P"> are called <strong>mixture distributions</strong>, and if <img src="https://latex.codecogs.com/png.latex?Q_1,%20%5Cdots,%20Q_C"> are Gaussian (i.e., Normal) distributions, they are called <strong>Gaussian mixtures</strong>. But neither the weights <img src="https://latex.codecogs.com/png.latex?%5Cpi_c"> nor the mixture components <img src="https://latex.codecogs.com/png.latex?Q_c"> themselves are of any particular interest: they merely make it easier to do useful stuff related to <img src="https://latex.codecogs.com/png.latex?P">, and there isn’t necessarily any implication that the mixture components (i.e., the clusters) carry any physical or cognitive meaning. For a nice example of such an indirect use of clustering algorithms, see Faul et al.&nbsp;(2026).</p>
+<p>Indirect uses of clustering are fairly forgiving. Since the goal is merely to obtain a mathematically tractable approximation to <img src="https://latex.codecogs.com/png.latex?P">, it is not necessarily a problem if different clustering solutions partition the distribution in rather different ways, as they do in Figure&nbsp;1.<sup>1</sup> In this case, the choice between competitive approximations may be guided by convenience: in some applications, solutions with fewer components may be preferred; in others, solutions with components of similar sizes or with components with diagonal covariance matrices may be easier to handle.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-different-solutions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-different-solutions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-09-18-latent-clusters/index_files/figure-html/fig-different-solutions-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-different-solutions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Two different but equally well-fitting Gaussian mixtures applied to the same data. In the left panel, the solution has two Gaussian components, within each of which the two variables are somewhat correlated. In the right panel, the solution has three Gaussian components, within each of which the variables are not correlated.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The situation is very different for direct uses of clustering. If we want to identify qualitatively distinct types of language learners based on some theoretical considerations, then a solution with two elliptical components (as in the left plot above) would have different consequences from a solution with three diagonal components (as in the right plot above). Further, even if competitive solutions have the same number of components, the shapes and sizes of the clusters may differ considerably between them, and learners may be assigned to different clusters in different solutions. If the cluster analysis serves a direct use, principled reasons for preferring one solution over another are needed.</p>
+<p>Hand (2026, chapter 7) makes a similar distinction between using cluster analysis for <strong>discovery</strong>, where the clusters are interpreted substantively, and <strong>imposition</strong>, where the clusters are used as a compression technique for practical purposes.</p>
+<p>In the social sciences, including applied linguistics, I suspect that most intended uses of cluster analysis are direct and discovery-oriented, in which case a few additional questions need to be addressed.</p>
+</section>
+<section id="what-clusters-exactly" class="level2">
+<h2 class="anchored" data-anchor-id="what-clusters-exactly">What clusters, exactly?</h2>
+<p>When explaining what cluster analysis does, I refrained from defining what clusters are. The reason is simple: There is no generally accepted definition of a cluster.</p>
+<p>Hennig (2015) provides an excellent discussion of different notions of clusters and how these result in different suitable clustering techniques. Hand (2026, chapter 7) gives an example in which two different ways of conceptualising clusters results in partitionings that could hardly be any more different:</p>
+<ul>
+<li>In some applications, researchers may wish to minimise the maximum distance between observations assigned to the same cluster. This tends to result in fairly compact clusters that may, however, not have any separation between them.</li>
+<li>In other settings, researchers may prefer clusters in which each observation belongs to the same cluster as its closest neighbour. This may result in elongated clusters with a clean gap between them.</li>
+</ul>
+<p>Since there is no universal definition of what a cluster is, none of these solutions are wrong per se.<sup>2</sup> But this makes it all the more important for researchers to define formally what their definition of a cluster is, discuss how this definition is meaningful in light of the substantive theory, and argue why the clustering algorithm chosen is suitable for detecting the clusters so defined.</p>
+<p>Admittedly, this is a tall order. But it is crucially important for users of clustering algorithms to appreciate how well their own notion of clusters aligns with that of the algorithm they’ve chosen. By way of an example, consider <strong>Latent Profile Analysis</strong> (LPA). As Bauer and Curran (2004) explain, LPA is based on the assumption that the <img src="https://latex.codecogs.com/png.latex?d">-dimensional distribution of the variables <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%20Y%20=%20(Y_1,%20%5Cdots,%20Y_d)"> is a Gaussian mixture with <img src="https://latex.codecogs.com/png.latex?C%20%5Cgeq%201"> components, <em>within each of which the variables are independent!</em> Formally,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%20%20%5Cboldsymbol%20Y%20&amp;%5Csim%20P,%20%5C%5C%0A%20%20P%20&amp;=%20%5Csum_%7Bc=1%7D%5EC%5Cpi_c%20%5Cmathcal%7BN%7D_d%5Cleft(%5Cboldsymbol%20%5Cmu_c,%0A%20%20%20%20%5Cbegin%7Bpmatrix%7D%0A%20%20%20%20%5Csigma%5E2_%7Bc1%7D%20&amp;%200%20&amp;%20%5Ccdots%20&amp;%200%20%5C%5C%0A%20%20%20%200%20%20%20%20%20%20%20%20%20%20%20%20%20&amp;%20%5Csigma%5E2_%7Bc2%7D%20&amp;%20%5Cddots%20&amp;%200%20%5C%5C%0A%20%20%20%20%5Cvdots%20&amp;%20%5Cddots%20&amp;%20%5Cddots%20&amp;%20%5Cvdots%20%5C%5C%0A%20%20%20%200%20%20%20%20%20%20&amp;%20%200%20%20%20%20%20&amp;%20%5Ccdots%20&amp;%20%5Csigma%5E2_%7Bcd%7D%0A%20%20%20%20%5Cend%7Bpmatrix%7D%5Cright)%0A%5Cend%7Balign*%7D,%0A"> where <img src="https://latex.codecogs.com/png.latex?%5Cpi_c%20%3E%200,%20c%20=%201,%20%5Cdots,%20C">, and <img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bc%20=%201%7D%5EC%20%5Cpi_c%20=%201">.</p>
+<p>This is quite the assumption, and I’d like to see researchers justify explicitly that this is indeed what their own notion of clusters corresponds to. Just because the goal of a study is to identify “latent profiles” doesn’t mean that a tool called “Latent Profile Analysis” is most appropriate to the task.</p>
+</section>
+<section id="does-the-pipeline-work" class="level2">
+<h2 class="anchored" data-anchor-id="does-the-pipeline-work">Does the pipeline work?</h2>
+<p>I agree with Harrell (2024) that the onus is on researchers to demonstrate that their data contains meaningful clusters. To this end, I’d like researchers, once they have clearly defined what they consider to be clusters and once they have <em>argued</em> why the tool they’ve chosen aligns well with this definition, to demonstrate that their entire analytical pipeline does a reasonable job under realistic conditions.</p>
+<p>Ideally, I’d like for researchers to demonstrate that their pipeline works in a simulation study. Having defined what clusters are to them, researchers can generate realistic data sets in terms of their size, the number of clusters present, the structure of these clusters, and the granularity of the data that will be collected (e.g., using 5-point scales instead of perfectly continuous variables). They can then examine if their pipeline can reliably recover the intended clusters.</p>
+<p>Equally importantly, researchers ought to address the question: <em>If our theory is wrong, would we know?</em></p>
+<p>For instance, Chen et al.’s (2026) first research question is <em>Can L2 learners be profiled concerning their (…) strategy use and writing self-efficacy?</em> But it’s not clear to me how they could conceivably ever have answered <em>no</em> to this question—unless in the rather unrealistic scenario that none of their variables were correlated with one another. So, I’d like researchers to also generate realistic data sets in which there are, according to their own definition, no clusters, and see if their pipeline will accordingly not partition the data into clusters.</p>
+<p>Note that the point of such simulations is not merely to gauge whether the clustering algorithm chosen is appropriate. It is the entire workflow that is put to the test, including how the data are preprocessed and how the desired number of clusters is determined, when applied to data that isn’t infinitely fine-grained.</p>
+<p>Incidentally, on the topic of choosing the desired number of clusters, researchers typically compare different solutions and select a suitable one on the basis of several criteria, including both numerical and substantive ones. This may be quite sensible. But since this choice is rarely made algorithmically, it becomes difficult to evaluate the statistical consequences of deciding on the desired number of clusters only once the data are in. The simulation study should take this into account.</p>
+</section>
+<section id="what-does-the-solution-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="what-does-the-solution-look-like">What does the solution look like?</h2>
+<p>Once a defensible clustering has been obtained, I’d like to <em>see</em> it.</p>
+<p>For low-dimensional data, a scatterplot matrix showing all bivariate relationships between the relevant variables in which the observations are coloured for their cluster memberships or in which projections of the mixture components are shown strikes me as a good start. For high-dimensional data, dimension-reduction techniques such as principal component analysis or multidimensional scaling may be useful.</p>
+<p>The purpose of the visualisation is two-fold. First, it allows for visual inspection of whether the model assumptions are plausible in the actual data. Second, they allow readers to assess if their own notion of clusters accords with that of the researchers and of the tool used. For instance, Figure&nbsp;2 would allow readers and reviewers to realise that the clusters identified by a Latent Profile Analysis aren’t nicely demarcated and that they themselves might prefer not to partition the data in this way—or indeed at all.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lpa" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lpa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-09-18-latent-clusters/index_files/figure-html/fig-lpa-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lpa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: A visualisation of a Latent Profile Analysis fit. Such visualisations may help readers appreciate that the clusters aren’t nicely separated and that the researchers’ notion of clusters may not correspond to their own.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>More visualisation may also help researchers and readers alike to realise, first, that the group labels often attached to clusters (‘high-aptitude, highly motivated learners’) may not be apt for all learners in the cluster, and second, that clustering is fundamentally about carving up continuous data into categories.</p>
+</section>
+<section id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account" class="level2">
+<h2 class="anchored" data-anchor-id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account">When running follow-up analyses, how is the uncertainty in the cluster assignments taken into account?</h2>
+<p>Researchers often carry out follow-up analyses with the cluster assignments. For instance, Chen et al.&nbsp;(2026) compared the learners assigned to the different clusters in terms of their L2 writing performance, whereas Roehr-Brackin et al.&nbsp;(2024) wanted to see if cluster membership interacted with a pedagogical intervention type when learning L2 Polish grammar.</p>
+<p>But clustering algorithms don’t assign observations to clusters with absolute certainty: minor changes to the data elsewhere may cause some learners to be assigned to a different cluster, and some clustering algorithms reasonably assign cluster membership probabilistically. If cluster membership is used as a predictor in a follow-up ANOVA or regression model, I’d like for researchers to take into account the uncertainty about the membership assignments. Bakk and Kuha (2020) discuss the relevant literature.</p>
+</section>
+<section id="was-it-worth-it" class="level2">
+<h2 class="anchored" data-anchor-id="was-it-worth-it">Was it worth it?</h2>
+<p>Even if all the previous questions have been satisfactorily answered, I think researchers using clustering algorithms ought to address what all their effort has actually bought us.</p>
+<p>While some clustering algorithms (including Latent Profile Analysis) assume that the observed data are generated by the (latent) clusters, the <em>reconstructed</em> clusters are a function of the observed data. As a result, any cluster assignment <em>has</em> to discard information in the data. The question is not whether any information has been lost, but how much useful information has been discarded.</p>
+<p>For this reason, I think it is sensible, if cluster membership is used to model a distal outcome (e.g., L2 writing in Chen et al.’s study), for researchers to compare the resulting model with alternative models in which the variables that the clustering is based on are used directly. The latter models have to fit at least equally well as the former one does; the question becomes how much worse the cluster-based model fares. The reason why I think this is sensible is that my default assumption is that cognitive and attitudinal predictors affect outcomes such as L2 performance in a continuous rather than in a discrete way.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>I appreciate that the questions asked above set a high bar. This is a consequence of the lack of a consensus about what clusters are in the first place, which ought to force researchers to clearly outline what their notion of clusters is, to argue why this notion is theoretically sensible, and to demonstrate that their analytical pipeline reconstructs clusters so defined if they are present and does not identify them if they are absent. This, I hope, should strike researchers wishing to apply clustering techniques to their own data as reasonable asks. Some of the other questions I’ve put forward are motivated by my own stance that cognitive and attitudinal predictors tend to have continuous rather than discrete effects on language learning outcomes.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>References prefixed with an asterisk are recommended reading for applied linguists and other social scientists thinking about applying clustering techniques to identify hidden classes in their data.</p>
+<p>Bakk, Zsuzsa &amp; Jouni Kuha. 2020. <a href="https://doi.org/10.1111/bmsp.12227">Relating latent class membership to external variables: An overview.</a> <em>British Journal of Mathematical and Statistical Psychology</em> 74. 340–362.</p>
+<p>*Bauer, Daniel J. &amp; Patrick J. Curran. 2004. <a href="https://doi.org/10.1037/1082-98X.9.1.3">The integration of continuous and discrete latent variable models: Potential problems and promising opportunities.</a> <em>Psychological Methods</em> 9(1). 3–29.</p>
+<p>Chen, Jing, Lawrence Jun Zhang &amp; Xiaotong Chen. 2026. <a href="https://doi.org/10.1177/13621688221134967">L2 learners’ self-regulated learning strategies and self-efficacy for writing achievement: A latent profile analysis.</a> <em>Language Teaching Research</em> 30(1). 14–35.</p>
+<p>Faul, Antoine, David Ginsbourger &amp; Ben Spycher. 2026. <a href="https://doi.org/10.48550/arXiv.2409.16003">Easy conditioning far beyond Gaussian.</a> <em>arXiv</em> 2409.16003.</p>
+<p>*Hand, David J. 2026. <a href="https://doi.org/10.1201/9781003726821"><em>What’s the question? Deciding what you really want to know.</em></a> Boca Raton, FL: CRC Press.</p>
+<p>Harrell, Frank. 2024. <a href="https://www.fharrell.com/post/cluster/">The burden of demonstrating statistical validity of clusters.</a> <em>Statistical Thinking</em> (blog), 6 October 2024.</p>
+<p>*Hennig, Christian. 2015. <a href="https://doi.org/10.1016/j.patrec.2015.04.009">What are the true clusters?</a> <em>Pattern Recognition Letters</em> 64. 53–62.</p>
+<p>Roehr-Brackin, Karen, Karoline Baranowska, Renato Pavlekovic &amp; Paweł Scheffler. 2024. <a href="https://doi.org/10.1111/modl.12963">The role of individual learner differences in explicit language instruction.</a> <em>The Modern Language Journal</em> 108. 815–845.</p>
+<p>Scrucca, Luca, Chris Fraley, T. Brendan Murphy &amp; Adrian E. Raftery. 2023. <a href="https://doi.org/10.1201/9781003277965"><em>Model-based clustering, classification, and density estimation using mclust in R.</em></a> New York, NY: CRC Press. See <a href="https://mclust-org.github.io/mclust/">https://mclust-org.github.io/mclust/</a>.</p>
+<p>Toffalini, Enrico, Paolo Girardi, David Giofrè &amp; Gianmarco Altoè. 2022. <a href="https://doi.org/10.1371/journal.pone.0269584"><em>Entia non sunt multiplicanda…</em> Shall I look for clusters in my cognitive data?</a> <em>PLoS ONE</em> 17(6). e0269584.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>I drew all figures using the <code>mclust</code> package for R (Scrucca et al.&nbsp;2023).↩︎</p></li>
+<li id="fn2"><p>In simulation studies, researchers often generate data from a known mixture model and study how well different algorithms can recover the components (e.g., Toffalini et al.&nbsp;2022). In doing so, these researchers define the clusters to be the components of the generating mixture model. But this doesn’t mean that cluster solutions that fail to recover the components are wrong: such solutions may be recovering clusters according to a different, yet equally sensible, definition of what a cluster is.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>cluster analysis</category>
+  <category>correlational studies</category>
+  <category>research questions</category>
+  <guid>https://janhove.github.io/posts/2026-09-18-latent-clusters/</guid>
+  <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>On superficially similar research questions</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -19806,54 +19933,6 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <category>teaching materials</category>
   <guid>https://janhove.github.io/posts/2020-12-16-quant-meth/</guid>
   <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Capitalising on covariates in cluster-randomised experiments</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>In cluster-randomised experiments, participants are assigned to the conditions randomly but not on an individual basis. Instead, entire batches (‘clusters’) of participants are assigned in such a way that each participant in the same cluster is assigned to the same condition. A typical example would be an educational experiment in which all pupils in the same class get assigned to the same experimental condition. Crucially, the analysis should take into account the fact that the random assignment took place at the cluster level rather than at the individual level.</p>
-<p>Also typically in educational experiments, researchers have some information about the participants’ performance before the intervention took place. This information can come in the form of a covariate, for instance the participants’ performance on a pretest or some self-assessment of their skills. Even in experiments that use random assignment, including such covariates in the analysis is useful as they help to reduce the error variance. Lots of different methods for including covariates in the analysis of cluster-randomised experiments are discussed in the literature, but I couldn’t find any discussion about the merits and drawbacks of these different methods.</p>
-<p>In order to provide such discussion, I ran a series of simulations to compare 25 (!) different ways of including a covariate in the analysis of a cluster-randomised experiment in terms of their Type-I error and their power. The <strong>article</strong> outlining these simulations and the findings is available from <a href="https://doi.org/10.31234/osf.io/ef4zc">PsyArXiv</a>; the <strong>R code</strong> used for the simulations as well as its output is available from the <a href="https://osf.io/wzjra/">Open Science Framework</a>. In the remainder of this post, I’ll discuss how these simulations may be useful to you if you’re planning to run a cluster-randomised experiment.</p>
-<section id="so-whats-the-upshot" class="level2">
-<h2 class="anchored" data-anchor-id="so-whats-the-upshot">So what’s the upshot?</h2>
-<p>Please read pages 1–3 and pages 40–42 of the <a href="https://doi.org/10.31234/osf.io/ef4zc">article</a> :)</p>
-</section>
-<section id="i-know-of-some-analytical-method-that-you-didnt-consider." class="level2">
-<h2 class="anchored" data-anchor-id="i-know-of-some-analytical-method-that-you-didnt-consider.">I know of some analytical method that you didn’t consider.</h2>
-<p>Ah, interesting! It took a long time to run these simulations (about 36 hours), during which I couldn’t use my computer for anything else, so I’m not exactly gung-ho about rerunning them just to include one additional analytic method.</p>
-<p>But here’s what you can do. Go to the <a href="https://osf.io/wzjra/">OSF page</a> and download the files <code>functions/generate_clustered_data.R</code> and <code>scripts/additional_simulations.Rmd</code>. The latter file contains some smaller-scale simulations that don’t take as long to run. Adapt the simulations there and check if the analytical method you know of has an acceptable Type-I error rate for a variety of parameter settings. (Two examples are available, but if you can’t make sense of them, let me know.) If its Type-I error rate is acceptable, run another batch of simulations to assess its power and compare it to the power for the best-performing methods in my simulation.</p>
-<p>If your method compares well to these best-performing methods in terms of both its Type-I error rate and its power, drop me a line, and perhaps I’ll get round to rerunning the large-scale simulations. Better still, download the other functions and scripts, include your method in <code>functions/analyse_clustered_data.R</code>, and adjust the other files accordingly. Then run the simulation yourself :)</p>
-</section>
-<section id="i-dont-think-your-parameter-choices-are-relevant-for-my-study." class="level2">
-<h2 class="anchored" data-anchor-id="i-dont-think-your-parameter-choices-are-relevant-for-my-study.">I don’t think your parameter choices are relevant for my study.</h2>
-<p>Perhaps your study will feature clusters that vary more strongly in size than was the case in my simulations. Or perhaps you suspect that the intracluster correlation will be quite different from the ones that I considered. Or perhaps etc., etc., etc. It’d be better if the results of the simulations were more directly relevant to what you suspect your study will look like.</p>
-<p>But here’s the beauty. You can go to the <a href="https://osf.io/wzjra/">OSF page</a>, download all the functions and scripts, and tailor the simulation parameters to your liking. In <code>script/simulation_type_I_error.R</code> and <code>script/simulation_power.R</code>, you can change the cluster sizes, the number of clusters, the strength of the covariate, the ICC, the effect, and the randomisation scheme. Then run these scripts and figure out which analysis method will likely retain its nominal Type-I error while maximising power.</p>
-</section>
-<section id="when-generating-the-data-youre-making-some-assumptions-im-not-willing-to-make." class="level2">
-<h2 class="anchored" data-anchor-id="when-generating-the-data-youre-making-some-assumptions-im-not-willing-to-make.">When generating the data, you’re making some assumptions I’m not willing to make.</h2>
-<p>The assumptions are outlined in the article on pp.&nbsp;23–24, and they are made more explicit in the function that generates the data (<code>functions/generate_clustered_data.R</code>). Perhaps they’re unrealistic. For instance, the data are all drawn from normal distributions, the covariate is linearly related to the outcome, etc. If you want to revise these assumptions, you’ll have to edit this function. (Test the function extensively afterwards!) Then re-run the simulations, with the simulation parameters tailored to your study.</p>
-</section>
-<section id="which-journal-will-this-article-be-published-in" class="level2">
-<h2 class="anchored" data-anchor-id="which-journal-will-this-article-be-published-in">Which journal will this article be published in?</h2>
-<p>At the moment, I don’t intend to submit this article to any journal. The main reason is that anyone who may be interested in it already has free access to it. If anyone has any feedback, I’d be happy to hear it, but I don’t currently feel like jumping through a series of hoops in some drawn-out reviewing process.</p>
-
-
-</section>
-
- ]]></description>
-  <category>R</category>
-  <category>power</category>
-  <category>significance</category>
-  <category>design features</category>
-  <category>cluster-randomised experiments</category>
-  <category>preprint</category>
-  <guid>https://janhove.github.io/posts/2020-09-02-cluster-covar-sim/</guid>
-  <pubDate>Wed, 02 Sep 2020 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

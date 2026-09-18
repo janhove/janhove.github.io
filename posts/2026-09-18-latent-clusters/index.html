@@ -86,7 +86,6 @@ ul.task-list li input[type="checkbox"] {
 </script>
 <link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 <script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
-<meta name="quarto:status" content="draft">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
@@ -124,7 +123,7 @@ window.Quarto = {
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -202,6 +201,7 @@ window.Quarto = {
 <div class="quarto-title">
 <h1 class="title">Cluster analysis: A skeptic’s guide</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">cluster analysis</div>
     <div class="quarto-category">correlational studies</div>
     <div class="quarto-category">research questions</div>
   </div>
@@ -237,13 +237,13 @@ window.Quarto = {
 <section id="refresher-what-is-cluster-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="refresher-what-is-cluster-analysis">Refresher: What is cluster analysis?</h2>
 <p>Cluster analysis refers to a host of unsupervised learning techniques. That’s technobabble for saying that we’re given lots of multivariate observations and we’re looking for a sensible way to group these observations into a handful of categories. Crucially, there are no observations for which we <em>know</em> which category they belong to. This makes the problem a different one from supervised learning, which is useful in situations in which you know the correct label for at least some of the observations.</p>
-<p>There are a <em>lot</em> of clustering algorithms, including <em>k</em>-means clustering, Gaussian mixture models, and latent profile and latent class analysis. It’s up to the user to specify which variables the clustering should be based on, to preprocess the data, and to set the desired number of clusters. The algorithms go about the task of identifying the desired number of clusters and of assigning the observations to these clusters in rather different ways and are bound to end up with different cluster assignments. I’ll come back to this point below.</p>
+<p>There are a <em>lot</em> of clustering algorithms, including <em>k</em>-means clustering, Gaussian mixture models, and latent profile and latent class analysis. It’s up to the user to specify which variables the clustering should be based on, to preprocess the data, and to set the desired number of clusters. The algorithms go about the task of identifying the clusters and of assigning the observations to them in rather different ways and are bound to end up with different cluster assignments. I’ll come back to this point below.</p>
 </section>
 <section id="what-are-the-clusters-for" class="level2">
 <h2 class="anchored" data-anchor-id="what-are-the-clusters-for">What are the clusters for?</h2>
 <p>Bauer and Curran (2004) distinguish between direct and indirect uses of cluster analysis. In <strong>direct uses</strong> of cluster analysis, the clusters themselves are of interest: researchers may want to figure out how many clusters there are, what proportion of observations (e.g., learners) belong to each cluster, where these clusters are located in the multivariate data space, etc. Cluster analysis, then, is used to discover some interesting structure in the data.</p>
 <p>By contrast, in <strong>indirect uses</strong> of cluster analysis, the researchers don’t really care about the clusters themselves. It may seem a bit strange at first to do cluster analysis if you don’t really care about the clusters. But let’s say you’re dealing with a wonky data distribution <span class="math inline">\(P\)</span> that is difficult to handle mathematically. Instead of handling <span class="math inline">\(P\)</span> itself, however, you can try to first approximate <span class="math inline">\(P\)</span> using a distribution <span class="math inline">\(\widehat P\)</span> that is a combination of distributions <span class="math inline">\(Q_1, \dots, Q_C, C \geq 2\)</span>, that are easier to handle: <span class="math display">\[P \approx \widehat P = \sum_{c = 1}^C\pi_cQ_c,\]</span> with weights <span class="math inline">\(\pi_c &gt; 0, c = 1, \dots C\)</span>, that satisfy <span class="math inline">\(\sum_{c=1}^C \pi_c = 1\)</span>. Distributions like <span class="math inline">\(\widehat P\)</span> are called <strong>mixture distributions</strong>, and if <span class="math inline">\(Q_1, \dots, Q_C\)</span> are Gaussian (i.e., Normal) distributions, they are called <strong>Gaussian mixtures</strong>. But neither the weights <span class="math inline">\(\pi_c\)</span> nor the mixture components <span class="math inline">\(Q_c\)</span> themselves are of any particular interest: they merely make it easier to do useful stuff related to <span class="math inline">\(P\)</span>, and there isn’t necessarily any implication that the mixture components (i.e., the clusters) carry any physical or cognitive meaning. For a nice example of such an indirect use of clustering algorithms, see Faul et al.&nbsp;(2026).</p>
-<p>Indirect uses of clustering are fairly forgiving. Since the goal is merely to obtain a mathematically tractable approximation to <span class="math inline">\(P\)</span>, it is not necessarily a problem if different clustering solutions partition the distribution in rather different ways, as they do in <a href="#fig-different-solutions" class="quarto-xref">Figure&nbsp;1</a>. In this case, the choice between competitive approximations may be guided by convenience: in some applications, solutions with fewer components may be preferred; in others, solutions with components of similar sizes or with components with diagonal covariance matrices may be easier to handle.</p>
+<p>Indirect uses of clustering are fairly forgiving. Since the goal is merely to obtain a mathematically tractable approximation to <span class="math inline">\(P\)</span>, it is not necessarily a problem if different clustering solutions partition the distribution in rather different ways, as they do in <a href="#fig-different-solutions" class="quarto-xref">Figure&nbsp;1</a>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In this case, the choice between competitive approximations may be guided by convenience: in some applications, solutions with fewer components may be preferred; in others, solutions with components of similar sizes or with components with diagonal covariance matrices may be easier to handle.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-different-solutions" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -270,8 +270,8 @@ Figure&nbsp;1: Two different but equally well-fitting Gaussian mixtures applied 
 <li>In some applications, researchers may wish to minimise the maximum distance between observations assigned to the same cluster. This tends to result in fairly compact clusters that may, however, not have any separation between them.</li>
 <li>In other settings, researchers may prefer clusters in which each observation belongs to the same cluster as its closest neighbour. This may result in elongated clusters with a clean gap between them.</li>
 </ul>
-<p>Since there is no universal definition of what a cluster is, none of these solutions are wrong per se.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> But this makes it all the more important for researchers to define formally what their definition of a cluster is, discuss how this definition is meaningful in light of the substantive theory, and argue why the clustering algorithm chosen is suitable for detecting the clusters so defined.</p>
-<p>Admittedly, this is a tall order. But it is crucially important for users of clustering algorithms to appreciate how well their own notion of clusters aligns with that of the algorithm they’ve chosen. By way of an example, consider <strong>Latent Profile Analysis</strong> (LPA). As Bauer and Curran (2004) explain, LPA is based the assumption that the <span class="math inline">\(d\)</span>-dimensional distribution of the variables <span class="math inline">\(\boldsymbol Y = (Y_1, \dots, Y_d)\)</span> is a Gaussian mixture with <span class="math inline">\(C \geq 1\)</span> components, <em>within each of which the variables are independent!</em> Formally,</p>
+<p>Since there is no universal definition of what a cluster is, none of these solutions are wrong per se.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> But this makes it all the more important for researchers to define formally what their definition of a cluster is, discuss how this definition is meaningful in light of the substantive theory, and argue why the clustering algorithm chosen is suitable for detecting the clusters so defined.</p>
+<p>Admittedly, this is a tall order. But it is crucially important for users of clustering algorithms to appreciate how well their own notion of clusters aligns with that of the algorithm they’ve chosen. By way of an example, consider <strong>Latent Profile Analysis</strong> (LPA). As Bauer and Curran (2004) explain, LPA is based on the assumption that the <span class="math inline">\(d\)</span>-dimensional distribution of the variables <span class="math inline">\(\boldsymbol Y = (Y_1, \dots, Y_d)\)</span> is a Gaussian mixture with <span class="math inline">\(C \geq 1\)</span> components, <em>within each of which the variables are independent!</em> Formally,</p>
 <p><span class="math display">\[
 \begin{align*}
   \boldsymbol Y &amp;\sim P, \\
@@ -288,7 +288,7 @@ Figure&nbsp;1: Two different but equally well-fitting Gaussian mixtures applied 
 </section>
 <section id="does-the-pipeline-work" class="level2">
 <h2 class="anchored" data-anchor-id="does-the-pipeline-work">Does the pipeline work?</h2>
-<p>I agree with Harrell (2024) that the onus is on researchers to demonstrate that their data contains meaningful clusters. To this end, I’d like researchers, once they have clearly defined what they consider to be clusters and once they have <em>argued</em> why the tool they’ve chosen aligns well with this defintion, to demonstrate that their entire analytical pipeline does a reasonable job under realistic conditions.</p>
+<p>I agree with Harrell (2024) that the onus is on researchers to demonstrate that their data contains meaningful clusters. To this end, I’d like researchers, once they have clearly defined what they consider to be clusters and once they have <em>argued</em> why the tool they’ve chosen aligns well with this definition, to demonstrate that their entire analytical pipeline does a reasonable job under realistic conditions.</p>
 <p>Ideally, I’d like for researchers to demonstrate that their pipeline works in a simulation study. Having defined what clusters are to them, researchers can generate realistic data sets in terms of their size, the number of clusters present, the structure of these clusters, and the granularity of the data that will be collected (e.g., using 5-point scales instead of perfectly continuous variables). They can then examine if their pipeline can reliably recover the intended clusters.</p>
 <p>Equally importantly, researchers ought to address the question: <em>If our theory is wrong, would we know?</em></p>
 <p>For instance, Chen et al.’s (2026) first research question is <em>Can L2 learners be profiled concerning their (…) strategy use and writing self-efficacy?</em> But it’s not clear to me how they could conceivably ever have answered <em>no</em> to this question—unless in the rather unrealistic scenario that none of their variables were correlated with one another. So, I’d like researchers to also generate realistic data sets in which there are, according to their own definition, no clusters, and see if their pipeline will accordingly not partition the data into clusters.</p>
@@ -308,7 +308,7 @@ Figure&nbsp;1: Two different but equally well-fitting Gaussian mixtures applied 
 <img src="index_files/figure-html/fig-lpa-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lpa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: A visualisation of a LPA fit.
+Figure&nbsp;2: A visualisation of a Latent Profile Analysis fit. Such visualisations may help readers appreciate that the clusters aren’t nicely separated and that the researchers’ notion of clusters may not correspond to their own.
 </figcaption>
 </figure>
 </div>
@@ -319,7 +319,7 @@ Figure&nbsp;2: A visualisation of a LPA fit.
 <section id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account" class="level2">
 <h2 class="anchored" data-anchor-id="when-running-follow-up-analyses-how-is-the-uncertainty-in-the-cluster-assignments-taken-into-account">When running follow-up analyses, how is the uncertainty in the cluster assignments taken into account?</h2>
 <p>Researchers often carry out follow-up analyses with the cluster assignments. For instance, Chen et al.&nbsp;(2026) compared the learners assigned to the different clusters in terms of their L2 writing performance, whereas Roehr-Brackin et al.&nbsp;(2024) wanted to see if cluster membership interacted with a pedagogical intervention type when learning L2 Polish grammar.</p>
-<p>But clustering algorithms don’t assign observations to clusters with absolute certainty: minor changes to the data elsewhere may cause some learners to be assigned to a different cluster, and some clustering algorithms reasonably assign cluster membership probabilistically. If cluster membership is used as a predictor in a follow-up ANOVA or regression model, I’d like or researchers to take into account the uncertainty about the membership assignments. Bakk and Kuha (2020) discuss the relevant literature.</p>
+<p>But clustering algorithms don’t assign observations to clusters with absolute certainty: minor changes to the data elsewhere may cause some learners to be assigned to a different cluster, and some clustering algorithms reasonably assign cluster membership probabilistically. If cluster membership is used as a predictor in a follow-up ANOVA or regression model, I’d like for researchers to take into account the uncertainty about the membership assignments. Bakk and Kuha (2020) discuss the relevant literature.</p>
 </section>
 <section id="was-it-worth-it" class="level2">
 <h2 class="anchored" data-anchor-id="was-it-worth-it">Was it worth it?</h2>
@@ -329,7 +329,7 @@ Figure&nbsp;2: A visualisation of a LPA fit.
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>I appreciate that the questions asked above set a high bar. This is a consequence of the lack of a consensus of what clusters are in the first place, which ought to force researchers to clearly outline what their notion of clusters is, to argue why this notion is theoretically sensible, and to demonstrate that their analytical pipeline reconstructs clusters so defined if they are present and does not identify them if they are absent. This, I hope, should strike researchers wishing to apply clustering techniques to their own data as reasonable asks. Some of the other questions I’ve put forward are motivated by my own stance that cognitive and attitudinal predictors tend to have continuous rather than discrete effects on language learning outcomes.</p>
+<p>I appreciate that the questions asked above set a high bar. This is a consequence of the lack of a consensus about what clusters are in the first place, which ought to force researchers to clearly outline what their notion of clusters is, to argue why this notion is theoretically sensible, and to demonstrate that their analytical pipeline reconstructs clusters so defined if they are present and does not identify them if they are absent. This, I hope, should strike researchers wishing to apply clustering techniques to their own data as reasonable asks. Some of the other questions I’ve put forward are motivated by my own stance that cognitive and attitudinal predictors tend to have continuous rather than discrete effects on language learning outcomes.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
@@ -338,10 +338,11 @@ Figure&nbsp;2: A visualisation of a LPA fit.
 <p>*Bauer, Daniel J. &amp; Patrick J. Curran. 2004. <a href="https://doi.org/10.1037/1082-98X.9.1.3">The integration of continuous and discrete latent variable models: Potential problems and promising opportunities.</a> <em>Psychological Methods</em> 9(1). 3–29.</p>
 <p>Chen, Jing, Lawrence Jun Zhang &amp; Xiaotong Chen. 2026. <a href="https://doi.org/10.1177/13621688221134967">L2 learners’ self-regulated learning strategies and self-efficacy for writing achievement: A latent profile analysis.</a> <em>Language Teaching Research</em> 30(1). 14–35.</p>
 <p>Faul, Antoine, David Ginsbourger &amp; Ben Spycher. 2026. <a href="https://doi.org/10.48550/arXiv.2409.16003">Easy conditioning far beyond Gaussian.</a> <em>arXiv</em> 2409.16003.</p>
-<p>*Hand, David J. 2006. <a href="https://doi.org/10.1201/9781003726821"><em>What’s the question? Deciding what you really want to know.</em></a> Boca Raton, FL: CRC Press.</p>
+<p>*Hand, David J. 2026. <a href="https://doi.org/10.1201/9781003726821"><em>What’s the question? Deciding what you really want to know.</em></a> Boca Raton, FL: CRC Press.</p>
 <p>Harrell, Frank. 2024. <a href="https://www.fharrell.com/post/cluster/">The burden of demonstrating statistical validity of clusters.</a> <em>Statistical Thinking</em> (blog), 6 October 2024.</p>
 <p>*Hennig, Christian. 2015. <a href="https://doi.org/10.1016/j.patrec.2015.04.009">What are the true clusters?</a> <em>Pattern Recognition Letters</em> 64. 53–62.</p>
 <p>Roehr-Brackin, Karen, Karoline Baranowska, Renato Pavlekovic &amp; Paweł Scheffler. 2024. <a href="https://doi.org/10.1111/modl.12963">The role of individual learner differences in explicit language instruction.</a> <em>The Modern Language Journal</em> 108. 815–845.</p>
+<p>Scrucca, Luca, Chris Fraley, T. Brendan Murphy &amp; Adrian E. Raftery. 2023. <a href="https://doi.org/10.1201/9781003277965"><em>Model-based clustering, classification, and density estimation using mclust in R.</em></a> New York, NY: CRC Press. See <a href="https://mclust-org.github.io/mclust/">https://mclust-org.github.io/mclust/</a>.</p>
 <p>Toffalini, Enrico, Paolo Girardi, David Giofrè &amp; Gianmarco Altoè. 2022. <a href="https://doi.org/10.1371/journal.pone.0269584"><em>Entia non sunt multiplicanda…</em> Shall I look for clusters in my cognitive data?</a> <em>PLoS ONE</em> 17(6). e0269584.</p>
 
 
@@ -351,7 +352,8 @@ Figure&nbsp;2: A visualisation of a LPA fit.
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>In simulation studies, researchers often generate data from a known mixture model and study how well different algorithms can recover the components (e.g., Toffalini et al.&nbsp;2022). In doing so, these researchers define the clusters to be the components of the generating mixture model. But this doesn’t mean that cluster solutions that fail to recover the components are wrong: such solutions may be recovering clusters according to a different, yet equally sensible, definition of what a cluster is.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>I drew all figures using the <code>mclust</code> package for R (Scrucca et al.&nbsp;2023).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In simulation studies, researchers often generate data from a known mixture model and study how well different algorithms can recover the components (e.g., Toffalini et al.&nbsp;2022). In doing so, these researchers define the clusters to be the components of the generating mixture model. But this doesn’t mean that cluster solutions that fail to recover the components are wrong: such solutions may be recovering clusters according to a different, yet equally sensible, definition of what a cluster is.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
