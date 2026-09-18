@@ -148,7 +148,8 @@ If we want to identify qualitatively distinct types of language learners
 based on some theoretical considerations,
 then a solution with two elliptical components (as in the left plot above) 
 would have different consequences from a solution with three 
-diagonal components (as in the right plot above).
+diagonal components (as in the right plot above, where the mixture components
+have diagonal covariance matrices).
 Further, even if competitive solutions have the same number of components,
 the shapes and sizes of the clusters may differ considerably between them,
 and learners may be assigned to different clusters in different solutions.
@@ -183,7 +184,7 @@ conceptualising clusters results in partitionings that could hardly be any more 
   in elongated clusters with a clean gap between them.
 
 Since there is no universal definition of what a cluster is,
-none of these solutions are wrong per se.[^1]
+none of these solutions is wrong per se.[^1]
 But this makes it all the more important for researchers to define
 formally what their definition of a cluster is,
 discuss how this definition is meaningful in light of the substantive
@@ -262,7 +263,7 @@ So, I'd like researchers to also generate realistic data sets in which there are
 according to their own definition, no clusters, and see if their pipeline
 will accordingly not partition the data into clusters.
 
-Note that the point of such simulations is not merely to gauge 
+The point of such simulations is not merely to gauge 
 whether the clustering algorithm chosen is appropriate.
 It is the entire workflow that is put to the test,
 including how the data are preprocessed and how the desired number
