@@ -32,23 +32,24 @@ Contents:
 
 ## Quantitative methodology: An introduction
 The script for the course on quantitative methodology I teach 
-is available [here](QuantitativeMethodology.pdf).
+is available [here](https://github.com/janhove/QuantitativeMethodology).
 
 Contents:
 
 1. Association and causality.
 2. Constructing a control group.
 3. Alternative explanations.
-4. Inferential statistics 101. (The course is not a statistics course, but there’s no avoiding talking about p-values given their omnipresence.)
+4. Inferential statistics 101.
 5. Increasing precision.
 6. Pedagogical interventions.
 7. Within-subjects experiments.
-8. Quasi-experiments and correlational studies.
+8. Observational studies.
 9. Constructs and indicators.
 10. Questionable research practices.
 
-I've also included two appendices:
+I've also included three appendices:
 
+* Descriptive statistics.
 * Reading difficult results sections.
 * Reporting research transparently.
 
@@ -98,13 +99,6 @@ Contents:
 The blog [archive](archive.html#category=tutorial) contains a number of tutorials.
 
 ## cannonball (R package)
-The `cannonball` package
+The [`cannonball`](https://janhove.github.io/cannonball) package
 bundles a couple of functions that I use when teaching introductory courses in 
-quantitative methodology and statistics. These include
-
-* `plot_r()` for drawing different scatterplots with the same correlation coefficient,
-* `walkthrough_p()` and `walkthrough_blocking()`, which both aim to help students see the connection between an experiment's design and its analysis,
-* `clustered_data()` for simulating data from cluster-randomised experiments,
-* `parade()` and associated functions for helping researchers check the assumptions of their statistical models.
-
-More information is available on [GitHub](https://github.com/janhove/cannonball).
+quantitative methodology and statistics.
