@@ -18,8 +18,11 @@ about:
       href: https://linkedin.com/in/janhove86
 ---
 
-I'm a senior lecturer
-at the 
+I've studied linguistics (Ph.D. 2014), 
+computer science (B.Sc. 2024),
+and statistics and data science (M.Sc. 2026).
+
+I work as a senior lecturer at the 
 [Department of Multilingualism and Foreign Language Education](https://www.unifr.ch/pluriling/en/) 
 at the University of Fribourg in Switzerland,
 where I teach courses on second and foreign language learning
@@ -27,10 +30,17 @@ as well as on quantitative methodology and statistics.
 I also assist researchers with research design, data analysis, and 
 the interpretation of empirical findings.
 
-In my spare time, I enjoy exploring the Swiss countryside,
+Besides my work at the university,
+I offer [courses](courses.qmd) in quantitative methodsno
+and am available for [support and consulting](support.qmd) 
+to researchers and departments.
+
+Outside work, I enjoy exploring the Swiss countryside,
 and I play the saxophone and occasionally write songs for 
 [Beat Moustache](https://beatmoustache.ch), 
 a ska-pop band that mostly plays original songs in the Bernese dialect.
+
+_Photo: Yours truly trying to take a narrow defeat at Dutch Scrabble on the chin._
 
 ## Employment
 Senior lecturer<br/>

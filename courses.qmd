@@ -11,13 +11,14 @@ though they are equally suitable for postdocs or faculty.
 
 Below are the courses for which material is readily available
 and that I can teach at fairly short notice.
-I'd also gladly look into other topics for courses on request.
-If any of these courses tickles your interest,
-or if you have a proposal for another topic,
-drop me an [e-mail](mailto:janvanhove@gmail.com) to discuss details.
+I would also be happy to develop courses on other topics on request.
 
-Incidentally, if you're looking for individual consulting 
-or standing department office hours rather than a structured course,
+If any of these courses interests you, or if you have a proposal
+for a different topic, feel free to get in touch by e-mail at
+[janvanhove@gmail.com](mailto:janvanhove@gmail.com).
+
+If you're looking for individual consulting 
+or departmental methods support rather than a structured course,
 check out the [Methods and stats support](support.qmd) page.
 
 ::: {.callout-note collapse="true"}

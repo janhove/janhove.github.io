@@ -15,9 +15,15 @@ at the University of Fribourg,
 with a focus on quantitative research methods.
 
 I [blog](archive.qmd) about research design and statistics,
-often using examples from research on language learning.
+often using examples from language-learning research.
 
-I also offer [training](courses.qmd) and [support](support.qmd)
-in quantitative methodology, research design, and data analysis.
+::: {.callout-note}
+## Methods support and training
+I offer statistical consulting, departmental methods support,
+and courses on quantitative methodology, research design,
+and data analysis.
+
+[Support and consulting](support.qmd) | [Courses](courses.qmd)
+:::
 
 # Latest blog posts
