@@ -31,7 +31,7 @@ I also assist researchers with research design, data analysis, and
 the interpretation of empirical findings.
 
 Besides my work at the university,
-I offer [courses](courses.qmd) in quantitative methodsno
+I offer [courses](courses.qmd) in quantitative methods
 and am available for [support and consulting](support.qmd) 
 to researchers and departments.
 
