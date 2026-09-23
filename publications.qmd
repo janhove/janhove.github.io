@@ -5,6 +5,11 @@ toc-depth: 3
 ---
 
 ## 2026
+<p>Jan Vanhove.
+2026.
+<a href="https://github.com/janhove/mscthesis">Sliced Wasserstein distances and their application to regression problems.</a>
+Master's thesis in Statistics and Data Science.
+University of Bern.</p>
 
 <p>Jan Vanhove. 2026.
 <a href="https://doi.org/10.1080/01434632.2026.2626158">Does multilingualism really protect against accelerated ageing?
@@ -14,7 +19,7 @@ Data and code available from the <a href="https://osf.io/45xwm">Open Science Fra
 
 ## 2024
 
-<p>Jan Vanhove. 2024. <a href="CDCL_Vanhove.pdf">SAT solving using conflict-driven clause learning and its application to classical planning.</a> Bachelor's thesis in Computer science. University of Berne.</p>
+<p>Jan Vanhove. 2024. <a href="CDCL_Vanhove.pdf">SAT solving using conflict-driven clause learning and its application to classical planning.</a> Bachelor's thesis in Computer science. University of Bern.</p>
 
 ## 2021
 
