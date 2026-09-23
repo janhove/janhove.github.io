@@ -1929,7 +1929,7 @@
     "href": "resources.html#quantitative-methodology-an-introduction",
     "title": "Teaching resources",
     "section": "Quantitative methodology: An introduction",
-    "text": "Quantitative methodology: An introduction\nThe script for the course on quantitative methodology I teach is available here.\nContents:\n\nAssociation and causality.\nConstructing a control group.\nAlternative explanations.\nInferential statistics 101. (The course is not a statistics course, but there’s no avoiding talking about p-values given their omnipresence.)\nIncreasing precision.\nPedagogical interventions.\nWithin-subjects experiments.\nQuasi-experiments and correlational studies.\nConstructs and indicators.\nQuestionable research practices.\n\nI’ve also included two appendices:\n\nReading difficult results sections.\nReporting research transparently."
+    "text": "Quantitative methodology: An introduction\nThe script for the course on quantitative methodology I teach is available here.\nContents:\n\nAssociation and causality.\nConstructing a control group.\nAlternative explanations.\nInferential statistics 101.\nIncreasing precision.\nPedagogical interventions.\nWithin-subjects experiments.\nObservational studies.\nConstructs and indicators.\nQuestionable research practices.\n\nI’ve also included three appendices:\n\nDescriptive statistics.\nReading difficult results sections.\nReporting research transparently."
   },
   {
     "objectID": "resources.html#introduction-to-the-general-linear-model",
@@ -1964,7 +1964,7 @@
     "href": "resources.html#cannonball-r-package",
     "title": "Teaching resources",
     "section": "cannonball (R package)",
-    "text": "cannonball (R package)\nThe cannonball package bundles a couple of functions that I use when teaching introductory courses in quantitative methodology and statistics. These include\n\nplot_r() for drawing different scatterplots with the same correlation coefficient,\nwalkthrough_p() and walkthrough_blocking(), which both aim to help students see the connection between an experiment’s design and its analysis,\nclustered_data() for simulating data from cluster-randomised experiments,\nparade() and associated functions for helping researchers check the assumptions of their statistical models.\n\nMore information is available on GitHub."
+    "text": "cannonball (R package)\nThe cannonball package bundles a couple of functions that I use when teaching introductory courses in quantitative methodology and statistics."
   },
   {
     "objectID": "archive.html",
@@ -2023,18 +2023,18 @@
     "text": "I’m a senior lecturer at the Department of Multilingualism and Foreign Language Education at the University of Fribourg in Switzerland, where I teach courses on second and foreign language learning as well as on quantitative methodology and statistics. I also assist researchers with research design, data analysis, and the interpretation of empirical findings.\nIn my spare time, I enjoy exploring the Swiss countryside, and I play the saxophone and occasionally write songs for Beat Moustache, a ska-pop band that mostly plays original songs in the Bernese dialect."
   },
   {
+    "objectID": "about.html#employment",
+    "href": "about.html#employment",
+    "title": "Jan Vanhove",
+    "section": "Employment",
+    "text": "Employment\nSenior lecturer Department of Multilingualism and Foreign Language Teaching University of Fribourg (CH) since 2017\nLecturer Department of Multilingualism and Foreign Language Teaching University of Fribourg (CH) 2014–2017\nResearch assistant Scandinavian Department University of Groningen (NL) 2009 and 2010"
+  },
+  {
     "objectID": "about.html#education",
     "href": "about.html#education",
     "title": "Jan Vanhove",
     "section": "Education",
-    "text": "Education\nM.Sc. Statistics and data science University of Bern (CH) since 2024 (thesis submitted)\nB.Sc. Computer science (minor in mathematics) University of Bern (CH) 2020–2024\nPh.D. Language sciences University of Fribourg (CH) 2010–2014\nM.A. European linguistics University of Freiburg (D) 2008–2010\nB.A. English and Swedish linguistics and literature Ghent University (B) 2004–2007"
-  },
-  {
-    "objectID": "about.html#experience",
-    "href": "about.html#experience",
-    "title": "Jan Vanhove",
-    "section": "Experience",
-    "text": "Experience\nSenior lecturer Department of Multilingualism and Foreign Language Teaching University of Fribourg (CH) since 2017\nLecturer Department of Multilingualism and Foreign Language Teaching University of Fribourg (CH) 2014–2017\nResearch assistant Scandinavian Department University of Groningen (NL) 2009 and 2010"
+    "text": "Education\nM.Sc. Statistics and data science University of Bern (CH) 2024–2026\nB.Sc. Computer science (minor in mathematics) University of Bern (CH) 2020–2024\nPh.D. Language sciences University of Fribourg (CH) 2010–2014\nM.A. European linguistics University of Freiburg (D) 2008–2010\nB.A. English and Swedish linguistics and literature Ghent University (B) 2004–2007"
   },
   {
     "objectID": "about.html#contact",
