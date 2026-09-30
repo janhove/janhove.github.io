@@ -5,6 +5,8 @@ project:
     - datasets/**
     - RCode/**
     - justification.pdf
+    - SlicedWasserstein_Vanhove.pdf
+    - CDCL_Vanhove.pdf
 
 website:
   draft-mode: unlinked
