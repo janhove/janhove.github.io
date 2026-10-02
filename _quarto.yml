@@ -7,6 +7,7 @@ project:
     - justification.pdf
     - SlicedWasserstein_Vanhove.pdf
     - CDCL_Vanhove.pdf
+    - QuantitativeMethodology.pdf
 
 website:
   draft-mode: unlinked
