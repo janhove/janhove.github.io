@@ -5,6 +5,7 @@ date: "2026/11/03"
 categories: [Gaussian processes, kernels, predictive modelling, slicer, Wasserstein distance]
 format:
   html:
+    code-fold: true
     message: false
     df-print: paged
     fig-width: 6
