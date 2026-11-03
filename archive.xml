@@ -68,6 +68,8 @@
 <p><img src="https://latex.codecogs.com/png.latex?k(x_i,%20x_j)%20=%20s%5E2%5Cexp%5Cleft(-%5Cfrac%7Bd(x_i,%20x_j)%5E2%7D%7B2t%5E2%7D%5Cright),"></p>
 <p>with a scaling factor <img src="https://latex.codecogs.com/png.latex?s%5E2%20%3E%200"> and a length-scale <img src="https://latex.codecogs.com/png.latex?t%20%3E%200"> as hyperparameters. The kernel earns one of its monikers from its resemblance to the density function of the Gaussian (Normal) distribution; see Figure&nbsp;1.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
@@ -118,6 +120,7 @@ background-color: null;
 font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-se-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -134,6 +137,8 @@ Figure&nbsp;1: The squared exponential kernel with <img src="https://latex.codec
 <p>It assigns large covariances to inputs that lie close to each other but near-zero covariances to inputs that are more distant. As a result, a model using this kernel can accommodate nonlinear relationships. Since the drop-off in the function graph above starts out fairly mildly, these expected nonlinear relationships are smooth.</p>
 <p>This is visible in the plots in Figure&nbsp;2. The plot on the left visualises the kernel/covariance matrix: neighbouring values have high covariances, distant values have low covariances. The plot on the right illustrates the type of association between the predictor and the outcome that a Gaussian process regression model with this kind of covariance matrix anticipates.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Plotting function</span></span>
@@ -465,6 +470,7 @@ font-style: inherit;">2</span>)</span>
 <span id="cb2-34"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_rbf)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-se-kernel-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -483,6 +489,8 @@ Figure&nbsp;2: Covariance matrix (left) and a few possible anticipated relations
 <p>The <strong>power exponential kernel</strong> is a generalisation of the squared exponential kernel: <img src="https://latex.codecogs.com/png.latex?k(x_i,%20x_j)%20=%0As%5E2%5Cexp%5Cleft(-%5Cleft(%5Cfrac%7Bd(x_i,%20x_j)%7D%7Bt%7D%5Cright)%5E%7B%5Ckappa%7D%5Cright)"> with an additional hyperparameter <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20%5Cin%20(0,%202%5D">. For <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%202">, we obtain a squared exponential kernel with length-scale <img src="https://latex.codecogs.com/png.latex?t/%5Csqrt%7B2%7D">.</p>
 <p>The graph below shows how the kernel values depend on <img src="https://latex.codecogs.com/png.latex?%5Ckappa">. Note that for lower values of <img src="https://latex.codecogs.com/png.latex?%5Ckappa">, more distant observations (beyond the length-scale <img src="https://latex.codecogs.com/png.latex?t">) tend to have larger covariances than for higher values of <img src="https://latex.codecogs.com/png.latex?%5Ckappa">.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">cols <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> RColorBrewer<span class="sc" style="color: #5E5E5E;
@@ -664,6 +672,7 @@ font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span></span>
 <span id="cb3-15">)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -679,6 +688,8 @@ Figure&nbsp;3: The power exponential kernels for <img src="https://latex.codecog
 </div>
 <p>This is reflected in kinds of relationship that the model anticipates, as shown in Figure&nbsp;4, Figure&nbsp;5, and Figure&nbsp;6.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">K_pe32 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -697,6 +708,7 @@ font-style: inherit;">2</span>))</span>
 <span id="cb4-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_pe32)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -711,6 +723,8 @@ Figure&nbsp;4: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">K_pe1 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -721,6 +735,7 @@ font-style: inherit;">-</span>D)</span>
 <span id="cb5-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_pe1)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -735,6 +750,8 @@ Figure&nbsp;5: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">K_pe12 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -747,6 +764,7 @@ font-style: inherit;">sqrt</span>(D))</span>
 <span id="cb6-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_pe12)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -765,6 +783,8 @@ Figure&nbsp;6: Covariance matrix (left) and a few possible anticipated relations
 <div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
 <p>An alternative way to fiddle with the degree of smoothness of the expected relationships is to turn to the <strong>Matérn covariance functions</strong>. The definition of this family of kernels is fairly complicated, but the important thing is that they have a smoothness parameter <img src="https://latex.codecogs.com/png.latex?%5Cnu">. Lower values of <img src="https://latex.codecogs.com/png.latex?%5Cnu"> correspond to more jagged anticipated relationships; higher values to smoother anticipated relationships. The values <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2,%203/2,%205/2"> are popular because, for these values, the function can be expressed fairly easily.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">matern <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
@@ -1008,6 +1028,7 @@ font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span></span>
 <span id="cb7-21">)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1023,6 +1044,8 @@ Figure&nbsp;7: The Matérn kernels for <img src="https://latex.codecogs.com/png.
 </div>
 <p>We can see the effect of the smoothness parameter in Figure&nbsp;8, Figure&nbsp;9, and Figure&nbsp;10. Incidentally, the Matérn kernel with <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2"> is identical to the power exponential kernel with <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%201">.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">K_matern52 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -1037,6 +1060,7 @@ font-style: inherit;">2</span>)</span>
 <span id="cb8-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_matern52)</span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-52" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1051,6 +1075,8 @@ Figure&nbsp;8: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">K_matern32 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -1065,6 +1091,7 @@ font-style: inherit;">2</span>)</span>
 <span id="cb9-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_matern32) </span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1079,6 +1106,8 @@ Figure&nbsp;9: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">K_matern12 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
@@ -1093,6 +1122,7 @@ font-style: inherit;">2</span>)</span>
 <span id="cb10-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">draw_all</span>(x, K_matern12) </span></code></pre></div></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

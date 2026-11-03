@@ -332,10 +332,13 @@ window.Quarto = {
 <p><span class="math display">\[k(x_i, x_j) = s^2\exp\left(-\frac{d(x_i, x_j)^2}{2t^2}\right),\]</span></p>
 <p>with a scaling factor <span class="math inline">\(s^2 &gt; 0\)</span> and a length-scale <span class="math inline">\(t &gt; 0\)</span> as hyperparameters. The kernel earns one of its monikers from its resemblance to the density function of the Gaussian (Normal) distribution; see <a href="#fig-se-kernel" class="quarto-xref">Figure&nbsp;1</a>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">xlab =</span> <span class="st">"Distance"</span>,</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Kernel value"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Squared exponential kernel"</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-se-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -352,6 +355,8 @@ Figure&nbsp;1: The squared exponential kernel with <span class="math inline">\(s
 <p>It assigns large covariances to inputs that lie close to each other but near-zero covariances to inputs that are more distant. As a result, a model using this kernel can accommodate nonlinear relationships. Since the drop-off in the function graph above starts out fairly mildly, these expected nonlinear relationships are smooth.</p>
 <p>This is visible in the plots in <a href="#fig-se-kernel-prior" class="quarto-xref">Figure&nbsp;2</a>. The plot on the left visualises the kernel/covariance matrix: neighbouring values have high covariances, distant values have low covariances. The plot on the right illustrates the type of association between the predictor and the outcome that a Gaussian process regression model with this kind of covariance matrix anticipates.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting function</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
@@ -386,6 +391,7 @@ Figure&nbsp;1: The squared exponential kernel with <span class="math inline">\(s
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># SE kernel</span></span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>K_rbf <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_rbf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-se-kernel-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -405,6 +411,8 @@ Figure&nbsp;2: Covariance matrix (left) and a few possible anticipated relations
 s^2\exp\left(-\left(\frac{d(x_i, x_j)}{t}\right)^{\kappa}\right)\]</span> with an additional hyperparameter <span class="math inline">\(\kappa \in (0, 2]\)</span>. For <span class="math inline">\(\kappa = 2\)</span>, we obtain a squared exponential kernel with length-scale <span class="math inline">\(t/\sqrt{2}\)</span>.</p>
 <p>The graph below shows how the kernel values depend on <span class="math inline">\(\kappa\)</span>. Note that for lower values of <span class="math inline">\(\kappa\)</span>, more distant observations (beyond the length-scale <span class="math inline">\(t\)</span>) tend to have larger covariances than for higher values of <span class="math inline">\(\kappa\)</span>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">3</span>, <span class="st">"Dark2"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">xlab =</span> <span class="st">"Distance"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Kernel value"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
@@ -420,6 +428,7 @@ s^2\exp\left(-\left(\frac{d(x_i, x_j)}{t}\right)^{\kappa}\right)\]</span> with a
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(kappa <span class="sc">==</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)</span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -435,8 +444,11 @@ Figure&nbsp;3: The power exponential kernels for <span class="math inline">\(\ka
 </div>
 <p>This is reflected in kinds of relationship that the model anticipates, as shown in <a href="#fig-pe-kernel-prior-32" class="quarto-xref">Figure&nbsp;4</a>, <a href="#fig-pe-kernel-prior-1" class="quarto-xref">Figure&nbsp;5</a>, and <a href="#fig-pe-kernel-prior-12" class="quarto-xref">Figure&nbsp;6</a>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>K_pe32 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>))</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe32)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -451,8 +463,11 @@ Figure&nbsp;4: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>K_pe1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -467,8 +482,11 @@ Figure&nbsp;5: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>K_pe12 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sqrt</span>(D))</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe12)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-pe-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -487,6 +505,8 @@ Figure&nbsp;6: Covariance matrix (left) and a few possible anticipated relations
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <p>An alternative way to fiddle with the degree of smoothness of the expected relationships is to turn to the <strong>Matérn covariance functions</strong>. The definition of this family of kernels is fairly complicated, but the important thing is that they have a smoothness parameter <span class="math inline">\(\nu\)</span>. Lower values of <span class="math inline">\(\nu\)</span> correspond to more jagged anticipated relationships; higher values to smoother anticipated relationships. The values <span class="math inline">\(\nu = 1/2, 3/2, 5/2\)</span> are popular because, for these values, the function can be expressed fairly easily.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>matern <span class="ot">&lt;-</span> <span class="cf">function</span>(d, nu, <span class="at">rho =</span> <span class="dv">1</span>) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span>(<span class="dv">1</span> <span class="sc">-</span> nu) <span class="sc">/</span> <span class="fu">gamma</span>(nu) <span class="sc">*</span> (<span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> nu) <span class="sc">*</span> d <span class="sc">/</span> rho)<span class="sc">^</span>nu <span class="sc">*</span> <span class="fu">besselK</span>(<span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>nu)<span class="sc">*</span>d<span class="sc">/</span>rho, nu)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.matrix</span>(val)) <span class="fu">diag</span>(val) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
@@ -508,6 +528,7 @@ Figure&nbsp;6: Covariance matrix (left) and a few possible anticipated relations
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(nu <span class="sc">==</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">2</span>)</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span></span>
 <span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -523,8 +544,11 @@ Figure&nbsp;7: The Matérn kernels for <span class="math inline">\(\nu = 1/2, 3/
 </div>
 <p>We can see the effect of the smoothness parameter in <a href="#fig-matern-kernel-prior-52" class="quarto-xref">Figure&nbsp;8</a>, <a href="#fig-matern-kernel-prior-32" class="quarto-xref">Figure&nbsp;9</a>, and <a href="#fig-matern-kernel-prior-12" class="quarto-xref">Figure&nbsp;10</a>. Incidentally, the Matérn kernel with <span class="math inline">\(\nu = 1/2\)</span> is identical to the power exponential kernel with <span class="math inline">\(\kappa = 1\)</span>.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>K_matern52 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">5</span><span class="sc">/</span><span class="dv">2</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern52)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-52" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -539,8 +563,11 @@ Figure&nbsp;8: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>K_matern32 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern32) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -555,8 +582,11 @@ Figure&nbsp;9: Covariance matrix (left) and a few possible anticipated relations
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>K_matern12 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern12) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-matern-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
