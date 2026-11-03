@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jan Vanhove">
+<meta name="dcterms.date" content="2026-11-03">
+
+<title>What’s lost by summarising distributions to obtain predictors? – Jan Vanhove</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-5fc43cd84556603b9698325f82eef74d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.10.12/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-7PMKN7SZET"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7PMKN7SZET');
+</script>
+<link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Jan Vanhove</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../support.html"> 
+<span class="menu-text">Methods and stats support</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../courses.html"> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../archive.html"> 
+<span class="menu-text">Blog archive</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Teaching resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../archive.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#roadmap" id="toc-roadmap" class="nav-link active" data-scroll-target="#roadmap">Roadmap</a></li>
+  <li><a href="#concept-1-similarity-based-statistics" id="toc-concept-1-similarity-based-statistics" class="nav-link" data-scroll-target="#concept-1-similarity-based-statistics">Concept 1: Similarity-based statistics</a></li>
+  <li><a href="#concept-2-distances-between-distributions" id="toc-concept-2-distances-between-distributions" class="nav-link" data-scroll-target="#concept-2-distances-between-distributions">Concept 2: Distances between distributions</a>
+  <ul class="collapse">
+  <li><a href="#univariate-distributions-wasserstein-distances" id="toc-univariate-distributions-wasserstein-distances" class="nav-link" data-scroll-target="#univariate-distributions-wasserstein-distances">Univariate distributions: Wasserstein distances</a></li>
+  <li><a href="#multivariate-distributions-marginal-wasserstein-distances" id="toc-multivariate-distributions-marginal-wasserstein-distances" class="nav-link" data-scroll-target="#multivariate-distributions-marginal-wasserstein-distances">Multivariate distributions: Marginal Wasserstein distances</a></li>
+  <li><a href="#multivariate-distributions-sliced-wasserstein-distances" id="toc-multivariate-distributions-sliced-wasserstein-distances" class="nav-link" data-scroll-target="#multivariate-distributions-sliced-wasserstein-distances">Multivariate distributions: Sliced Wasserstein distances</a></li>
+  </ul></li>
+  <li><a href="#concept-3-representing-inputs-as-distributions" id="toc-concept-3-representing-inputs-as-distributions" class="nav-link" data-scroll-target="#concept-3-representing-inputs-as-distributions">Concept 3: Representing inputs as distributions</a></li>
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a>
+  <ul class="collapse">
+  <li><a href="#a-toy-example" id="toc-a-toy-example" class="nav-link" data-scroll-target="#a-toy-example">A toy example</a></li>
+  <li><a href="#lexical-frequency-profiles-for-text-quality-predictions" id="toc-lexical-frequency-profiles-for-text-quality-predictions" class="nav-link" data-scroll-target="#lexical-frequency-profiles-for-text-quality-predictions">Lexical frequency profiles for text-quality predictions</a></li>
+  <li><a href="#hippocampi-as-distributions-of-neuron-properties" id="toc-hippocampi-as-distributions-of-neuron-properties" class="nav-link" data-scroll-target="#hippocampi-as-distributions-of-neuron-properties">Hippocampi as distributions of neuron properties</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">What’s lost by summarising distributions to obtain predictors?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Gaussian processes</div>
+    <div class="quarto-category">kernels</div>
+    <div class="quarto-category">predictive modelling</div>
+    <div class="quarto-category">slicer</div>
+    <div class="quarto-category">Wasserstein distance</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jan Vanhove </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 3, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>It’s common for researchers to reduce the objects in which they’re interested to a handful of summary statistics before submitting them to a statistical model. For instance, applied linguists interested in modelling text-quality ratings may want to take into account the rarity of the words used in the texts. To do so, they may look up the corpus frequency of each word used in the text, summarise the resulting distributions through their mean or median, and use these summaries in a linear regression model. But was any predictively useful information about the frequency distributions lost by reducing them to summary statistics? This blog post explains one way in which statistical models can be built that address this and similar questions by representing the input objects as full-fledged probability distributions.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>tl;dr
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Summarising distributions so that they can be used as predictors in statistical models may discard predictive information. It is possible to take into account full distributions (including multivariate ones) as inputs in predictive models by computing well-behaved distances between these distributions. If a model using these distances doesn’t outperform the model based on summary statistics on test data or in cross-validation, then the summary probably wasn’t losing much predictively relevant information. If it does, this may motivate a closer look at the input distributions to uncover which relevant aspects of them were glossed over by the summary statistics.</p>
+</div>
+</div>
+<section id="roadmap" class="level2">
+<h2 class="anchored" data-anchor-id="roadmap">Roadmap</h2>
+<p>The idea is to compare the fit of predictive models in which the inputs are represented using summary statistics to ones in which the inputs are represented as full-fledged probability distributions. Before we can do so, we need to do some <em>mise en place</em>.</p>
+<p>The first ingredient is that the most commonly used statistical methods in the social sciences (e.g., linear regression models) expect each input to be a row of numbers. Probability distributions are more complicated than such inputs, however. So instead, we’re going to use models that rely only on the pairwise similarities between the inputs. The first concept that I’ll discuss below, then, is <strong>similarity-based statistics</strong>.</p>
+<p>Once we know how we can build statistical models based on pairwise similarities between the inputs, we still need a way to express similarities between probability distributions. To this end, we’re going to first compute distances between probability distributions, and then use these distances to express similarities. The second concept, then, concerns <strong>distances between distributions</strong>.</p>
+<p>The third core idea is that a fair number of data structures that social scientists work with can be understood or represented as probability distributions. I’ll give some examples under the heading <strong>representing inputs as distributions</strong>.</p>
+<p>With a basic appreciation of these three core concepts, we can finally turn to a few examples.</p>
+</section>
+<section id="concept-1-similarity-based-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="concept-1-similarity-based-statistics">Concept 1: Similarity-based statistics</h2>
+<p>The most widely used tools for tackling classification and regression problems in the social sciences expect inputs to be represented as rows in a data frame. For instance, in linear regression, a participant’s predictor data may be represented as three numbers representing their sex, age, and language aptitude test score (i.e., a vector in three-dimensional Euclidean space), and their outcome data would be another number representing their L2 test score.</p>
+<p>But certain statistical tools, including <strong>Gaussian process regression</strong> and <strong>support vector machines</strong>, don’t rely on such explicit representations of the predictor data. Instead, they rely on a notion of the pairwise similarities between different observations. The intuition behind tools based on pairwise similarities is that the prediction for a new observation is obtained from the outcomes of the known observations that are most similar to it. If you want to learn more about Gaussian process regression, Görtler et al.&nbsp;(2019) provide a wonderful <a href="https://doi.org/10.23915/distill.00017">interactive introduction</a>. For another concise introduction, see Wang (2024); for a longer treatment, refer to Rasmussen and Williams (2006).</p>
+<p>We can’t define the pairwise similarities willy-nilly, however: our notion of similarity needs to satisfy a number of technical conditions.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If a function that takes in any two observations <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span> outputs a valid similarity score <span class="math inline">\(k(x_i, x_j)\)</span>, we call it a <strong>kernel</strong>.</p>
+<p>There exists a whole host of different functions that may serve as kernels, and different kernels correspond to different notions of similarity. On his blog <a href="https://anhosu.com/post/kernels-r/"><em>Local optima</em></a>, Anders Nielsen gives an extensive overview of the kernels that can be used in Gaussian process regression. For the purposes of this blog post, though, only so-called <strong>stationary kernels</strong> are relevant. These are kernels that depend only on the distance between the inputs <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x_j\)</span>, and not on the inputs themselves: the smaller the distance between the inputs, the greater the kernel value between them, that is, the greater their similarity. I elaborate on three types of stationary kernel in the collapsed info box below, but the main thing to appreciate is that the choice of kernel determines which kind of relationships between the input and the outcome the model accommodates. If you play around with the Shiny applet below, you’ll see this principle in action.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Three types of stationary kernel
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Squared exponential kernel</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Power exponential kernel</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Matérn kernel</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p>The <strong>squared exponential kernel</strong>, also called the <strong>Gaussian kernel</strong> or the <strong>radial basis function kernel</strong>, is defined as</p>
+<p><span class="math display">\[k(x_i, x_j) = s^2\exp\left(-\frac{d(x_i, x_j)^2}{2t^2}\right),\]</span></p>
+<p>with a scaling factor <span class="math inline">\(s^2 &gt; 0\)</span> and a length-scale <span class="math inline">\(t &gt; 0\)</span> as hyperparameters. The kernel earns one of its monikers from its resemblance to the density function of the Gaussian (Normal) distribution; see <a href="#fig-se-kernel" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">xlab =</span> <span class="st">"Distance"</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Kernel value"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Squared exponential kernel"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-se-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-se-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-se-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-se-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The squared exponential kernel with <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It assigns large covariances to inputs that lie close to each other but near-zero covariances to inputs that are more distant. As a result, a model using this kernel can accommodate nonlinear relationships. Since the drop-off in the function graph above starts out fairly mildly, these expected nonlinear relationships are smooth.</p>
+<p>This is visible in the plots in <a href="#fig-se-kernel-prior" class="quarto-xref">Figure&nbsp;2</a>. The plot on the left visualises the kernel/covariance matrix: neighbouring values have high covariances, distant values have low covariances. The plot on the right illustrates the type of association between the predictor and the outcome that a Gaussian process regression model with this kind of covariance matrix anticipates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting function</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>plot_gpr <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>, <span class="at">main =</span> <span class="st">""</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(n, <span class="st">"Dark2"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(x)), <span class="at">Sigma =</span> K)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[<span class="dv">1</span>, ], <span class="at">ylim =</span> <span class="fu">range</span>(Y), <span class="at">type =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> main, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(n)) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(<span class="at">x =</span> x, <span class="at">y =</span> Y[i, ], <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> cols[i])</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>draw_all <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">n =</span> <span class="dv">4</span>) {</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">1</span>), <span class="at">widths =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>, <span class="fl">2.2</span>))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  corrplot<span class="sc">::</span><span class="fu">corrplot</span>(K, <span class="at">is.corr =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">"color"</span>, <span class="at">tl.pos =</span> <span class="st">"n"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="fu">ncol</span>(K))</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  wanted <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span> <span class="fu">sapply</span>(wanted, <span class="cf">function</span>(v) <span class="fu">which.min</span>(<span class="fu">abs</span>(x <span class="sc">-</span> v)))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(K)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="at">x =</span> pos, <span class="at">y =</span> n <span class="sc">+</span> <span class="fl">4.5</span>, <span class="at">labels =</span> wanted, <span class="at">xpd =</span> <span class="cn">NA</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">2.5</span>, <span class="at">y =</span> n <span class="sc">-</span> pos <span class="sc">+</span> <span class="dv">1</span>, <span class="at">labels =</span> wanted, <span class="at">xpd =</span> <span class="cn">NA</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(<span class="st">"Covariance matrix"</span>, <span class="at">line =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_gpr</span>(x, K, <span class="at">main =</span> <span class="st">"Four draws from prior distribution"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictor data and distances between them</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>D <span class="ot">&lt;-</span> <span class="fu">outer</span>(x, x, <span class="st">"-"</span>) <span class="sc">|&gt;</span> <span class="fu">abs</span>()</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># SE kernel</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>K_rbf <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_rbf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-se-kernel-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-se-kernel-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-se-kernel-prior-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-se-kernel-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Covariance matrix (left) and a few possible anticipated relationships (right) when using a squared exponential kernel with <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>. This kernel makes the model accommodate smooth relationships.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>The <strong>power exponential kernel</strong> is a generalisation of the squared exponential kernel: <span class="math display">\[k(x_i, x_j) =
+s^2\exp\left(-\left(\frac{d(x_i, x_j)}{t}\right)^{\kappa}\right)\]</span> with an additional hyperparameter <span class="math inline">\(\kappa \in (0, 2]\)</span>. For <span class="math inline">\(\kappa = 2\)</span>, we obtain a squared exponential kernel with length-scale <span class="math inline">\(t/\sqrt{2}\)</span>.</p>
+<p>The graph below shows how the kernel values depend on <span class="math inline">\(\kappa\)</span>. Note that for lower values of <span class="math inline">\(\kappa\)</span>, more distant observations (beyond the length-scale <span class="math inline">\(t\)</span>) tend to have larger covariances than for higher values of <span class="math inline">\(\kappa\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> RColorBrewer<span class="sc">::</span><span class="fu">brewer.pal</span>(<span class="dv">3</span>, <span class="st">"Dark2"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">xlab =</span> <span class="st">"Distance"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Kernel value"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> cols[<span class="dv">1</span>],</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Power exponential kernels"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x)<span class="sc">^</span>(<span class="dv">1</span>)), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> cols[<span class="dv">2</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fu">abs</span>(x)<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> cols[<span class="dv">3</span>], <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">col =</span> cols,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(kappa <span class="sc">==</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(kappa <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(kappa <span class="sc">==</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pe-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The power exponential kernels for <span class="math inline">\(\kappa = 1/2, 1, 3/2\)</span> with <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This is reflected in kinds of relationship that the model anticipates, as shown in <a href="#fig-pe-kernel-prior-32" class="quarto-xref">Figure&nbsp;4</a>, <a href="#fig-pe-kernel-prior-1" class="quarto-xref">Figure&nbsp;5</a>, and <a href="#fig-pe-kernel-prior-12" class="quarto-xref">Figure&nbsp;6</a>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>K_pe32 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D<span class="sc">^</span>(<span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe32)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pe-kernel-prior-32-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <span class="math inline">\(\kappa = 3/2\)</span>, <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>K_pe1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>D)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pe-kernel-prior-1-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <span class="math inline">\(\kappa = 1\)</span>, <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>K_pe12 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">sqrt</span>(D))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_pe12)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-pe-kernel-prior-12-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <span class="math inline">\(\kappa = 1/2\)</span>, <span class="math inline">\(s^2 = 1\)</span> and <span class="math inline">\(t = 1\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <span class="math inline">\(\kappa\)</span> parameter, then, allows you to fiddle with the degree of smoothness of the expected relationships.</p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>An alternative way to fiddle with the degree of smoothness of the expected relationships is to turn to the <strong>Matérn covariance functions</strong>. The definition of this family of kernels is fairly complicated, but the important thing is that they have a smoothness parameter <span class="math inline">\(\nu\)</span>. Lower values of <span class="math inline">\(\nu\)</span> correspond to more jagged anticipated relationships; higher values to smoother anticipated relationships. The values <span class="math inline">\(\nu = 1/2, 3/2, 5/2\)</span> are popular because, for these values, the function can be expressed fairly easily.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>matern <span class="ot">&lt;-</span> <span class="cf">function</span>(d, nu, <span class="at">rho =</span> <span class="dv">1</span>) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">^</span>(<span class="dv">1</span> <span class="sc">-</span> nu) <span class="sc">/</span> <span class="fu">gamma</span>(nu) <span class="sc">*</span> (<span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> nu) <span class="sc">*</span> d <span class="sc">/</span> rho)<span class="sc">^</span>nu <span class="sc">*</span> <span class="fu">besselK</span>(<span class="fu">sqrt</span>(<span class="dv">2</span><span class="sc">*</span>nu)<span class="sc">*</span>d<span class="sc">/</span>rho, nu)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.matrix</span>(val)) <span class="fu">diag</span>(val) <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  val[d <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  val</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">matern</span>(x, <span class="at">nu =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">4</span>, <span class="at">xlab =</span> <span class="st">"Distance"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Kernel value"</span>, <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Matérn kernels"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> cols[<span class="dv">1</span>],</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">matern</span>(x, <span class="at">nu =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">col =</span> cols[<span class="dv">2</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">matern</span>(x, <span class="at">nu =</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">2</span>), <span class="at">col =</span> cols[<span class="dv">3</span>], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">col =</span> cols,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(nu <span class="sc">==</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>),</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(nu <span class="sc">==</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bquote</span>(nu <span class="sc">==</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  ), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-matern-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: The Matérn kernels for <span class="math inline">\(\nu = 1/2, 3/2, 5/2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see the effect of the smoothness parameter in <a href="#fig-matern-kernel-prior-52" class="quarto-xref">Figure&nbsp;8</a>, <a href="#fig-matern-kernel-prior-32" class="quarto-xref">Figure&nbsp;9</a>, and <a href="#fig-matern-kernel-prior-12" class="quarto-xref">Figure&nbsp;10</a>. Incidentally, the Matérn kernel with <span class="math inline">\(\nu = 1/2\)</span> is identical to the power exponential kernel with <span class="math inline">\(\kappa = 1\)</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>K_matern52 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">5</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern52)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-52" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-52-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-matern-kernel-prior-52-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-52-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <span class="math inline">\(\nu = 5/2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>K_matern32 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">3</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern32) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-matern-kernel-prior-32-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <span class="math inline">\(\nu = 3/2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>K_matern12 <span class="ot">&lt;-</span> <span class="fu">matern</span>(D, <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">draw_all</span>(x, K_matern12) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-matern-kernel-prior-12-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <span class="math inline">\(\nu = 1/2\)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Below is a Shiny applet that you can use to generate some data and fit Gaussian process regression models to it. You can play around with the scaling factor <span class="math inline">\(s^2\)</span>, the length-scale <span class="math inline">\(t\)</span> and a third hyperparameter <span class="math inline">\(\eta^2\)</span>. This last hyperparameter regulates how much the observed data may deviate from the fitted line. You can also tune these hyperparameters automatically by clicking <code>Optimise hyperparameters</code>. If you want to know how the automatic hyperparameter tuning works, see chapter 5 of Rasmussen and Williams’ (2006) book.</p>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 1800
+
+library(shiny)
+library(bslib)
+library(corrplot)
+
+# Stationary kernel functions --------------------------------------------------
+rbf &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D^2 / (2 * length_scale^2))
+}
+
+powerexp12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D / length_scale)^(1/2))
+}
+
+powerexp32 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D / length_scale)^(3/2))
+}
+
+matern12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D / length_scale)
+}
+matern32 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(3) * D / length_scale
+  scaling_factor * (1 + r) * exp(-r)
+}
+matern52 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(5) * D / length_scale
+  scaling_factor * (1 + r + r^2 / 3) * exp(-r)
+}
+
+kernel_list &lt;- list(
+  "Squared exponential" = rbf,
+  "Power exponential (κ = 1/2)" = powerexp12,
+  "Power exponential (κ = 3/2)" = powerexp32,
+  "Matérn (ν = 1/2)"          = matern12,
+  "Matérn (ν = 3/2)"          = matern32,
+  "Matérn (ν = 5/2)"          = matern52
+)
+
+# GP conditional distribution --------------------------------------------------
+cond_dist &lt;- function(x, x0, y0, noise_var = 1e-6, kernel, ...) {
+  mean_y &lt;- mean(y0)
+  y0 &lt;- y0 - mean_y
+  n  &lt;- length(x)
+  n0 &lt;- length(x0)
+  D  &lt;- outer(c(x, x0), c(x, x0), "-") |&gt; abs()
+  K  &lt;- kernel(D, ...)
+  K11 &lt;- K[seq_len(n), seq_len(n)]
+  K12 &lt;- K[seq_len(n), (n + 1):(n + n0)]
+  K22 &lt;- K[(n + 1):(n + n0), (n + 1):(n + n0)] + noise_var * diag(n0)
+  L   &lt;- tryCatch(chol(K22), error = function(e) NULL)
+  if (is.null(L)) return(NULL)
+  alpha &lt;- backsolve(L, forwardsolve(t(L), y0))
+  mu    &lt;- as.vector(K12 %*% alpha)
+  v     &lt;- forwardsolve(t(L), t(K12))
+  Sigma &lt;- K11 - t(v) %*% v
+  list(y = mu + mean_y, se = pmax(sqrt(diag(Sigma)), 0))
+}
+
+# Hyperparameter optimisation --------------------------------------------------
+# Just BFGS without gradients for now.
+find_gpr_hyperparameters &lt;- function(x0, y0, kernel, runs = 10) {
+  n &lt;- length(y0)
+  # Centre y at 0
+  y_train &lt;- y0 - mean(y0)
+  D &lt;- outer(x0, x0, "-") |&gt; abs()
+  # Obtain median distance between elements as useful length-scale init
+  med_d &lt;- median(D[upper.tri(D)])
+
+  nll &lt;- function(log_params) {
+    va      &lt;- exp(log_params[1])
+    ls      &lt;- exp(log_params[2])
+    lambda2 &lt;- exp(log_params[3])
+    K &lt;- kernel(D, length_scale = ls, scaling_factor = va) + lambda2 * diag(n)
+    U &lt;- tryCatch(chol(K), error = function(e) NULL)
+    if (is.null(U)) return(Inf)
+    a &lt;- backsolve(U, backsolve(U, y_train, transpose = TRUE))
+    drop(0.5 * crossprod(y_train, a) + sum(log(diag(U))) + n / 2 * log(2 * pi))
+  }
+
+  best &lt;- NULL
+  for (i in seq_len(runs)) {
+    init &lt;- c(
+      scaling_factor     = runif(1, log(0.1), log(10)),
+      length_scale = runif(1, log(med_d * 0.1), log(med_d * 10)),
+      lambda2      = runif(1, -10, -2)
+    )
+    fit &lt;- tryCatch(
+      optim(init, nll, method = "BFGS"),
+      error = function(e) NULL
+    )
+    if (!is.null(fit) &amp;&amp; (is.null(best) || fit$value &lt; best$value)) {
+      best &lt;- fit
+    }
+  }
+
+  if (is.null(best)) return(NULL)
+  list(
+    scaling_factor = exp(best$par[1]),
+    length_scale   = exp(best$par[2]),
+    lambda2        = exp(best$par[3]),
+    nll            = best$value
+  )
+}
+
+# Preset functions -------------------------------------------------------------
+preset_fns &lt;- list(
+  "smooth function"  = "x/7 + 0.01*x^2 + sin(cos(x)) + log(x^2 + 10)",
+  "jagged function"  = "-0.05*x^2 + sin(1.5*x) + sign(sin(x))*1.5*abs(x %% 1 - 1/2)",
+  "Custom…"             = NULL
+)
+
+# UI ---------------------------------------------------------------------------
+ui &lt;- page_sidebar(
+  title = "Gaussian process regression with a stationary kernel",
+  theme = bs_theme(bootswatch = "yeti"),
+
+  sidebar = sidebar(
+    width = 300,
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Data-generating mechanism",
+        selectInput("preset_fn", "True function:",
+                    choices = names(preset_fns), 
+                    selected = names(preset_fns)[1]),
+        conditionalPanel(
+          "input.preset_fn === 'Custom…'",
+          textInput("custom_fn", "f(x) =", value = "sin(x)",
+                    placeholder = "e.g., sin(x) + 0.5*x")
+        ),
+        sliderInput("x_range", "x range:",
+                    min = -10, max = 10, value = c(-10, 10), step = 0.5),
+        numericInput("noise", "Observation noise σ²:",
+                     value = 0.5, min = 0, step = 0.1)
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Observations",
+        radioButtons("x0_mode", "Specify points:",
+                     choices = c("Random" = "random", "Manual" = "manual"),
+                     inline = TRUE,
+                     selected = "random"),
+        conditionalPanel(
+          "input.x0_mode === 'random'",
+          sliderInput("n_pts", "Number of points:", 1, 100, 50, 
+                      step = 1, ticks = FALSE),
+          actionButton("resample", "Resample", class = "btn-primary w-100",
+                       icon  = icon("dice"))
+        ),
+        conditionalPanel(
+          "input.x0_mode === 'manual'",
+          textInput("manual_x0", "x positions (comma-separated):", 
+            value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
+        )
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Kernel",
+        selectInput("kernel", "Kernel function", choices = names(kernel_list)),
+        uiOutput("hp_inputs"),
+        hr(),
+        tags$p("Optimise hyperparameters by maximising the 
+               log marginal likelihood."),
+        sliderInput("opt_runs", "Restarts:",
+                    min = 10, max = 100, value = 50, step = 1, ticks = FALSE),
+        actionButton("optimise", "Optimise hyperparameters",
+                     class = "btn-primary w-100",
+                     icon  = icon("wand-magic-sparkles")),
+        uiOutput("opt_status")
+      )
+    )
+  ),
+
+  layout_columns(
+    col_widths = 12,
+    card(
+      card_header("GP posterior"),
+      plotOutput("gp_plot", height = "420px")
+    ),
+    card(
+      card_header("Kernel covariance  k(x, x₀)"),
+      plotOutput("kernel_plot", height = "200px")
+    ),
+    card(
+      card_header("Covariance matrix"),
+      plotOutput("corr_plot")
+    )
+  ),
+)
+
+# Server -----------------------------------------------------------------------
+server &lt;- function(input, output, session) {
+
+  opt_msg     &lt;- reactiveVal(NULL)
+  opt_trigger &lt;- reactiveVal(0)
+  opt_params  &lt;- reactiveVal(list(length_scale = 1, scaling_factor = 5, 
+                                  log_noise_var = -0.3))
+
+  # Show hyperparameter inputs
+  output$hp_inputs &lt;- renderUI({
+    p &lt;- opt_params()
+    tagList(
+      numericInput("length_scale", "Length scale t",
+                   value = round(p$length_scale, 4), min = 0.01, step = 0.1),
+      numericInput("scaling_factor", "Scaling factor s²",
+                   value = round(p$scaling_factor, 4), min = 0.01, step = 0.1),
+      numericInput("log_noise_var", "Noise variance η² (log-10 scale)",
+                   value = round(p$log_noise_var, 2), step = 0.5)
+    )
+  })
+
+  # Parse target function
+  f &lt;- reactive({
+    expr_str &lt;- if (input$preset_fn == "Custom…") input$custom_fn
+                else preset_fns[[input$preset_fn]]
+    tryCatch(
+      eval(parse(text = paste0("function(x) ", expr_str))),
+      error = function(e) NULL
+    )
+  })
+
+  # Observation x locations
+  x0_vals &lt;- reactive({
+    input$resample
+    if (input$x0_mode == "random") {
+      set.seed(input$resample)
+      sort(runif(input$n_pts, input$x_range[1], input$x_range[2]))
+    } else {
+      vals &lt;- suppressWarnings(
+        as.numeric(trimws(strsplit(input$manual_x0, ",")[[1]])))
+      sort(vals[!is.na(vals)])
+    }
+  })
+
+  # Observations
+  obs &lt;- reactive({
+    fn &lt;- f()
+    if (is.null(fn)) return(NULL)
+    x0 &lt;- x0_vals()
+    y0 &lt;- fn(x0) + rnorm(length(x0), sd = sqrt(input$noise))
+    list(x0 = x0, y0 = y0)
+  })
+
+  # Prediction grid
+  x_grid &lt;- reactive({
+    seq(input$x_range[1], input$x_range[2], length.out = 201)
+  })
+
+  # Step 1: show spinner and fire trigger
+  observeEvent(input$optimise, {
+    xy0 &lt;- obs()
+    if (is.null(xy0) || length(xy0$x0) &lt; 3) {
+      opt_msg(tags$span("⚠ Need at least 3 observations to optimise."))
+      return()
+    }
+    opt_trigger(isolate(opt_trigger()) + 1)
+  })
+
+  # Step 2: run optimisation
+  observeEvent(opt_trigger(), {
+    req(opt_trigger() &gt; 0)
+    xy0  &lt;- isolate(obs())
+    kern &lt;- kernel_list[[isolate(input$kernel)]]
+
+    result &lt;- tryCatch(
+      find_gpr_hyperparameters(xy0$x0, xy0$y0, kernel = kern,
+                               runs = isolate(input$opt_runs)),
+      error = function(e) NULL
+    )
+
+    if (is.null(result)) {
+      opt_msg(tags$span("✗ Optimisation failed. Try different settings."))
+      return()
+    }
+
+    opt_params(list(
+      length_scale = result$length_scale,
+      scaling_factor = result$scaling_factor,
+      log_noise_var = max(log10(result$lambda2), -30)
+    ))
+
+    opt_msg(tags$span(
+      style = "color:#27ae60; font-size:0.82rem;",
+      sprintf("✓ Done.  t = %.2f,  s² = %.2f,  η² = 10^%.1f  (NLL = %.1f)",
+              result$length_scale, result$scaling_factor,
+              log10(result$lambda2), result$nll)
+    ))
+  }, ignoreInit = TRUE)
+
+  output$opt_status &lt;- renderUI({ opt_msg() })
+
+  # Active hyperparameters: opt_params when set, else input values
+  hp &lt;- reactive({
+    p  &lt;- opt_params()
+    ls &lt;- if (!is.null(input$length_scale)) input$length_scale 
+                                       else p$length_scale
+    sf &lt;- if (!is.null(input$scaling_factor)) input$scaling_factor 
+                                         else p$scaling_factor
+    nv &lt;- if (!is.null(input$log_noise_var)) input$log_noise_var  
+                                        else p$log_noise_var
+    list(length_scale = ls, scaling_factor = sf, log_noise_var = nv)
+  })
+
+  # GP fit
+  gp_fit &lt;- reactive({
+    fn  &lt;- f()
+    if (is.null(fn)) return(NULL)
+    xy0  &lt;- obs()
+    kern &lt;- kernel_list[[input$kernel]]
+    p    &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    fit  &lt;- cond_dist(x_grid(), xy0$x0, xy0$y0,
+                      noise_var = 10^p$log_noise_var,
+                      kernel = kern,
+                      length_scale = p$length_scale,
+                      scaling_factor = p$scaling_factor)
+    list(fit = fit, x0 = xy0$x0, y0 = xy0$y0)
+  })
+
+  # GP posterior plot
+  output$gp_plot &lt;- renderPlot({
+    fn  &lt;- f()
+    obj &lt;- gp_fit()
+    fit &lt;- obj$fit
+    x0  &lt;- obj$x0
+    y0  &lt;- obj$y0
+    x   &lt;- x_grid()
+
+    par(mar = c(4, 4, 1, 1), bg = "white", family = "sans")
+    y_fn &lt;- if (!is.null(fn)) fn(x) else rep(0, length(x))
+
+    ylim_base &lt;- if (!is.null(fit)) {
+      range(c(fit$y + 2.5 * fit$se, fit$y - 2.5 * fit$se, y_fn), na.rm = TRUE)
+    } else {
+      range(y_fn, na.rm = TRUE)
+    }
+    ylim &lt;- ylim_base + diff(ylim_base) * c(-0.05, 0.05)
+
+    plot(NULL, xlim = input$x_range, ylim = ylim,
+         xlab = "x", ylab = "y", bty = "l", las = 1)
+    grid(col = "grey90", lty = 1)
+
+    if (!is.null(fit)) {
+      ord &lt;- order(x)
+      px  &lt;- x[ord]
+      pmu &lt;- fit$y[ord]
+      pse &lt;- fit$se[ord]
+      
+      valid &lt;- is.finite(pmu) &amp; is.finite(pse)
+      px  &lt;- px[valid]
+      pmu &lt;- pmu[valid]
+      pse &lt;- pse[valid]
+      
+      poly_x &lt;- c(px, rev(px))
+      poly_y &lt;- c(pmu + 2 * pse, rev(pmu - 2 * pse))
+      polygon(poly_x, poly_y, col = adjustcolor("#2c7bb6", 0.15), border = NA)
+      lines(px, pmu, col = "#2c7bb6", lwd = 2.5, lty = 1)
+    }
+    if (!is.null(fn)) {
+      lines(x, y_fn, col = "#d7191c", lwd = 1.5, lty = 2)
+    }
+    points(x0, y0, pch = 21, bg = "white", col = "#333", cex = 1.6, lwd = 2)
+    legend("topright", bty = "n", cex = 0.85,
+           legend = c("Posterior mean", "±2 SE", "True function", "Observations"),
+           lty    = c(1, NA, 2, NA),
+           pch    = c(NA, 15, NA, 21),
+           lwd    = c(2.5, NA, 1.5, NA),
+           col    = c("#2c7bb6", adjustcolor("#2c7bb6", 0.3), "darkred", "#333"),
+           pt.cex = c(NA, 2, NA, 1.6))
+  })
+
+  # Kernel covariance plot -----------------------------------------------------
+  output$kernel_plot &lt;- renderPlot({
+    kern  &lt;- kernel_list[[input$kernel]]
+    p     &lt;- hp()
+    req(p$length_scale, p$scaling_factor)
+    d_seq &lt;- seq(0, max(abs(input$x_range)), length.out = 300)
+    k_val &lt;- kern(d_seq,
+                  length_scale = p$length_scale,
+                  scaling_factor     = p$scaling_factor)
+
+    par(mar = c(4, 4, 0.5, 1), bg = "white", family = "sans")
+    plot(d_seq, k_val, type = "l", col = "#2c7bb6", lwd = 2,
+         xlab = "|x - x₀|", ylab = "k(x, x₀)", bty = "l", las = 1,
+         ylim = c(0, p$scaling_factor * 1.05))
+    grid(col = "grey90", lty = 1)
+    abline(h = p$scaling_factor, lty = 3, col = "grey60")
+  })
+  
+  # Implied covariance matrix -------------------------------------------------
+  output$corr_plot &lt;- renderPlot({
+    x0 &lt;- obs()$x0 |&gt; sort()
+    kern &lt;- kernel_list[[input$kernel]]
+    p &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    D &lt;- outer(x0, x0, "-") |&gt; abs()
+    M &lt;- kern(D, 
+              length_scale = p$length_scale, scaling_factor = p$scaling_factor)
+    corrplot(M,
+         method = "color",
+         is.corr = FALSE,
+         tl.col = "black",   
+         tl.cex = 0.8)
+  }, height = 380, width = 380)
+}
+
+shinyApp(ui, server)</code></pre>
+</section>
+<section id="concept-2-distances-between-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="concept-2-distances-between-distributions">Concept 2: Distances between distributions</h2>
+<section id="univariate-distributions-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="univariate-distributions-wasserstein-distances">Univariate distributions: Wasserstein distances</h3>
+<p>The goal is to apply kernel methods to input that are represented as distributions. To this end, we need a suitable distance metric between probability distributions. When dealing with <em>univariate</em> distributions, it turns out that the <strong>Wasserstein distance</strong> between probability distributions can be useful. Informally, the Wasserstein distance between probability distributions <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span> expresses what the least amount of effort is that you need to expend in order to shift about the probability mass of distribution <span class="math inline">\(P\)</span> so that it corresponds to distribution <span class="math inline">\(Q\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Wasserstein distances: A simple example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider two finite distributions.</p>
+<ul>
+<li>Distribution <span class="math inline">\(P\)</span> assigns probability 2/8, 3/8, 1/8, and 2/8 to values -2, 1, 4, and 7, respectively.</li>
+<li>Distribution <span class="math inline">\(Q\)</span> assigns probability 3/8, 1/8, and 4/8 to values -1, 2, and 6, respectively.</li>
+</ul>
+<p>The most efficient way of turning distribution <span class="math inline">\(P\)</span> into distribution <span class="math inline">\(Q\)</span> is this:</p>
+<ol type="1">
+<li>Take 2/8 probability from -2 and assign it to -1. Cost: <span class="math inline">\(2/8 \cdot |-2 - (-1)| = 2/8\)</span>.</li>
+<li>Take 1/8 probability from 1 and assign it to -1. Cost: <span class="math inline">\(1/8 \cdot |1-(-1)| = 2/8\)</span>.</li>
+<li>Take 1/8 probability from 1 and assign it to 2. Cost: <span class="math inline">\(1/8 \cdot |1-2| = 1/8\)</span>.</li>
+<li>Take the remaining 1/8 probability from 1 and assign it to 6. Cost: <span class="math inline">\(1/8 \cdot |1-6| = 5/8\)</span>.</li>
+<li>Take the 1/8 probability from 4 and assign it to 6. Cost: <span class="math inline">\(1/8 \cdot |4-6| = 2/8\)</span>.</li>
+<li>Take the 2/8 probability from 7 and assign it to 6. Cost: <span class="math inline">\(2/8 \cdot |7-6| = 2/8\)</span>.</li>
+</ol>
+<p>The total cost of this operation is <span class="math inline">\(14/8 = 1.75\)</span>. The Wasserstein distance (of order <span class="math inline">\(p = 1\)</span>) is hence 1.75. See <a href="#fig-optimal-transport" class="quarto-xref">Figure&nbsp;11</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-optimal-transport" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optimal-transport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-optimal-transport-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-optimal-transport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: The most efficient way of turning distribution <span class="math inline">\(P\)</span> into distribution <span class="math inline">\(Q\)</span>. The total cost is 1.75.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>More generally and more formally, for any <span class="math inline">\(p \in [1, \infty)\)</span>, we define the Wasserstein distance of order <span class="math inline">\(p\)</span> between two probability distributions with finite <span class="math inline">\(p\)</span>-th moment as</p>
+<p><span class="math display">\[\mathbf{W}_p(P, Q) := \min_{\substack{X \sim P,\\Y \sim Q}}\left(\mathbb{E}(|X - Y|^p)\right)^{1/p}.\]</span></p>
+<p>That may look a bit complicated, but it’s pretty easy to compute if <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span> are empirical distributions; see Algorithm 2.1 in my thesis (Vanhove 2026). While the Wasserstein distance is a true distance for any <span class="math inline">\(p \in [1, \infty)\)</span>, only two values of <span class="math inline">\(p\)</span> are useful in our kernel approach:</p>
+<ul>
+<li>We can set <span class="math inline">\(p = 1\)</span> and slot in the square root of the <span class="math inline">\(\mathbf{W}_1\)</span> distance, i.e., <span class="math inline">\(\sqrt{\mathbf{W}_1}\)</span> into the three types of stationary kernel discussed above.</li>
+<li>Or we can set <span class="math inline">\(p = 2\)</span> and slot in the <span class="math inline">\(\mathbf{W}_2\)</span> distance into these stationary kernels.</li>
+</ul>
+<p>The reason is that kernels need to satisfy certain technical requirements. For the stationary kernels discussed above, these requirements are met if the distances used are ‘Hilbertian’. The details don’t need to concern us here. What’s important is that the <span class="math inline">\(\mathbf{W}_2\)</span> distance is Hilbertian, and square-root transforming the <span class="math inline">\(\mathbf{W}_1\)</span> distance makes it Hilbertian. Hence, both <span class="math inline">\(\mathbf{W}_2\)</span> and <span class="math inline">\(\sqrt{\mathbf{W}_1}\)</span> can be plugged into the three kinds of stationary kernel discussed earlier.</p>
+<p>Incidentally, the Wasserstein distance goes by a few different names, including the earth mover’s distance (if <span class="math inline">\(p = 1\)</span>), the Kantorovich–Rubinstein metric, and the Mallow distance.</p>
+</section>
+<section id="multivariate-distributions-marginal-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="multivariate-distributions-marginal-wasserstein-distances">Multivariate distributions: Marginal Wasserstein distances</h3>
+<p>The Wasserstein distance can also be defined on spaces of <em>multivariate</em> probability distributions. But there are two snags:</p>
+<ol type="1">
+<li>Wasserstein distances between multivariate probability distributions are <em>considerably</em> more expensive to compute than Wasserstein distances between univariate distributions.</li>
+<li>There are no known values for <span class="math inline">\(p\)</span> for which the <span class="math inline">\(\mathbf{W}_p\)</span> distance between multivariate distributions can be plugged into our stationary kernels. (There are no known Wasserstein distances between multivariate distributions that are Hilbertian.)</li>
+</ol>
+<p>One workaround is to work with Wasserstein distances between <strong>marginal distributions</strong>; let’s call these <strong>marginal Wasserstein distances</strong>. For instance, if the distributions we’re working with live in three dimensions, we compute Wasserstein distances between the three corresponding dimensions. Each of these are distances between univariate distributions, so we can use them as before: we construct a kernel for each of the dimensions, and then combine them.</p>
+<p>One drawback of relying on marginal distributions only is that two distributions may look completely different from one another yet have the same marginal distributions, as in <a href="#fig-two-dists" class="quarto-xref">Figure&nbsp;12</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-two-dists" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-two-dists-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: These two bivariate distributions are quite different yet have the same marginals.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A kernel based on marginal distributions only couldn’t tell distributions with the same marginals but different joint distributions apart – and it’s possible that the relevant signal isn’t contained in the marginals but rather in how the different components are related to each other.</p>
+</section>
+<section id="multivariate-distributions-sliced-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="multivariate-distributions-sliced-wasserstein-distances">Multivariate distributions: Sliced Wasserstein distances</h3>
+<p>Marginal Wasserstein distances are just Wasserstein distances between one-dimensional projections of the distributions. One option to capture some of the difference between the two distributions shown in <a href="#fig-two-dists" class="quarto-xref">Figure&nbsp;12</a> is to project the distributions onto the line of identity and compute the Wasserstein distance between the resulting univariate distributions; see <a href="#fig-projection" class="quarto-xref">Figure&nbsp;13</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-projection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-projection-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Projecting both distributions onto the <span class="math inline">\(x = y\)</span> line results in two different univariate distributions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>sliced Wasserstein distance</strong> generalises this approach: Rather than considering just projections onto the coordinate axes (as for marginal Wasserstein distances) or onto the line of identity (as in the example above), we consider <em>all</em> possible projections on lines through the origin and aggregate the Wasserstein distances between the resulting one-dimensional distributions. In practical terms, we pick a bunch of lines through the origin at random, project the distributions on them, compute the Wasserstein distances between them, and aggregate them.</p>
+<p>Sliced Wasserstein distances are fairly cheap to compute. Crucially, if they are based on <span class="math inline">\(\mathbf{W}_2\)</span> or <span class="math inline">\(\sqrt{\mathbf{W}_1}\)</span> distances between the univariate projections, they are Hilbertian. This means that they can be slotted into the three stationary kernels. Moreover, they take the entire distributions into account, not just their marginals. Sliced Wasserstein distances based on <span class="math inline">\(\mathbf{W}_2\)</span> and <span class="math inline">\(\sqrt{\mathbf{W}_1}\)</span> are denoted as <span class="math inline">\(\mathbf{SW}_2\)</span> and <span class="math inline">\(\sqrt{\mathbf{SW}_1}\)</span>, respectively.</p>
+<p>There are, of course, some disadvantages to using sliced Wasserstein distances.</p>
+<p>First, well, they take into account the <em>entire</em> distributions… This includes aspects that may not be relevant for the regression task, which may downgrade performance.</p>
+<p>Second, sliced Wasserstein distances are scale-sensitive in a more annoying way than Wasserstein and marginal Wasserstein distances are. To elaborate, let’s say we’re comparing distributions of body heights measured in centimetres and find that the Wasserstein distance between them is 6.7. If we re-express the same body heights into millimetres, we’d find that the Wasserstein distance between the distributions is ten times larger, i.e., 67. Wasserstein distances, then, are scale-sensitive. But crucially, in all of the three stationary kernels above, we can simply adjust the length-scale so that the resulting kernel values are still the same.</p>
+<p>This doesn’t quite work for sliced Wasserstein distances. If we have two-dimensional distributions in which one dimension represents body heights and another body weights, re-expressing the body heights from centimetres to millimetres doesn’t have a predictable effect on the distances between the distributions. As a result, we can’t adjust the length-scale of the kernel to absorb changes in the scale of the data. So when working with sliced Wasserstein distances, it’s probably a good idea to standardise the input distributions in some way so that the results don’t depend on the arbitrary scale on which the data are expressed.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Computing sliced Wasserstein distances in R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I wrote the <a href="https://janhove.github.io/slicer"><code>slicer</code></a> package to carry out sliced Wasserstein computations.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Other possibilities
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wasserstein and sliced Wasserstein distances are not the only ways to express differences and similarities between distributions; they are merely the ones that I’m most familiar with because I wrote a thesis on them. For some other options, see Muandet et al.&nbsp;(2017), Szabó et al.&nbsp;(2016), and Székely and Rizzo (2013).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="concept-3-representing-inputs-as-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="concept-3-representing-inputs-as-distributions">Concept 3: Representing inputs as distributions</h2>
+<p>Many important data types don’t occur naturally as rows in a data frame. Consider the following three examples:</p>
+<div class="columns">
+<div class="column" style="width:23%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="caffeine.svg" class="img-fluid figure-img"></p>
+<figcaption>Chemists may prefer to work with graphs representing molecular structures; sociologists may want to work with graphs representing social networks. Illustration: The molecular structure of caffeine, from <a href="https://commons.wikimedia.org/wiki/File:Koffein_-_Caffeine.svg">Wikimedia</a>.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:36%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="wordembeddings.png" class="img-fluid figure-img"></p>
+<figcaption>Word meanings can be represented as points in a multidimensional space by means of semantic embeddings. In a ‘bag of words’ approach, documents can then be represented as point clouds in multidimensional space. Illustration: Figure 1 from Kusner et al.&nbsp;(2015).</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="frequencyprofile.svg" class="img-fluid figure-img"></p>
+<figcaption>The lexical frequency profile of a text can be represented as a histogram of the frequencies (here: Zipf values) of the words occurring in the text. Illustration: own data.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In all of these cases, we can try to represent certain characteristics of the objects (e.g., the mean Zipf value) in <strong>feature vectors</strong> which can then be input into linear regression, random forests, etc. While this inevitably results in a loss of information, the hope is that the feature vector captures the relevant aspects.</p>
+<p>One alternative is to either treat or encode the objects as <strong>probability distributions</strong> in the hopes that this loses less relevant information than a representation by means of a feature vector does. For lexical frequency profiles and point clouds, this representation as a probability distribution is immediate: We treat the lexical frequency profile or the point cloud as an empirical distribution in one- or multidimensional space, respectively. More generally, any time the inputs <span class="math inline">\(x_1, \dots, x_N\)</span> are <span class="math inline">\(n_i \times d\)</span> matrices (with possibly varying row numbers <span class="math inline">\(n_i\)</span>), we can treat them as empirical <span class="math inline">\(d\)</span>-dimensional distributions based on samples of size <span class="math inline">\(n_i\)</span>.</p>
+<p>For graphs such as molecular structures or social networks, a bit more work is required before the machinery introduced above can be brought to bear, but useful encodings of graphs as probability distributions exist; see Carpintero Perez et al.&nbsp;(2024) for an example.</p>
+<p>The third core concept, then, is that if the data don’t naturally occur as rows in a data frame, it may be possible to represent them more faithfully as probability distributions, allowing the Wasserstein–kernel approach to be brought to bear on them.</p>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p>I’m not going to advocate for the whole-scale adoption of kernels methods and Wasserstein and sliced Wasserstein distances in our field. But I think these techniques could on occasion be useful, for instance to gauge if a simpler approach in which the input distributions are summarised through a handful of statistics leaves any money on the table.</p>
+<p>To illustrate what I mean, I present three examples.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Not a tutorial!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This blog post is long and complicated enough as it is. I’d rather not exacerbate this by including lots of R code that takes a fair amount of time to run. Instead, I’ll give a high-level description of what I did. I used similar examples for my thesis, though, and the R code for those is available from <a href="https://github.com/janhove/mscthesis">GitHub</a>.</p>
+</div>
+</div>
+<section id="a-toy-example" class="level3">
+<h3 class="anchored" data-anchor-id="a-toy-example">A toy example</h3>
+<p>Let’s first put the concepts above to the test in a toy example in which the predictive signal is hidden partly in the marginal distributions but mostly in the joint distributions.</p>
+<p><strong>Data.</strong> <a href="#fig-toy_example" class="quarto-xref">Figure&nbsp;14</a> shows the set-up: Empirical distributions are generated from bivariate Gaussian mixtures with four isotropic components laid out symmetrically around the origin. These distributions differ from one another in that they are rotated counterclockwise by an angle <span class="math inline">\(\omega \in [0, 3\pi/8]\)</span>. The goal of the analysis is to retrieve the specific angles by which the distributions have been rotated.</p>
+<div id="fig-toy_example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy_example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="toy_example.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy_example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Each input distribution is a realisation of a Gaussian mixture with four components laid out symmetrically around the origin. The distributions are rotated counterclockwise by an angle <span class="math inline">\(\omega\)</span>, which serves as the outcome to be predicted; in the examples, <span class="math inline">\(\omega = \pi/16\)</span> (about 11 degrees) and <span class="math inline">\(3\pi/8\)</span> (about 68 degrees).
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A specially constructed example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This example is constructed in such a way that the means of the distributions carry no information about the rotation angle <span class="math inline">\(\omega\)</span>. Moreover, the marginal distributions carry <em>some</em> but not all information: the marginal distributions are the same for a rotation angle of <span class="math inline">\(\pi/4 + \delta\)</span> as for a rotation angle of <span class="math inline">\(\pi/4 - \delta\)</span>. As a result, a model relying on the marginal distributions only can’t distinguish between, say, <span class="math inline">\(\omega = \pi/6 = \pi/4 - \pi/12\)</span> and <span class="math inline">\(\omega = \pi/3 = \pi/4 + \pi/12\)</span>. Rotation angles in <span class="math inline">\([0, \pi/8)\)</span>, by contrast, don’t have a ‘mirror distribution’ with identical marginals, so models relying on marginal distributions should perform well on these. The joint distributions, however, are in principle distinguishable for any <span class="math inline">\(\omega \in [0, 3\pi/8]\)</span>.</p>
+<p>All this means that we expect a model based on means not to outperform the baseline at all, whereas a model based on the marginal distributions will do so. However, both models will be outperformed by models that also take into account the joint distributions.</p>
+</div>
+</div>
+</div>
+<p>I sampled rotation angles <span class="math inline">\(\omega_i \sim \textrm{Uniform}([0, 3\pi/8])\)</span> independently, <span class="math inline">\(i = 1, \dots, 150\)</span>, and used these to generate <span class="math inline">\(N = 150\)</span> empirical distributions <span class="math inline">\(P_1, \dots, P_N\)</span> based on <span class="math inline">\(n = 100\)</span> observations each.</p>
+<p><strong>Analysis.</strong> Fifty distributions served as the training set; the remaining hundred as the test set. I fitted four Gaussian process models using the training set.</p>
+<ol type="1">
+<li>A model using kernels based on the distributions’ means in the first and second dimension.</li>
+<li>A model using kernels based on the marginal Wasserstein distances (of order <span class="math inline">\(p = 2\)</span>) between the distributions.</li>
+<li>A model like in 2. but additionally using a sliced Wasserstein kernel (of order <span class="math inline">\(p = 2\)</span>) after applying the probability integral transform to the distributions’ marginals. This transformation throws away the information about the marginal distributions but retains information about the association between the two dimensions (the so-called ‘copula’). By comparing this model’s performance to that of the previous one, we get an idea of whether there’s any predictively useful information in the distributions that’s not already captured by their marginals.</li>
+<li>A model using a sliced Wasserstein kernel (of order <span class="math inline">\(p = 2\)</span>) on the raw input distributions. Like the third model, this model takes into account the entire distributions. The difference is that the third model could in principle assign greater weight to the marginal distributions (i.e., projections along the cardinal axes) via the separate kernels it uses, whereas this model weighs all projection directions equally.</li>
+</ol>
+<p>All kernels were radial basis function kernels with tuned hyperparameters. For models based on several kernels, these were added together; this amounts to modelling main effects of the different kernels.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Metrics of model performance
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The fit of the predictions to the test data was assessed through the root mean squared error (RMSE) and the negative log predictive density (NLPD). The RMSE purely assesses fit of the predictions to the test data and is defined as <span class="math display">\[\sqrt{\frac{1}{n}\sum_{i=1}^n(y_i - \hat y_i)^2},\]</span> where <span class="math inline">\(y_1, \dots, y_n\)</span> are the true outcomes in the test set and <span class="math inline">\(\hat y_1, \dots, \hat y_n\)</span> are the corresponding predicted outcomes.</p>
+<p>Gaussian process regression models don’t just produce point predictions; they generate an entire joint distribution for the predictions. This distribution takes the form of a Normal distribution with a mean vector <span class="math inline">\(\hat{\boldsymbol \mu} = (\hat y_1, \dots, \hat y_n)^{\top}\)</span> and a covariance matrix <span class="math inline">\(\hat{\boldsymbol \Sigma} \in \mathbb{R}^{n \times n}\)</span>. The NLPD is defined as <span class="math display">\[-\log p(y_1, \dots, y_n; \hat{\boldsymbol \mu}, \hat{\boldsymbol \Sigma}),\]</span> where <span class="math inline">\(p(\cdot; \hat{\boldsymbol \mu}, \hat{\boldsymbol \Sigma})\)</span> denotes the density function of the <span class="math inline">\(n\)</span>-variate Normal distribution with mean vector <span class="math inline">\(\hat{\boldsymbol \mu}\)</span> and covariance matrix <span class="math inline">\(\hat{\boldsymbol \Sigma}\)</span>.</p>
+<p>In crossvalidation, I use the average NLPD instead of the formula above. That is, I compute the NLPD for each (univariate) prediction and then average these values.</p>
+<p>Both metrics have in common that ‘lower is better’.</p>
+</div>
+</div>
+</div>
+<p><strong>Results.</strong> The table below summarises the results of the different models. A baseline model that just assigns the training set mean to the test set observations has a RMSE of <span class="math inline">\(0.33\)</span> radians.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(1) Means</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(2) Marginal <span class="math inline">\(\mathbf{W}_2\)</span></td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(3) Marginal <span class="math inline">\(\mathbf{W}_2\)</span> + <span class="math inline">\(\mathbf{SW}_2\)</span> copula</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-1.11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(4) <span class="math inline">\(\mathbf{SW}_2\)</span></td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-1.40</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#fig-toy_example_results" class="quarto-xref">Figure&nbsp;15</a> shows the models fits graphically.</p>
+<div id="fig-toy_example_results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy_example_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="toyexample_results.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy_example_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Model 1 doesn’t capture any signal; Model 2 captures part of it; and Models 3 and 4 fit the data well.
+</figcaption>
+</figure>
+</div>
+<p><strong>Discussion.</strong> The results match our expectations. Relying on merely the means throws away <em>all</em> predictive information in the inputs: the first model doesn’t perform better than the baseline. Adding the marginal distributions improves performance considerably, but as a comparison of models 2 and 3 reveals, a lot of information is contained in the copula (i.e., in how both variables are associated). The two models based on sliced Wasserstein distances that take into account the whole distributions (rather than just the marginals) correspondingly outperform the other models.</p>
+<p>Of course, this example is extremely artificial. But it does show that, in principle, this approach can help analysts to identify situations in which relying on summary statistics throws away useful information.</p>
+<p>Let’s now turn to two more realistic examples.</p>
+</section>
+<section id="lexical-frequency-profiles-for-text-quality-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="lexical-frequency-profiles-for-text-quality-predictions">Lexical frequency profiles for text-quality predictions</h3>
+<p><strong>Context.</strong> In Vanhove et al.&nbsp;(2019), we had raters evaluate over 3,000 texts in terms of their lexical richness. We then tried to build models that predict these ratings by means of indices that can be computed more or less automatically from the texts. One of these was the mean of the distribution of the frequencies of the lemmata encountered in the text according to an external corpus (“lexical frequency profiles”). Could we improve such models by taking the whole frequency distributions into account rather than just their means?</p>
+<p><strong>Data.</strong> The dataset comprises 3,060 short narrative and argumentative texts in French, German, and Portuguese (about 1,000 texts per language). These texts were written by children living in Switzerland and Portugal aged between about 8 and 10 years, and the median text lengths were 37, 33, and 39 tokens, respectively. These texts were corrected morphosyntactically, orthographically, and in terms of their punctuation before rating and lexical analysis.</p>
+<p>For each language, the texts were split up into twenty batches of 50 to 52 texts. Each batch was rated by a separate panel of untrained adult native speakers of the language in question. These raters were asked to rate the lexical richness of each of the 50–52 texts on a scale from 1 (worst) to 9 (best). Each batch was rated by between three and eighteen raters, with the average number of raters being 7.3 for French, 16.1 for German, and 5.3 for Portuguese. The mean rating per text serves as the text-quality rating to be predicted.</p>
+<p><strong>Lexical metrics.</strong> The lexical metrics used in this reanalysis are the same as those used in one of the models we fitted in Vanhove et al.&nbsp;(2019). I refer to these metrics as the ‘volume’, ‘variability’, ‘evenness’, ‘disparity’, ‘dispersion’, and ‘rarity’ predictors. As far as the first five of these predictors are concerned, the details don’t matter for our present purposes; please refer to the original article if you’re interested.</p>
+<p>It is the sixth predictor, rarity, that is the focus of this reanalysis. It consists of the mean Zipf score of the unique lemmata in the text. The Zipf score is a transformation of corpus frequency that is thought to better capture language users’ perception of the relative frequency of words (van Heuven et al.&nbsp;2014).</p>
+<p><strong>Reanalysis.</strong> For the original article, we split up the dataset into sixteen batches of texts per language for training the models and four batches per language for testing them. For the reanalysis, I’ll do the same, using the same training and testing split as in the original.</p>
+<p>In the original article, we used generalised additive models. For this reanalysis, I’ll use Gaussian process regression even for the models that don’t include distributional inputs. The reason is that I don’t want the comparisons between the models to be tainted by differences in the models’ architectures.</p>
+<p>For each of the six metrics, I constructed a squared-exponential kernel. Additionally, I constructed squared-exponential kernels for two distributional inputs: the Zipf frequency scores of the unique lemmata occurring in the texts, and the mean-centred version of these Zipf scores.</p>
+<p>For each language, I fitted four models:</p>
+<ol type="1">
+<li>A model using the kernels based on the volume, variability, evenness, disparity, and dispersion predictors to see how well a baseline model without frequency information would fare.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>A model that additionally included a kernel based on the rarity predictor (i.e., mean frequency).</li>
+<li>A model using the same kernels as in 1., but adding a kernel based on the <span class="math inline">\(\mathbf{W}_2\)</span> distances between the lexical frequency profiles.</li>
+<li>A model using the same kernels as in 2. (i.e., kernels for all 6 dimensions), but adding a kernel based on the <span class="math inline">\(\mathbf{W}_2\)</span> distances between the mean-centred lexical frequency profiles. The idea is to see if information about the <em>shape</em> as opposed to the <em>location</em> of the lexical frequency profiles has some predictive value.</li>
+</ol>
+<p><strong>Results.</strong> The table below summarises the test set performance of the four models for each of the three languages.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 39%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Language</th>
+<th style="text-align: left;">Zipf included?</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">French</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">1.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">1.39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">German</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">1.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">1.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">1.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">1.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Portuguese</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">1.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">1.29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1.30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">1.30</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Discussion.</strong> For all three languages, adding a kernel based on the mean Zipf scores improves model performance. Comparing models (4) to (2), however, shows that that adding information about the shape of the distributions doesn’t improve the models any further. Comparing models (3) to (2) confirms this: if the non-centred distributions are fed to a kernel, the models perform similarly to when the distribution means are used, not better.</p>
+<p>For these short texts, then, we don’t find evidence that the mean of the Zipf scores throws away predictively useful information about the texts’ lexical profiles. It is, of course, quite possible that longer texts would have allowed us to pick up on predictively useful differences between the shapes of the distributions. Another caveat is that I didn’t go the whole hog and try out different types of kernel, but I doubt that the results would look much different if I’d used Matérn or power exponential kernels or kernels based on <span class="math inline">\(\sqrt{\mathbf{W}_1}\)</span> distances instead.</p>
+</section>
+<section id="hippocampi-as-distributions-of-neuron-properties" class="level3">
+<h3 class="anchored" data-anchor-id="hippocampi-as-distributions-of-neuron-properties">Hippocampi as distributions of neuron properties</h3>
+<p>The previous example featured lots of univariate distributions based on fairly small samples; the present one features a handful of multivariate distributions based on large samples.</p>
+<p><strong>Context and data.</strong> Eckermann et al.&nbsp;(2021) studied the hippocampi of twenty diseased individuals. Skipping over many details, each of these hippocampi was represented by an <span class="math inline">\(n_i \times 5\)</span> matrix, with the number of rows <span class="math inline">\(n_i\)</span> varying from 2,748 to 37,348 (median: 17,069). Each of these rows represented a neuron detected in the hippocampus in terms of five measurements; again the details are not crucial for our purposes. What is important, though, is that these five properties were measured on entirely different scales. <a href="#fig-eckermann" class="quarto-xref">Figure&nbsp;16</a> shows what the data for one of the twenty hippocampi look like.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-eckermann" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eckermann-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-eckermann-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eckermann-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: The marginal distributions of and pairwise associations between the neuron measurements in one of the twenty hippocampi in Eckermann et al.’s (2021) study. The bottom triangle shows Pearson correlation coefficients.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For the purposes of this reanalysis, the goal is to build a predictive model of the entropy of the first variable (Neighbours) using the information contained in the other four variables. This wasn’t Eckermann et al.’s goal, but it illustrates how the techniques discussed in this post can be put to use; the entropy outcome is merely an arbitrary target.</p>
+<p><strong>Analysis.</strong> Since the number of input matrices is small (<span class="math inline">\(N = 20\)</span>), I used leave-one-out crossvalidation (LOOCV) to compare the predictive accuracy of the different models. This means that the outcome value of each hippocampus was predicted based on models that were trained only on the other nineteen hippocampi.</p>
+<p>I fitted a number of different models. Like in the previous examples, all kernels used were squared-exponential kernels.</p>
+<ol type="1">
+<li>A model using kernels based on the <em>medians</em> of the distributions of the other four variables (four kernels in total). I used the medians because of the strong skew in some of the variables.</li>
+<li>A model using kernels based on the <span class="math inline">\(\mathbf{W}_2\)</span> distances between the marginal distributions of each variable (four kernels in total).</li>
+<li>A model using kernels based on the <span class="math inline">\(\mathbf{W}_2\)</span> distances between the marginal distributions of each variable as well as a kernel based on the sliced Wasserstein (of order <span class="math inline">\(p = 2\)</span>) between the four distributions after applying the probability integral transform to its four marginals (five kernels in total).</li>
+<li>A model using a kernel based on the sliced Wasserstein distances (of order <span class="math inline">\(p = 2\)</span>) between the scaled four-dimensional distributions (one kernel in total).</li>
+</ol>
+<p>Some further explanation:</p>
+<ul>
+<li>By comparing model (2) to model (1), we can gauge if there is any predictively useful information in the marginal distributions that isn’t captured by their medians.</li>
+<li>If model (3) performs better than models (2) and (1), this suggests that the distributions contain predictively useful information that isn’t even captured by their marginals. That is, there may be some useful information in how the variables within each distribution are related to each other (i.e., in the copula).</li>
+<li>Since sliced Wasserstein distances are scale-sensitive, each input distribution is scaled as follows for the fourth model. When predicting the <span class="math inline">\(i\)</span>-th outcome, I computed a pooled estimate of the joint covariance matrix of the other nineteen distributions as <span class="math display">\[\widehat{\boldsymbol{\Sigma}}_i = \frac{1}{19}\sum_{j \neq i}\widehat{\boldsymbol{\Sigma}}(\boldsymbol{M}_j),\]</span> where <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}(\boldsymbol{M}_j)\)</span> is the usual sample estimate of the covariance matrix based on data matrix <span class="math inline">\(\boldsymbol{M}_j\)</span>. The input matrices were then scaled as <span class="math display">\[\widetilde{\boldsymbol{M}}_k = \boldsymbol{M}_k\boldsymbol{S}_i,\]</span> where <span class="math inline">\(\boldsymbol{S}_i\)</span> is the diagonal matrix containing the multiplicative inverses of the square roots of the diagonal elements of <span class="math inline">\(\widehat{\boldsymbol{\Sigma}}_i\)</span>, <span class="math inline">\(k = 1, \dots, 20\)</span>.</li>
+</ul>
+<p><strong>Results.</strong> The following table summarises how well each model predicted the out-of-fold data. For the NLPD, both the mean and the standard deviation over the twenty outcomes are shown. For reference, a baseline model that does not take into account any predictors and just outputs the mean of the training set outcome scores an RMSE of 0.165.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 70%">
+<col style="width: 7%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD (mean <span class="math inline">\(\pm\)</span> SD)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(1) Medians</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">12.42 <span class="math inline">\(\pm\)</span> 22.83</td>
+</tr>
+<tr class="even">
+<td>(2) Marginal <span class="math inline">\(\mathbf{W}_2\)</span></td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.59 <span class="math inline">\(\pm\)</span> 2.10</td>
+</tr>
+<tr class="odd">
+<td>(3) Marginal <span class="math inline">\(\mathbf{W}_2\)</span> + <span class="math inline">\(\mathbf{SW}_2\)</span> on copula</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.70 <span class="math inline">\(\pm\)</span> 1.63</td>
+</tr>
+<tr class="even">
+<td>(4) <span class="math inline">\(\mathbf{SW}_2\)</span> on scaled inputs</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.36 <span class="math inline">\(\pm\)</span> 0.99</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#fig-results-brains" class="quarto-xref">Figure&nbsp;17</a> shows the fit of the predictions to the true values; points close to the dashed line represent more accurate predictions.</p>
+<div id="fig-results-brains" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-results-brains-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="brain_results.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-results-brains-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: The out-of-fold predictions of the entropy outcome.
+</figcaption>
+</figure>
+</div>
+<p><strong>Discussion.</strong> The medians-only model outperforms the models based on marginal Wasserstein distances and on sliced Wasserstein distances in terms of the RMSE. However, the large mean NLPD value for this model, coupled with a large standard deviation, shows that for some out-of-fold predictions, the model’s uncertainty estimates were badly overconfident.</p>
+<p>Still, the comparison of model (1) on the one hand and models (2) through (4) the other highlights that the Wasserstein–kernel approach isn’t a silver bullet. The median representations may be serviceable (in terms of their RMSE) precisely because they do <em>not</em> capture the full (joint or marginal) distributions; the Wasserstein-based kernels capture these warts and all (i.e., distributional aspects that simply aren’t relevant to the task at hand).</p>
+<p>Further, each input distribution in the present example is based on a substantial number of observations, but only few distributions were available to train and evaluate the regression models on, and the models may struggle to find adequate hyperparameter values that allow them to outperform this simpler representation.</p>
+<p>Finally, a model using both the marginal Wasserstein distances and a kernel based on the sliced Wasserstein distances between the copulae (i.e., the dependency structure between the variables) seems to perform best of all. This could suggest that some of the relevant information in the data isn’t contained in the marginal distributions but rather in the associations between the different variables. But with <span class="math inline">\(N = 20\)</span>, these speculations are tenuous at best.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>One way to check if summarising input distributions by a mean, median or some other small number of statistics loses useful information is to compute the (sliced) Wasserstein distances between them and then use these distances in a kernel-based model such as Gaussian process regression. If this model predicts new data no better than the summary-based model, the summary probably wasn’t losing a lot of useful information. If it does better, it may be worth examining the distributions to figure out what the summaries missed and how to capture it better.</p>
+<p>The first example shows the promise of this approach. The signal was hidden entirely in the shape of the distribution rather than in their location. The sliced Wasserstein-based approach was able to demonstrate that the summary-based model missed crucial information. The other two more realistic examples, meanwhile, underscore the limits of the approach: models that take into account richer representations of the inputs don’t have to outperform models based on leaner representations. Of course, it’s always possible that with more data (longer texts, more hippocampi), a model incorporating sliced Wasserstein distances could find some additional signal in the richer distributional representations. But for the data at hand, this does not seem to have been the case.</p>
+<p>In sum, the approach above doesn’t turbo-charge predictive models derived from distributional inputs. But it may serve as a diagnostic tool to check if models based on summary statistics are leaving money on the table.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Carpintero Perez, Raphaël, Sébastian Da Veiga, Josselin Garnier and Brian Staber. 2024. <a href="https://proceedings.mlr.press/v238/carpintero-perez24a.html">Gaussian process regression with sliced Wasserstein Weisfeiler–Lehman graph kernels.</a> <em>Proceedings of Machine Learning Research</em> 238. 1297–1305.</p>
+<p>Eckermann, Marina, Bernhard Schmitzer, Franziska van der Meer, Jonas Franz, Ove Hansen, Christine Stadelmann and Timm Salditt. 2021. <a href="https://doi.org/10.1073/pnas.2113835118">Three-dimensional virtual histology of the human hippocampus based on phase-contrast computed tomography.</a> <em>PNAS</em> 118(48). e2113835118.</p>
+<p>Görtler, Joachim, Rebecca Kehlbeck and Oliver Deussen. 2019. <a href="https://doi.org/10.23915/distill.00017">A visual exploration of Gaussian processes.</a> <em>Distill.</em></p>
+<p>Kusner, Matt, Yu Sun, Nicholas Kolkin and Kilian Weinberger. 2015. <a href="https://proceedings.mlr.press/v37/kusnerb15">From word embeddings to document distances.</a> <em>Proceedings of Machine Learning Research</em> 37. 957–966.</p>
+<p>Muandet, Krikamol, Kenji Fukumizu, Bharath Sriperumbudur and Bernhard Schölkopf. 2017. <a href="https://doi.org/10.1561/220000006">Kernel mean embedding of distributions: A review and beyond.</a> <em>Foundations and Trends in Machine Learning</em> 10(1-2). 1–141.</p>
+<p>Rasmussen, Carl Edward and Christopher K. I. Williams. 2006. <a href="https://gaussianprocess.org/gpml/"><em>Gaussian processes for machine learning.</em></a> MIT Press.</p>
+<p>Szabó, Zoltán, Bharath K. Sriperumbudur, Barnabás Póczos and Arthur Gretton. 2016. <a href="https://www.jmlr.org/papers/v17/14-510.html">Learning theory for distribution regression.</a> <em>Journal of Machine Learning Research</em> 17(152). 1–40.</p>
+<p>Székely, Gábor J. and Maria L. Rizzo. 2013. <a href="https://doi.org/10.1016/j.jspi.2013.03.018">Energy statistics: A class of statistics based on distances.</a> <em>Journal of Statistical Planning and Inference</em> 143(8). 1249–1272.</p>
+<p>van Heuven, Walter J. B., Pawel Mandera, Emmanuel Keuleers and Marc Brysbaert. 2014. <a href="https://doi.org/10.1080/17470218.2013.850521">SUBTLEX-UK: A new and improved frequency database for British English.</a> <em>Quarterly Journal of Experimental Psychology</em> 67(6). 1176–1190.</p>
+<p>Vanhove, Jan. 2026. <a href="https://janhove.github.io/SlicedWasserstein_Vanhove.pdf"><em>Sliced Wasserstein distances and their application to regression problems.</em></a> Master’s thesis. University of Bern.</p>
+<p>Vanhove, Jan, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019. <a href="https://doi.org/10.17239/jowr-2019.10.03.04">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts using text-based indices.</a> <em>Journal of Writing Research</em> 10(3). 499–525.</p>
+<p>Wang, Jie. 2024. <a href="https://arxiv.org/abs/2009.10862">An intuitive tutorial to Gaussian process regression.</a> <em>arXiv</em>.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>First, for any two objects <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span>, <span class="math inline">\(x\)</span> must be as similar to <span class="math inline">\(x'\)</span> as <span class="math inline">\(x'\)</span> is to <span class="math inline">\(x\)</span>. Second, if you put the pairwise similarities between the objects <span class="math inline">\(x_1, \dots, x_n\)</span> in a matrix, <span class="math inline">\(K = (k(x_i, x_j))_{i,j = 1}^n\)</span> the matrix must be positive semi-definite for any possible choice of <span class="math inline">\(n\)</span> input objects and for any <span class="math inline">\(n\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The different kernels were added together after their scaling factors and length-scales were tuned.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/janhove\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

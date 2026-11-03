@@ -9,8 +9,2063 @@
 <link>https://janhove.github.io/archive.html</link>
 <atom:link href="https://janhove.github.io/archive.xml" rel="self" type="application/rss+xml"/>
 <description>I blog about research design and statistics, often using examples from research on language learning.</description>
-<generator>quarto-1.10.19</generator>
-<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.11.9</generator>
+<lastBuildDate>Tue, 03 Nov 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>What’s lost by summarising distributions to obtain predictors?</title>
+  <dc:creator>Jan Vanhove</dc:creator>
+  <link>https://janhove.github.io/posts/2026-11-03-distribution-regression/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>It’s common for researchers to reduce the objects in which they’re interested to a handful of summary statistics before submitting them to a statistical model. For instance, applied linguists interested in modelling text-quality ratings may want to take into account the rarity of the words used in the texts. To do so, they may look up the corpus frequency of each word used in the text, summarise the resulting distributions through their mean or median, and use these summaries in a linear regression model. But was any predictively useful information about the frequency distributions lost by reducing them to summary statistics? This blog post explains one way in which statistical models can be built that address this and similar questions by representing the input objects as full-fledged probability distributions.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>tl;dr
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Summarising distributions so that they can be used as predictors in statistical models may discard predictive information. It is possible to take into account full distributions (including multivariate ones) as inputs in predictive models by computing well-behaved distances between these distributions. If a model using these distances doesn’t outperform the model based on summary statistics on test data or in cross-validation, then the summary probably wasn’t losing much predictively relevant information. If it does, this may motivate a closer look at the input distributions to uncover which relevant aspects of them were glossed over by the summary statistics.</p>
+</div>
+</div>
+<section id="roadmap" class="level2">
+<h2 class="anchored" data-anchor-id="roadmap">Roadmap</h2>
+<p>The idea is to compare the fit of predictive models in which the inputs are represented using summary statistics to ones in which the inputs are represented as full-fledged probability distributions. Before we can do so, we need to do some <em>mise en place</em>.</p>
+<p>The first ingredient is that the most commonly used statistical methods in the social sciences (e.g., linear regression models) expect each input to be a row of numbers. Probability distributions are more complicated than such inputs, however. So instead, we’re going to use models that rely only on the pairwise similarities between the inputs. The first concept that I’ll discuss below, then, is <strong>similarity-based statistics</strong>.</p>
+<p>Once we know how we can build statistical models based on pairwise similarities between the inputs, we still need a way to express similarities between probability distributions. To this end, we’re going to first compute distances between probability distributions, and then use these distances to express similarities. The second concept, then, concerns <strong>distances between distributions</strong>.</p>
+<p>The third core idea is that a fair number of data structures that social scientists work with can be understood or represented as probability distributions. I’ll give some examples under the heading <strong>representing inputs as distributions</strong>.</p>
+<p>With a basic appreciation of these three core concepts, we can finally turn to a few examples.</p>
+</section>
+<section id="concept-1-similarity-based-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="concept-1-similarity-based-statistics">Concept 1: Similarity-based statistics</h2>
+<p>The most widely used tools for tackling classification and regression problems in the social sciences expect inputs to be represented as rows in a data frame. For instance, in linear regression, a participant’s predictor data may be represented as three numbers representing their sex, age, and language aptitude test score (i.e., a vector in three-dimensional Euclidean space), and their outcome data would be another number representing their L2 test score.</p>
+<p>But certain statistical tools, including <strong>Gaussian process regression</strong> and <strong>support vector machines</strong>, don’t rely on such explicit representations of the predictor data. Instead, they rely on a notion of the pairwise similarities between different observations. The intuition behind tools based on pairwise similarities is that the prediction for a new observation is obtained from the outcomes of the known observations that are most similar to it. If you want to learn more about Gaussian process regression, Görtler et al.&nbsp;(2019) provide a wonderful <a href="https://doi.org/10.23915/distill.00017">interactive introduction</a>. For another concise introduction, see Wang (2024); for a longer treatment, refer to Rasmussen and Williams (2006).</p>
+<p>We can’t define the pairwise similarities willy-nilly, however: our notion of similarity needs to satisfy a number of technical conditions.<sup>1</sup> If a function that takes in any two observations <img src="https://latex.codecogs.com/png.latex?x_i"> and <img src="https://latex.codecogs.com/png.latex?x_j"> outputs a valid similarity score <img src="https://latex.codecogs.com/png.latex?k(x_i,%20x_j)">, we call it a <strong>kernel</strong>.</p>
+<p>There exists a whole host of different functions that may serve as kernels, and different kernels correspond to different notions of similarity. On his blog <a href="https://anhosu.com/post/kernels-r/"><em>Local optima</em></a>, Anders Nielsen gives an extensive overview of the kernels that can be used in Gaussian process regression. For the purposes of this blog post, though, only so-called <strong>stationary kernels</strong> are relevant. These are kernels that depend only on the distance between the inputs <img src="https://latex.codecogs.com/png.latex?x_i"> and <img src="https://latex.codecogs.com/png.latex?x_j">, and not on the inputs themselves: the smaller the distance between the inputs, the greater the kernel value between them, that is, the greater their similarity. I elaborate on three types of stationary kernel in the collapsed info box below, but the main thing to appreciate is that the choice of kernel determines which kind of relationships between the input and the outcome the model accommodates. If you play around with the Shiny applet below, you’ll see this principle in action.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Three types of stationary kernel
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true" href="">Squared exponential kernel</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false" href="">Power exponential kernel</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" aria-controls="tabset-1-3" aria-selected="false" href="">Matérn kernel</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<p>The <strong>squared exponential kernel</strong>, also called the <strong>Gaussian kernel</strong> or the <strong>radial basis function kernel</strong>, is defined as</p>
+<p><img src="https://latex.codecogs.com/png.latex?k(x_i,%20x_j)%20=%20s%5E2%5Cexp%5Cleft(-%5Cfrac%7Bd(x_i,%20x_j)%5E2%7D%7B2t%5E2%7D%5Cright),"></p>
+<p>with a scaling factor <img src="https://latex.codecogs.com/png.latex?s%5E2%20%3E%200"> and a length-scale <img src="https://latex.codecogs.com/png.latex?t%20%3E%200"> as hyperparameters. The kernel earns one of its monikers from its resemblance to the density function of the Gaussian (Normal) distribution; see Figure&nbsp;1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">from =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">to =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Distance"</span>,</span>
+<span id="cb1-2">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Kernel value"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span id="cb1-3">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Squared exponential kernel"</span>,</span>
+<span id="cb1-4">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-se-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-se-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-se-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-se-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The squared exponential kernel with <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It assigns large covariances to inputs that lie close to each other but near-zero covariances to inputs that are more distant. As a result, a model using this kernel can accommodate nonlinear relationships. Since the drop-off in the function graph above starts out fairly mildly, these expected nonlinear relationships are smooth.</p>
+<p>This is visible in the plots in Figure&nbsp;2. The plot on the left visualises the kernel/covariance matrix: neighbouring values have high covariances, distant values have low covariances. The plot on the right illustrates the type of association between the predictor and the outcome that a Gaussian process regression model with this kind of covariance matrix anticipates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Plotting function</span></span>
+<span id="cb2-2">plot_gpr <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, K, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>) {</span>
+<span id="cb2-3">  cols <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> RColorBrewer<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">brewer.pal</span>(n, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dark2"</span>)</span>
+<span id="cb2-4">  Y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> MASS<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mvrnorm</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> n, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mu =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(x)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Sigma =</span> K)</span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Y[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, ], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">range</span>(Y), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb2-6">     <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> main, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>)</span>
+<span id="cb2-7">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq_len</span>(n)) {</span>
+<span id="cb2-8">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">points</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> Y[i, ], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">type =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"l"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[i])</span>
+<span id="cb2-9">  }</span>
+<span id="cb2-10">}</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">draw_all <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, K, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>) {</span>
+<span id="cb2-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">layout</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">widths =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.2</span>))</span>
+<span id="cb2-14">  corrplot<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">corrplot</span>(K, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">is.corr =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"color"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">tl.pos =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>)</span>
+<span id="cb2-15">  x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">length.out =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ncol</span>(K))</span>
+<span id="cb2-16"></span>
+<span id="cb2-17">  wanted <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb2-18">  pos <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sapply</span>(wanted, <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(v) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which.min</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> v)))</span>
+<span id="cb2-19">  n <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ncol</span>(K)</span>
+<span id="cb2-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> pos, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> n <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> wanted, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xpd =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>)</span>
+<span id="cb2-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> n <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pos <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> wanted, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xpd =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>)</span>
+<span id="cb2-22"></span>
+<span id="cb2-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mtext</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Covariance matrix"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">line =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">font =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-24"></span>
+<span id="cb2-25">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_gpr</span>(x, K, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Four draws from prior distribution"</span>)</span>
+<span id="cb2-26">}</span>
+<span id="cb2-27"></span>
+<span id="cb2-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Predictor data and distances between them</span></span>
+<span id="cb2-29">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span>)</span>
+<span id="cb2-30">D <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">outer</span>(x, x, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>()</span>
+<span id="cb2-31"></span>
+<span id="cb2-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># SE kernel</span></span>
+<span id="cb2-33">K_rbf <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>D<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-34"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_rbf)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-se-kernel-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-se-kernel-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-se-kernel-prior-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-se-kernel-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Covariance matrix (left) and a few possible anticipated relationships (right) when using a squared exponential kernel with <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">. This kernel makes the model accommodate smooth relationships.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<p>The <strong>power exponential kernel</strong> is a generalisation of the squared exponential kernel: <img src="https://latex.codecogs.com/png.latex?k(x_i,%20x_j)%20=%0As%5E2%5Cexp%5Cleft(-%5Cleft(%5Cfrac%7Bd(x_i,%20x_j)%7D%7Bt%7D%5Cright)%5E%7B%5Ckappa%7D%5Cright)"> with an additional hyperparameter <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20%5Cin%20(0,%202%5D">. For <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%202">, we obtain a squared exponential kernel with length-scale <img src="https://latex.codecogs.com/png.latex?t/%5Csqrt%7B2%7D">.</p>
+<p>The graph below shows how the kernel values depend on <img src="https://latex.codecogs.com/png.latex?%5Ckappa">. Note that for lower values of <img src="https://latex.codecogs.com/png.latex?%5Ckappa">, more distant observations (beyond the length-scale <img src="https://latex.codecogs.com/png.latex?t">) tend to have larger covariances than for higher values of <img src="https://latex.codecogs.com/png.latex?%5Ckappa">.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">cols <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> RColorBrewer<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">brewer.pal</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dark2"</span>)</span>
+<span id="cb3-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(x)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">from =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">to =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Distance"</span>,</span>
+<span id="cb3-3">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Kernel value"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span id="cb3-4">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],</span>
+<span id="cb3-5">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Power exponential kernels"</span>,</span>
+<span id="cb3-6">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span>
+<span id="cb3-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(x)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(x)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">legend</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"topright"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols,</span>
+<span id="cb3-10">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb3-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(kappa <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb3-12">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(kappa <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb3-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(kappa <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-14">  ), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-15">)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-pe-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The power exponential kernels for <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%201/2,%201,%203/2"> with <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This is reflected in kinds of relationship that the model anticipates, as shown in Figure&nbsp;4, Figure&nbsp;5, and Figure&nbsp;6.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">K_pe32 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>D<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_pe32)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-pe-kernel-prior-32-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%203/2">, <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">K_pe1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>D)</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_pe1)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-pe-kernel-prior-1-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%201">, <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">K_pe12 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(D))</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_pe12)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-pe-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pe-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-pe-kernel-prior-12-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pe-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Covariance matrix (left) and a few possible anticipated relationships (right) when using a power exponential kernel with <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%201/2">, <img src="https://latex.codecogs.com/png.latex?s%5E2%20=%201"> and <img src="https://latex.codecogs.com/png.latex?t%20=%201">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <img src="https://latex.codecogs.com/png.latex?%5Ckappa"> parameter, then, allows you to fiddle with the degree of smoothness of the expected relationships.</p>
+</div>
+<div id="tabset-1-3" class="tab-pane" aria-labelledby="tabset-1-3-tab">
+<p>An alternative way to fiddle with the degree of smoothness of the expected relationships is to turn to the <strong>Matérn covariance functions</strong>. The definition of this family of kernels is fairly complicated, but the important thing is that they have a smoothness parameter <img src="https://latex.codecogs.com/png.latex?%5Cnu">. Lower values of <img src="https://latex.codecogs.com/png.latex?%5Cnu"> correspond to more jagged anticipated relationships; higher values to smoother anticipated relationships. The values <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2,%203/2,%205/2"> are popular because, for these values, the function can be expressed fairly easily.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">matern <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(d, nu, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rho =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) {</span>
+<span id="cb7-2">  val <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> nu) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gamma</span>(nu) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> nu) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> d <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> rho)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span>nu <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">besselK</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>nu)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>d<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>rho, nu)</span>
+<span id="cb7-3">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.matrix</span>(val)) <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">diag</span>(val) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb7-4">  val[d <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb7-5">  val</span>
+<span id="cb7-6">}</span>
+<span id="cb7-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nu =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">from =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">to =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Distance"</span>,</span>
+<span id="cb7-8">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylab =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Kernel value"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span id="cb7-9">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">main =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Matérn kernels"</span>,</span>
+<span id="cb7-10">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>],</span>
+<span id="cb7-11">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ylim =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb7-12">      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">bty =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"n"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">las =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb7-13"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nu =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb7-14"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">curve</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nu =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">add =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb7-15"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">legend</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"topright"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col =</span> cols,</span>
+<span id="cb7-16">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb7-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(nu <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb7-18">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(nu <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb7-19">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bquote</span>(nu <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb7-20">  ), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lty =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lwd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb7-21">)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-matern-kernel-1.svg" class="img-fluid figure-img" style="width:4in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: The Matérn kernels for <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2,%203/2,%205/2">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see the effect of the smoothness parameter in Figure&nbsp;8, Figure&nbsp;9, and Figure&nbsp;10. Incidentally, the Matérn kernel with <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2"> is identical to the power exponential kernel with <img src="https://latex.codecogs.com/png.latex?%5Ckappa%20=%201">.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">K_matern52 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(D, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb8-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_matern52)</span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-52" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-52-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-matern-kernel-prior-52-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-52-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%205/2">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">K_matern32 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(D, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_matern32) </span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-32" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-matern-kernel-prior-32-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-32-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%203/2">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">K_matern12 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matern</span>(D, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb10-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw_all</span>(x, K_matern12) </span></code></pre></div></div>
+<div class="cell-output-display">
+<div id="fig-matern-kernel-prior-12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matern-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-matern-kernel-prior-12-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matern-kernel-prior-12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Covariance matrix (left) and a few possible anticipated relationships (right) when using a Matérn kernel with <img src="https://latex.codecogs.com/png.latex?%5Cnu%20=%201/2">.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Below is a Shiny applet that you can use to generate some data and fit Gaussian process regression models to it. You can play around with the scaling factor <img src="https://latex.codecogs.com/png.latex?s%5E2">, the length-scale <img src="https://latex.codecogs.com/png.latex?t"> and a third hyperparameter <img src="https://latex.codecogs.com/png.latex?%5Ceta%5E2">. This last hyperparameter regulates how much the observed data may deviate from the fitted line. You can also tune these hyperparameters automatically by clicking <code>Optimise hyperparameters</code>. If you want to know how the automatic hyperparameter tuning works, see chapter 5 of Rasmussen and Williams’ (2006) book.</p>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 1800
+
+library(shiny)
+library(bslib)
+library(corrplot)
+
+# Stationary kernel functions --------------------------------------------------
+rbf &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D^2 / (2 * length_scale^2))
+}
+
+powerexp12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D / length_scale)^(1/2))
+}
+
+powerexp32 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-(D / length_scale)^(3/2))
+}
+
+matern12 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  scaling_factor * exp(-D / length_scale)
+}
+matern32 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(3) * D / length_scale
+  scaling_factor * (1 + r) * exp(-r)
+}
+matern52 &lt;- function(D, length_scale = 1, scaling_factor = 1) {
+  r &lt;- sqrt(5) * D / length_scale
+  scaling_factor * (1 + r + r^2 / 3) * exp(-r)
+}
+
+kernel_list &lt;- list(
+  "Squared exponential" = rbf,
+  "Power exponential (κ = 1/2)" = powerexp12,
+  "Power exponential (κ = 3/2)" = powerexp32,
+  "Matérn (ν = 1/2)"          = matern12,
+  "Matérn (ν = 3/2)"          = matern32,
+  "Matérn (ν = 5/2)"          = matern52
+)
+
+# GP conditional distribution --------------------------------------------------
+cond_dist &lt;- function(x, x0, y0, noise_var = 1e-6, kernel, ...) {
+  mean_y &lt;- mean(y0)
+  y0 &lt;- y0 - mean_y
+  n  &lt;- length(x)
+  n0 &lt;- length(x0)
+  D  &lt;- outer(c(x, x0), c(x, x0), "-") |&gt; abs()
+  K  &lt;- kernel(D, ...)
+  K11 &lt;- K[seq_len(n), seq_len(n)]
+  K12 &lt;- K[seq_len(n), (n + 1):(n + n0)]
+  K22 &lt;- K[(n + 1):(n + n0), (n + 1):(n + n0)] + noise_var * diag(n0)
+  L   &lt;- tryCatch(chol(K22), error = function(e) NULL)
+  if (is.null(L)) return(NULL)
+  alpha &lt;- backsolve(L, forwardsolve(t(L), y0))
+  mu    &lt;- as.vector(K12 %*% alpha)
+  v     &lt;- forwardsolve(t(L), t(K12))
+  Sigma &lt;- K11 - t(v) %*% v
+  list(y = mu + mean_y, se = pmax(sqrt(diag(Sigma)), 0))
+}
+
+# Hyperparameter optimisation --------------------------------------------------
+# Just BFGS without gradients for now.
+find_gpr_hyperparameters &lt;- function(x0, y0, kernel, runs = 10) {
+  n &lt;- length(y0)
+  # Centre y at 0
+  y_train &lt;- y0 - mean(y0)
+  D &lt;- outer(x0, x0, "-") |&gt; abs()
+  # Obtain median distance between elements as useful length-scale init
+  med_d &lt;- median(D[upper.tri(D)])
+
+  nll &lt;- function(log_params) {
+    va      &lt;- exp(log_params[1])
+    ls      &lt;- exp(log_params[2])
+    lambda2 &lt;- exp(log_params[3])
+    K &lt;- kernel(D, length_scale = ls, scaling_factor = va) + lambda2 * diag(n)
+    U &lt;- tryCatch(chol(K), error = function(e) NULL)
+    if (is.null(U)) return(Inf)
+    a &lt;- backsolve(U, backsolve(U, y_train, transpose = TRUE))
+    drop(0.5 * crossprod(y_train, a) + sum(log(diag(U))) + n / 2 * log(2 * pi))
+  }
+
+  best &lt;- NULL
+  for (i in seq_len(runs)) {
+    init &lt;- c(
+      scaling_factor     = runif(1, log(0.1), log(10)),
+      length_scale = runif(1, log(med_d * 0.1), log(med_d * 10)),
+      lambda2      = runif(1, -10, -2)
+    )
+    fit &lt;- tryCatch(
+      optim(init, nll, method = "BFGS"),
+      error = function(e) NULL
+    )
+    if (!is.null(fit) &amp;&amp; (is.null(best) || fit$value &lt; best$value)) {
+      best &lt;- fit
+    }
+  }
+
+  if (is.null(best)) return(NULL)
+  list(
+    scaling_factor = exp(best$par[1]),
+    length_scale   = exp(best$par[2]),
+    lambda2        = exp(best$par[3]),
+    nll            = best$value
+  )
+}
+
+# Preset functions -------------------------------------------------------------
+preset_fns &lt;- list(
+  "smooth function"  = "x/7 + 0.01*x^2 + sin(cos(x)) + log(x^2 + 10)",
+  "jagged function"  = "-0.05*x^2 + sin(1.5*x) + sign(sin(x))*1.5*abs(x %% 1 - 1/2)",
+  "Custom…"             = NULL
+)
+
+# UI ---------------------------------------------------------------------------
+ui &lt;- page_sidebar(
+  title = "Gaussian process regression with a stationary kernel",
+  theme = bs_theme(bootswatch = "yeti"),
+
+  sidebar = sidebar(
+    width = 300,
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Data-generating mechanism",
+        selectInput("preset_fn", "True function:",
+                    choices = names(preset_fns), 
+                    selected = names(preset_fns)[1]),
+        conditionalPanel(
+          "input.preset_fn === 'Custom…'",
+          textInput("custom_fn", "f(x) =", value = "sin(x)",
+                    placeholder = "e.g., sin(x) + 0.5*x")
+        ),
+        sliderInput("x_range", "x range:",
+                    min = -10, max = 10, value = c(-10, 10), step = 0.5),
+        numericInput("noise", "Observation noise σ²:",
+                     value = 0.5, min = 0, step = 0.1)
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Observations",
+        radioButtons("x0_mode", "Specify points:",
+                     choices = c("Random" = "random", "Manual" = "manual"),
+                     inline = TRUE,
+                     selected = "random"),
+        conditionalPanel(
+          "input.x0_mode === 'random'",
+          sliderInput("n_pts", "Number of points:", 1, 100, 50, 
+                      step = 1, ticks = FALSE),
+          actionButton("resample", "Resample", class = "btn-primary w-100",
+                       icon  = icon("dice"))
+        ),
+        conditionalPanel(
+          "input.x0_mode === 'manual'",
+          textInput("manual_x0", "x positions (comma-separated):", 
+            value = "-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
+        )
+      )
+    ),
+
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Kernel",
+        selectInput("kernel", "Kernel function", choices = names(kernel_list)),
+        uiOutput("hp_inputs"),
+        hr(),
+        tags$p("Optimise hyperparameters by maximising the 
+               log marginal likelihood."),
+        sliderInput("opt_runs", "Restarts:",
+                    min = 10, max = 100, value = 50, step = 1, ticks = FALSE),
+        actionButton("optimise", "Optimise hyperparameters",
+                     class = "btn-primary w-100",
+                     icon  = icon("wand-magic-sparkles")),
+        uiOutput("opt_status")
+      )
+    )
+  ),
+
+  layout_columns(
+    col_widths = 12,
+    card(
+      card_header("GP posterior"),
+      plotOutput("gp_plot", height = "420px")
+    ),
+    card(
+      card_header("Kernel covariance  k(x, x₀)"),
+      plotOutput("kernel_plot", height = "200px")
+    ),
+    card(
+      card_header("Covariance matrix"),
+      plotOutput("corr_plot")
+    )
+  ),
+)
+
+# Server -----------------------------------------------------------------------
+server &lt;- function(input, output, session) {
+
+  opt_msg     &lt;- reactiveVal(NULL)
+  opt_trigger &lt;- reactiveVal(0)
+  opt_params  &lt;- reactiveVal(list(length_scale = 1, scaling_factor = 5, 
+                                  log_noise_var = -0.3))
+
+  # Show hyperparameter inputs
+  output$hp_inputs &lt;- renderUI({
+    p &lt;- opt_params()
+    tagList(
+      numericInput("length_scale", "Length scale t",
+                   value = round(p$length_scale, 4), min = 0.01, step = 0.1),
+      numericInput("scaling_factor", "Scaling factor s²",
+                   value = round(p$scaling_factor, 4), min = 0.01, step = 0.1),
+      numericInput("log_noise_var", "Noise variance η² (log-10 scale)",
+                   value = round(p$log_noise_var, 2), step = 0.5)
+    )
+  })
+
+  # Parse target function
+  f &lt;- reactive({
+    expr_str &lt;- if (input$preset_fn == "Custom…") input$custom_fn
+                else preset_fns[[input$preset_fn]]
+    tryCatch(
+      eval(parse(text = paste0("function(x) ", expr_str))),
+      error = function(e) NULL
+    )
+  })
+
+  # Observation x locations
+  x0_vals &lt;- reactive({
+    input$resample
+    if (input$x0_mode == "random") {
+      set.seed(input$resample)
+      sort(runif(input$n_pts, input$x_range[1], input$x_range[2]))
+    } else {
+      vals &lt;- suppressWarnings(
+        as.numeric(trimws(strsplit(input$manual_x0, ",")[[1]])))
+      sort(vals[!is.na(vals)])
+    }
+  })
+
+  # Observations
+  obs &lt;- reactive({
+    fn &lt;- f()
+    if (is.null(fn)) return(NULL)
+    x0 &lt;- x0_vals()
+    y0 &lt;- fn(x0) + rnorm(length(x0), sd = sqrt(input$noise))
+    list(x0 = x0, y0 = y0)
+  })
+
+  # Prediction grid
+  x_grid &lt;- reactive({
+    seq(input$x_range[1], input$x_range[2], length.out = 201)
+  })
+
+  # Step 1: show spinner and fire trigger
+  observeEvent(input$optimise, {
+    xy0 &lt;- obs()
+    if (is.null(xy0) || length(xy0$x0) &lt; 3) {
+      opt_msg(tags$span("⚠ Need at least 3 observations to optimise."))
+      return()
+    }
+    opt_trigger(isolate(opt_trigger()) + 1)
+  })
+
+  # Step 2: run optimisation
+  observeEvent(opt_trigger(), {
+    req(opt_trigger() &gt; 0)
+    xy0  &lt;- isolate(obs())
+    kern &lt;- kernel_list[[isolate(input$kernel)]]
+
+    result &lt;- tryCatch(
+      find_gpr_hyperparameters(xy0$x0, xy0$y0, kernel = kern,
+                               runs = isolate(input$opt_runs)),
+      error = function(e) NULL
+    )
+
+    if (is.null(result)) {
+      opt_msg(tags$span("✗ Optimisation failed. Try different settings."))
+      return()
+    }
+
+    opt_params(list(
+      length_scale = result$length_scale,
+      scaling_factor = result$scaling_factor,
+      log_noise_var = max(log10(result$lambda2), -30)
+    ))
+
+    opt_msg(tags$span(
+      style = "color:#27ae60; font-size:0.82rem;",
+      sprintf("✓ Done.  t = %.2f,  s² = %.2f,  η² = 10^%.1f  (NLL = %.1f)",
+              result$length_scale, result$scaling_factor,
+              log10(result$lambda2), result$nll)
+    ))
+  }, ignoreInit = TRUE)
+
+  output$opt_status &lt;- renderUI({ opt_msg() })
+
+  # Active hyperparameters: opt_params when set, else input values
+  hp &lt;- reactive({
+    p  &lt;- opt_params()
+    ls &lt;- if (!is.null(input$length_scale)) input$length_scale 
+                                       else p$length_scale
+    sf &lt;- if (!is.null(input$scaling_factor)) input$scaling_factor 
+                                         else p$scaling_factor
+    nv &lt;- if (!is.null(input$log_noise_var)) input$log_noise_var  
+                                        else p$log_noise_var
+    list(length_scale = ls, scaling_factor = sf, log_noise_var = nv)
+  })
+
+  # GP fit
+  gp_fit &lt;- reactive({
+    fn  &lt;- f()
+    if (is.null(fn)) return(NULL)
+    xy0  &lt;- obs()
+    kern &lt;- kernel_list[[input$kernel]]
+    p    &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    fit  &lt;- cond_dist(x_grid(), xy0$x0, xy0$y0,
+                      noise_var = 10^p$log_noise_var,
+                      kernel = kern,
+                      length_scale = p$length_scale,
+                      scaling_factor = p$scaling_factor)
+    list(fit = fit, x0 = xy0$x0, y0 = xy0$y0)
+  })
+
+  # GP posterior plot
+  output$gp_plot &lt;- renderPlot({
+    fn  &lt;- f()
+    obj &lt;- gp_fit()
+    fit &lt;- obj$fit
+    x0  &lt;- obj$x0
+    y0  &lt;- obj$y0
+    x   &lt;- x_grid()
+
+    par(mar = c(4, 4, 1, 1), bg = "white", family = "sans")
+    y_fn &lt;- if (!is.null(fn)) fn(x) else rep(0, length(x))
+
+    ylim_base &lt;- if (!is.null(fit)) {
+      range(c(fit$y + 2.5 * fit$se, fit$y - 2.5 * fit$se, y_fn), na.rm = TRUE)
+    } else {
+      range(y_fn, na.rm = TRUE)
+    }
+    ylim &lt;- ylim_base + diff(ylim_base) * c(-0.05, 0.05)
+
+    plot(NULL, xlim = input$x_range, ylim = ylim,
+         xlab = "x", ylab = "y", bty = "l", las = 1)
+    grid(col = "grey90", lty = 1)
+
+    if (!is.null(fit)) {
+      ord &lt;- order(x)
+      px  &lt;- x[ord]
+      pmu &lt;- fit$y[ord]
+      pse &lt;- fit$se[ord]
+      
+      valid &lt;- is.finite(pmu) &amp; is.finite(pse)
+      px  &lt;- px[valid]
+      pmu &lt;- pmu[valid]
+      pse &lt;- pse[valid]
+      
+      poly_x &lt;- c(px, rev(px))
+      poly_y &lt;- c(pmu + 2 * pse, rev(pmu - 2 * pse))
+      polygon(poly_x, poly_y, col = adjustcolor("#2c7bb6", 0.15), border = NA)
+      lines(px, pmu, col = "#2c7bb6", lwd = 2.5, lty = 1)
+    }
+    if (!is.null(fn)) {
+      lines(x, y_fn, col = "#d7191c", lwd = 1.5, lty = 2)
+    }
+    points(x0, y0, pch = 21, bg = "white", col = "#333", cex = 1.6, lwd = 2)
+    legend("topright", bty = "n", cex = 0.85,
+           legend = c("Posterior mean", "±2 SE", "True function", "Observations"),
+           lty    = c(1, NA, 2, NA),
+           pch    = c(NA, 15, NA, 21),
+           lwd    = c(2.5, NA, 1.5, NA),
+           col    = c("#2c7bb6", adjustcolor("#2c7bb6", 0.3), "darkred", "#333"),
+           pt.cex = c(NA, 2, NA, 1.6))
+  })
+
+  # Kernel covariance plot -----------------------------------------------------
+  output$kernel_plot &lt;- renderPlot({
+    kern  &lt;- kernel_list[[input$kernel]]
+    p     &lt;- hp()
+    req(p$length_scale, p$scaling_factor)
+    d_seq &lt;- seq(0, max(abs(input$x_range)), length.out = 300)
+    k_val &lt;- kern(d_seq,
+                  length_scale = p$length_scale,
+                  scaling_factor     = p$scaling_factor)
+
+    par(mar = c(4, 4, 0.5, 1), bg = "white", family = "sans")
+    plot(d_seq, k_val, type = "l", col = "#2c7bb6", lwd = 2,
+         xlab = "|x - x₀|", ylab = "k(x, x₀)", bty = "l", las = 1,
+         ylim = c(0, p$scaling_factor * 1.05))
+    grid(col = "grey90", lty = 1)
+    abline(h = p$scaling_factor, lty = 3, col = "grey60")
+  })
+  
+  # Implied covariance matrix -------------------------------------------------
+  output$corr_plot &lt;- renderPlot({
+    x0 &lt;- obs()$x0 |&gt; sort()
+    kern &lt;- kernel_list[[input$kernel]]
+    p &lt;- hp()
+    req(p$length_scale, p$scaling_factor, p$log_noise_var)
+    D &lt;- outer(x0, x0, "-") |&gt; abs()
+    M &lt;- kern(D, 
+              length_scale = p$length_scale, scaling_factor = p$scaling_factor)
+    corrplot(M,
+         method = "color",
+         is.corr = FALSE,
+         tl.col = "black",   
+         tl.cex = 0.8)
+  }, height = 380, width = 380)
+}
+
+shinyApp(ui, server)</code></pre>
+</section>
+<section id="concept-2-distances-between-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="concept-2-distances-between-distributions">Concept 2: Distances between distributions</h2>
+<section id="univariate-distributions-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="univariate-distributions-wasserstein-distances">Univariate distributions: Wasserstein distances</h3>
+<p>The goal is to apply kernel methods to input that are represented as distributions. To this end, we need a suitable distance metric between probability distributions. When dealing with <em>univariate</em> distributions, it turns out that the <strong>Wasserstein distance</strong> between probability distributions can be useful. Informally, the Wasserstein distance between probability distributions <img src="https://latex.codecogs.com/png.latex?P"> and <img src="https://latex.codecogs.com/png.latex?Q"> expresses what the least amount of effort is that you need to expend in order to shift about the probability mass of distribution <img src="https://latex.codecogs.com/png.latex?P"> so that it corresponds to distribution <img src="https://latex.codecogs.com/png.latex?Q">.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Wasserstein distances: A simple example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider two finite distributions.</p>
+<ul>
+<li>Distribution <img src="https://latex.codecogs.com/png.latex?P"> assigns probability 2/8, 3/8, 1/8, and 2/8 to values -2, 1, 4, and 7, respectively.</li>
+<li>Distribution <img src="https://latex.codecogs.com/png.latex?Q"> assigns probability 3/8, 1/8, and 4/8 to values -1, 2, and 6, respectively.</li>
+</ul>
+<p>The most efficient way of turning distribution <img src="https://latex.codecogs.com/png.latex?P"> into distribution <img src="https://latex.codecogs.com/png.latex?Q"> is this:</p>
+<ol type="1">
+<li>Take 2/8 probability from -2 and assign it to -1. Cost: <img src="https://latex.codecogs.com/png.latex?2/8%20%5Ccdot%20%7C-2%20-%20(-1)%7C%20=%202/8">.</li>
+<li>Take 1/8 probability from 1 and assign it to -1. Cost: <img src="https://latex.codecogs.com/png.latex?1/8%20%5Ccdot%20%7C1-(-1)%7C%20=%202/8">.</li>
+<li>Take 1/8 probability from 1 and assign it to 2. Cost: <img src="https://latex.codecogs.com/png.latex?1/8%20%5Ccdot%20%7C1-2%7C%20=%201/8">.</li>
+<li>Take the remaining 1/8 probability from 1 and assign it to 6. Cost: <img src="https://latex.codecogs.com/png.latex?1/8%20%5Ccdot%20%7C1-6%7C%20=%205/8">.</li>
+<li>Take the 1/8 probability from 4 and assign it to 6. Cost: <img src="https://latex.codecogs.com/png.latex?1/8%20%5Ccdot%20%7C4-6%7C%20=%202/8">.</li>
+<li>Take the 2/8 probability from 7 and assign it to 6. Cost: <img src="https://latex.codecogs.com/png.latex?2/8%20%5Ccdot%20%7C7-6%7C%20=%202/8">.</li>
+</ol>
+<p>The total cost of this operation is <img src="https://latex.codecogs.com/png.latex?14/8%20=%201.75">. The Wasserstein distance (of order <img src="https://latex.codecogs.com/png.latex?p%20=%201">) is hence 1.75. See Figure&nbsp;11.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-optimal-transport" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optimal-transport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-optimal-transport-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-optimal-transport-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: The most efficient way of turning distribution <img src="https://latex.codecogs.com/png.latex?P"> into distribution <img src="https://latex.codecogs.com/png.latex?Q">. The total cost is 1.75.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>More generally and more formally, for any <img src="https://latex.codecogs.com/png.latex?p%20%5Cin%20%5B1,%20%5Cinfty)">, we define the Wasserstein distance of order <img src="https://latex.codecogs.com/png.latex?p"> between two probability distributions with finite <img src="https://latex.codecogs.com/png.latex?p">-th moment as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_p(P,%20Q)%20:=%20%5Cmin_%7B%5Csubstack%7BX%20%5Csim%20P,%5C%5CY%20%5Csim%20Q%7D%7D%5Cleft(%5Cmathbb%7BE%7D(%7CX%20-%20Y%7C%5Ep)%5Cright)%5E%7B1/p%7D."></p>
+<p>That may look a bit complicated, but it’s pretty easy to compute if <img src="https://latex.codecogs.com/png.latex?P"> and <img src="https://latex.codecogs.com/png.latex?Q"> are empirical distributions; see Algorithm 2.1 in my thesis (Vanhove 2026). While the Wasserstein distance is a true distance for any <img src="https://latex.codecogs.com/png.latex?p%20%5Cin%20%5B1,%20%5Cinfty)">, only two values of <img src="https://latex.codecogs.com/png.latex?p"> are useful in our kernel approach:</p>
+<ul>
+<li>We can set <img src="https://latex.codecogs.com/png.latex?p%20=%201"> and slot in the square root of the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_1"> distance, i.e., <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BW%7D_1%7D"> into the three types of stationary kernel discussed above.</li>
+<li>Or we can set <img src="https://latex.codecogs.com/png.latex?p%20=%202"> and slot in the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distance into these stationary kernels.</li>
+</ul>
+<p>The reason is that kernels need to satisfy certain technical requirements. For the stationary kernels discussed above, these requirements are met if the distances used are ‘Hilbertian’. The details don’t need to concern us here. What’s important is that the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distance is Hilbertian, and square-root transforming the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_1"> distance makes it Hilbertian. Hence, both <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BW%7D_1%7D"> can be plugged into the three kinds of stationary kernel discussed earlier.</p>
+<p>Incidentally, the Wasserstein distance goes by a few different names, including the earth mover’s distance (if <img src="https://latex.codecogs.com/png.latex?p%20=%201">), the Kantorovich–Rubinstein metric, and the Mallow distance.</p>
+</section>
+<section id="multivariate-distributions-marginal-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="multivariate-distributions-marginal-wasserstein-distances">Multivariate distributions: Marginal Wasserstein distances</h3>
+<p>The Wasserstein distance can also be defined on spaces of <em>multivariate</em> probability distributions. But there are two snags:</p>
+<ol type="1">
+<li>Wasserstein distances between multivariate probability distributions are <em>considerably</em> more expensive to compute than Wasserstein distances between univariate distributions.</li>
+<li>There are no known values for <img src="https://latex.codecogs.com/png.latex?p"> for which the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_p"> distance between multivariate distributions can be plugged into our stationary kernels. (There are no known Wasserstein distances between multivariate distributions that are Hilbertian.)</li>
+</ol>
+<p>One workaround is to work with Wasserstein distances between <strong>marginal distributions</strong>; let’s call these <strong>marginal Wasserstein distances</strong>. For instance, if the distributions we’re working with live in three dimensions, we compute Wasserstein distances between the three corresponding dimensions. Each of these are distances between univariate distributions, so we can use them as before: we construct a kernel for each of the dimensions, and then combine them.</p>
+<p>One drawback of relying on marginal distributions only is that two distributions may look completely different from one another yet have the same marginal distributions, as in Figure&nbsp;12.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-two-dists" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-two-dists-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: These two bivariate distributions are quite different yet have the same marginals.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A kernel based on marginal distributions only couldn’t tell distributions with the same marginals but different joint distributions apart – and it’s possible that the relevant signal isn’t contained in the marginals but rather in how the different components are related to each other.</p>
+</section>
+<section id="multivariate-distributions-sliced-wasserstein-distances" class="level3">
+<h3 class="anchored" data-anchor-id="multivariate-distributions-sliced-wasserstein-distances">Multivariate distributions: Sliced Wasserstein distances</h3>
+<p>Marginal Wasserstein distances are just Wasserstein distances between one-dimensional projections of the distributions. One option to capture some of the difference between the two distributions shown in Figure&nbsp;12 is to project the distributions onto the line of identity and compute the Wasserstein distance between the resulting univariate distributions; see Figure&nbsp;13.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-projection" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-projection-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Projecting both distributions onto the <img src="https://latex.codecogs.com/png.latex?x%20=%20y"> line results in two different univariate distributions.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <strong>sliced Wasserstein distance</strong> generalises this approach: Rather than considering just projections onto the coordinate axes (as for marginal Wasserstein distances) or onto the line of identity (as in the example above), we consider <em>all</em> possible projections on lines through the origin and aggregate the Wasserstein distances between the resulting one-dimensional distributions. In practical terms, we pick a bunch of lines through the origin at random, project the distributions on them, compute the Wasserstein distances between them, and aggregate them.</p>
+<p>Sliced Wasserstein distances are fairly cheap to compute. Crucially, if they are based on <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> or <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BW%7D_1%7D"> distances between the univariate projections, they are Hilbertian. This means that they can be slotted into the three stationary kernels. Moreover, they take the entire distributions into account, not just their marginals. Sliced Wasserstein distances based on <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BW%7D_1%7D"> are denoted as <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BSW%7D_2"> and <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BSW%7D_1%7D">, respectively.</p>
+<p>There are, of course, some disadvantages to using sliced Wasserstein distances.</p>
+<p>First, well, they take into account the <em>entire</em> distributions… This includes aspects that may not be relevant for the regression task, which may downgrade performance.</p>
+<p>Second, sliced Wasserstein distances are scale-sensitive in a more annoying way than Wasserstein and marginal Wasserstein distances are. To elaborate, let’s say we’re comparing distributions of body heights measured in centimetres and find that the Wasserstein distance between them is 6.7. If we re-express the same body heights into millimetres, we’d find that the Wasserstein distance between the distributions is ten times larger, i.e., 67. Wasserstein distances, then, are scale-sensitive. But crucially, in all of the three stationary kernels above, we can simply adjust the length-scale so that the resulting kernel values are still the same.</p>
+<p>This doesn’t quite work for sliced Wasserstein distances. If we have two-dimensional distributions in which one dimension represents body heights and another body weights, re-expressing the body heights from centimetres to millimetres doesn’t have a predictable effect on the distances between the distributions. As a result, we can’t adjust the length-scale of the kernel to absorb changes in the scale of the data. So when working with sliced Wasserstein distances, it’s probably a good idea to standardise the input distributions in some way so that the results don’t depend on the arbitrary scale on which the data are expressed.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Computing sliced Wasserstein distances in R
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I wrote the <a href="https://janhove.github.io/slicer"><code>slicer</code></a> package to carry out sliced Wasserstein computations.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Other possibilities
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Wasserstein and sliced Wasserstein distances are not the only ways to express differences and similarities between distributions; they are merely the ones that I’m most familiar with because I wrote a thesis on them. For some other options, see Muandet et al.&nbsp;(2017), Szabó et al.&nbsp;(2016), and Székely and Rizzo (2013).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="concept-3-representing-inputs-as-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="concept-3-representing-inputs-as-distributions">Concept 3: Representing inputs as distributions</h2>
+<p>Many important data types don’t occur naturally as rows in a data frame. Consider the following three examples:</p>
+<div class="columns">
+<div class="column" style="width:23%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/caffeine.svg" class="img-fluid figure-img"></p>
+<figcaption>Chemists may prefer to work with graphs representing molecular structures; sociologists may want to work with graphs representing social networks. Illustration: The molecular structure of caffeine, from <a href="https://commons.wikimedia.org/wiki/File:Koffein_-_Caffeine.svg">Wikimedia</a>.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:36%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/wordembeddings.png" class="img-fluid figure-img"></p>
+<figcaption>Word meanings can be represented as points in a multidimensional space by means of semantic embeddings. In a ‘bag of words’ approach, documents can then be represented as point clouds in multidimensional space. Illustration: Figure 1 from Kusner et al.&nbsp;(2015).</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:33%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/frequencyprofile.svg" class="img-fluid figure-img"></p>
+<figcaption>The lexical frequency profile of a text can be represented as a histogram of the frequencies (here: Zipf values) of the words occurring in the text. Illustration: own data.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In all of these cases, we can try to represent certain characteristics of the objects (e.g., the mean Zipf value) in <strong>feature vectors</strong> which can then be input into linear regression, random forests, etc. While this inevitably results in a loss of information, the hope is that the feature vector captures the relevant aspects.</p>
+<p>One alternative is to either treat or encode the objects as <strong>probability distributions</strong> in the hopes that this loses less relevant information than a representation by means of a feature vector does. For lexical frequency profiles and point clouds, this representation as a probability distribution is immediate: We treat the lexical frequency profile or the point cloud as an empirical distribution in one- or multidimensional space, respectively. More generally, any time the inputs <img src="https://latex.codecogs.com/png.latex?x_1,%20%5Cdots,%20x_N"> are <img src="https://latex.codecogs.com/png.latex?n_i%20%5Ctimes%20d"> matrices (with possibly varying row numbers <img src="https://latex.codecogs.com/png.latex?n_i">), we can treat them as empirical <img src="https://latex.codecogs.com/png.latex?d">-dimensional distributions based on samples of size <img src="https://latex.codecogs.com/png.latex?n_i">.</p>
+<p>For graphs such as molecular structures or social networks, a bit more work is required before the machinery introduced above can be brought to bear, but useful encodings of graphs as probability distributions exist; see Carpintero Perez et al.&nbsp;(2024) for an example.</p>
+<p>The third core concept, then, is that if the data don’t naturally occur as rows in a data frame, it may be possible to represent them more faithfully as probability distributions, allowing the Wasserstein–kernel approach to be brought to bear on them.</p>
+</section>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p>I’m not going to advocate for the whole-scale adoption of kernels methods and Wasserstein and sliced Wasserstein distances in our field. But I think these techniques could on occasion be useful, for instance to gauge if a simpler approach in which the input distributions are summarised through a handful of statistics leaves any money on the table.</p>
+<p>To illustrate what I mean, I present three examples.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Not a tutorial!
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This blog post is long and complicated enough as it is. I’d rather not exacerbate this by including lots of R code that takes a fair amount of time to run. Instead, I’ll give a high-level description of what I did. I used similar examples for my thesis, though, and the R code for those is available from <a href="https://github.com/janhove/mscthesis">GitHub</a>.</p>
+</div>
+</div>
+<section id="a-toy-example" class="level3">
+<h3 class="anchored" data-anchor-id="a-toy-example">A toy example</h3>
+<p>Let’s first put the concepts above to the test in a toy example in which the predictive signal is hidden partly in the marginal distributions but mostly in the joint distributions.</p>
+<p><strong>Data.</strong> Figure&nbsp;14 shows the set-up: Empirical distributions are generated from bivariate Gaussian mixtures with four isotropic components laid out symmetrically around the origin. These distributions differ from one another in that they are rotated counterclockwise by an angle <img src="https://latex.codecogs.com/png.latex?%5Comega%20%5Cin%20%5B0,%203%5Cpi/8%5D">. The goal of the analysis is to retrieve the specific angles by which the distributions have been rotated.</p>
+<div id="fig-toy_example" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy_example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/toy_example.svg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy_example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Each input distribution is a realisation of a Gaussian mixture with four components laid out symmetrically around the origin. The distributions are rotated counterclockwise by an angle <img src="https://latex.codecogs.com/png.latex?%5Comega">, which serves as the outcome to be predicted; in the examples, <img src="https://latex.codecogs.com/png.latex?%5Comega%20=%20%5Cpi/16"> (about 11 degrees) and <img src="https://latex.codecogs.com/png.latex?3%5Cpi/8"> (about 68 degrees).
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>A specially constructed example
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This example is constructed in such a way that the means of the distributions carry no information about the rotation angle <img src="https://latex.codecogs.com/png.latex?%5Comega">. Moreover, the marginal distributions carry <em>some</em> but not all information: the marginal distributions are the same for a rotation angle of <img src="https://latex.codecogs.com/png.latex?%5Cpi/4%20+%20%5Cdelta"> as for a rotation angle of <img src="https://latex.codecogs.com/png.latex?%5Cpi/4%20-%20%5Cdelta">. As a result, a model relying on the marginal distributions only can’t distinguish between, say, <img src="https://latex.codecogs.com/png.latex?%5Comega%20=%20%5Cpi/6%20=%20%5Cpi/4%20-%20%5Cpi/12"> and <img src="https://latex.codecogs.com/png.latex?%5Comega%20=%20%5Cpi/3%20=%20%5Cpi/4%20+%20%5Cpi/12">. Rotation angles in <img src="https://latex.codecogs.com/png.latex?%5B0,%20%5Cpi/8)">, by contrast, don’t have a ‘mirror distribution’ with identical marginals, so models relying on marginal distributions should perform well on these. The joint distributions, however, are in principle distinguishable for any <img src="https://latex.codecogs.com/png.latex?%5Comega%20%5Cin%20%5B0,%203%5Cpi/8%5D">.</p>
+<p>All this means that we expect a model based on means not to outperform the baseline at all, whereas a model based on the marginal distributions will do so. However, both models will be outperformed by models that also take into account the joint distributions.</p>
+</div>
+</div>
+</div>
+<p>I sampled rotation angles <img src="https://latex.codecogs.com/png.latex?%5Comega_i%20%5Csim%20%5Ctextrm%7BUniform%7D(%5B0,%203%5Cpi/8%5D)"> independently, <img src="https://latex.codecogs.com/png.latex?i%20=%201,%20%5Cdots,%20150">, and used these to generate <img src="https://latex.codecogs.com/png.latex?N%20=%20150"> empirical distributions <img src="https://latex.codecogs.com/png.latex?P_1,%20%5Cdots,%20P_N"> based on <img src="https://latex.codecogs.com/png.latex?n%20=%20100"> observations each.</p>
+<p><strong>Analysis.</strong> Fifty distributions served as the training set; the remaining hundred as the test set. I fitted four Gaussian process models using the training set.</p>
+<ol type="1">
+<li>A model using kernels based on the distributions’ means in the first and second dimension.</li>
+<li>A model using kernels based on the marginal Wasserstein distances (of order <img src="https://latex.codecogs.com/png.latex?p%20=%202">) between the distributions.</li>
+<li>A model like in 2. but additionally using a sliced Wasserstein kernel (of order <img src="https://latex.codecogs.com/png.latex?p%20=%202">) after applying the probability integral transform to the distributions’ marginals. This transformation throws away the information about the marginal distributions but retains information about the association between the two dimensions (the so-called ‘copula’). By comparing this model’s performance to that of the previous one, we get an idea of whether there’s any predictively useful information in the distributions that’s not already captured by their marginals.</li>
+<li>A model using a sliced Wasserstein kernel (of order <img src="https://latex.codecogs.com/png.latex?p%20=%202">) on the raw input distributions. Like the third model, this model takes into account the entire distributions. The difference is that the third model could in principle assign greater weight to the marginal distributions (i.e., projections along the cardinal axes) via the separate kernels it uses, whereas this model weighs all projection directions equally.</li>
+</ol>
+<p>All kernels were radial basis function kernels with tuned hyperparameters. For models based on several kernels, these were added together; this amounts to modelling main effects of the different kernels.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Metrics of model performance
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The fit of the predictions to the test data was assessed through the root mean squared error (RMSE) and the negative log predictive density (NLPD). The RMSE purely assesses fit of the predictions to the test data and is defined as <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cfrac%7B1%7D%7Bn%7D%5Csum_%7Bi=1%7D%5En(y_i%20-%20%5Chat%20y_i)%5E2%7D,"> where <img src="https://latex.codecogs.com/png.latex?y_1,%20%5Cdots,%20y_n"> are the true outcomes in the test set and <img src="https://latex.codecogs.com/png.latex?%5Chat%20y_1,%20%5Cdots,%20%5Chat%20y_n"> are the corresponding predicted outcomes.</p>
+<p>Gaussian process regression models don’t just produce point predictions; they generate an entire joint distribution for the predictions. This distribution takes the form of a Normal distribution with a mean vector <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cboldsymbol%20%5Cmu%7D%20=%20(%5Chat%20y_1,%20%5Cdots,%20%5Chat%20y_n)%5E%7B%5Ctop%7D"> and a covariance matrix <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cboldsymbol%20%5CSigma%7D%20%5Cin%20%5Cmathbb%7BR%7D%5E%7Bn%20%5Ctimes%20n%7D">. The NLPD is defined as <img src="https://latex.codecogs.com/png.latex?-%5Clog%20p(y_1,%20%5Cdots,%20y_n;%20%5Chat%7B%5Cboldsymbol%20%5Cmu%7D,%20%5Chat%7B%5Cboldsymbol%20%5CSigma%7D),"> where <img src="https://latex.codecogs.com/png.latex?p(%5Ccdot;%20%5Chat%7B%5Cboldsymbol%20%5Cmu%7D,%20%5Chat%7B%5Cboldsymbol%20%5CSigma%7D)"> denotes the density function of the <img src="https://latex.codecogs.com/png.latex?n">-variate Normal distribution with mean vector <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cboldsymbol%20%5Cmu%7D"> and covariance matrix <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cboldsymbol%20%5CSigma%7D">.</p>
+<p>In crossvalidation, I use the average NLPD instead of the formula above. That is, I compute the NLPD for each (univariate) prediction and then average these values.</p>
+<p>Both metrics have in common that ‘lower is better’.</p>
+</div>
+</div>
+</div>
+<p><strong>Results.</strong> The table below summarises the results of the different models. A baseline model that just assigns the training set mean to the test set observations has a RMSE of <img src="https://latex.codecogs.com/png.latex?0.33"> radians.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(1) Means</td>
+<td style="text-align: right;">0.35</td>
+<td style="text-align: right;">0.43</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(2) Marginal <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"></td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">(3) Marginal <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> + <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BSW%7D_2"> copula</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-1.11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(4) <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BSW%7D_2"></td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">-1.40</td>
+</tr>
+</tbody>
+</table>
+<p>Figure&nbsp;15 shows the models fits graphically.</p>
+<div id="fig-toy_example_results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-toy_example_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/toyexample_results.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-toy_example_results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Model 1 doesn’t capture any signal; Model 2 captures part of it; and Models 3 and 4 fit the data well.
+</figcaption>
+</figure>
+</div>
+<p><strong>Discussion.</strong> The results match our expectations. Relying on merely the means throws away <em>all</em> predictive information in the inputs: the first model doesn’t perform better than the baseline. Adding the marginal distributions improves performance considerably, but as a comparison of models 2 and 3 reveals, a lot of information is contained in the copula (i.e., in how both variables are associated). The two models based on sliced Wasserstein distances that take into account the whole distributions (rather than just the marginals) correspondingly outperform the other models.</p>
+<p>Of course, this example is extremely artificial. But it does show that, in principle, this approach can help analysts to identify situations in which relying on summary statistics throws away useful information.</p>
+<p>Let’s now turn to two more realistic examples.</p>
+</section>
+<section id="lexical-frequency-profiles-for-text-quality-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="lexical-frequency-profiles-for-text-quality-predictions">Lexical frequency profiles for text-quality predictions</h3>
+<p><strong>Context.</strong> In Vanhove et al.&nbsp;(2019), we had raters evaluate over 3,000 texts in terms of their lexical richness. We then tried to build models that predict these ratings by means of indices that can be computed more or less automatically from the texts. One of these was the mean of the distribution of the frequencies of the lemmata encountered in the text according to an external corpus (“lexical frequency profiles”). Could we improve such models by taking the whole frequency distributions into account rather than just their means?</p>
+<p><strong>Data.</strong> The dataset comprises 3,060 short narrative and argumentative texts in French, German, and Portuguese (about 1,000 texts per language). These texts were written by children living in Switzerland and Portugal aged between about 8 and 10 years, and the median text lengths were 37, 33, and 39 tokens, respectively. These texts were corrected morphosyntactically, orthographically, and in terms of their punctuation before rating and lexical analysis.</p>
+<p>For each language, the texts were split up into twenty batches of 50 to 52 texts. Each batch was rated by a separate panel of untrained adult native speakers of the language in question. These raters were asked to rate the lexical richness of each of the 50–52 texts on a scale from 1 (worst) to 9 (best). Each batch was rated by between three and eighteen raters, with the average number of raters being 7.3 for French, 16.1 for German, and 5.3 for Portuguese. The mean rating per text serves as the text-quality rating to be predicted.</p>
+<p><strong>Lexical metrics.</strong> The lexical metrics used in this reanalysis are the same as those used in one of the models we fitted in Vanhove et al.&nbsp;(2019). I refer to these metrics as the ‘volume’, ‘variability’, ‘evenness’, ‘disparity’, ‘dispersion’, and ‘rarity’ predictors. As far as the first five of these predictors are concerned, the details don’t matter for our present purposes; please refer to the original article if you’re interested.</p>
+<p>It is the sixth predictor, rarity, that is the focus of this reanalysis. It consists of the mean Zipf score of the unique lemmata in the text. The Zipf score is a transformation of corpus frequency that is thought to better capture language users’ perception of the relative frequency of words (van Heuven et al.&nbsp;2014).</p>
+<p><strong>Reanalysis.</strong> For the original article, we split up the dataset into sixteen batches of texts per language for training the models and four batches per language for testing them. For the reanalysis, I’ll do the same, using the same training and testing split as in the original.</p>
+<p>In the original article, we used generalised additive models. For this reanalysis, I’ll use Gaussian process regression even for the models that don’t include distributional inputs. The reason is that I don’t want the comparisons between the models to be tainted by differences in the models’ architectures.</p>
+<p>For each of the six metrics, I constructed a squared-exponential kernel. Additionally, I constructed squared-exponential kernels for two distributional inputs: the Zipf frequency scores of the unique lemmata occurring in the texts, and the mean-centred version of these Zipf scores.</p>
+<p>For each language, I fitted four models:</p>
+<ol type="1">
+<li>A model using the kernels based on the volume, variability, evenness, disparity, and dispersion predictors to see how well a baseline model without frequency information would fare.<sup>2</sup></li>
+<li>A model that additionally included a kernel based on the rarity predictor (i.e., mean frequency).</li>
+<li>A model using the same kernels as in 1., but adding a kernel based on the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distances between the lexical frequency profiles.</li>
+<li>A model using the same kernels as in 2. (i.e., kernels for all 6 dimensions), but adding a kernel based on the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distances between the mean-centred lexical frequency profiles. The idea is to see if information about the <em>shape</em> as opposed to the <em>location</em> of the lexical frequency profiles has some predictive value.</li>
+</ol>
+<p><strong>Results.</strong> The table below summarises the test set performance of the four models for each of the three languages.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 39%">
+<col style="width: 24%">
+<col style="width: 24%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Language</th>
+<th style="text-align: left;">Zipf included?</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">French</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">1.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.42</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">1.39</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">German</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">1.29</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">1.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">1.20</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">1.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Portuguese</td>
+<td style="text-align: left;">(1) no</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">1.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(2) mean</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">1.29</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(3) distribution</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1.30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(4) mean and centred distribution</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">1.30</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Discussion.</strong> For all three languages, adding a kernel based on the mean Zipf scores improves model performance. Comparing models (4) to (2), however, shows that that adding information about the shape of the distributions doesn’t improve the models any further. Comparing models (3) to (2) confirms this: if the non-centred distributions are fed to a kernel, the models perform similarly to when the distribution means are used, not better.</p>
+<p>For these short texts, then, we don’t find evidence that the mean of the Zipf scores throws away predictively useful information about the texts’ lexical profiles. It is, of course, quite possible that longer texts would have allowed us to pick up on predictively useful differences between the shapes of the distributions. Another caveat is that I didn’t go the whole hog and try out different types of kernel, but I doubt that the results would look much different if I’d used Matérn or power exponential kernels or kernels based on <img src="https://latex.codecogs.com/png.latex?%5Csqrt%7B%5Cmathbf%7BW%7D_1%7D"> distances instead.</p>
+</section>
+<section id="hippocampi-as-distributions-of-neuron-properties" class="level3">
+<h3 class="anchored" data-anchor-id="hippocampi-as-distributions-of-neuron-properties">Hippocampi as distributions of neuron properties</h3>
+<p>The previous example featured lots of univariate distributions based on fairly small samples; the present one features a handful of multivariate distributions based on large samples.</p>
+<p><strong>Context and data.</strong> Eckermann et al.&nbsp;(2021) studied the hippocampi of twenty diseased individuals. Skipping over many details, each of these hippocampi was represented by an <img src="https://latex.codecogs.com/png.latex?n_i%20%5Ctimes%205"> matrix, with the number of rows <img src="https://latex.codecogs.com/png.latex?n_i"> varying from 2,748 to 37,348 (median: 17,069). Each of these rows represented a neuron detected in the hippocampus in terms of five measurements; again the details are not crucial for our purposes. What is important, though, is that these five properties were measured on entirely different scales. Figure&nbsp;16 shows what the data for one of the twenty hippocampi look like.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-eckermann" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eckermann-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/index_files/figure-html/fig-eckermann-1.svg" class="img-fluid figure-img" style="width:6in">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eckermann-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: The marginal distributions of and pairwise associations between the neuron measurements in one of the twenty hippocampi in Eckermann et al.’s (2021) study. The bottom triangle shows Pearson correlation coefficients.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For the purposes of this reanalysis, the goal is to build a predictive model of the entropy of the first variable (Neighbours) using the information contained in the other four variables. This wasn’t Eckermann et al.’s goal, but it illustrates how the techniques discussed in this post can be put to use; the entropy outcome is merely an arbitrary target.</p>
+<p><strong>Analysis.</strong> Since the number of input matrices is small (<img src="https://latex.codecogs.com/png.latex?N%20=%2020">), I used leave-one-out crossvalidation (LOOCV) to compare the predictive accuracy of the different models. This means that the outcome value of each hippocampus was predicted based on models that were trained only on the other nineteen hippocampi.</p>
+<p>I fitted a number of different models. Like in the previous examples, all kernels used were squared-exponential kernels.</p>
+<ol type="1">
+<li>A model using kernels based on the <em>medians</em> of the distributions of the other four variables (four kernels in total). I used the medians because of the strong skew in some of the variables.</li>
+<li>A model using kernels based on the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distances between the marginal distributions of each variable (four kernels in total).</li>
+<li>A model using kernels based on the <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> distances between the marginal distributions of each variable as well as a kernel based on the sliced Wasserstein (of order <img src="https://latex.codecogs.com/png.latex?p%20=%202">) between the four distributions after applying the probability integral transform to its four marginals (five kernels in total).</li>
+<li>A model using a kernel based on the sliced Wasserstein distances (of order <img src="https://latex.codecogs.com/png.latex?p%20=%202">) between the scaled four-dimensional distributions (one kernel in total).</li>
+</ol>
+<p>Some further explanation:</p>
+<ul>
+<li>By comparing model (2) to model (1), we can gauge if there is any predictively useful information in the marginal distributions that isn’t captured by their medians.</li>
+<li>If model (3) performs better than models (2) and (1), this suggests that the distributions contain predictively useful information that isn’t even captured by their marginals. That is, there may be some useful information in how the variables within each distribution are related to each other (i.e., in the copula).</li>
+<li>Since sliced Wasserstein distances are scale-sensitive, each input distribution is scaled as follows for the fourth model. When predicting the <img src="https://latex.codecogs.com/png.latex?i">-th outcome, I computed a pooled estimate of the joint covariance matrix of the other nineteen distributions as <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%7B%5Cboldsymbol%7B%5CSigma%7D%7D_i%20=%20%5Cfrac%7B1%7D%7B19%7D%5Csum_%7Bj%20%5Cneq%20i%7D%5Cwidehat%7B%5Cboldsymbol%7B%5CSigma%7D%7D(%5Cboldsymbol%7BM%7D_j),"> where <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%7B%5Cboldsymbol%7B%5CSigma%7D%7D(%5Cboldsymbol%7BM%7D_j)"> is the usual sample estimate of the covariance matrix based on data matrix <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%7BM%7D_j">. The input matrices were then scaled as <img src="https://latex.codecogs.com/png.latex?%5Cwidetilde%7B%5Cboldsymbol%7BM%7D%7D_k%20=%20%5Cboldsymbol%7BM%7D_k%5Cboldsymbol%7BS%7D_i,"> where <img src="https://latex.codecogs.com/png.latex?%5Cboldsymbol%7BS%7D_i"> is the diagonal matrix containing the multiplicative inverses of the square roots of the diagonal elements of <img src="https://latex.codecogs.com/png.latex?%5Cwidehat%7B%5Cboldsymbol%7B%5CSigma%7D%7D_i">, <img src="https://latex.codecogs.com/png.latex?k%20=%201,%20%5Cdots,%2020">.</li>
+</ul>
+<p><strong>Results.</strong> The following table summarises how well each model predicted the out-of-fold data. For the NLPD, both the mean and the standard deviation over the twenty outcomes are shown. For reference, a baseline model that does not take into account any predictors and just outputs the mean of the training set outcome scores an RMSE of 0.165.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 70%">
+<col style="width: 7%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th style="text-align: right;">RMSE</th>
+<th style="text-align: right;">NLPD (mean <img src="https://latex.codecogs.com/png.latex?%5Cpm"> SD)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(1) Medians</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">12.42 <img src="https://latex.codecogs.com/png.latex?%5Cpm"> 22.83</td>
+</tr>
+<tr class="even">
+<td>(2) Marginal <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"></td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.59 <img src="https://latex.codecogs.com/png.latex?%5Cpm"> 2.10</td>
+</tr>
+<tr class="odd">
+<td>(3) Marginal <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BW%7D_2"> + <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BSW%7D_2"> on copula</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">-0.70 <img src="https://latex.codecogs.com/png.latex?%5Cpm"> 1.63</td>
+</tr>
+<tr class="even">
+<td>(4) <img src="https://latex.codecogs.com/png.latex?%5Cmathbf%7BSW%7D_2"> on scaled inputs</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-0.36 <img src="https://latex.codecogs.com/png.latex?%5Cpm"> 0.99</td>
+</tr>
+</tbody>
+</table>
+<p>Figure&nbsp;17 shows the fit of the predictions to the true values; points close to the dashed line represent more accurate predictions.</p>
+<div id="fig-results-brains" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-results-brains-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://janhove.github.io/posts/2026-11-03-distribution-regression/brain_results.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-results-brains-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: The out-of-fold predictions of the entropy outcome.
+</figcaption>
+</figure>
+</div>
+<p><strong>Discussion.</strong> The medians-only model outperforms the models based on marginal Wasserstein distances and on sliced Wasserstein distances in terms of the RMSE. However, the large mean NLPD value for this model, coupled with a large standard deviation, shows that for some out-of-fold predictions, the model’s uncertainty estimates were badly overconfident.</p>
+<p>Still, the comparison of model (1) on the one hand and models (2) through (4) the other highlights that the Wasserstein–kernel approach isn’t a silver bullet. The median representations may be serviceable (in terms of their RMSE) precisely because they do <em>not</em> capture the full (joint or marginal) distributions; the Wasserstein-based kernels capture these warts and all (i.e., distributional aspects that simply aren’t relevant to the task at hand).</p>
+<p>Further, each input distribution in the present example is based on a substantial number of observations, but only few distributions were available to train and evaluate the regression models on, and the models may struggle to find adequate hyperparameter values that allow them to outperform this simpler representation.</p>
+<p>Finally, a model using both the marginal Wasserstein distances and a kernel based on the sliced Wasserstein distances between the copulae (i.e., the dependency structure between the variables) seems to perform best of all. This could suggest that some of the relevant information in the data isn’t contained in the marginal distributions but rather in the associations between the different variables. But with <img src="https://latex.codecogs.com/png.latex?N%20=%2020">, these speculations are tenuous at best.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>One way to check if summarising input distributions by a mean, median or some other small number of statistics loses useful information is to compute the (sliced) Wasserstein distances between them and then use these distances in a kernel-based model such as Gaussian process regression. If this model predicts new data no better than the summary-based model, the summary probably wasn’t losing a lot of useful information. If it does better, it may be worth examining the distributions to figure out what the summaries missed and how to capture it better.</p>
+<p>The first example shows the promise of this approach. The signal was hidden entirely in the shape of the distribution rather than in their location. The sliced Wasserstein-based approach was able to demonstrate that the summary-based model missed crucial information. The other two more realistic examples, meanwhile, underscore the limits of the approach: models that take into account richer representations of the inputs don’t have to outperform models based on leaner representations. Of course, it’s always possible that with more data (longer texts, more hippocampi), a model incorporating sliced Wasserstein distances could find some additional signal in the richer distributional representations. But for the data at hand, this does not seem to have been the case.</p>
+<p>In sum, the approach above doesn’t turbo-charge predictive models derived from distributional inputs. But it may serve as a diagnostic tool to check if models based on summary statistics are leaving money on the table.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Carpintero Perez, Raphaël, Sébastian Da Veiga, Josselin Garnier and Brian Staber. 2024. <a href="https://proceedings.mlr.press/v238/carpintero-perez24a.html">Gaussian process regression with sliced Wasserstein Weisfeiler–Lehman graph kernels.</a> <em>Proceedings of Machine Learning Research</em> 238. 1297–1305.</p>
+<p>Eckermann, Marina, Bernhard Schmitzer, Franziska van der Meer, Jonas Franz, Ove Hansen, Christine Stadelmann and Timm Salditt. 2021. <a href="https://doi.org/10.1073/pnas.2113835118">Three-dimensional virtual histology of the human hippocampus based on phase-contrast computed tomography.</a> <em>PNAS</em> 118(48). e2113835118.</p>
+<p>Görtler, Joachim, Rebecca Kehlbeck and Oliver Deussen. 2019. <a href="https://doi.org/10.23915/distill.00017">A visual exploration of Gaussian processes.</a> <em>Distill.</em></p>
+<p>Kusner, Matt, Yu Sun, Nicholas Kolkin and Kilian Weinberger. 2015. <a href="https://proceedings.mlr.press/v37/kusnerb15">From word embeddings to document distances.</a> <em>Proceedings of Machine Learning Research</em> 37. 957–966.</p>
+<p>Muandet, Krikamol, Kenji Fukumizu, Bharath Sriperumbudur and Bernhard Schölkopf. 2017. <a href="https://doi.org/10.1561/220000006">Kernel mean embedding of distributions: A review and beyond.</a> <em>Foundations and Trends in Machine Learning</em> 10(1-2). 1–141.</p>
+<p>Rasmussen, Carl Edward and Christopher K. I. Williams. 2006. <a href="https://gaussianprocess.org/gpml/"><em>Gaussian processes for machine learning.</em></a> MIT Press.</p>
+<p>Szabó, Zoltán, Bharath K. Sriperumbudur, Barnabás Póczos and Arthur Gretton. 2016. <a href="https://www.jmlr.org/papers/v17/14-510.html">Learning theory for distribution regression.</a> <em>Journal of Machine Learning Research</em> 17(152). 1–40.</p>
+<p>Székely, Gábor J. and Maria L. Rizzo. 2013. <a href="https://doi.org/10.1016/j.jspi.2013.03.018">Energy statistics: A class of statistics based on distances.</a> <em>Journal of Statistical Planning and Inference</em> 143(8). 1249–1272.</p>
+<p>van Heuven, Walter J. B., Pawel Mandera, Emmanuel Keuleers and Marc Brysbaert. 2014. <a href="https://doi.org/10.1080/17470218.2013.850521">SUBTLEX-UK: A new and improved frequency database for British English.</a> <em>Quarterly Journal of Experimental Psychology</em> 67(6). 1176–1190.</p>
+<p>Vanhove, Jan. 2026. <a href="https://janhove.github.io/SlicedWasserstein_Vanhove.pdf"><em>Sliced Wasserstein distances and their application to regression problems.</em></a> Master’s thesis. University of Bern.</p>
+<p>Vanhove, Jan, Audrey Bonvin, Amelia Lambelet and Raphael Berthele. 2019. <a href="https://doi.org/10.17239/jowr-2019.10.03.04">Predicting perceptions of the lexical richness of short French, German, and Portuguese texts using text-based indices.</a> <em>Journal of Writing Research</em> 10(3). 499–525.</p>
+<p>Wang, Jie. 2024. <a href="https://arxiv.org/abs/2009.10862">An intuitive tutorial to Gaussian process regression.</a> <em>arXiv</em>.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>First, for any two objects <img src="https://latex.codecogs.com/png.latex?x"> and <img src="https://latex.codecogs.com/png.latex?x'">, <img src="https://latex.codecogs.com/png.latex?x"> must be as similar to <img src="https://latex.codecogs.com/png.latex?x'"> as <img src="https://latex.codecogs.com/png.latex?x'"> is to <img src="https://latex.codecogs.com/png.latex?x">. Second, if you put the pairwise similarities between the objects <img src="https://latex.codecogs.com/png.latex?x_1,%20%5Cdots,%20x_n"> in a matrix, <img src="https://latex.codecogs.com/png.latex?K%20=%20(k(x_i,%20x_j))_%7Bi,j%20=%201%7D%5En"> the matrix must be positive semi-definite for any possible choice of <img src="https://latex.codecogs.com/png.latex?n"> input objects and for any <img src="https://latex.codecogs.com/png.latex?n">.↩︎</p></li>
+<li id="fn2"><p>The different kernels were added together after their scaling factors and length-scales were tuned.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Gaussian processes</category>
+  <category>kernels</category>
+  <category>predictive modelling</category>
+  <category>slicer</category>
+  <category>Wasserstein distance</category>
+  <guid>https://janhove.github.io/posts/2026-11-03-distribution-regression/</guid>
+  <pubDate>Tue, 03 Nov 2026 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Cluster analysis: A skeptic’s guide</title>
   <dc:creator>Jan Vanhove</dc:creator>
@@ -19895,44 +21950,6 @@ font-style: inherit;">session_info</span>()</span></code></pre></div></div>
   <guid>https://janhove.github.io/posts/2021-06-29-posttreatment/</guid>
   <pubDate>Tue, 29 Jun 2021 00:00:00 GMT</pubDate>
   <media:content url="https://janhove.github.io/posts/2021-06-29-posttreatment/image.png" medium="image" type="image/png" height="115" width="144"/>
-</item>
-<item>
-  <title>Quantitative methodology: An introduction</title>
-  <dc:creator>Jan Vanhove</dc:creator>
-  <link>https://janhove.github.io/posts/2020-12-16-quant-meth/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I’ve taught my last class for the semester and I thought I’d make available the booklet that I wrote for teaching my class on quantitative methodology. You can download it <a href="../../QuantitativeMethodology.pdf">here</a>.</p>
-<p>It contains seven reading assignments (mostly empirical studies that serve as examples) and ten chapters with lectures:</p>
-<ol type="1">
-<li>Association and causality.</li>
-<li>Constructing a control group.</li>
-<li>Alternative explanations.</li>
-<li>Inferential statistics 101. (The course is not a statistics course, but there’s no avoiding talking about p-values given their omnipresence.)</li>
-<li>Increasing precision.</li>
-<li>Pedagogical interventions.</li>
-<li>Within-subjects experiments.</li>
-<li>Quasi-experiments and correlational studies.</li>
-<li>Constructs and indicators.</li>
-<li>Questionable research practices.</li>
-</ol>
-<p>I’ve also included two appendices:</p>
-<ul>
-<li>Reading difficult results sections.</li>
-<li>Reporting research transparently.</li>
-</ul>
-<p>Hopefully some of you find it useful, and feel free to let me know what you think.</p>
-
-
-
- ]]></description>
-  <category>research design</category>
-  <category>teaching materials</category>
-  <guid>https://janhove.github.io/posts/2020-12-16-quant-meth/</guid>
-  <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
