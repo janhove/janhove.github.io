@@ -1239,7 +1239,7 @@ to the test set observations has a RMSE of $0.33$ radians.
 
 @fig-toy_example_results shows the models fits graphically.
 
-![Model 1 doesn't capture any signal; Model 2 captures part of it; and Models 3 and 4 fit the data well.](toyexample_results.svg){#fig-toy_example_results}
+![Model 1 doesn't capture any signal; Model 2 captures part of it; and Models 3 and 4 fit the data well.](toyexample_results.svg){#fig-toy_example_results .preview-image}
 
 **Discussion.** The results match our expectations. Relying
 on merely the means throws away _all_ predictive information in the inputs:
