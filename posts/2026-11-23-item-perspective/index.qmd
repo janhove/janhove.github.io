@@ -3,6 +3,7 @@ draft: false
 title: "Show your results by stimulus, too"
 date: "2026/11/23"
 categories: [graphs]
+image: "fig-dotplot-kuster.svg"
 format:
   html:
     code-fold: true
