@@ -54,7 +54,7 @@ Figure&nbsp;1: The boxplots with individual data points overlaid show the differ
 <img src="https://janhove.github.io/posts/2026-11-23-item-perspective/index_files/figure-html/fig-dotplot-kuster-1.svg" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dotplot-kuster-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: A Cleveland dotplot of the by-idiom results show the variation within and the overlap between the categories.
+Figure&nbsp;2: A Cleveland dotplot of the by-idiom results shows the variation within and the overlap between the categories.
 </figcaption>
 </figure>
 </div>
@@ -85,7 +85,7 @@ Figure&nbsp;3: Boxplots show considerable differences between participants in th
 </div>
 </div>
 </div>
-<p>These boxplots are all right. But I like the Cleveland dotplot in Figure&nbsp;4 much better because the data points carry much more meaning. First, it highlights that, on the word level, there is hardly any overlap between nouns with neuter cognates and those with common cognates, suggesting that Standard Dutch gender strongly influences these participants’ responses. The sole exception to this pattern is easily identified to be <em>Boot</em>, which can plausibly be explained by the participants’ being familiar with the film <em>Das Boot</em>. And in case anyone was wondering whether the tendency of people from Antwerp to refer to Antwerp as _‘t Stad_ ’the city’, which could be superficially read as considering <em>stad</em> to be neuter rather than common<sup>2</sup>, has any consequences, the dotplot shows that none of the participants assigned a neuter article to its German cognate <em>Stadt</em>.</p>
+<p>These boxplots are all right. But I like the Cleveland dotplot in Figure&nbsp;4 much better because the data points carry much more meaning. First, it highlights that, on the word level, there is hardly any overlap between nouns with neuter cognates and those with common cognates, suggesting that Standard Dutch gender strongly influences these participants’ responses. The sole exception to this pattern is easily identified to be <em>Boot</em>, for which one plausible explanation is the participants’ familiarity with the film <em>Das Boot</em>. And in case anyone was wondering whether the tendency of people from Antwerp to refer to Antwerp as _‘t Stad_ ’the city’, which could be superficially read as considering <em>stad</em> to be neuter rather than common<sup>2</sup>, has any consequences, the dotplot shows that none of the participants assigned a neuter article to its German cognate <em>Stadt</em>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-dotplot-vanhove" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -103,7 +103,7 @@ Figure&nbsp;4: A Cleveland dotplot of the data aggregated by noun shows that, by
 </section>
 <section id="tips" class="level2">
 <h2 class="anchored" data-anchor-id="tips">Tips</h2>
-<p><strong>Tip 1.</strong> Cleveland dot plots tend to work well for results aggregated by stimuli as you can put the stimuli themselves or some shorter form of them in the graph. Don’t use bar charts; they tend to be too busy.</p>
+<p><strong>Tip 1.</strong> Cleveland dotplots tend to work well for results aggregated by stimuli as you can put the stimuli themselves or some shorter form of them in the graph. Don’t use bar charts; they tend to be too busy.</p>
 <p><strong>Tip 2.</strong> When working with facets (e.g., for different stimulus categories), impose some sensible ordering. For instance, you could sort the facets by the average response on the stimuli occurring in it.</p>
 <p><strong>Tip 3.</strong> Similarly, impose some sensible ordering on the stimuli within the facets.</p>
 <p><strong>Tip 4.</strong> Have the graph show the item labels horizontally rather than vertically.</p>
