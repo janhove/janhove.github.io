@@ -16,14 +16,9 @@ with a focus on quantitative research methods.
 
 I [blog](archive.qmd) about research design and statistics,
 often using examples from language-learning research.
-
-::: {.callout-note}
-## Methods support and training
-I offer statistical consulting, departmental methods support,
-and courses on quantitative methodology, research design,
+I also offer statistical [consulting](support.qmd)
+and methods [support](support.qmd)
+as well as [courses](courses.qmd) on quantitative methodology, research design,
 and data analysis.
-
-[Support and consulting](support.qmd) | [Courses](courses.qmd)
-:::
 
 # Latest blog posts

@@ -1,0 +1,35 @@
+"BareNoun","Stimulus","CognateInStudy","Category","AgreementValidation","Description","CorrectResponse","ZipfNL"
+"beeld","de beeld",NA,3,99,"standard de incorrect",2,4.60685526300433
+"bijl","nen bijl","Beil",7,NA,"variable",NA,3.97159938048773
+"ding","de ding",NA,3,99,"standard de incorrect",2,5.45449407590259
+"fiets","het fiets",NA,4,98,"standard het incorrect",2,4.34171029529501
+"film","het film",NA,4,99,"standard het incorrect",2,5.24514229134668
+"geur","ne geur",NA,5,82,"substandard ne correct",1,4.37548872167297
+"gloed","ne gloed","Glut",7,NA,"variable",NA,3.32686117425609
+"hart","de hart",NA,3,99,"standard de incorrect",2,5.29696538267475
+"huis","het huis",NA,2,99,"standard het correct",0,5.91708979549625
+"jaar","het jaar",NA,2,98,"standard het correct",0,5.88619522902878
+"kant","ne kant",NA,5,82,"substandard ne correct",1,5.49896892247455
+"kin","ne kin","Kinn",7,25,"variable",NA,3.89709945296667
+"knie","ne knie","Knie",7,69,"variable",NA,4.01531968791386
+"koek","de koek",NA,1,96,"standard de correct",0,3.52143583900578
+"maand","het maand",NA,4,99,"standard het incorrect",2,4.97543329487831
+"mand","ne mand",NA,6,73,"substandard ne incorrect",2,3.63953515108378
+"naam","de naam",NA,1,96,"standard de correct",0,5.67651871733695
+"pijn","de pijn",NA,1,95,"standard de correct",0,5.4290263272244
+"plicht","ne plicht","Pflicht",7,28,"variable",NA,4.45297845834993
+"poort","ne poort",NA,6,85,"substandard ne incorrect",2,4.40327997448525
+"rol","het rol",NA,4,99,"standard het incorrect",2,4.7365370685429
+"speld","de speld",NA,1,93,"standard de correct",0,3.4312592086567
+"stad","ne stad","Stadt",7,25,"variable",NA,5.43942246440399
+"stap","ne stap",NA,5,83,"substandard ne correct",1,5.10611250171547
+"stoel","het stoel",NA,4,98,"standard het incorrect",2,4.7133213652447
+"stuk","het stuk",NA,2,97,"standard het correct",0,5.24860418009863
+"trein","de trein",NA,1,98,"standard de correct",0,4.86822332523044
+"veld","het veld",NA,2,99,"standard het correct",0,4.20755052265622
+"vrucht","ne vrucht","Frucht",7,28,"variable",NA,3.5184093843756
+"vuur","de vuur",NA,3,98,"standard de incorrect",2,5.0064273088874
+"werk","de werk",NA,3,100,"standard de incorrect",2,5.8365165203653
+"woord","het woord",NA,2,98,"standard het correct",0,5.11481422072143
+"zaak","ne zaak",NA,6,84,"substandard ne incorrect",2,5.38289557107831
+"zaal","ne zaal","Saal",7,25,"variable",NA,4.19237711974156

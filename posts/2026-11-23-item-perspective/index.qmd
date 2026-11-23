@@ -1,0 +1,404 @@
+---
+draft: false
+title: "Show your results by stimulus, too"
+date: "2026/11/23"
+categories: [graphs]
+format:
+  html:
+    code-fold: true
+    message: false
+    df-print: paged
+    fig-width: 4.50
+    fig-height: 6.75
+    fig-align: center
+    echo: false
+    warning: false
+    embed-resources: false
+---
+
+If your research involves participants reacting to linguistic stimuli
+such as words, sentences, or vignettes,
+there's a pretty simple way to make your articles and presentations
+more informative: Also show the results aggregated by stimuli
+rather than just by participants.
+Regardless of whether or not you're fitting mixed-effects models incorporating
+random effects for stimuli, such by-stimulus visualisations may help both
+you and your readership identify patterns in the data that a by-participant
+visualisation would gloss over and guard against premature conclusions.
+
+
+## Examples
+
+As a simple first example, consider a small-scale study by Kuster (2018),
+in which the student-author sought to replicate a study by Laufer (2000) 
+in a different setting.
+Ten English-speaking learners of L2 German were given twenty fill-in-the-blank
+sentences that targeted German idioms.
+Following Laufer (2000), the idioms were separated into four categories:
+
+1. German idioms for which Kuster (2018) could not identify a corresponding
+English idiom (e.g., _sich aus dem Staub machen_ 'to make off');
+2. German idioms for which Kuster found a corresponding English idiom
+with no formal overlap to the German idiom (e.g., _Ich verstehe nur Bahnhof_ 'It's all Greek to me'; 
+literally 'I only understand railway station').
+This category is referred to as _only conceptual overlap_;
+3. German idioms with a formally somewhat similar English counterpart
+(e.g., _Katzen hageln_ 'to rain cats and dogs').
+This category is referred to as _partial formal overlap_;
+4. German idioms with a formally very similar English counterpart,
+that is, the German and English idioms are essentially literal translations of one another
+(e.g., _zwischen den Zeilen lesen_ 'to read between the lines').
+This category is referred to as _total formal overlap_.
+
+The expectation was that the learners would tend to give more 
+idiom responses to the higher-numbered categories than to the lower-numbered ones.
+The results in @fig-boxplot-kuster are in line with these expectations.
+
+```{r}
+#| fig-cap: "The boxplots with individual data points overlaid show the differences between the participants for each idiom category."
+#| label: fig-boxplot-kuster
+#| fig-width: 7
+#| fig-height: 3.5
+#| out-width: "80%"
+library(tidyverse)
+theme_set(theme_bw())
+
+d <- read_csv("kuster.csv")
+d$RW <- ifelse(d$Uebersetzungsart == "RW", 1, 0)
+d$RW[is.na(d$RW)] <- 0
+
+idioms <- data.frame(
+  Item = 1:20,
+  Idiom = c("zweite Geige spielen", "ganz Ohr sein",
+            "Katzen hageln", "nicht gut Kirschen essen",
+            "Karten auf den Tisch", "Zug verpassen",
+            "jmdm. einen Bären aufbinden", "Kirche im Dorf lassen",
+            "unter den Teppich kehren", "auf der Zunge liegen",
+            "den Kopf hinhalten", "sich aus dem Staub machen",
+            "zwischen den Zeilen lesen", "Öl ins Feuer",
+            "Kinderspiel", "durch die Blume sagen",
+            "Bahnhof verstehen", "die Dinge beim Namen nennen",
+            "zwei Fliegen mit einer Klappe", "über den eigenen Schatten springen")
+)
+
+d <- d %>% 
+  left_join(idioms)
+
+typen <- data.frame(
+  Typ = 1:4,
+  Kategorie = c("total formal overlap", "partial formal overlap",
+                "only conceptual overlap", "no idiom in L1")
+)
+
+d <- d %>% 
+  left_join(typen)
+
+d_perItem <- d %>% 
+  group_by(Idiom, Kategorie) %>% 
+  summarise(prop_RW = mean(RW, na.rm = TRUE))
+
+d_perPart <- d |> 
+  group_by(Vpn, Kategorie) |> 
+  summarise(prop_RW = mean(RW, na.rm = TRUE),
+            .groups = "drop")
+ggplot(d_perPart,
+       aes(x = reorder(Kategorie, prop_RW), y = prop_RW)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = position_jitter(width = 0.2, height = 0),
+             shape = 1) +
+  xlab("Idiom category") +
+  ylab("Proportion of idiom responses in L2\nper participant")
+```
+
+The boxplots with the individual participants' results overlaid 
+are already [much better](../2016-06-21-drawing-a-boxplot/#adding-the-individual-data-points)
+than a typical bar chart that only shows the mean proportion for each
+idiom category.
+My suggestion, though, is to _also_ show the variability in the data
+by idiom, as in @fig-dotplot-kuster.
+
+```{r}
+#| fig-cap: "A Cleveland dotplot of the by-idiom results show the variation within and the overlap between the categories."
+#| label: fig-dotplot-kuster
+#| fig-width: 5
+#| fig-height: 6
+#| out-width: "80%"
+d_perItem$Kategorie <- ordered(d_perItem$Kategorie, levels =
+                                 c("total formal overlap", "partial formal overlap",
+                                   "only conceptual overlap", "no idiom in L1"))
+ggplot(d_perItem,
+       aes(x = prop_RW,
+           y = reorder(Idiom, prop_RW))) +
+  geom_point() +
+  facet_wrap(vars(Kategorie), scales = "free_y", ncol =1) +
+  xlab("Proportion of idiom responses in L2") +
+  xlim(0, 1) +
+  ylab(NULL)
+```
+
+This Cleveland dotplot has a few things going for it.
+
+First, it illustrates the extent to which stimuli within a single category
+differ in how frequently they elicit a certain response.
+This, hopefully, helps guard against prematurely reifying fairly abstract
+stimulus categories and their role in language learning.
+In this example, the results for the _only conceptual overlap_ category
+overlap with those for all other categories so that it's clear that we can
+predict little about any future idiom we might assign to this category.
+
+Second, stimulus labels, more often so than participant labels, carry meaning.
+In Cleveland dotplots, we can include these labels.
+Sometimes, these labels may help us or our readership to come up with reasonable
+accounts for the by-stimulus variability.
+Further, as in the present case, they highlight that the categories are to 
+some extent arbitrary, and readers may call into question some classifications.
+For instance, someone with sufficient German and English may look at @fig-dotplot-kuster 
+and rightly wonder why _Kinderspiel_ 'child's play' is in the _only conceptual overlap_
+category rather than in one of the _formal overlap_ categories.
+The categorisation of some other idioms can similarly be questioned.
+
+Third, readers who disagree with some categorisations can nonetheless gauge
+if the overall results would change if the stimuli were to be categorised
+differently.
+In this example, assigning _Kinderspiel_ to one of the _formal overlap_
+categories wouldn't affect the overall finding.
+
+
+
+```{r}
+dat <- read.csv("DataGermanArticles_15Aug2016.csv")
+colnames(dat)[6] <- "Stimulus"
+questionnaire <- read.csv("Questionnaires_GermanArticles.csv")
+questionnaire <- unique(questionnaire)
+dat <- merge(dat, questionnaire, by = "SubjectID")
+dat <- dat |> 
+  filter(NativeLanguage != "other") |> 
+  filter(Country %in% c("BE", "NL")) |> 
+  filter(NativeLanguage2 != "duits" | is.na(NativeLanguage2)) |> 
+  droplevels()
+
+percuse <- dat %>%
+  filter(PartExperiment == "DutchArticlesUsual") %>%
+  droplevels()
+percusestimuli <- read.csv("DutchStimuli.csv")
+percuse <- merge(percuse, percusestimuli, by = "Stimulus")
+percuse$CorrectResponse <- factor(percuse$CorrectResponse)
+percuse_standard <- percuse %>%
+  filter(Category %in% c(1, 2, 3, 4)) %>%
+  droplevels()
+percuse_standard$Correct <- percuse_standard$button_pressed == percuse_standard$CorrectResponse
+percuse_standard_perParticipant <- percuse_standard %>%
+  group_by(SubjectID) %>%
+  summarise(L1Correct = sum(Correct),
+            n = n())
+
+dat <- merge(dat, percuse_standard_perParticipant, by = "SubjectID")
+dat2 <- dat %>%
+  filter(L1Correct >= 18) %>%
+  droplevels()
+questionnaire <- questionnaire %>%
+  filter(SubjectID %in% dat2$SubjectID) %>%
+  droplevels()
+germanarticles <- dat2 %>%
+  filter(PartExperiment == "GermanArticles") %>%
+  droplevels()
+
+L2stimuli <- read.csv("GermanStimuli_Revision.csv")
+L2stimuli$CorrectResponse <- factor(L2stimuli$CorrectResponse)
+germanarticles <- merge(germanarticles, L2stimuli, by = "Stimulus")
+
+DutchNeuter <- germanarticles %>%
+  filter(DutchSDGender == "neuter") %>%
+  droplevels()
+DutchNeuter$Correct <- DutchNeuter$button_pressed == DutchNeuter$CorrectResponse
+
+DutchNeuter_perParticipant <- DutchNeuter %>%
+  group_by(SubjectID, Country) %>%
+  summarise(L2Index = sum(Correct),
+            n = n())
+
+DutchNeuter_perParticipant <- DutchNeuter %>% 
+  group_by(SubjectID, Country, German) %>% 
+  summarise(L2Index = sum(Correct),
+            n = n())
+DutchNeuter_perParticipant <- DutchNeuter %>%
+  group_by(SubjectID) %>%
+  summarise(L2Index = sum(Correct))
+dat2 <- merge(dat2, DutchNeuter_perParticipant, by = "SubjectID")
+dat3 <- dat2 %>%
+  filter(rt > 500) %>%
+  droplevels()
+
+germart <- dat3 %>%
+  filter(PartExperiment == "GermanArticles") %>%
+  droplevels()
+L2stimuli <- read.csv("GermanStimuli_Revision.csv")
+germart <- merge(germart, L2stimuli, by = "Stimulus")
+germart_perItem <- germart %>%
+  group_by(Stimulus, Country) %>%
+  summarise(NeuterResponses = mean(button_pressed == "2"))
+germart_perItem <- merge(germart_perItem, L2stimuli, by = "Stimulus")
+
+labels <- c(
+  `BE` = "Belgium",
+  `NL` = "The Netherlands"
+)
+
+germart_perItem2 <- germart %>%
+  group_by(Stimulus) %>%
+  summarise(NeuterResponsesBelgium = mean(button_pressed[Country=="BE"] == "2"),
+            NeuterResponsesNetherlands = mean(button_pressed[Country=="NL"] == "2"),
+            NeuterResponsesTotal = (NeuterResponsesBelgium+NeuterResponsesNetherlands)/2)
+# Combine this with earlier by-item summary
+germart_perItem <- merge(germart_perItem, germart_perItem2)
+# Sort by total proportion of neuter responses
+germart_perItem <- arrange(germart_perItem, NeuterResponsesTotal)
+
+# Create variable with labels (stimulus + translation)
+germart_perItem$Label <- paste(germart_perItem$Stimulus,  " (", germart_perItem$DutchCognate, ")", sep = "")
+
+# Reorder the factor levels by the total proportion of neuter responses (rather than alphabetically).
+germart_perItem$Stimulus <- reorder(germart_perItem$Stimulus, germart_perItem$NeuterResponsesTotal)
+germart_perItem$Label <- reorder(germart_perItem$Label, germart_perItem$NeuterResponsesTotal)
+
+
+# Rename levels
+germart_perItem$Country <- as.factor(germart_perItem$Country)
+levels(germart_perItem$Country) <- c("Belgium", "The Netherlands")
+# Relevel Dutch gender
+germart_perItem$DutchSDGender <- relevel(as.factor(germart_perItem$DutchSDGender), "neuter")
+levels(germart_perItem$DutchSDGender) <- c("St. Du.: neuter", "St. Du: common")
+
+# Add description of German gender (neuter vs. non-neuter)
+germart_perItem$GermanNeuter <- factor(germart_perItem$GermanGender == "neuter",
+                                       levels = c("TRUE", "FALSE"),
+                                       labels = c("Gm.: neuter", "Gm.: non-neuter"))
+
+```
+
+```{r}
+germart_perPart <- germart |> 
+  group_by(SubjectID, Country, GermanGender, DutchSDGender) |> 
+  summarise(prop_neuter = mean(button_pressed == "2"),
+            .groups = "drop")
+germart_perPart$DutchSDGender <- relevel(as.factor(germart_perPart$DutchSDGender), "neuter")
+levels(germart_perPart$DutchSDGender) <- c("St. Du.: neuter", "St. Du: common")
+
+# Add description of German gender (neuter vs. non-neuter)
+germart_perPart$GermanNeuter <- factor(germart_perPart$GermanGender == "neuter",
+                                       levels = c("TRUE", "FALSE"),
+                                       labels = c("Gm.: neuter", "Gm.: non-neuter"))
+```
+
+As a second example, consider an older study of mine (Vanhove 2017),
+in which I asked a number of Dutch-speaking participants from the Netherlands (NL)
+and Belgium (BE) to assign articles to German nouns with Dutch cognates.
+@fig-boxplot-vanhove shows how often these participants assigned the neuter
+article _das_ to four categories of nouns:
+
+1. neuter German (Gm.) nouns with a neuter Standard Dutch (St. Du.) cognate (e.g., Gm. _Brot_ -- St. Du. _brood_ 'bread');
+2. masculine or feminine German nouns with a neuter Standard Dutch cognate (e.g., _Strand_ 'beach', which is masculine in German but _obviously_ should be neuter);
+3. neuter German nouns with a common Standard Dutch cognate[^1] (e.g., Gm. _Beil_ -- St. Du. _bijl_ 'axe'; another aberration of the German language);
+4. masculine or feminine German nouns with a common Standard Dutch cognate (e.g., _Berg_ 'mountain').
+
+[^1]: For all intents and purposes, Standard Dutch doesn't distinguish between masculine and feminine gender adnominally.
+The merger of masculine and feminine gender resulted in a common (non-neuter) gender category.
+Lots of Flemish dialects still do to some extent, though. 
+In these dialects, the distinction between masculine and feminine genders is especially marked on the indefinite article (e.g., _ne voet_ 'a foot (m.)' but _een hand_ 'a hand (f.)').
+
+```{r}
+#| fig-cap: "Boxplots show considerable differences between participants in their propensity to assign a neuter article to German nouns."
+#| label: fig-boxplot-vanhove
+#| fig-height: 6.00
+#| out-width: "50%"
+
+ggplot(germart_perPart,
+       aes(x = Country,
+           y = prop_neuter)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position = position_jitter(width = 0.2, height = 0), 
+             shape = 1, colour = "grey") +
+  facet_grid(DutchSDGender + GermanNeuter ~ ., scales = "free_y", drop = TRUE, space = "free_y") +
+  ylim(0, 1) +
+  xlab(NULL) +
+  ylab("Proportion of neuter ('das') choices") +
+  coord_flip() +
+  theme_bw()
+```
+
+These boxplots are all right.
+But I like the Cleveland dotplot in @fig-dotplot-vanhove much better because
+the data points carry much more meaning.
+First, it highlights that, on the word level, there is hardly any overlap
+between nouns with neuter cognates and those with common cognates,
+suggesting that Standard Dutch gender strongly influences these participants'
+responses.
+The sole exception to this pattern is easily identified to be _Boot_, 
+which can plausibly be explained by the participants' being familiar with
+the film _Das Boot_.
+And in case anyone was wondering whether the tendency of people from Antwerp
+to refer to Antwerp as _'t Stad_ 'the city', which could be superficially read
+as considering _stad_ to be neuter rather than common[^2], has any consequences,
+the dotplot shows that none of the participants assigned a neuter article
+to its German cognate _Stadt_.
+
+[^2]: In Standard Dutch, _'t_ is a reduced form of the neuter article _het_.
+But in _'t stad_ it can best be understood as a misspelling of _d'_, which
+would be a reduced form of the common article _de_ and which is affected by
+anticipatory devoicing.
+
+```{r}
+#| fig-cap: "A Cleveland dotplot of the data aggregated by noun shows that, by and large, Belgian and Dutch speakers of Dutch show the same tendencies and that, with a single exception, there is no overlap between nouns with neuter cognates and those with common cognates. The sole exception, _Boot_, is easily identified; a plausible explanation for this result is that many participants may have known the film _Das Boot_. "
+#| label: fig-dotplot-vanhove
+#| out-width: "75%"
+ggplot(germart_perItem,
+       aes(x = NeuterResponses,
+           y = Label,
+       shape = Country)) +
+  geom_point() +
+  scale_shape_manual(values = c(1, 3)) +
+  #scale_colour_brewer(palette = "Set1") +
+  guides(colour = guide_legend("Country"), 
+         shape = guide_legend("Country")) +
+  facet_grid(DutchSDGender + GermanNeuter~ ., scales = "free_y", drop = TRUE, space = "free_y") +
+  theme_bw(8) +
+  xlab("Proportion of neuter gender assignments ('das')\nin L2 German") +
+  ylab("L2 German noun (Dutch cognate)") +
+  theme(legend.direction = "vertical", 
+        legend.position = c(0.8, 0.1))
+```
+
+## Tips
+
+**Tip 1.** Cleveland dot plots tend to work well for results aggregated by stimuli
+as you can put the stimuli themselves or some shorter form of them in the graph.
+Don't use bar charts; they tend to be too busy.
+
+**Tip 2.** When working with facets (e.g., for different stimulus categories),
+impose some sensible ordering. For instance, you could sort the facets
+by the average response on the stimuli occurring in it.
+
+**Tip 3.** Similarly, impose some sensible ordering on the stimuli within
+the facets.
+
+**Tip 4.** Have the graph show the item labels horizontally rather than
+vertically.
+
+
+## References
+Kuster, Sara. 2018. 
+_Die Rolle der zwischensprachlichen Ähnlichkeit von Englisch und Deutsch bei der Produktion von Redewendungen in DaZ._
+Term paper.
+University of Fribourg.
+
+Laufer, Batia.
+2000.
+[Avoidance of idioms in a second language: The effect of L1-L2 degree of similarity.](https://doi.org/10.1111/1467-9582.00059)
+_Studia Linguistica_ 54(2).
+186--196.
+
+Vanhove, Jan.
+2017.
+[The influence of Standard and substandard Dutch on gender assignment in second language German.](https://dx.doi.org/10.1111/lang.12230)
+_Language Learning_ 67(2).
+431--460.
