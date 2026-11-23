@@ -119,7 +119,7 @@ My suggestion, though, is to _also_ show the variability in the data
 by idiom, as in @fig-dotplot-kuster.
 
 ```{r}
-#| fig-cap: "A Cleveland dotplot of the by-idiom results show the variation within and the overlap between the categories."
+#| fig-cap: "A Cleveland dotplot of the by-idiom results shows the variation within and the overlap between the categories."
 #| label: fig-dotplot-kuster
 #| fig-width: 5
 #| fig-height: 6
@@ -335,7 +335,7 @@ between nouns with neuter cognates and those with common cognates,
 suggesting that Standard Dutch gender strongly influences these participants'
 responses.
 The sole exception to this pattern is easily identified to be _Boot_, 
-which can plausibly be explained by the participants' being familiar with
+for which one plausible explanation is the participants' familiarity with
 the film _Das Boot_.
 And in case anyone was wondering whether the tendency of people from Antwerp
 to refer to Antwerp as _'t Stad_ 'the city', which could be superficially read
@@ -371,7 +371,7 @@ ggplot(germart_perItem,
 
 ## Tips
 
-**Tip 1.** Cleveland dot plots tend to work well for results aggregated by stimuli
+**Tip 1.** Cleveland dotplots tend to work well for results aggregated by stimuli
 as you can put the stimuli themselves or some shorter form of them in the graph.
 Don't use bar charts; they tend to be too busy.
 
