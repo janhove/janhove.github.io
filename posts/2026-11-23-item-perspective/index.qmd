@@ -338,7 +338,7 @@ The sole exception to this pattern is easily identified to be _Boot_,
 for which one plausible explanation is the participants' familiarity with
 the film _Das Boot_.
 And in case anyone was wondering whether the tendency of people from Antwerp
-to refer to Antwerp as _'t Stad_ 'the city', which could be superficially read
+to refer to Antwerp as <i>'t Stad</i> 'the city', which could be superficially read
 as considering _stad_ to be neuter rather than common[^2], has any consequences,
 the dotplot shows that none of the participants assigned a neuter article
 to its German cognate _Stadt_.
